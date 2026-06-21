@@ -162,10 +162,10 @@ body {
   box-shadow: var(--shadow);
 }
 .topbar-left { display: flex; align-items: center; gap: 12px; }
-.topbar-sitenav { display: flex; align-items: center; gap: 2px; background: var(--surface); border-radius: 999px; padding: 3px; }
-.tsn-link { padding: 5px 14px; border-radius: 999px; font-size: 0.85rem; font-weight: 500; color: var(--text2); transition: all .2s; }
+.topbar-sitenav { display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 4px; }
+.tsn-link { padding: 6px 16px; border-radius: 999px; font-size: 0.875rem; font-weight: 500; color: var(--text2); transition: all .15s; }
 .tsn-link:hover { color: var(--text); }
-.tsn-link.tsn-active { background: var(--text); color: var(--bg); }
+.tsn-link.tsn-active { background: var(--text); color: var(--bg); font-weight: 600; }
 .hamburger {
   display: none;
   background: none;

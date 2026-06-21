@@ -162,9 +162,9 @@ body {
   box-shadow: var(--shadow);
 }
 .topbar-left { display: flex; align-items: center; gap: 12px; }
-.topbar-sitenav { display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 4px; }
-.tsn-link { padding: 6px 16px; border-radius: 999px; font-size: 0.875rem; font-weight: 500; color: var(--text2); transition: all .15s; }
-.tsn-link:hover { color: var(--text); }
+.topbar-sitenav { display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; height: 34px; }
+.tsn-link { padding: 0 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 500; color: var(--text2); transition: all .15s; text-decoration: none; line-height: 26px; }
+.tsn-link:hover { color: var(--text); text-decoration: none; }
 .tsn-link.tsn-active { background: var(--text); color: var(--bg); font-weight: 600; }
 .hamburger {
   display: none;

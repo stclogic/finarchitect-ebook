@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>構造でお金を設計する人々 — STCLOGIC</title>
+  <meta name="description" content="金融は感情ではなく、構造だ。PF、SPC、STO、出口戦略 — the complete map of capital flow.">
+  <meta name="author" content="STCLOGIC">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar" aria-label="Table of Contents">
+    <div class="sidebar-logo">
+      <div class="logo-badge">STCLOGIC</div>
+      <div class="logo-title">構造でお金を<br>設計する人々</div>
+      <div class="logo-sub">金融は感情ではなく、構造だ</div>
+    </div>
+
+    <div class="vol-switcher">
+      <button class="vol-btn active" onclick="switchVol(1)">Vol.1 基礎編</button>
+      <button class="vol-btn" onclick="switchVol(2)" style="opacity:0.4;cursor:default">Vol.2 応用編</button>
+    </div>
+
+    <div class="search-wrap">
+      <i class="ti ti-search search-icon" aria-hidden="true"></i>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="チャプターを検索..."
+        aria-label="Search chapters"
+        oninput="handleSearch(event)"
+      >
+    </div>
+
+    <div class="toc" id="toc" role="list"></div>
+  </nav>
+
+  <!-- Main area -->
+  <main class="main" id="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="Open menu">
+          <i class="ti ti-menu-2" aria-hidden="true"></i>
+        </button>
+        <div class="breadcrumb">
+          Vol.1 &rsaquo; <span id="breadcrumb-ch">読み込み中...</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="font-size-wrap" aria-label="Font size">
+          <button onclick="changeFont(-1)" aria-label="Decrease font"><i class="ti ti-minus" aria-hidden="true"></i></button>
+          <span id="font-size-val">16</span>
+          <button onclick="changeFont(1)" aria-label="Increase font"><i class="ti ti-plus" aria-hidden="true"></i></button>
+        </div>
+        <button class="tb-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark/light mode">
+          <i class="ti ti-moon" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Reading progress bar -->
+    <div class="progress-bar" role="progressbar" aria-label="Reading progress">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="content" id="content">
+      <p style="color:var(--text3);padding:2rem;text-align:center;">
+        <i class="ti ti-loader" style="font-size:24px;display:block;margin-bottom:0.5rem;" aria-hidden="true"></i>
+        コンテンツを読み込み中...
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script src="data/vol1_ja.js?v=20260621"></script>
+<script src="assets/js/viewer.js"></script>
+<script>
+  function switchVol(v) {
+    if (v === 2) alert('Vol.2 ヌサンタラ年代記 — 近日公開');
+  }
+</script>
+</body>
+</html>

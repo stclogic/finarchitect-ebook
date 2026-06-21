@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Those Who Design Money with Structure — STCLOGIC</title>
+  <meta name="description" content="Finance is not emotion — it is architecture. PF, SPC, STO, Exit Strategy — the complete map of capital flow.">
+  <meta name="author" content="STCLOGIC">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar" aria-label="Table of Contents">
+    <div class="sidebar-logo">
+      <div class="logo-badge">STCLOGIC</div>
+      <div class="logo-title">Those Who Design<br>Money with Structure</div>
+      <div class="logo-sub">Finance is not emotion — it is architecture</div>
+    </div>
+
+    <div class="vol-switcher">
+      <button class="vol-btn active" onclick="switchVol(1)">Vol.1 Foundations</button>
+      <button class="vol-btn" onclick="switchVol(2)" style="opacity:0.4;cursor:default">Vol.2 Advanced</button>
+    </div>
+
+    <div class="search-wrap">
+      <i class="ti ti-search search-icon" aria-hidden="true"></i>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search chapters..."
+        aria-label="Search chapters"
+        oninput="handleSearch(event)"
+      >
+    </div>
+
+    <div class="toc" id="toc" role="list"></div>
+  </nav>
+
+  <!-- Main area -->
+  <main class="main" id="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="Open menu">
+          <i class="ti ti-menu-2" aria-hidden="true"></i>
+        </button>
+        <div class="breadcrumb">
+          Vol.1 &rsaquo; <span id="breadcrumb-ch">Loading...</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="font-size-wrap" aria-label="Font size">
+          <button onclick="changeFont(-1)" aria-label="Decrease font"><i class="ti ti-minus" aria-hidden="true"></i></button>
+          <span id="font-size-val">16</span>
+          <button onclick="changeFont(1)" aria-label="Increase font"><i class="ti ti-plus" aria-hidden="true"></i></button>
+        </div>
+        <button class="tb-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark/light mode">
+          <i class="ti ti-moon" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Reading progress bar -->
+    <div class="progress-bar" role="progressbar" aria-label="Reading progress">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="content" id="content">
+      <p style="color:var(--text3);padding:2rem;text-align:center;">
+        <i class="ti ti-loader" style="font-size:24px;display:block;margin-bottom:0.5rem;" aria-hidden="true"></i>
+        Loading content...
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script src="data/vol1_en.js?v=20260621"></script>
+<script src="assets/js/viewer.js"></script>
+<script>
+  function switchVol(v) {
+    if (v === 2) alert('Vol.2 — The Nusantara Chronicles is coming soon.');
+  }
+</script>
+</body>
+</html>

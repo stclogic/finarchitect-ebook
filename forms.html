@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서식 라이브러리 — Finarchitect</title>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <a href="landing.html" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg>
+    </div>
+    finarchitect
+  </a>
+  <div class="nav-links">
+    <a href="landing.html" class="nav-link">홈</a>
+    <a href="ebook.html" class="nav-link">eBook</a>
+    <a href="forms.html" class="nav-link active">서식</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-login">로그인</button>
+    <a href="#" class="btn-start">시작하기</a>
+  </div>
+</nav>
+
+<!-- FORMS HEADER -->
+<div class="forms-header">
+  <div style="max-width:1100px; margin:0 auto;">
+    <h1 style="font-size:1.6rem; font-weight:800;">서식 라이브러리</h1>
+    <p style="font-size:0.875rem; color:var(--text2); margin-top:4px;">250개 이상의 법률·금융·세무 서식 템플릿</p>
+    <div class="forms-search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="어떤 서식이 필요하세요?" id="searchInput">
+      <button class="ai-btn">✦ AI 추천</button>
+    </div>
+    <div class="quick-chips">
+      <button class="quick-chip" data-q="스타트업 창업">스타트업 창업</button>
+      <button class="quick-chip" data-q="부동산 투자">부동산 투자</button>
+      <button class="quick-chip" data-q="근로 계약">근로 계약</button>
+      <button class="quick-chip" data-q="세금 신고">세금 신고</button>
+      <button class="quick-chip" data-q="법인 설립">법인 설립</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="cat-tabs">
+  <button class="cat-tab active" data-cat="전체">⊛ 전체</button>
+  <button class="cat-tab" data-cat="법률·계약">⚖ 법률·계약</button>
+  <button class="cat-tab" data-cat="금융·투자">↗ 금융·투자</button>
+  <button class="cat-tab" data-cat="부동산">🏢 부동산</button>
+  <button class="cat-tab" data-cat="인사·노무">👥 인사·노무</button>
+  <button class="cat-tab" data-cat="세무·회계">📊 세무·회계</button>
+  <button class="cat-tab" data-cat="법인·행정">○ 법인·행정</button>
+</div>
+
+<!-- BODY -->
+<div class="forms-body">
+
+  <!-- FEATURED SET -->
+  <div class="featured-set" id="featuredSet">
+    <div class="featured-set-icon">📦</div>
+    <div class="featured-set-info">
+      <div class="featured-set-badges">
+        <span class="badge-featured">✦ FEATURED</span>
+        <span class="badge-cat">법인·행정</span>
+        <span class="badge-premium">PREMIUM</span>
+      </div>
+      <div class="featured-set-title">스타트업 필수 서식 세트</div>
+      <div class="featured-set-sub">창업부터 운영까지 필요한 핵심 서식 모음 · 15종 포함</div>
+    </div>
+    <div class="featured-set-actions">
+      <button class="btn-preview" onclick="openModal('startup')">미리보기</button>
+      <button class="btn-download">⬇ 다운로드</button>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+    <div class="section-label">전체 서식 세트 <span class="count">6개</span></div>
+    <button class="filter-btn">▼ 필터</button>
+  </div>
+
+  <div class="forms-grid" id="formsGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-head">
+      <div class="modal-icon" id="modalIcon">📦</div>
+      <div class="modal-head-text">
+        <h2 id="modalTitle">스타트업 필수 서식 세트</h2>
+        <p id="modalCount">15종 포함</p>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot">
+      <button class="btn-modal-detail">상세 보기</button>
+      <button class="btn-modal-download">⬇ 전체 다운로드</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const FORM_SETS = [
+  {
+    id: 'startup',
+    cat: '법인·행정',
+    title: '스타트업 필수 서식 세트',
+    desc: '창업부터 운영까지 필요한 핵심 서식 모음',
+    count: 15,
+    vol: 'Vol.1 6장',
+    premium: true,
+    color: '#22C55E',
+    iconBg: '#DCFCE7',
+    catColor: '#15803D',
+    files: [
+      { name: '이사회 의사록', format: 'HWP', locked: true },
+      { name: '주주총회 의사록', format: 'HWP', locked: false },
+      { name: '사업계획서 양식', format: 'PDF', locked: false },
+      { name: '투자자 보고 양식', format: 'PDF', locked: true },
+      { name: '법인 인감 사용 대장', format: 'HWP', locked: true },
+      { name: '직원 스톡옵션 부여 안내서', format: 'PDF', locked: true },
+      { name: '창업 지원금 신청서', format: 'HWP', locked: false },
+      { name: '정관 표준 양식', format: 'DOCX', locked: true },
+    ]
+  },
+  {
+    id: 'lease',
+    cat: '부동산',
+    title: '임대차 계약서 세트',
+    desc: '상가·주택·오피스 임대차 계약서 완전 패키지',
+    count: 7,
+    vol: 'Vol.1 5장',
+    premium: true,
+    color: '#F59E0B',
+    iconBg: '#FEF3C7',
+    catColor: '#92400E',
+    files: [
+      { name: '주택 임대차 계약서', format: 'DOCX', locked: false },
+      { name: '상가 임대차 계약서', format: 'DOCX', locked: true },
+      { name: '오피스 임대차 계약서', format: 'DOCX', locked: true },
+      { name: '전세 계약서', format: 'DOCX', locked: false },
+      { name: '임대차 갱신 요구권 행사서', format: 'PDF', locked: true },
+      { name: '보증금 반환 청구서', format: 'PDF', locked: true },
+      { name: '권리금 계약서', format: 'DOCX', locked: true },
+    ]
+  },
+  {
+    id: 'invest',
+    cat: '금융·투자',
+    title: '투자 분석 서식 세트',
+    desc: '투자 검토·분석·계약에 필요한 필수 서식',
+    count: 12,
+    vol: 'Vol.1 4장',
+    premium: true,
+    color: '#22C55E',
+    iconBg: '#DCFCE7',
+    catColor: '#15803D',
+    files: [
+      { name: '동업계약서', format: 'DOCX', locked: false },
+      { name: '주주간계약서', format: 'DOCX', locked: true },
+      { name: '투자유치 텀시트', format: 'PDF', locked: true },
+      { name: '스톡옵션 계약서', format: 'DOCX', locked: true },
+      { name: '비밀유지계약서 (NDA)', format: 'DOCX', locked: false },
+      { name: '용역계약서', format: 'DOCX', locked: false },
+      { name: '근로계약서 (스타트업용)', format: 'DOCX', locked: false },
+      { name: '이사회 의사록', format: 'HWP', locked: true },
+    ]
+  },
+  {
+    id: 'labor',
+    cat: '인사·노무',
+    title: '근로계약서 기본 세트',
+    desc: '정규직·계약직·파트타임 근로계약서 모음',
+    count: 5,
+    vol: 'Vol.1 2장',
+    premium: false,
+    color: '#EC4899',
+    iconBg: '#FCE7F3',
+    catColor: '#9D174D',
+    files: [
+      { name: '동업계약서', format: 'DOCX', locked: false },
+      { name: '주주간계약서', format: 'DOCX', locked: true },
+      { name: '투자유치 텀시트', format: 'PDF', locked: true },
+      { name: '스톡옵션 계약서', format: 'DOCX', locked: true },
+      { name: '비밀유지계약서 (NDA)', format: 'DOCX', locked: false },
+    ]
+  },
+  {
+    id: 'tax',
+    cat: '세무·회계',
+    title: '세금 신고 서식 세트',
+    desc: '종합소득세·부가세·법인세 신고 서식 완전판',
+    count: 11,
+    vol: 'Vol.1 3장',
+    premium: true,
+    color: '#A855F7',
+    iconBg: '#F3E8FF',
+    catColor: '#6B21A8',
+    files: [
+      { name: '스톡옵션 계약서', format: 'DOCX', locked: true },
+      { name: '비밀유지계약서 (NDA)', format: 'DOCX', locked: false },
+      { name: '용역계약서', format: 'DOCX', locked: false },
+      { name: '근로계약서 (스타트업용)', format: 'DOCX', locked: false },
+      { name: '이사회 의사록', format: 'HWP', locked: true },
+      { name: '주주총회 의사록', format: 'HWP', locked: true },
+      { name: '사업계획서 양식', format: 'PDF', locked: false },
+      { name: '투자자 보고 양식', format: 'PDF', locked: true },
+    ]
+  },
+  {
+    id: 'legal',
+    cat: '법률·계약',
+    title: '법률 계약서 기본 세트',
+    desc: '일상적 거래에 필요한 기본 계약서 모음',
+    count: 8,
+    vol: 'Vol.1 2장',
+    premium: false,
+    color: '#3B82F6',
+    iconBg: '#EFF6FF',
+    catColor: '#1D4ED8',
+    files: [
+      { name: '동업계약서', format: 'DOCX', locked: false },
+      { name: '주주간계약서', format: 'DOCX', locked: true },
+      { name: '투자유치 텀시트', format: 'PDF', locked: true },
+      { name: '스톡옵션 계약서', format: 'DOCX', locked: true },
+      { name: '비밀유지계약서 (NDA)', format: 'DOCX', locked: false },
+      { name: '용역계약서', format: 'DOCX', locked: false },
+      { name: '근로계약서 (스타트업용)', format: 'DOCX', locked: false },
+      { name: '이사회 의사록', format: 'HWP', locked: true },
+    ]
+  },
+];
+
+const FMT_CLASS = { DOCX: 'fmt-docx', PDF: 'fmt-pdf', HWP: 'fmt-hwp' };
+
+let currentCat = '전체';
+
+function renderGrid(cat) {
+  const sets = cat === '전체' ? FORM_SETS : FORM_SETS.filter(s => s.cat === cat);
+  const grid = document.getElementById('formsGrid');
+  grid.innerHTML = sets.map(s => `
+    <div class="form-card" onclick="openModal('${s.id}')">
+      <div class="form-card-top-bar" style="background:${s.color}"></div>
+      <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+        <div class="form-card-icon" style="background:${s.iconBg}"">📦</div>
+        <span class="${s.premium ? 'form-card-premium' : 'form-card-free'}">${s.premium ? 'PREMIUM' : 'FREE'}</span>
+      </div>
+      <span class="form-card-cat-tag" style="background:${s.iconBg}; color:${s.catColor}">${s.cat}</span>
+      <div class="form-card-title">${s.title}</div>
+      <div class="form-card-desc">${s.desc}</div>
+      <div class="form-card-footer">
+        <span>${s.count}종 포함</span>
+        <span class="vol-link">${s.vol}</span>
+      </div>
+      <div class="form-card-actions">
+        <button class="btn-card-preview" onclick="event.stopPropagation(); openModal('${s.id}')">미리보기</button>
+        <button class="btn-card-download" style="background:${s.color}" onclick="event.stopPropagation()">⬇ 다운로드</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openModal(id) {
+  const s = FORM_SETS.find(f => f.id === id);
+  if (!s) return;
+  document.getElementById('modalTitle').textContent = s.title;
+  document.getElementById('modalCount').textContent = `${s.count}종 포함`;
+  document.getElementById('modalIcon').style.background = s.iconBg;
+  document.getElementById('modalBody').innerHTML = s.files.map((f, i) => `
+    <div class="file-item ${i % 3 === 2 ? 'highlighted' : ''}">
+      <div class="file-check"></div>
+      <div class="file-doc-icon">📄</div>
+      <div class="file-name">${f.name}</div>
+      ${f.locked ? '<span class="file-lock">🔒</span>' : ''}
+      <span class="file-format ${FMT_CLASS[f.format] || ''}">${f.format}</span>
+    </div>
+  `).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+document.querySelectorAll('.cat-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    renderGrid(currentCat);
+  });
+});
+
+document.querySelectorAll('.quick-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.getElementById('searchInput').value = chip.dataset.q;
+  });
+});
+
+renderGrid('전체');
+</script>
+</body>
+</html>

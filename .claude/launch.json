@@ -1,0 +1,36 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "arirang-blog",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "9100", "/Users/stclogic/자동화 프로그램/Claude AI"],
+      "port": 9100
+    },
+    {
+      "name": "ziggle-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "4200", "/Users/stclogic/자동화 프로그램/Claude AI/ziggle-home-link/ziggle-app"],
+      "port": 4200
+    },
+    {
+      "name": "ziggle-landing",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "/Users/stclogic/자동화 프로그램/Claude AI/ziggle-home-link/ziggle-landing", "--port", "5174", "--host"],
+      "port": 5174
+    },
+    {
+      "name": "pansol-local",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["netlify", "dev", "--cwd", "/Users/stclogic/자동화 프로그램/Claude AI/pansol"],
+      "port": 8888,
+      "autoPort": false
+    },
+    {
+      "name": "stclogic-ebook",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3388", "--directory", "/Users/stclogic/Desktop/stclogic-ebook"],
+      "port": 3388
+    }
+  ]
+}

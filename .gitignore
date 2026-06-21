@@ -1,0 +1,5 @@
+# 참조 파일 제외
+stclogic template/
+*.jpeg
+*.jpg
+.DS_Store

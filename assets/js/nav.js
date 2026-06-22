@@ -58,7 +58,7 @@
         <div class="mobile-nav-header">
           <div class="mobile-nav-logo-wrap">
             <div class="nav-logo-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg></div>
-            <span class="mobile-nav-logo-text">finarchitect</span>
+            <span class="mobile-nav-logo-text">bookcoupling</span>
           </div>
           <button class="mobile-nav-close" aria-label="닫기">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">

@@ -93,7 +93,7 @@ const SITE_I18N = {
     'cta.btn2': '서식 라이브러리 보기',
 
     // FOOTER
-    'footer.copy': '© 2025 Finarchitect. All rights reserved.',
+    'footer.copy': '© 2025 Book Coupling. All rights reserved.',
     'footer.terms': '이용약관',
     'footer.privacy': '개인정보처리방침',
     'footer.about': '소개서',
@@ -254,7 +254,7 @@ const SITE_I18N = {
     'cta.btn1': 'Start for Free',
     'cta.btn2': 'Browse Forms Library',
 
-    'footer.copy': '© 2025 Finarchitect. All rights reserved.',
+    'footer.copy': '© 2025 Book Coupling. All rights reserved.',
     'footer.terms': 'Terms of Use',
     'footer.privacy': 'Privacy Policy',
     'footer.about': 'About',
@@ -412,7 +412,7 @@ const SITE_I18N = {
     'cta.btn1': '無料で始める',
     'cta.btn2': '書式ライブラリを見る',
 
-    'footer.copy': '© 2025 Finarchitect. All rights reserved.',
+    'footer.copy': '© 2025 Book Coupling. All rights reserved.',
     'footer.terms': '利用規約',
     'footer.privacy': '個人情報保護方針',
     'footer.about': '会社概要',

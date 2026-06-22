@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>요금제 — Finarchitect</title>
+<title>요금제 — Book Coupling</title>
 <link rel="stylesheet" href="assets/css/site.css">
 <style>
 .pricing-hero { text-align: center; padding: 64px 2rem 48px; background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 40%, #EC4899 100%); position: relative; overflow: hidden; }
@@ -68,7 +68,7 @@
     <div class="nav-logo-icon">
       <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg>
     </div>
-    finarchitect
+    bookcoupling
   </a>
   <div class="nav-links">
     <a href="landing.html" class="nav-link" data-i18n="nav.home">홈</a>
@@ -209,7 +209,7 @@ paypal.Buttons({
   createOrder(data, actions) {
     return actions.order.create({
       purchase_units: [{
-        description: 'Finarchitect eBook Vol.1 (전체 챕터 + 서식 1년)',
+        description: 'Book Coupling eBook Vol.1 (전체 챕터 + 서식 1년)',
         amount: { currency_code: 'USD', value: '19.00' }
       }]
     });
@@ -229,7 +229,7 @@ paypal.Buttons({
   createOrder(data, actions) {
     return actions.order.create({
       purchase_units: [{
-        description: 'Finarchitect 서식 라이브러리 연간 이용권',
+        description: 'Book Coupling 서식 라이브러리 연간 이용권',
         amount: { currency_code: 'USD', value: '10.00' }
       }]
     });

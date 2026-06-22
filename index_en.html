@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmh90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Those Who Design Money with Structure — STCLOGIC</title>
   <meta name="description" content="Finance is not emotion — it is architecture. PF, SPC, STO, Exit Strategy — the complete map of capital flow.">
@@ -12,6 +12,9 @@
 <script>
   (async function () {
     try {
+      const ch = new URLSearchParams(location.search).get('ch');
+      const FREE_CHS = ['1','2','3'];
+      if (ch && FREE_CHS.includes(ch)) { window.IS_FREE_ACCESS = true; return; }
       const user = JSON.parse(localStorage.getItem('site-user') || 'null');
       if (!user) { location.href = 'ebook.html'; return; }
       const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());
@@ -20,7 +23,7 @@
       const { data } = await sb.from('book_purchases').select('id')
         .eq('user_id', user.id).eq('book_id', 'money-arch').maybeSingle();
       if (!data) location.href = 'ebook.html';
-    } catch (e) { console.error('접근 제어 오류:', e); }
+    } catch (e) { console.error('접근 제어 오류:', e); location.href = 'ebook.html'; }
   })();
   </script>
 </head>
@@ -82,6 +85,9 @@
           <span id="font-size-val">16</span>
           <button onclick="changeFont(1)" aria-label="Increase font"><i class="ti ti-plus" aria-hidden="true"></i></button>
         </div>
+        <button class="tb-btn" id="bookmark-btn" onclick="saveBookmark()" aria-label="Save bookmark">
+          <i class="ti ti-bookmark" aria-hidden="true"></i>
+        </button>
         <button class="tb-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark/light mode">
           <i class="ti ti-moon" aria-hidden="true"></i>
         </button>
@@ -105,7 +111,7 @@
 </div>
 
 <script src="data/vol1_en.js?v=20260621"></script>
-<script src="assets/js/viewer.js"></script>
+<script src="assets/js/viewer.js?v=20260622"></script>
 <script>
   function switchVol(v) {
     if (v === 2) alert('Vol.2 — The Nusantara Chronicles is coming soon.');

@@ -48,17 +48,29 @@ async function init() {
   }
   bookData = VOL1_DATA;
   chapters = bookData.chapters;
+  currentChapterIdx = 0;
   buildToc();
-  const savedCh = localStorage.getItem('stclogic-chapter');
-  currentChapterIdx = savedCh ? Math.min(parseInt(savedCh), chapters.length - 1) : 0;
-  renderChapter(currentChapterIdx);
+  renderChapter(0);
   updateProgress();
+  updateBookmarkBtn();
 }
 
 // ── 목차 생성 ──
 function buildToc() {
   const toc = document.getElementById('toc');
   toc.innerHTML = '';
+
+  // 저장된 책갈피가 있으면 목차 상단에 표시
+  const bmSaved = localStorage.getItem(BOOKMARK_KEY);
+  if (bmSaved) {
+    const { idx: bmIdx, title: bmTitle } = JSON.parse(bmSaved);
+    const bmDiv = document.createElement('div');
+    bmDiv.className = 'toc-item toc-bookmark-entry';
+    bmDiv.style.cssText = 'border-bottom:1px solid var(--border);margin-bottom:6px;padding-bottom:6px;';
+    bmDiv.innerHTML = `<i class="ti ti-bookmark-filled" style="color:#f59e0b" aria-hidden="true"></i><span style="color:#f59e0b">내 책갈피 — ${bmTitle}</span>`;
+    bmDiv.addEventListener('click', () => { goChapter(bmIdx); closeSidebar(); });
+    toc.appendChild(bmDiv);
+  }
   chapters.forEach((ch, i) => {
     const div = document.createElement('div');
     div.className = 'toc-item' + (i === currentChapterIdx ? ' active' : '');
@@ -88,12 +100,21 @@ function updateTocActive() {
 
 // ── 챕터 렌더링 ──
 function goChapter(idx) {
+  // 무료 접근 상태에서 유료 챕터 클릭 시 구매 페이지로 이동
+  if (window.IS_FREE_ACCESS) {
+    const FREE_IDS = new Set(['ch-cover', 'cover-proposal', 'cover-preface', 'ch1', 'ch2', 'ch3']);
+    const ch = chapters[idx];
+    if (ch && !FREE_IDS.has(ch.id)) {
+      location.href = 'ebook.html';
+      return;
+    }
+  }
   currentChapterIdx = idx;
-  localStorage.setItem('stclogic-chapter', idx);
   renderChapter(idx);
   updateTocActive();
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateProgress();
+  updateBookmarkBtn();
 }
 
 function renderChapter(idx) {
@@ -482,9 +503,80 @@ function updateBreadcrumb(name) {
 }
 
 function updateProgress() {
-  const total = chapters.length + 1;
-  const pct = ((currentChapterIdx + 1) / total * 100).toFixed(1);
+  const pct = (currentChapterIdx / chapters.length * 100).toFixed(1);
   document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ── 책갈피 ──
+const BOOKMARK_KEY = 'stclogic-bookmark';
+
+function saveBookmark() {
+  const user = JSON.parse(localStorage.getItem('site-user') || 'null');
+  if (!user) { showBookmarkToast('로그인 후 이용할 수 있습니다.'); return; }
+
+  const saved = localStorage.getItem(BOOKMARK_KEY);
+  const savedIdx = saved ? JSON.parse(saved).idx : -1;
+
+  if (savedIdx === currentChapterIdx) {
+    // 이미 이 챕터가 책갈피 → 해제
+    localStorage.removeItem(BOOKMARK_KEY);
+    updateBookmarkBtn();
+    buildToc();
+    showBookmarkToast('책갈피가 해제되었습니다.');
+  } else {
+    // 새 위치로 저장
+    const ch = chapters[currentChapterIdx];
+    const title = ch ? (ch.subtitle || ch.title || '') : '용어집';
+    localStorage.setItem(BOOKMARK_KEY, JSON.stringify({ idx: currentChapterIdx, title }));
+    updateBookmarkBtn();
+    buildToc();
+    showBookmarkToast('책갈피가 저장되었습니다.');
+  }
+}
+
+function goBookmark() {
+  const saved = localStorage.getItem(BOOKMARK_KEY);
+  if (!saved) return;
+  const { idx } = JSON.parse(saved);
+  goChapter(idx);
+  closeSidebar();
+}
+
+function updateBookmarkBtn() {
+  const btn = document.getElementById('bookmark-btn');
+  if (!btn) return;
+  const user = JSON.parse(localStorage.getItem('site-user') || 'null');
+  const saved = localStorage.getItem(BOOKMARK_KEY);
+  const savedIdx = saved ? JSON.parse(saved).idx : -1;
+  const isHere = !!user && savedIdx === currentChapterIdx;
+  const hasAny = !!user && !!saved;
+  if (!user) {
+    btn.innerHTML = '<i class="ti ti-bookmark" style="opacity:0.4" aria-hidden="true"></i>';
+    btn.title = '로그인 후 이용 가능';
+  } else if (isHere) {
+    btn.innerHTML = '<i class="ti ti-bookmark-filled" style="color:#f59e0b" aria-hidden="true"></i>';
+    btn.title = '책갈피 해제';
+  } else if (hasAny) {
+    btn.innerHTML = '<i class="ti ti-bookmark" style="color:#f59e0b;opacity:0.6" aria-hidden="true"></i>';
+    btn.title = '이 위치로 책갈피 변경';
+  } else {
+    btn.innerHTML = '<i class="ti ti-bookmark" aria-hidden="true"></i>';
+    btn.title = '책갈피 저장';
+  }
+}
+
+function showBookmarkToast(msg) {
+  let toast = document.getElementById('bm-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'bm-toast';
+    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1e1b4b;color:#fff;padding:8px 18px;border-radius:999px;font-size:0.82rem;z-index:9999;pointer-events:none;transition:opacity .3s';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2000);
 }
 
 // ── 검색 ──

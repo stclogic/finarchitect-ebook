@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmh90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>eBook 라이브러리 — Book Coupling</title>
 <link rel="stylesheet" href="assets/css/site.css">
@@ -495,7 +495,12 @@ document.querySelectorAll('.lang-tab').forEach(b =>
 
 // ── 챕터 클릭 처리 (유료 챕터 결제) ──────────────
 function handleChapterClick(ch) {
-  // 구매 여부 확인 후 뷰어 진입 (무료 챕터도 구매 후 전체 열람)
+  // 무료 챕터: 로그인 없이 바로 열람
+  if (ch.free) {
+    if (ch.url) location.href = ch.url;
+    return;
+  }
+  // 유료 챕터: 로그인 + 구매 확인
   const user = window.getAuthUser ? window.getAuthUser() : null;
   if (!user) { window.openAuthModal && window.openAuthModal('login'); return; }
   window.getSupabaseClient().then(sb => {

@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmh90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>구조로 돈을 설계하는 사람들 — STCLOGIC</title>
   <meta name="description" content="금융은 감정이 아니라 구조다. PF, SPC, STO, Exit 전략까지 — 자금 흐름의 전체 지도.">
@@ -10,9 +10,12 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <script>
-  // 유료 콘텐츠 접근 제어 — 미구매 사용자 차단
+  // 유료 콘텐츠 접근 제어 — 무료 챕터(1~3)는 통과, 유료 챕터는 구매 확인
   (async function () {
     try {
+      const ch = new URLSearchParams(location.search).get('ch');
+      const FREE_CHS = ['1','2','3'];
+      if (ch && FREE_CHS.includes(ch)) { window.IS_FREE_ACCESS = true; return; } // 무료 챕터 통과
       const user = JSON.parse(localStorage.getItem('site-user') || 'null');
       if (!user) { location.href = 'ebook.html'; return; }
       const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());
@@ -21,7 +24,7 @@
       const { data } = await sb.from('book_purchases').select('id')
         .eq('user_id', user.id).eq('book_id', 'money-arch').maybeSingle();
       if (!data) location.href = 'ebook.html';
-    } catch (e) { console.error('접근 제어 오류:', e); }
+    } catch (e) { console.error('접근 제어 오류:', e); location.href = 'ebook.html'; }
   })();
   </script>
 </head>
@@ -81,6 +84,9 @@
           <span id="font-size-val">16</span>
           <button onclick="changeFont(1)" aria-label="글자 크게"><i class="ti ti-plus" aria-hidden="true"></i></button>
         </div>
+        <button class="tb-btn" id="bookmark-btn" onclick="saveBookmark()" aria-label="책갈피 저장">
+          <i class="ti ti-bookmark" aria-hidden="true"></i>
+        </button>
         <button class="tb-btn" id="theme-btn" onclick="toggleTheme()" aria-label="다크/라이트 모드 전환">
           <i class="ti ti-moon" aria-hidden="true"></i>
         </button>
@@ -104,7 +110,7 @@
 </div>
 
 <script src="data/vol1.js?v=20260621"></script>
-<script src="assets/js/viewer.js"></script>
+<script src="assets/js/viewer.js?v=20260622"></script>
 <script>
   function switchVol(v) {
     if (v === 2) alert('Vol.2 누산타라 연대기는 준비 중입니다.');

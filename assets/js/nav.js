@@ -114,7 +114,7 @@
       <div class="mobile-nav-panel">
         <div class="mobile-nav-header">
           <div class="mobile-nav-logo-wrap">
-            <div class="nav-logo-icon"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEjFZrsRnLlC4aifw-JUzJkfbS8tSYPxpjr1YmUaEm96HodxBm3uXQH16q1mDpn2SyiH7siAmuuKVGGcvwFrltDxLxOWk-LGNsmiwGTHE2j3cuvTbYNIgTUbczIRNR2DbYyIOXasAtP0WqDkGGB_Wst1eFNkJuk1MHfzhRU6VwWo9E2lCon9RE6Ax57W36Wm" alt="bookcoupling logo"></div>
+            <div class="nav-logo-icon"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEhTRH1ue_k8m5K50HkxS1r7OTUPQ3kGFa3jjvYtTeXcexrNd_LKV8SyVVXRj0rLiVSjiUAMjXidi92y_JngIIBNLqEyzpuGw_OcWhakb4djvEB2jDrPk2nrjyKmnBSly0-Uq8YqwmvNdlgnS0MgDVYmSSGLrO-VKndzuodO27f31bj1emME5YhWjv8Wx7i7" alt="bookcoupling logo"></div>
             <span class="mobile-nav-logo-text">bookcoupling</span>
           </div>
           <button class="mobile-nav-close" aria-label="닫기">

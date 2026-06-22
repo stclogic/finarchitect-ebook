@@ -581,8 +581,9 @@ function openLangModal(bookId) {
   const labelMap = { ko: '읽을 언어를 선택하세요', en: 'Select reading language', ja: '読む言語を選択してください' };
   document.querySelector('.lang-modal-label').textContent = labelMap[lang];
 
+  // 언어 옵션 렌더 — 클릭 시 접근 제어
   document.getElementById('langOptions').innerHTML = book.langs.map(l => `
-    <a class="lang-option" href="${l.url}">
+    <div class="lang-option" data-url="${l.url}" data-free="${l.free}" data-lang-code="${l.code}" style="cursor:pointer">
       <span class="lang-option-flag">${l.flag}</span>
       <div class="lang-option-text">
         <div class="lang-option-name">${l.label}</div>
@@ -591,10 +592,54 @@ function openLangModal(bookId) {
       <span class="lang-option-badge ${l.free ? 'lang-option-badge-free' : 'lang-option-badge-pro'}">
         ${l.free ? 'FREE' : 'PRO'}
       </span>
-    </a>
+    </div>
   `).join('');
 
+  // 각 언어 옵션 클릭 핸들러
+  document.querySelectorAll('#langOptions .lang-option').forEach(el => {
+    el.addEventListener('click', () => handleLangOptionClick(el, book));
+  });
+
   document.getElementById('langModalOverlay').classList.add('open');
+}
+
+async function handleLangOptionClick(el, book) {
+  const isFree = el.dataset.free === 'true';
+  const readUrl = el.dataset.url;
+
+  // 무료 책: 바로 열람
+  if (book.is_free || isFree) {
+    location.href = readUrl;
+    return;
+  }
+
+  // 유료 책: 로그인 확인
+  window.requireAuth(async (user) => {
+    // 구매 여부 확인
+    const sb = await window.getSupabaseClient();
+    const { data } = await sb
+      .from('book_purchases')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('book_id', book.id)
+      .maybeSingle();
+
+    if (data) {
+      // 구매 완료 → 바로 열람
+      location.href = readUrl;
+    } else {
+      // 미구매 → 결제 모달
+      document.getElementById('langModalOverlay').classList.remove('open');
+      const lang = getSiteLang();
+      const priceMap = { 'money-arch': 29, 'hnwi-code': 49 };
+      window.startBookPayment({
+        bookId: book.id,
+        title: book.title[lang] || book.title.ko,
+        price: priceMap[book.id] || 29,
+        readUrl,
+      });
+    }
+  });
 }
 
 document.getElementById('langModalOverlay').addEventListener('click', function(e) {

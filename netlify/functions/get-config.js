@@ -2,9 +2,12 @@
 export const handler = async () => {
   return {
     statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
     body: JSON.stringify({
-      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseUrl: (process.env.SUPABASE_URL || '').replace(/\/$/, ''),
       supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
       paypalClientId: process.env.PAYPAL_CLIENT_ID,
     }),

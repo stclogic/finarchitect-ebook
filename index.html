@@ -8,30 +8,19 @@
   <meta name="author" content="STCLOGIC">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-  <script>
-  // 유료 콘텐츠 접근 제어 — 구매 여부 확인 후 미구매 시 ebook.html로 리다이렉트
+<script>
+  // 유료 콘텐츠 접근 제어 — 미구매 사용자 차단
   (async function () {
-    const BOOK_ID = 'money-arch';
-    const CHAPTER_NUM = null; // null = 전체 접근 (챕터 번호는 추후 활용)
-    const FREE_CHAPTERS = [1, 2, 3];
-
-    // 챕터 번호를 URL에서 읽어 무료 챕터면 통과
-    const chParam = new URLSearchParams(location.search).get('ch');
-    if (chParam && FREE_CHAPTERS.includes(Number(chParam))) return;
-
     try {
       const user = JSON.parse(localStorage.getItem('site-user') || 'null');
       if (!user) { location.href = 'ebook.html'; return; }
-
       const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());
       const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
       const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
       const { data } = await sb.from('book_purchases').select('id')
-        .eq('user_id', user.id).eq('book_id', BOOK_ID).maybeSingle();
+        .eq('user_id', user.id).eq('book_id', 'money-arch').maybeSingle();
       if (!data) location.href = 'ebook.html';
-    } catch (e) {
-      console.error('접근 제어 오류:', e);
-    }
+    } catch (e) { console.error('접근 제어 오류:', e); }
   })();
   </script>
 </head>

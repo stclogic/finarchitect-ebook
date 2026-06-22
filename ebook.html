@@ -494,11 +494,20 @@ document.querySelectorAll('.lang-tab').forEach(b =>
 
 // ── 챕터 클릭 처리 (유료 챕터 결제) ──────────────
 function handleChapterClick(ch) {
-  if (ch.free && ch.url) {
-    location.href = ch.url;
-    return;
-  }
-  handleBookPurchase();
+  // 구매 여부 확인 후 뷰어 진입 (무료 챕터도 구매 후 전체 열람)
+  const user = window.getAuthUser ? window.getAuthUser() : null;
+  if (!user) { window.openAuthModal && window.openAuthModal('login'); return; }
+  window.getSupabaseClient().then(sb => {
+    sb.from('book_purchases').select('id')
+      .eq('user_id', user.id).eq('book_id', CURRENT_BOOK_ID).maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          location.href = ch.url || BOOK_INFO[CURRENT_BOOK_ID].readUrl;
+        } else {
+          handleBookPurchase();
+        }
+      });
+  });
 }
 
 // ── 책 구매 처리 ────────────────────────────────

@@ -107,7 +107,7 @@
       <div class="plan-name" data-i18n="pricing.plan1.name">서식 라이브러리</div>
       <div class="plan-desc" data-i18n="pricing.plan1.desc">법률·금융·세무 250+ 서식 템플릿 연간 무제한 이용</div>
       <div class="plan-price">
-        <span class="currency">$</span><span class="amount">10</span><span class="period" data-i18n="pricing.plan1.period">/ 1년</span>
+        <span class="currency">$</span><span class="amount">0</span><span class="period" data-i18n="pricing.plan1.period">/ 1년</span>
       </div>
       <ul class="plan-features">
         <li data-i18n="pricing.plan1.f1">250+ 서식 템플릿 전체 이용</li>
@@ -132,7 +132,7 @@
       <div class="plan-name" data-i18n="pricing.plan2.name">eBook Vol.1</div>
       <div class="plan-desc" data-i18n="pricing.plan2.desc">구조로 돈을 설계하는 사람들 — 전체 16챕터 + 1년 서식 이용권 포함</div>
       <div class="plan-price">
-        <span class="currency">$</span><span class="amount">19</span><span class="period" data-i18n="pricing.plan2.period">/ 도서 1권</span>
+        <span class="currency">$</span><span class="amount">29</span><span class="period" data-i18n="pricing.plan2.period">/ 도서 1권</span>
       </div>
       <ul class="plan-features">
         <li data-i18n="pricing.plan2.f1">전체 16챕터 + 부록 무제한 열람</li>
@@ -219,14 +219,14 @@
 <script src="https://www.paypal.com/sdk/js?client-id=AcGitOCgnIT766ru2cnaxQ79ViM0rkvcp1kYtf7eoEj0HLh9moLHdDdqQ6cqYQ7OqTdK6M5kQQPrGQzX&currency=USD&locale=ko_KR"></script>
 
 <script>
-// ── eBook $19 버튼 ──
+// ── eBook $29 버튼 ──
 paypal.Buttons({
   style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay', height: 45 },
   createOrder(data, actions) {
     return actions.order.create({
       purchase_units: [{
         description: 'Book Coupling eBook Vol.1 (전체 챕터 + 서식 1년)',
-        amount: { currency_code: 'USD', value: '19.00' }
+        amount: { currency_code: 'USD', value: '29.00' }
       }]
     });
   },

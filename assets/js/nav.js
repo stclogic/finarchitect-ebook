@@ -114,7 +114,7 @@
       <div class="mobile-nav-panel">
         <div class="mobile-nav-header">
           <div class="mobile-nav-logo-wrap">
-            <div class="nav-logo-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg></div>
+            <div class="nav-logo-icon"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEjFZrsRnLlC4aifw-JUzJkfbS8tSYPxpjr1YmUaEm96HodxBm3uXQH16q1mDpn2SyiH7siAmuuKVGGcvwFrltDxLxOWk-LGNsmiwGTHE2j3cuvTbYNIgTUbczIRNR2DbYyIOXasAtP0WqDkGGB_Wst1eFNkJuk1MHfzhRU6VwWo9E2lCon9RE6Ax57W36Wm" alt="bookcoupling logo"></div>
             <span class="mobile-nav-logo-text">bookcoupling</span>
           </div>
           <button class="mobile-nav-close" aria-label="닫기">

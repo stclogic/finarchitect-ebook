@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<!-- 訓民風書 무료 eBook 독자 페이지 -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmh90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>訓民風書 — Book Coupling</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── 리더 전용 ── */
+body { background: #faf8f5; }
+.reader-wrap {
+  max-width: 780px;
+  margin: 2.5rem auto 6rem;
+  padding: 0 1.5rem;
+  font-family: 'Nanum Myeongjo', 'Apple SD Gothic Neo', serif;
+  color: #2e2318;
+  line-height: 1.9;
+}
+
+/* 표지 헤더 */
+.book-cover-header {
+  text-align: center;
+  padding: 3rem 1.5rem 2.5rem;
+  background: linear-gradient(160deg, #1e1b4b 0%, #312e81 60%, #4c1d95 100%);
+  border-radius: 20px;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.book-cover-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 30% 30%, rgba(16,185,129,0.15) 0%, transparent 70%);
+}
+.book-cover-img {
+  width: 260px;
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+.book-cover-header h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.4rem;
+  position: relative;
+  z-index: 1;
+}
+.book-cover-header .subtitle {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.65);
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+.book-cover-header .free-badge {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 5px 18px;
+  background: #10B981;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 1;
+}
+
+/* 목차 박스 */
+.toc-box {
+  background: #fff;
+  border: 1px solid #e8e0d6;
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 3rem;
+}
+.toc-box h2 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #5a3e2b;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+.toc-list { list-style: none; padding: 0; margin: 0; }
+.toc-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed #e8e0d6;
+  font-size: 0.88rem;
+  color: #5f4b3d;
+  cursor: pointer;
+  transition: color .15s;
+}
+.toc-list li:last-child { border-bottom: none; }
+.toc-list li:hover { color: #10B981; }
+.toc-list li .toc-num {
+  font-size: 0.72rem;
+  color: #b8a898;
+  flex-shrink: 0;
+  width: 28px;
+}
+.toc-list li a { color: inherit; text-decoration: none; }
+
+/* 각 챕터 섹션 */
+.chapter-section {
+  background: #fff;
+  border: 1px solid #e2d8cc;
+  border-radius: 16px;
+  padding: 2.5rem 2.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.chapter-section h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #5a3e2b;
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+.chapter-section .ch-subtitle {
+  text-align: center;
+  font-size: 0.88rem;
+  color: #927e6b;
+  font-style: italic;
+  margin-bottom: 1.75rem;
+}
+.chapter-section hr {
+  border: none;
+  border-top: 1px dashed #c8b8a8;
+  margin: 1.5rem 0;
+}
+.chapter-section h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4d3226;
+  margin: 1.5rem 0 0.5rem;
+}
+.chapter-section p {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+.chapter-section blockquote {
+  border-left: 4px solid #c8b8a8;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  background: #faf6f2;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: #6b4d3c;
+}
+.chapter-section ul {
+  padding-left: 1.5rem;
+  color: #5f4b3d;
+  margin: 0.75rem 0 1rem;
+}
+.chapter-section ul li { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.chapter-section .sign-off {
+  text-align: right;
+  font-style: italic;
+  color: #927e6b;
+  margin-top: 1.5rem;
+  font-size: 0.88rem;
+}
+
+/* 뒤로가기 버튼 */
+.back-bar {
+  max-width: 780px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.5rem;
+}
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text2);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--white);
+  transition: all .15s;
+}
+.btn-back:hover { border-color: var(--primary); color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- 네비게이션 -->
+<nav class="site-nav">
+  <a href="landing.html" class="nav-logo">
+    <div class="nav-logo-icon"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEjFZrsRnLlC4aifw-JUzJkfbS8tSYPxpjr1YmUaEm96HodxBm3uXQH16q1mDpn2SyiH7siAmuuKVGGcvwFrltDxLxOWk-LGNsmiwGTHE2j3cuvTbYNIgTUbczIRNR2DbYyIOXasAtP0WqDkGGB_Wst1eFNkJuk1MHfzhRU6VwWo9E2lCon9RE6Ax57W36Wm" alt="bookcoupling logo"></div>
+    bookcoupling
+  </a>
+  <div class="nav-links">
+    <a href="landing.html" class="nav-link" data-i18n="nav.home">홈</a>
+    <a href="library.html" class="nav-link active" data-i18n="nav.library">라이브러리</a>
+    <a href="forms.html" class="nav-link" data-i18n="nav.forms">서식</a>
+    <a href="consulting.html" class="nav-link" data-i18n="nav.consulting">컨설팅</a>
+    <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">요금제</a>
+  </div>
+  <div class="nav-actions">
+    <div class="lang-switcher">
+      <button class="ls-btn active" data-lang="ko">KO</button>
+      <button class="ls-btn" data-lang="en">EN</button>
+      <button class="ls-btn" data-lang="ja">JA</button>
+    </div>
+    <button class="btn-login" onclick="openAuthModal('login')" data-i18n="nav.login">로그인</button>
+    <a href="pricing.html" class="btn-start" data-i18n="nav.start">시작하기</a>
+  </div>
+</nav>
+
+<!-- 뒤로가기 -->
+<div class="back-bar">
+  <a href="library.html" class="btn-back">← 라이브러리로</a>
+</div>
+
+<!-- 리더 본문 -->
+<div class="reader-wrap">
+
+  <!-- 표지 -->
+  <div class="book-cover-header">
+    <img class="book-cover-img"
+      src="https://blogger.googleusercontent.com/img/a/AVvXsEjyj4HTsy9b_4V65sNKn28eBIVptJYhET3ctfKtYtJQXJoxYwifATQeR4oep0ONHlDAARzrLd2D-zY0gcVzOHQxGEYnBbN5jLnDTrVuCHM6Vh24lJ0KVR60ME5mpf6gRnak7ji9nvnYLuVymAB6CkM-r835zeszm2csciV_G9dasCSo3yuJBBwxXgG6-l6Q"
+      alt="訓民風書 표지">
+    <h1>《訓民風書》 훈민풍서</h1>
+    <div class="subtitle">풍류선생 — 사랑의 지도서이며, 존엄의 선언문</div>
+    <span class="free-badge">FREE · 무료 공개</span>
+  </div>
+
+  <!-- 목차 -->
+  <div class="toc-box" id="toc">
+    <h2>📖 편찬 목차</h2>
+    <ul class="toc-list">
+      <li><span class="toc-num">序</span><a href="#ch-preface">어제서 (御製序) — 풍류선생의 서문</a></li>
+      <li><span class="toc-num">一</span><a href="#ch-spirit">정신 (精神) — 풍류란 무엇인가</a></li>
+      <li><span class="toc-num">二</span><a href="#ch-seven">칠단풍정도 (七段風情圖) — 마음의 일곱 겹 지형</a></li>
+      <li><span class="toc-num">三</span><a href="#ch-simul">심술론 (心術論) — 사내의 흔들림과 여인의 고요함</a></li>
+      <li><span class="toc-num">四</span><a href="#ch-night">야화편 (夜話篇) — 달빛 아래 여인의 속사정</a></li>
+      <li><span class="toc-num">五</span><a href="#ch-warn">경계록 (警戒錄) — 풍류의 이름으로 저질러진 위선</a></li>
+      <li><span class="toc-num">六</span><a href="#ch-chijung">치정해례 (癡情解禮) — 놓지 못한 사랑의 정리</a></li>
+      <li><span class="toc-num">七</span><a href="#ch-bonghwa">봉화서 (烽火書) — 여인 스스로에게 전하는 자존</a></li>
+      <li><span class="toc-num">結</span><a href="#ch-end">여백의 교훈 — 마지막 글</a></li>
+    </ul>
+  </div>
+
+  <!-- 序: 어제서 -->
+  <div class="chapter-section" id="ch-preface">
+    <h2>《訓民風書》 권1 – 御製序</h2>
+    <div class="ch-subtitle">📜 풍류선생의 어명을 담은 서문</div>
+    <hr>
+    <blockquote>세상이 너무 시끄러워<br>사람들이 자기 마음소리도 못 듣는 시대다.</blockquote>
+    <p>사랑은 말보다 빠르게 식고,<br>기억은 알림보다 짧게 남는다.</p>
+    <p>누군가는 여전히 "진심"을 말하지만,<br>정작 그 안에 책임은 없다.<br>누군가는 "풍류"를 논하지만,<br>그 속에 예의는 없다.</p>
+    <p><strong>그래서 나는 묻는다.</strong></p>
+    <p>사랑을 말하는 당신,<br>그 말 끝에 기억될 <strong>용기</strong>는 있는가?<br>관계를 맺는 당신,<br>그 손끝에 지켜낼 <strong>책임</strong>은 있는가?</p>
+    <p>이 책은<br>그런 당신을 위한 한 장의 거울이자,<br>흩어진 마음을 묶어주는 문장이다.</p>
+    <p><strong>《訓民風書》라 이름하되,</strong><br>이는 단지 고전체 시집이 아니다.<br>풍류를 잃은 세상에서<br>사람을 다시 바라보게 하려는 시도다.</p>
+    <p>사내가 쉽게 사랑을 말할 수는 있어도,<br>쉽게 꺼낸 말이 누군가의 밤을 울게 한다는 걸<br>기억하는 사람은 드물다.</p>
+    <p>여인이 쉽게 울지 않는다고 해서<br>상처받지 않는 건 아니라는 걸<br>잊지 말아야 한다.</p>
+    <p><strong>그러므로 이 책은</strong><br>누군가의 입술을 위한 문장이 아니라,<br>누군가의 심장에 남을 <strong>책임의 언어</strong>를 담고자 한다.</p>
+    <hr>
+    <blockquote>그대가 지금<br>누군가를 사랑하고 있다면,<br>혹은 사랑한 적 있다면,<br>혹은 사랑을 말할 용기가 사라졌다면—<br><strong>이 책을 펴시라.</strong></blockquote>
+    <p>사랑의 온도는 낮아졌을지 몰라도,<br>사람의 마음은 아직 식지 않았다.</p>
+    <p>풍류는<br>지금도 우리 곁에서<br>책 한 장, 말 한 줄, 침묵 한 호흡 속에<br>살아 있다.</p>
+    <div class="sign-off">📖 풍류선생 敬上</div>
+  </div>
+
+  <!-- 一: 정신 -->
+  <div class="chapter-section" id="ch-spirit">
+    <h2>《訓民風書》 권之貳 – 精神</h2>
+    <div class="ch-subtitle">📖 찹쌀떡 위에 콩고물처럼 고전과 현대를 함께 묻히다</div>
+    <hr>
+    <p>풍류란 본래 <strong>바람처럼 가볍고</strong> 물처럼 흘러야 한다 하였으나,<br>지금은 그 이름이 <strong>가벼운 말장난과 방탕의 가면</strong>이 되어 버렸다.</p>
+    <p>조선 시절이라면 풍류는 곧 <strong>격(格)이요, 절제된 자유</strong>,<br>시 한 수 지어 술상 위에 올리는 대신<br><em>누이의 마음은 손끝으로도 넘보지 않던 정신</em>이었다.</p>
+    <p><strong>현대는 어떤가?</strong><br>사랑은 앱에서 시작되고,<br>이별은 채팅창에서 끝나며,<br>진심은 종종 이모티콘 몇 줄에 밀린다.</p>
+    <blockquote>"지금, 당신이 말하는 사랑은 책임이 깃든 말인가?"<br>"당신이 껴안은 자유는 누군가의 마음을 짓밟고 있진 않은가?"</blockquote>
+    <h3>📜 풍류란 무엇인가?</h3>
+    <ul>
+      <li><strong>고전의 정의:</strong> 風은 흐르는 기운이요, 流는 고이지 않음이라.<br>풍류란 곧 정(情)을 품되, 탐(貪)은 경계하는 도(道)니라.</li>
+      <li><strong>현대의 해석:</strong> 풍류란 오늘,<br>읽기 전에 말하지 않는 절제이며,<br>지우기 전에 이해하려는 인내이다.</li>
+    </ul>
+    <p>즉, 풍류란 시대를 달리해도 <strong>타인의 마음을 존중하는 기술</strong>이며,<br>그 기술은 지금, <strong>다시 배워야 할 삶의 태도</strong>가 되었다.</p>
+    <hr>
+    <h3>📖 이 언문의 정신은 다음과 같나이다:</h3>
+    <ul>
+      <li>사랑은 <strong>경험</strong>이 아니라 <strong>품격</strong>이어야 하며,</li>
+      <li>관계는 <strong>속도</strong>가 아니라 <strong>깊이</strong>로 이어져야 하고,</li>
+      <li>말은 자유롭게 하되, <strong>남의 마음을 허물어선 아니 되며</strong>,</li>
+      <li>풍류는 <strong>즐김</strong>이 아니라, <strong>지킴</strong>이 되어야 한다.</li>
+    </ul>
+    <hr>
+    <h3>《月誓文》 – 달빛 아래 風流를 誓함 –</h3>
+    <blockquote>
+      此夜(月夜) 달 밝아 風(바람)이 도니,<br>
+      人心(인심)亦隨之(역수지)하여 흔들리나—<br><br>
+      벗은 그 바람의 盡處(진처)에서<br>自ら(자기라)를 굳게 묶고자 筆(붓)을 들었나이다.<br><br>
+      風流(풍류)라 쓰되, 벗은 遮羞(차수)로 숨기지 아니하며<br>
+      情(정)이라 말하되, 그대의 涙(눈물)에 기댐이 아니하나니.<br><br>
+      벗의 愛(애)는 짧지 않되 輕薄(경박)치 않고,<br>
+      벗의 香(향)은 은은하되 떠나지 않으며,<br>
+      벗의 言(언)은 月(달)처럼 明澈(명철)하되<br>
+      耀眼(요안)하지 아니하여<br>
+      늘 그대 곁 影(영) 되어 머물고자 하옵니다.<br><br>
+      此夜之誓(차야지서)는 벗이 누구의 心(심)을 盜(도)하려는 것이 아니라,<br>
+      己心(기심)을 失(실)치 않기 위한 誓文(서문)이니—<br><br>
+      風流를 품되, 放蕩(방탕)치 않고<br>
+      情分(정분)을 느끼되, 犯罪(범죄)하지 않으며<br>
+      愛(사랑)하되, 任(책임)을 잊지 않겠노라.
+    </blockquote>
+    <div class="sign-off">묵향을 오매불망하는, 풍류선생 敬上</div>
+  </div>
+
+  <!-- 二: 칠단풍정도 -->
+  <div class="chapter-section" id="ch-seven">
+    <h2>《訓民風書》 卷之三 – 七段風情圖</h2>
+    <div class="ch-subtitle">– 바람에 도는 일곱 겹 마음의 지형도 –</div>
+    <hr>
+    <p>사내의 마음이란 한 줄로 그릴 수 없는 것, 햇볕엔 짙어지고, 달빛엔 번지는 것. 그 흐름은 바람 같고, 그 무늬는 물결 같으니— 그 길 위엔 일곱 겹의 유혹이 존재하도다.</p>
+    <ul>
+      <li><strong>一盜(도)</strong> – 남의 것, 유부녀, 친구의 여자<br>도둑질은 죄라 하되, 마음의 도둑질은 죄가 아닌 듯 여긴다.</li>
+      <li><strong>二婢(비)</strong> – 비서, 경리, 파출부, 아랫사람<br>낮은 자리에 있는 이가 올려다보는 눈빛이 애틋하다 착각하며 관계를 왜곡한다.</li>
+      <li><strong>三娘(낭)</strong> – 연하, 순진한 듯 당찬 이들<br>새 것의 반짝임, 들뜬 웃음에 흔들리는 본능의 반사광.</li>
+      <li><strong>四寡(과)</strong> – 과부, 상처 있는 여자, 고요한 여자<br>남자의 구원욕을 자극하지만, 구원은 서로를 다시 다치게 한다.</li>
+      <li><strong>五妓(기)</strong> – 기생, 호스티스, 말의 기술자들<br>몸보다 말이 무섭고, 웃음보다 눈빛이 깊은 자들. 진심을 연기하는 연기의 여인.</li>
+      <li><strong>六妾(첩)</strong> – 첩, 둘째 부인, 숨겨진 사랑<br>그림자 속에서 정은 진하게 흐르나, 이름 없는 사랑은 늘 외롭다.</li>
+      <li><strong>七妻(처)</strong> – 정실 마누라, 늘 곁에 있는 사람<br>늘 곁에 있어 잊히지만, 그 손길 없이는 세상이 무너진다.</li>
+    </ul>
+    <hr>
+    <blockquote>사람의 마음은 낯설고 금지된 곳에 끌리되, 진심은 오래 머문 자리에서 뿌리를 내리는 법.<br><br>'1도'의 욕망보다, '7처'의 평범함을 다시 바라볼 줄 아는 남자야말로 진정한 사내일지니라.</blockquote>
+    <hr>
+    <h3>《七情記》 — 마음의 도둑 일곱을 읊다</h3>
+    <p>남의 것이라 더욱 곱다 하니, 눈이 먼저 죄를 짓는 줄 모르고,<br>사양할수록 더 타는 그 불꽃, <strong>1도</strong>는 먼저 가슴을 훔치네.</p>
+    <p>아랫자리 부른 이름 낮으나, 눈짓 한 줄 높이 올라붙고,<br>담장 너머 정이란 놈 모를 때, <strong>2비</strong>는 슬그머니 발목을 감네.</p>
+    <p>햇살처럼 아직 물들지 않은, 어린 듯 똑부러진 말 한 마디,<br>사랑인지 욕망인지 헷갈릴 때, <strong>3낭</strong>이 남자의 철을 벗기네.</p>
+    <p>고요한 방 오래 닫은 여인, 창백한 눈빛에 담긴 옛사랑,<br>한 번쯤 품어주고픈 구원감, <strong>4과</strong>는 슬픔 속에 길을 놓네.</p>
+    <p>말보다 웃음이 먼저 무너져, 술보다 깊은 눈빛 마주치면,<br>가면 쓴 진심에 자꾸 빠지게 되는, <strong>5기</strong>는 사랑 아닌 꿈을 팔고.</p>
+    <p>내 집 아닌 내 사람이라 하며, 그림자 속 숨겨둔 달빛 같은,<br>지우지도 못하고 말 못할 때, <strong>6첩</strong>은 죄의 속살을 안고 자네.</p>
+    <p>늘 곁에 있어 눈에 덜 띄지만, 밥 짓고 기다리는 그 손길에,<br>세상이 무너져도 돌아갈 이름, <strong>7처</strong>는 마지막 사랑이라네.</p>
+    <blockquote>"七妻라 하나, 그 한 사람이 이혼의 서명을 마치는 순간<br>다시 '1도(盜)'의 경계로 돌아가게 되나니—<br>바람은 집 밖에서 시작되지만, 그 뿌리는 집 안의 외로움이니라."</blockquote>
+    <ul style="list-style: square;">
+      <li>곁에 있을 때 더 사랑할 것</li>
+      <li>소홀함은 다른 손길의 여지를 만든다</li>
+      <li>매일 새로이 바라보는 것이 '관수(灌水)'의 도(道)</li>
+    </ul>
+    <blockquote>"빼앗기기 전에 살펴보고,<br>놓치기 전에 붙잡는 것이 진정한 풍류라 하였도다."</blockquote>
+    <div class="sign-off">풍류선생 敬上</div>
+  </div>
+
+  <!-- 三: 심술론 -->
+  <div class="chapter-section" id="ch-simul">
+    <h2>💔 心術論 (심술론)</h2>
+    <div class="ch-subtitle">– 사내의 흔들림과 여인의 고요함을 논하다 –</div>
+    <hr>
+    <blockquote>바람은 흔들리나, 나무는 뿌리를 잃지 않듯,<br>사내는 방황하되, 여인은 중심을 지키는 법이라.</blockquote>
+    <p>사내의 마음은 새벽 강물 같도다.<br>햇살 한 줄기에 빛을 쫓아 흘러가고,<br>작은 말 한마디에 방향을 바꾼다.<br>그 마음은 늘 '지금'에 뜨겁고, '다음'에 갈증이 많도다.</p>
+    <p>반면 여인의 마음은 갯벌의 진흙 같도다.<br>발은 쉽게 빠지지만, 그 속은 단단하고 오래 품는다.<br>말보다 눈빛이 길고, 침묵보다 사랑이 더 많은 이들이다.</p>
+    <p>사내는 바람처럼 닿고 떠나며 사랑을 말하되,<br>여인은 불처럼 오래 타며 침묵으로 지킨다.<br>그래서 사내의 사랑은 흔히 후회로 끝나고,<br>여인의 사랑은 종종 상처로 남는다.</p>
+    <hr>
+    <h3>📜 풍류의 균형, 어떻게 지킬 것인가</h3>
+    <ul style="list-style: square;">
+      <li><strong>사내는 말하기 전에, 한 번 더 귀 기울일 것.</strong></li>
+      <li><strong>여인은 참기 전에, 한 번쯤은 마음을 말할 것.</strong></li>
+      <li><strong>사랑이란 서로 맞추는 것이 아니라, 서로 비워주는 것임을 기억할 것.</strong></li>
+      <li><strong>진심은 소리보다 느리고, 침묵은 상처보다 오래 남음을 잊지 말 것.</strong></li>
+    </ul>
+    <div class="sign-off">— 이 글을 읽는 당신도, 누군가의 '마음의 등불'이기를 빌며</div>
+  </div>
+
+  <!-- 四: 야화편 -->
+  <div class="chapter-section" id="ch-night">
+    <h2>🌙 夜話篇 (야화편)</h2>
+    <div class="ch-subtitle">– 달빛 아래, 여인의 속사정을 밝히다 –</div>
+    <hr>
+    <blockquote>"밤은 고요하나, 그 속에서 여인의 사연은 매번 불붙는다."<br>— 붓 끝에서 피어난 진심의 고백들</blockquote>
+    <h3>❶ 잊혀진 편지 – '그날 밤, 나는 불리지 못한 이름이었네'</h3>
+    <p>밤마다 핸드폰 불빛 속에 머물던 그의 이름.<br>그러다, 어느 날부터… 내 이름이 울리지 않더이다.<br>연락은 끊겼고, 마음도 끊겼고, 미련만 연결되어 남았나이다.<br>그대는 사랑이라 했지만, 나는 부르지 못한 이름으로 밤을 새웠습니다.</p>
+    <h3>❷ 남겨진 찻잔 – '그 사람은 떠났고, 향만 남았다'</h3>
+    <p>찻잔 두 개 중 하나는 늘 따뜻했으나,<br>지금은 먼지만 쌓인 채 고요하더이다.<br>마음이 식는 건 티도 없이 진행되나,<br>식은 후엔 아무리 데워도 그 맛이 돌아오지 않사옵니다.</p>
+    <h3>❸ 빗속의 약속 – '사랑은 지우개로 지워지지 않더이다'</h3>
+    <p>비가 오면 생각납니다.<br>약속 장소 앞에서 2시간을 서 있던 내 모습이.<br>그날 그는 오지 않았고, 나도 다시는 그를 찾지 않았사오나—<br>빗소리에 마음이 젖는 건 여전하옵니다.</p>
+    <h3>❹ 벽장 속 옷 – '입지 못한 드레스는 마음의 관이 되었다'</h3>
+    <p>데이트 약속을 앞두고 사둔 원피스.<br>단 한 번도 입지 못한 채 세월이 지났고,<br>지금은 꺼낼 수도, 버릴 수도 없나이다.<br>그 옷은 나보다 그의 눈빛을 기다리고 있었던 것이옵니다.</p>
+    <hr>
+    <blockquote>사랑은 장작이어야 하옵니다.<br>타다가 식지 않고, 불꽃이 다할 때까지 따뜻해야 하옵니다.<br>벗이여, 마음이 식었다면 그대는 장작이었는지, 숯이었는지 자문하시옵소서.</blockquote>
+    <div class="sign-off">— 달빛 아래 붓을 든 자, 밤의 사관 敬上</div>
+  </div>
+
+  <!-- 五: 경계록 -->
+  <div class="chapter-section" id="ch-warn">
+    <h2>⚖️ 卷之四 – 警戒錄 (경계록)</h2>
+    <div class="ch-subtitle">– 풍류의 이름으로 저질러진 위선과 기만을 밝히는 조문 –</div>
+    <hr>
+    <h3>🔹 第壹條 – '풍류'는 면죄부가 아니다</h3>
+    <p>사랑이 무거워 도망친 자가 '풍류'를 핑계로 삼아선 아니 된다.<br>마음의 경솔함을 자유라 부르며 타인의 눈물을 즐기는 자여,<br>그대의 입은 詩를 읊되, 손끝은 누군가의 자존을 허물고 있도다.</p>
+    <h3>🔹 第貳條 – '방황'은 성찰일 수 있으나, 방탕은 변명일 뿐</h3>
+    <p>가끔은 사람이 흔들릴 수 있으나, 습관된 외도는 병이옵니다.<br>사내가 진심을 다해 한 사람을 향하지 못한다면,<br>그 입의 다정함은 오히려 칼이 되어 누군가의 심장을 벨 것이니라.</p>
+    <h3>🔹 第參條 – '감성'의 탈을 쓴 조련술을 경계하라</h3>
+    <p>"난 원래 이런 사람이야…"라 말하며<br>여러 사람의 감정을 한 사람의 욕망으로 모으는 자는<br>진심을 유희로 삼는 기만자이니, 그 궤변을 스스로도 믿지 못하도다.</p>
+    <h3>🔹 第四條 – 풍류라 하되, 반드시 예의를 갖출 것</h3>
+    <p>술이 취해 시를 짓는다 하더라도, 눈은 흐리지 말아야 하며,<br>웃음이 넘치더라도 손은 분수를 넘지 않아야 하옵니다.<br>여인의 마음은 꽃이 아니라 자존의 결실이니, 흩트리지 말지어다.</p>
+    <h3>🔹 第五條 – 사내여, '허세'는 지조의 적이다</h3>
+    <p>곁에 두고픈 이를 위한 풍류는 품격이지만,<br>여러 이에게 던지는 말의 향연은 독이 된다.<br>풍류는 적당한 간격 속에서만 향기롭도다.</p>
+    <hr>
+    <blockquote>"풍류란 이름으로 누군가의 마음을 희롱하는 이여,<br>그대는 시인이 아니라, 서글픈 장난꾼에 지나지 않으리."</blockquote>
+    <div class="sign-off">— 풍류선생 竹簡에 적노라</div>
+  </div>
+
+  <!-- 六: 치정해례 -->
+  <div class="chapter-section" id="ch-chijung">
+    <h2>💔 卷之七 – 癡情解禮 (치정해례)</h2>
+    <div class="ch-subtitle">– 놓지 못한 사랑에게 띄우는 마지막 정리장 –</div>
+    <hr>
+    <h3>📖 一戀 – "나만 사랑하고, 나만 기억했다면… 그건 사랑이었을까?"</h3>
+    <p>혼자 불태운 사랑이 사랑이었는지,<br>혹은 착각이었는지를 묻는 밤.<br>그대는 내 이름을 불러주지 않았으나<br>나는 수십 번 속으로 불러보았소.</p>
+    <blockquote>"내가 사랑한 게 사랑이었는지,<br>내가 바란 게 착각이었는지,<br>그대는 아직도 답하지 않소."</blockquote>
+    <h3>📖 二恨 – "왜 날 그렇게 만들고, 아무렇지 않게 떠났소?"</h3>
+    <p>눈물은 그대가 빌려 쓰고,<br>상처는 내 것이 되었소.<br>그대는 아무 일 없다는 듯 떠났으나,<br>나는 그날부터 달빛만 보면 무너졌소.</p>
+    <h3>📖 三未緣 – "좋아하던 사람과 연인이 되지 못한 미련"</h3>
+    <p>우리는 사랑하지도,<br>그렇다고 남도 아니었던 사이.<br>이름조차 불분명했던 그 관계 속에<br>나는 나만의 연애를 했소이다.</p>
+    <h3>📖 四痕 – "좋았던 기억 때문에 놓지 못하는 어리석음"</h3>
+    <p>미움보다 무서운 건 가끔 떠오르는 따뜻함이었소.<br>그 몇 번의 온기가 내 전부를 붙들고 있었던 거요.</p>
+    <blockquote>"다 끝났다고 말해도,<br>그대 목소리만 들리면<br>아직 시작 중인 듯 가슴이 뛴다오."</blockquote>
+    <h3>📖 五禮 – "이제는 놓아드리는 인사의 예법"</h3>
+    <p>그대요,<br>내게 준 건 이별이었고,<br>내가 드리는 건 마지막 예(禮)요.<br>남은 미련은 벽에 걸어두고<br>그대의 길에 복이 있길 빌겠소이다.</p>
+    <hr>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>🩶 사랑은 붙잡는 기술보다, 놓는 예(禮)를 더 배워야 완성됩니다.</li>
+      <li>🕊️ 진정한 이별은 상대의 마음이 아닌, 내 감정의 용서를 포함합니다.</li>
+      <li>🌒 미련은 죄가 아니되, 계속 끌고 가면 진심에 곰팡이가 핍니다.</li>
+    </ul>
+    <div class="sign-off">— 풍류선생 謹筆</div>
+  </div>
+
+  <!-- 七: 봉화서 -->
+  <div class="chapter-section" id="ch-bonghwa">
+    <h2>🔥 卷之八 – 烽火書 (봉화서)</h2>
+    <div class="ch-subtitle">– 여인 스스로에게 전하는 자존의 메시지 –</div>
+    <hr>
+    <h3>📜 其一. "나는 누군가의 그림자가 아니다."</h3>
+    <p>사내의 그늘에 묻혀 사는 것은,<br>조선의 달빛 아래서조차 어두운 운명.<br>허나 이젠 말하노라.<br>나는 누구의 그림자도, 누구의 분신도 아닌<br>오롯한 내 이름을 가진 사람이라.</p>
+    <blockquote>"나는 사랑받기 위해 태어난 것이 아니라,<br>사랑받아도 꺾이지 않는 존재가 되고자 태어났다."</blockquote>
+    <h3>📜 其二. "벗어나라, 참는 것이 미덕이라는 유산에서."</h3>
+    <p>어머니의 어머니가 참고,<br>누이의 누이가 울음을 삼켜야 했던 시간들.<br>그러나 이젠 누가 말하노라.<br>'참는 것'은 미덕이 아니라<br>침묵 속 상처를 키우는 일임을.</p>
+    <h3>📜 其三. "사랑이 다는 아니더라."</h3>
+    <p>그대가 떠난 후에야 알았소.<br>내가 잃은 건 '사랑'이 아니라<br>나 자신이었음을.<br>사랑을 위해 나를 소진한 날들—<br>이제는 내 이름을 사랑하려 하오.</p>
+    <h3>📜 其四. "벗은 더 이상 구원받길 원하지 않는다."</h3>
+    <p>이제 나는 누군가의 '구원'이 아니라,<br>스스로의 등불이 되고 싶소.<br>나를 구해줄 이가 아니라,<br>나와 함께 설 이가 필요하오.</p>
+    <hr>
+    <h3>🪶 《봉화 之 선언》</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>🔥 사랑은 선택이고, 자존은 본능이다.</li>
+      <li>🔥 벗은 꽃이 아니라 불씨이니, 꺾지 말고 함께 타라.</li>
+      <li>🔥 눈물 흘려도 무너지지 않고, 기억은 해도 머물지 않겠다.</li>
+      <li>🔥 더는 '좋은 여자'로 기억되기보단, '스스로 완성된 사람'으로 살아가겠다.</li>
+    </ul>
+    <div class="sign-off">— 풍류선생 謹筆</div>
+  </div>
+
+  <!-- 結: 여백의 교훈 -->
+  <div class="chapter-section" id="ch-end">
+    <h2>📜 卷之九 – 여백의 교훈</h2>
+    <div class="ch-subtitle">— 모든 풍류는 곁에 머물지 않음을 아는 자의 마지막 글 —</div>
+    <hr>
+    <p>바람이 지나가고 나면,<br>흔적을 남기지 않듯이—<br>사랑 또한 가장 깊은 것은<br>말없이 머물다 사라진다.</p>
+    <p>글은 누구를 탓하기 위함이 아니었고,<br>노래는 누구를 그리기 위한 것도 아니었으며,<br>풍류는 누군가를 얻기 위한 장식이 아니라,<br>놓은 후에도 지켜야 할 품격이었다.</p>
+    <blockquote>"진짜 사랑은 남는 것이 아니라,<br>흘러가도 향을 남기는 것이다."</blockquote>
+    <p>벗이여,<br>우리가 사랑이라 여겼던 많은 것들이<br>지나고 보니 욕망이었고,<br>품었다 여겼던 순간들이<br>결국은 집착이었으며,<br>지켰다 자부했던 감정들이<br>누군가에겐 무거운 짐이었음을—<br>이제야 깨닫게 되나이다.</p>
+    <p>붓의 무게는<br>가벼운 말보다<br>지워지지 않는 기억에 실려야 하며—<br>지금 이 마지막 문장은<br>언젠가 사랑했던 자들의 심장에<br>아주 오래도록<br>고요히 머물기를 소망하나이다.</p>
+    <hr>
+    <p style="font-weight: bold; font-size: 1.05rem; color: #4c362e;">《풍류는, 잊히지 않아야 할 태도입니다.》</p>
+    <p style="font-style: italic; color: #7a6355;">흔들리되, 남기지 말고<br>사랑하되, 책임하라.<br>그리고 떠나되, 곱게 떠나라.</p>
+    <hr>
+    <p>훈민풍서가 이리 쉬이 덮일 수는 없나이다.<br>진짜 이야기는<br>아직 그대의 손끝에도,<br>여인의 옷고름 안쪽에도 남아 있사옵니다.</p>
+    <blockquote>"다음 장부터는,<br>차마 글로 남기지 못했던<br>옷고름 속 사연과, 치맛자락 밑에 눌러둔 진심이<br>속편의 이름으로 피어날 것입니다."</blockquote>
+    <div class="sign-off">— 다시 붓 드는 날까지, 벗의 애틋함에 귀 기울이며.<br>風流先生 敬候</div>
+  </div>
+
+  <!-- 목차로 돌아가기 -->
+  <div style="text-align: center; margin-top: 1rem;">
+    <a href="#toc" class="btn-back" style="display: inline-flex;">↑ 목차로</a>
+  </div>
+
+</div>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/nav.js?v=3"></script>
+<script src="assets/js/auth.js"></script>
+</body>
+</html>

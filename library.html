@@ -3,6 +3,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmh90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>eBook 라이브러리 — STCLOGIC</title>
   <meta name="description" content="STCLOGIC의 금융 전문 eBook 라이브러리. 한국어·영어·일본어로 출판된 금융 구조 설계 전자책.">
@@ -337,7 +338,7 @@
 <!-- 네비게이션 -->
 <nav class="site-nav">
   <a href="landing.html" class="nav-logo">
-    <div class="nav-logo-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg></div>
+    <div class="nav-logo-icon"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEjFZrsRnLlC4aifw-JUzJkfbS8tSYPxpjr1YmUaEm96HodxBm3uXQH16q1mDpn2SyiH7siAmuuKVGGcvwFrltDxLxOWk-LGNsmiwGTHE2j3cuvTbYNIgTUbczIRNR2DbYyIOXasAtP0WqDkGGB_Wst1eFNkJuk1MHfzhRU6VwWo9E2lCon9RE6Ax57W36Wm" alt="bookcoupling logo"></div>
     bookcoupling
   </a>
   <div class="nav-links">
@@ -374,6 +375,15 @@
   <button class="lib-filter-btn" data-filter="tax" data-i18n="library.filter.tax">세무·회계</button>
 </div>
 
+<!-- 무료 도서 섹션 -->
+<section class="lib-section" id="freeSection">
+  <div class="lib-section-label">
+    🎁 무료 도서
+    <span id="freeCount">1</span>
+  </div>
+  <div class="book-grid" id="freeGrid"></div>
+</section>
+
 <!-- 메인 섹션: 출판된 도서 -->
 <section class="lib-section" id="publishedSection">
   <div class="lib-section-label">
@@ -408,9 +418,12 @@
 </div>
 
 <footer class="site-footer">
-  <div class="footer-inner">
-    <span data-i18n="footer.copy">© 2025 Book Coupling. All rights reserved.</span>
-    <div class="footer-links">
+  <div class="footer-logo">
+    <div class="footer-logo-icon"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmh90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR" alt="bookcoupling logo" style="width:100%;height:100%;object-fit:cover;border-radius:6px;"></div>
+    bookcoupling.com
+  </div>
+  <div class="footer-copy" data-i18n="footer.copy">© 2025 Book Coupling. All rights reserved.</div>
+  <div class="footer-links">
       <a href="terms.html" data-i18n="footer.terms">이용약관</a>
       <a href="privacy.html" data-i18n="footer.privacy">개인정보처리방침</a>
       <a href="about.html" data-i18n="footer.about">소개서</a>
@@ -420,6 +433,41 @@
 
 <script>
 // eBook 라이브러리 데이터
+const FREE_BOOKS = [
+  {
+    id: 'hunmin-pungseo',
+    genre: 'culture',
+    cover: {
+      ko: 'https://blogger.googleusercontent.com/img/a/AVvXsEhn1-EFJlmBr8fZVvB72nalab2RvzgZZ6Y0wIrHEB7Gph42R-2FCoYv38srEfEqkJdu8-9L83HZCyGiWlYem4rzvTbqzuXFNcvssXF0VYtHIjOCx-PyNJAtPsDA2khqZF5uU6p71BxlX6yE8jWZjEjYiE28mRVB1-bomhrUgC5Qel4wA1vACN9IxGIffYXf',
+    },
+    title: { ko: '訓民風書 (훈민풍서)', en: '訓民風書', ja: '訓民風書' },
+    subtitle: { ko: '사랑의 지도서이며, 존엄의 선언문', en: 'A Guide to Love & Dignity', ja: '愛の指南書と尊厳の宣言' },
+    author: '풍류선생',
+    vol: '全一卷',
+    chapters: 9,
+    rating: null,
+    is_free: true,
+    langs: [{ code: 'ko', flag: '🇰🇷', label: '한국어', sub: 'Korean', url: 'hunmin-pungseo.html', free: true }],
+    published: true,
+  },
+  {
+    id: 'mal-pumgyeok',
+    genre: 'culture',
+    cover: {
+      ko: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGam_jjsElOs8QSdscglfQNt2sUf9cWujGohARlBMI5NtG4zk7qWA-t7aS87TIXrKCjY4QoqlC48bLh3GNQbFhixyLXtVH4wmhBF-8nezhv_iLDm2UG6CkMX8BRvNZiI0SDARWsnNhaCRiDH3KCG3ypId222qOVvRaPbAdbmZ0zLjTcEjl0N0stIE6rCfi/s1280/IMG_7689.png',
+    },
+    title: { ko: '말 품격 지침서', en: '말 품격 지침서', ja: '말 품격 지침서' },
+    subtitle: { ko: '세상을 붓으로 읽다', en: 'Reading the World with a Brush', ja: '世を筆で読む' },
+    author: '풍류선생',
+    vol: '全十章',
+    chapters: 10,
+    rating: null,
+    is_free: true,
+    langs: [{ code: 'ko', flag: '🇰🇷', label: '한국어', sub: 'Korean', url: 'mal-pumgyeok.html', free: true }],
+    published: true,
+  },
+];
+
 const BOOKS = [
   {
     id: 'hnwi-code',
@@ -517,6 +565,42 @@ function renderStars(rating) {
   return s;
 }
 
+function renderFree() {
+  const lang = getSiteLang();
+  const grid = document.getElementById('freeGrid');
+  if (!grid) return;
+  grid.innerHTML = FREE_BOOKS.map(b => {
+    const cover = b.cover[lang] || b.cover.ko;
+    const title = b.title[lang] || b.title.ko;
+    const subtitle = b.subtitle[lang] || b.subtitle.ko;
+    return `
+      <div class="book-card" onclick="openFreeBook('${b.id}')">
+        <div class="book-cover-wrap">
+          <img src="${cover}" alt="${title}" loading="lazy">
+          <span class="book-badge book-badge-free">FREE</span>
+        </div>
+        <div class="book-meta">
+          <div class="book-lang-flags">
+            ${b.langs.map(l => `<span class="book-flag">${l.flag} ${l.code.toUpperCase()}</span>`).join('')}
+          </div>
+          <div class="book-title">${title}</div>
+          <div class="book-subtitle">${subtitle}</div>
+          <div class="book-author">${b.author} · ${b.vol}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('freeCount').textContent = FREE_BOOKS.length;
+}
+
+function openFreeBook(bookId) {
+  const book = FREE_BOOKS.find(b => b.id === bookId);
+  if (!book) return;
+  const lang = getSiteLang();
+  const langObj = book.langs.find(l => l.code === lang) || book.langs[0];
+  location.href = langObj.url;
+}
+
 function renderPublished(filter) {
   const lang = getSiteLang();
   const books = filter === 'all' ? BOOKS : BOOKS.filter(b => b.genre === filter);
@@ -604,6 +688,15 @@ function openLangModal(bookId) {
 }
 
 async function handleLangOptionClick(el, book) {
+  // 업로드 중인 책: 결제 불가 안내
+  if (book.updating) {
+    document.getElementById('langModalOverlay').classList.remove('open');
+    const lang = getSiteLang();
+    const msg = { ko: '현재 업로딩 중입니다.\n출간 완료 후 구매 가능합니다.', en: 'Currently uploading.\nAvailable for purchase after release.', ja: '現在アップロード中です。\n出版後に購入できます。' };
+    alert(msg[lang] || msg.ko);
+    return;
+  }
+
   const isFree = el.dataset.free === 'true';
   const readUrl = el.dataset.url;
 
@@ -657,6 +750,7 @@ document.querySelectorAll('.lib-filter-btn').forEach(btn => {
 });
 
 // 초기 렌더
+renderFree();
 renderPublished('all');
 renderComingSoon('all');
 </script>

@@ -8,6 +8,24 @@
   <meta name="author" content="STCLOGIC">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script>
+  (async function () {
+    const BOOK_ID = 'money-arch';
+    const FREE_CHAPTERS = [1, 2, 3];
+    const chParam = new URLSearchParams(location.search).get('ch');
+    if (chParam && FREE_CHAPTERS.includes(Number(chParam))) return;
+    try {
+      const user = JSON.parse(localStorage.getItem('site-user') || 'null');
+      if (!user) { location.href = 'ebook.html'; return; }
+      const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());
+      const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+      const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+      const { data } = await sb.from('book_purchases').select('id')
+        .eq('user_id', user.id).eq('book_id', BOOK_ID).maybeSingle();
+      if (!data) location.href = 'ebook.html';
+    } catch (e) { console.error('접근 제어 오류:', e); }
+  })();
+  </script>
 </head>
 <body>
 

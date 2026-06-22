@@ -1,26 +1,83 @@
 // 모바일 햄버거 메뉴 + 로그인 사용자 정보 표시
 (function () {
 
-  // ── 사용자 칩 렌더링 ─────────────────────────────
+  // ── 사용자 칩 + 드롭다운 렌더링 ──────────────────
   function renderUserChip(nav) {
     const user = (() => {
       try { return JSON.parse(localStorage.getItem('site-user')); } catch { return null; }
     })();
     if (!user) return;
 
-    // 로그인/시작하기 버튼 숨김
     nav.querySelectorAll('.btn-login, .btn-start').forEach(el => el.style.display = 'none');
+    injectUserDropdownStyles();
 
     const initials = (user.name || user.email || '?').charAt(0).toUpperCase();
-    const chip = document.createElement('a');
-    chip.href = '#';
-    chip.className = 'nav-user-chip';
-    chip.innerHTML = `
-      <span class="nav-user-avatar">${initials}</span>
-      <span class="nav-user-name">${user.name || user.email}</span>
+    const wrap = document.createElement('div');
+    wrap.className = 'nav-user-wrap';
+    wrap.innerHTML = `
+      <button class="nav-user-chip" id="userChipBtn" aria-expanded="false">
+        <span class="nav-user-avatar">${initials}</span>
+        <span class="nav-user-name">${user.name || user.email}</span>
+        <span class="nav-user-caret">▾</span>
+      </button>
+      <div class="nav-user-dropdown" id="userDropdown">
+        <div class="nav-user-dropdown-info">
+          <div class="nav-user-dropdown-name">${user.name || ''}</div>
+          <div class="nav-user-dropdown-email">${user.email}</div>
+        </div>
+        <div class="nav-user-dropdown-divider"></div>
+        <a href="ebook.html" class="nav-user-dropdown-item">📚 내 eBook</a>
+        <button class="nav-user-dropdown-item nav-user-dropdown-logout" onclick="signOut()">로그아웃</button>
+      </div>
     `;
     const navActions = nav.querySelector('.nav-actions');
-    if (navActions) navActions.appendChild(chip);
+    if (navActions) navActions.appendChild(wrap);
+
+    // 드롭다운 토글
+    const chipBtn = wrap.querySelector('#userChipBtn');
+    const dropdown = wrap.querySelector('#userDropdown');
+    chipBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = dropdown.classList.toggle('open');
+      chipBtn.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', () => {
+      dropdown.classList.remove('open');
+      chipBtn.setAttribute('aria-expanded', false);
+    });
+  }
+
+  // ── 드롭다운 CSS ────────────────────────────────
+  function injectUserDropdownStyles() {
+    if (document.getElementById('userDropdownStyles')) return;
+    const s = document.createElement('style');
+    s.id = 'userDropdownStyles';
+    s.textContent = `
+      .nav-user-wrap { position: relative; }
+      .nav-user-chip { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; background: var(--cream); border: 1px solid var(--border); border-radius: 999px; cursor: pointer; transition: box-shadow .2s; font-family: inherit; }
+      .nav-user-chip:hover { box-shadow: var(--shadow); }
+      .nav-user-caret { font-size: 0.65rem; color: var(--text3); }
+      .nav-user-dropdown {
+        display: none; position: absolute; top: calc(100% + 8px); right: 0;
+        background: #fff; border: 1px solid var(--border); border-radius: 14px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12); min-width: 200px; z-index: 9999;
+        overflow: hidden;
+      }
+      .nav-user-dropdown.open { display: block; }
+      .nav-user-dropdown-info { padding: 0.85rem 1rem; }
+      .nav-user-dropdown-name { font-size: 0.88rem; font-weight: 700; color: var(--dark); }
+      .nav-user-dropdown-email { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+      .nav-user-dropdown-divider { height: 1px; background: var(--border); }
+      .nav-user-dropdown-item {
+        display: block; width: 100%; padding: 0.7rem 1rem; text-align: left;
+        font-size: 0.875rem; color: var(--text); background: none; border: none;
+        cursor: pointer; font-family: inherit; transition: background .12s;
+        text-decoration: none;
+      }
+      .nav-user-dropdown-item:hover { background: var(--cream); }
+      .nav-user-dropdown-logout { color: #EF4444; }
+    `;
+    document.head.appendChild(s);
   }
 
   function init() {

@@ -1,0 +1,8 @@
+[[redirects]]
+  from = "/landing"
+  to = "/landing.html"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

@@ -353,7 +353,7 @@
       <button class="ls-btn" data-lang="en">EN</button>
       <button class="ls-btn" data-lang="ja">JA</button>
     </div>
-    <button class="btn-login" data-i18n="nav.login">로그인</button>
+    <button class="btn-login" onclick="openAuthModal("login")" data-i18n="nav.login">로그인</button>
     <a href="pricing.html" class="btn-start" data-i18n="nav.start">시작하기</a>
   </div>
 </nav>
@@ -617,6 +617,8 @@ renderComingSoon('all');
 </script>
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/nav.js?v=2"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/payment.js"></script>
 <script>
   // 언어 변경 시 그리드 재렌더
   const _origApplyLang = applyLang;

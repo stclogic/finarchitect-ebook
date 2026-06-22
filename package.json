@@ -1,0 +1,24 @@
+{
+  "name": "stclogic-ebook",
+  "version": "1.0.0",
+  "description": "Book Coupling — Financial eBook Platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stclogic/finarchitect-ebook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/stclogic/finarchitect-ebook/issues"
+  },
+  "homepage": "https://github.com/stclogic/finarchitect-ebook#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.2"
+  }
+}

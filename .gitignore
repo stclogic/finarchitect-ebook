@@ -3,3 +3,4 @@ stclogic template/
 *.jpeg
 *.jpg
 .DS_Store
+node_modules/

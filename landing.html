@@ -5,200 +5,298 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Finarchitect — 구조로 돈을 설계하는 사람들</title>
 <link rel="stylesheet" href="assets/css/site.css">
+<style>
+.feature-strip { position: relative; }
+.feature-item {
+  cursor: pointer; transition: background .2s, transform .2s, box-shadow .2s;
+  text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;
+  padding: 20px 28px; border-right: 1px solid var(--border); white-space: nowrap; flex-shrink: 0;
+}
+.feature-item:hover { background: var(--cream); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.07); z-index: 1; }
+.feature-item:hover .feature-item-title { color: #C9A84C; }
+.feature-item .feature-icon { transition: transform .2s; }
+.feature-item:hover .feature-icon { transform: scale(1.12); }
+
+.strip-wrap { position: relative; }
+.strip-arrow { display: none; position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 36px; height: 36px; background: var(--white); border: 1px solid var(--border); border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.12); align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; color: var(--text2); transition: all .2s; }
+.strip-arrow:hover { background: var(--dark); color: var(--white); }
+.strip-arrow.left { left: 8px; }
+.strip-arrow.right { right: 8px; }
+
+.yt-section { padding: 80px 2rem; background: var(--white); text-align: center; }
+.yt-section .section-tag { color: var(--gold); }
+.yt-section .section-title { margin-bottom: .5rem; }
+.yt-section .section-desc { color: var(--text2); font-size: .95rem; margin-bottom: 2.5rem; line-height: 1.7; }
+.yt-carousel-wrap { position: relative; max-width: 960px; margin: 0 auto; }
+.yt-carousel { display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+.yt-carousel::-webkit-scrollbar { display: none; }
+.yt-card { flex: 0 0 calc(33.333% - .85rem); scroll-snap-align: start; background: var(--cream); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: box-shadow .2s, transform .2s; cursor: pointer; }
+.yt-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.12); transform: translateY(-3px); }
+.yt-thumb { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--dark); overflow: hidden; }
+.yt-thumb-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #0C0E1A 0%, #1C2040 100%); color: rgba(255,255,255,0.4); font-size: .8rem; gap: 10px; }
+.yt-thumb-placeholder .play-icon { width: 52px; height: 52px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+.yt-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); opacity: 0; transition: opacity .2s; }
+.yt-card:hover .yt-play-overlay { opacity: 1; }
+.yt-play-btn { width: 56px; height: 56px; background: #FF0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: white; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+.yt-card-info { padding: 1rem 1.1rem 1.25rem; text-align: left; }
+.yt-card-tag { font-size: .7rem; font-weight: 700; color: var(--gold); letter-spacing: .06em; margin-bottom: 6px; }
+.yt-card-title { font-size: .9rem; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+.yt-card-desc { font-size: .78rem; color: var(--text2); line-height: 1.6; }
+.yt-arrow { display: none; position: absolute; top: 40%; transform: translateY(-50%); z-index: 10; width: 40px; height: 40px; background: var(--white); border: 1px solid var(--border); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.12); align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; color: var(--text); transition: all .2s; }
+.yt-arrow:hover { background: var(--dark); color: var(--white); border-color: var(--dark); }
+.yt-arrow.left { left: -20px; }
+.yt-arrow.right { right: -20px; }
+.yt-dots { display: none; justify-content: center; gap: 6px; margin-top: 1.25rem; }
+.yt-dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: background .2s, width .2s; }
+.yt-dot.active { background: var(--dark); width: 20px; }
+
+@media (max-width: 900px) {
+  .yt-card { flex: 0 0 calc(60% - .6rem); }
+  .yt-arrow { display: flex; }
+  .yt-dots { display: flex; }
+  .strip-arrow { display: flex; }
+}
+@media (max-width: 600px) {
+  .yt-card { flex: 0 0 calc(85% - .6rem); }
+  .yt-arrow.left { left: -4px; }
+  .yt-arrow.right { right: -4px; }
+}
+</style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="site-nav">
   <a href="landing.html" class="nav-logo">
-    <div class="nav-logo-icon">
-      <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg>
-    </div>
+    <div class="nav-logo-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg></div>
     finarchitect
   </a>
   <div class="nav-links">
-    <a href="landing.html" class="nav-link active">홈</a>
-    <a href="ebook.html" class="nav-link">eBook</a>
-    <a href="forms.html" class="nav-link">서식</a>
+    <a href="landing.html" class="nav-link active" data-i18n="nav.home">홈</a>
+    <a href="library.html" class="nav-link" data-i18n="nav.library">라이브러리</a>
+    <a href="forms.html" class="nav-link" data-i18n="nav.forms">서식</a>
+    <a href="consulting.html" class="nav-link" data-i18n="nav.consulting">컨설팅</a>
+    <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">요금제</a>
   </div>
   <div class="nav-actions">
-    <button class="btn-login">로그인</button>
-    <a href="ebook.html" class="btn-start">시작하기</a>
+    <div class="lang-switcher">
+      <button class="ls-btn" data-lang="ko">KO</button>
+      <button class="ls-btn" data-lang="en">EN</button>
+      <button class="ls-btn" data-lang="ja">JA</button>
+    </div>
+    <button class="btn-login" data-i18n="nav.login">로그인</button>
+    <a href="ebook.html" class="btn-start" data-i18n="nav.start">시작하기</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">FINANCIAL EDUCATION PLATFORM</div>
-  <h1 class="hero-title">
-    구조로 돈을<br>
-    <span class="gold">설계하는</span> 사람들
-  </h1>
-  <p class="hero-desc">
-    금융 설계의 언어를 배우는 가장 체계적인 플랫폼.<br>
-    eBook · 서식 라이브러리 · AI 자동완성이 하나로 연결됩니다.
-  </p>
+  <div class="hero-bridge"></div>
+  <div class="hero-badge" data-i18n="landing.badge">FINANCIAL EDUCATION PLATFORM</div>
+  <h1 class="hero-title" data-i18n="landing.hero.title">구조로 돈을<br><span class="gold">설계하는</span> 사람들</h1>
+  <p class="hero-desc" data-i18n="landing.hero.desc">금융 설계의 언어를 배우는 가장 체계적인 플랫폼.<br>eBook · 서식 라이브러리 · AI 자동완성이 하나로 연결됩니다.</p>
   <div class="hero-cta">
-    <a href="ebook.html" class="btn-hero-primary">
-      <span>📖</span> eBook 시작하기
-    </a>
-    <a href="forms.html" class="btn-hero-secondary">
-      <span>📄</span> 서식 라이브러리
-    </a>
+    <a href="ebook.html" class="btn-hero-primary" data-i18n="landing.hero.btn1">📖 eBook 시작하기</a>
+    <a href="forms.html" class="btn-hero-secondary" data-i18n="landing.hero.btn2">📄 서식 라이브러리</a>
   </div>
   <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-num">12,847+</div>
-      <div class="stat-label">회원</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">45,293+</div>
-      <div class="stat-label">다운로드</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">4.9 <span class="star">★</span></div>
-      <div class="stat-label">평점</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">250+</div>
-      <div class="stat-label">서식</div>
-    </div>
+    <div class="stat-item"><div class="stat-num">12,847+</div><div class="stat-label" data-i18n="landing.stat.members">회원</div></div>
+    <div class="stat-item"><div class="stat-num">45,293+</div><div class="stat-label" data-i18n="landing.stat.downloads">다운로드</div></div>
+    <div class="stat-item"><div class="stat-num">4.9 <span class="star">★</span></div><div class="stat-label" data-i18n="landing.stat.rating">평점</div></div>
+    <div class="stat-item"><div class="stat-num">250+</div><div class="stat-label" data-i18n="landing.stat.forms">서식</div></div>
   </div>
 </section>
 
-<!-- FEATURE STRIP -->
-<div class="feature-strip">
-  <div class="feature-item">
-    <div class="feature-icon dark">📚</div>
-    <div class="feature-item-text">
-      <div class="feature-item-title">eBook 라이브러리</div>
-      <div class="feature-item-sub">3개국어 전자책</div>
-    </div>
+<div class="strip-wrap">
+  <button class="strip-arrow left" id="stripLeft">‹</button>
+  <div class="feature-strip" id="featureStrip">
+    <a href="ebook.html" class="feature-item">
+      <div class="feature-icon dark">📚</div>
+      <div class="feature-item-text">
+        <div class="feature-item-title" data-i18n="feature.ebook.title">eBook 라이브러리</div>
+        <div class="feature-item-sub" data-i18n="feature.ebook.sub">3개국어 전자책</div>
+      </div>
+    </a>
+    <a href="forms.html" class="feature-item">
+      <div class="feature-icon gold">📋</div>
+      <div class="feature-item-text">
+        <div class="feature-item-title" data-i18n="feature.forms.title">서식 라이브러리</div>
+        <div class="feature-item-sub" data-i18n="feature.forms.sub">250+ 서식 템플릿</div>
+      </div>
+    </a>
+    <a href="forms.html" class="feature-item">
+      <div class="feature-icon blue">✨</div>
+      <div class="feature-item-text">
+        <div class="feature-item-title" data-i18n="feature.ai.title">AI 자동완성</div>
+        <div class="feature-item-sub" data-i18n="feature.ai.sub">서식 자동 작성</div>
+      </div>
+    </a>
+    <a href="forms.html" class="feature-item">
+      <div class="feature-icon dark">⬇️</div>
+      <div class="feature-item-text">
+        <div class="feature-item-title" data-i18n="feature.download.title">원클릭 다운로드</div>
+        <div class="feature-item-sub" data-i18n="feature.download.sub">DOCX·PDF·HWP</div>
+      </div>
+    </a>
+    <a href="forms.html" class="feature-item">
+      <div class="feature-icon gold">⚖️</div>
+      <div class="feature-item-text">
+        <div class="feature-item-title" data-i18n="feature.legal.title">법률 검토</div>
+        <div class="feature-item-sub" data-i18n="feature.legal.sub">변호사 감수 완료</div>
+      </div>
+    </a>
+    <a href="ebook.html" class="feature-item">
+      <div class="feature-icon blue">🌐</div>
+      <div class="feature-item-text">
+        <div class="feature-item-title" data-i18n="feature.lang.title">3개국어 지원</div>
+        <div class="feature-item-sub" data-i18n="feature.lang.sub">한국어·영어·일본어</div>
+      </div>
+    </a>
   </div>
-  <div class="feature-item">
-    <div class="feature-icon gold">📋</div>
-    <div class="feature-item-text">
-      <div class="feature-item-title">서식 라이브러리</div>
-      <div class="feature-item-sub">250+ 서식 템플릿</div>
-    </div>
-  </div>
-  <div class="feature-item">
-    <div class="feature-icon blue">✨</div>
-    <div class="feature-item-text">
-      <div class="feature-item-title">AI 자동완성</div>
-      <div class="feature-item-sub">서식 자동 작성</div>
-    </div>
-  </div>
-  <div class="feature-item">
-    <div class="feature-icon dark">⬇️</div>
-    <div class="feature-item-text">
-      <div class="feature-item-title">원클릭 다운로드</div>
-      <div class="feature-item-sub">DOCX·PDF·HWP</div>
-    </div>
-  </div>
-  <div class="feature-item">
-    <div class="feature-icon gold">⚖️</div>
-    <div class="feature-item-text">
-      <div class="feature-item-title">법률 검토</div>
-      <div class="feature-item-sub">변호사 감수 완료</div>
-    </div>
-  </div>
-  <div class="feature-item">
-    <div class="feature-icon blue">🌐</div>
-    <div class="feature-item-text">
-      <div class="feature-item-title">3개국어 지원</div>
-      <div class="feature-item-sub">한국어·영어·일본어</div>
-    </div>
-  </div>
+  <button class="strip-arrow right" id="stripRight">›</button>
 </div>
 
-<!-- WORKFLOW -->
 <section class="section workflow-section">
   <div class="container" style="text-align:center;">
-    <div class="section-tag">WORKFLOW</div>
-    <h2 class="section-title">배움에서 실행까지, 하나의 흐름으로</h2>
+    <div class="section-tag" data-i18n="workflow.tag">WORKFLOW</div>
+    <h2 class="section-title" data-i18n="workflow.title">배움에서 실행까지, 하나의 흐름으로</h2>
     <div class="workflow-grid">
       <div class="workflow-card">
         <div class="workflow-num">01</div>
-        <div class="workflow-title">eBook으로 배우기</div>
-        <div class="workflow-desc">금융 구조의 원리를 체계적으로 학습합니다. 각 챕터는 실무 사례와 서식으로 연결됩니다.</div>
+        <div class="workflow-title" data-i18n="workflow.step1.title">eBook으로 배우기</div>
+        <div class="workflow-desc" data-i18n="workflow.step1.desc">금융 구조의 원리를 체계적으로 학습합니다. 각 챕터는 실무 사례와 서식으로 연결됩니다.</div>
       </div>
       <div class="workflow-card">
         <div class="workflow-num">02</div>
-        <div class="workflow-title">서식으로 적용하기</div>
-        <div class="workflow-desc">학습 내용과 연결된 서식을 바로 다운로드하세요. AI가 자동으로 내용을 채워드립니다.</div>
+        <div class="workflow-title" data-i18n="workflow.step2.title">서식으로 적용하기</div>
+        <div class="workflow-desc" data-i18n="workflow.step2.desc">학습 내용과 연결된 서식을 바로 다운로드하세요. AI가 자동으로 내용을 채워드립니다.</div>
       </div>
       <div class="workflow-card">
         <div class="workflow-num">03</div>
-        <div class="workflow-title">구조를 완성하다</div>
-        <div class="workflow-desc">법률·세무·재무 서류를 완성하여 실제 금융 구조를 구축합니다.</div>
+        <div class="workflow-title" data-i18n="workflow.step3.title">구조를 완성하다</div>
+        <div class="workflow-desc" data-i18n="workflow.step3.desc">법률·세무·재무 서류를 완성하여 실제 금융 구조를 구축합니다.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- REVIEWS -->
+<section class="yt-section">
+  <div class="section-tag" data-i18n="yt.tag">VIDEO GUIDE</div>
+  <h2 class="section-title" data-i18n="yt.title">거래 전 반드시 알아야 할 것들</h2>
+  <p class="section-desc" data-i18n="yt.desc">실제 거래에서 발생하는 법적 리스크와 금융 함정을 영상으로 확인하세요.<br>전문가가 직접 사례를 분석합니다.</p>
+  <div class="yt-carousel-wrap">
+    <button class="yt-arrow left" id="ytLeft">‹</button>
+    <div class="yt-carousel" id="ytCarousel">
+      <div class="yt-card" onclick="openYT('VIDEO_ID_1')">
+        <div class="yt-thumb"><div class="yt-thumb-placeholder"><div class="play-icon">▶</div><span data-i18n="yt.soon">영상 준비 중</span></div><div class="yt-play-overlay"><div class="yt-play-btn">▶</div></div></div>
+        <div class="yt-card-info"><div class="yt-card-tag" data-i18n="yt1.tag">⚠ 계약 리스크</div><div class="yt-card-title" data-i18n="yt1.title">계약서 한 줄이 수천만 원을 날린다</div><div class="yt-card-desc" data-i18n="yt1.desc">놓치기 쉬운 계약서 독소 조항 5가지와 실제 분쟁 사례를 분석합니다.</div></div>
+      </div>
+      <div class="yt-card" onclick="openYT('VIDEO_ID_2')">
+        <div class="yt-thumb"><div class="yt-thumb-placeholder"><div class="play-icon">▶</div><span data-i18n="yt.soon">영상 준비 중</span></div><div class="yt-play-overlay"><div class="yt-play-btn">▶</div></div></div>
+        <div class="yt-card-info"><div class="yt-card-tag" data-i18n="yt2.tag">⚠ 부동산 함정</div><div class="yt-card-title" data-i18n="yt2.title">전세 사기를 막는 등기부등본 읽는 법</div><div class="yt-card-desc" data-i18n="yt2.desc">깡통전세·이중계약·불법전대 피해를 예방하는 체크리스트를 공개합니다.</div></div>
+      </div>
+      <div class="yt-card" onclick="openYT('VIDEO_ID_3')">
+        <div class="yt-thumb"><div class="yt-thumb-placeholder"><div class="play-icon">▶</div><span data-i18n="yt.soon">영상 준비 중</span></div><div class="yt-play-overlay"><div class="yt-play-btn">▶</div></div></div>
+        <div class="yt-card-info"><div class="yt-card-tag" data-i18n="yt3.tag">⚠ 투자 사기</div><div class="yt-card-title" data-i18n="yt3.title">투자 권유 시 반드시 확인해야 할 5가지</div><div class="yt-card-desc" data-i18n="yt3.desc">유사수신·다단계·불법 투자자문업의 공통적인 패턴을 실제 사례로 분석합니다.</div></div>
+      </div>
+      <div class="yt-card" onclick="openYT('VIDEO_ID_4')">
+        <div class="yt-thumb"><div class="yt-thumb-placeholder"><div class="play-icon">▶</div><span data-i18n="yt.soon">영상 준비 중</span></div><div class="yt-play-overlay"><div class="yt-play-btn">▶</div></div></div>
+        <div class="yt-card-info"><div class="yt-card-tag" data-i18n="yt4.tag">⚠ 세무 리스크</div><div class="yt-card-title" data-i18n="yt4.title">사업자 등록 전 반드시 알아야 할 세금</div><div class="yt-card-desc" data-i18n="yt4.desc">부가세·종합소득세·4대보험 구조를 모르면 첫 해부터 세금 폭탄을 맞습니다.</div></div>
+      </div>
+    </div>
+    <button class="yt-arrow right" id="ytRight">›</button>
+    <div class="yt-dots" id="ytDots">
+      <div class="yt-dot active"></div><div class="yt-dot"></div><div class="yt-dot"></div><div class="yt-dot"></div>
+    </div>
+  </div>
+</section>
+
 <section class="section reviews-section">
   <div class="container">
-    <div class="section-tag">REVIEWS</div>
-    <h2 class="section-title">12,847명이 선택했습니다</h2>
-    <div class="reviews-rating">
-      <span class="stars">★★★★★</span>
-      <span class="score"> 4.9 / 5.0</span>
-    </div>
+    <div class="section-tag" data-i18n="reviews.tag">REVIEWS</div>
+    <h2 class="section-title" data-i18n="reviews.title">12,847명이 선택했습니다</h2>
+    <div class="reviews-rating"><span class="stars">★★★★★</span><span class="score"> 4.9 / 5.0</span></div>
     <div class="reviews-grid">
       <div class="review-card">
         <div class="review-stars">★★★★★</div>
-        <div class="review-text">"법인 설립부터 투자 계약까지 필요한 서식이 다 있어요. 변호사 비용을 크게 줄였습니다."</div>
-        <div class="review-author">김재원</div>
-        <div class="review-role">스타트업 창업자</div>
+        <div class="review-text" data-i18n="review1.text">"법인 설립부터 투자 계약까지 필요한 서식이 다 있어요. 변호사 비용을 크게 줄였습니다."</div>
+        <div class="review-author">Kim Jaewon</div>
+        <div class="review-role" data-i18n="review1.role">스타트업 창업자</div>
       </div>
       <div class="review-card">
         <div class="review-stars">★★★★★</div>
-        <div class="review-text">"임대차 계약서 세트 하나로 모든 계약 상황을 커버할 수 있어요. AI 자동완성이 특히 편리합니다."</div>
-        <div class="review-author">이수진</div>
-        <div class="review-role">부동산 투자자</div>
+        <div class="review-text" data-i18n="review2.text">"임대차 계약서 세트 하나로 모든 계약 상황을 커버할 수 있어요. AI 자동완성이 특히 편리합니다."</div>
+        <div class="review-author">Lee Sujin</div>
+        <div class="review-role" data-i18n="review2.role">부동산 투자자</div>
       </div>
       <div class="review-card">
         <div class="review-stars">★★★★★</div>
-        <div class="review-text">"고객들에게 항상 추천합니다. 세무 신고 서식이 최신 법령에 맞게 업데이트되어 신뢰할 수 있습니다."</div>
-        <div class="review-author">박민준</div>
-        <div class="review-role">세무사</div>
+        <div class="review-text" data-i18n="review3.text">"고객들에게 항상 추천합니다. 세무 신고 서식이 최신 법령에 맞게 업데이트되어 신뢰할 수 있습니다."</div>
+        <div class="review-author">Park Minjun</div>
+        <div class="review-role" data-i18n="review3.role">세무사</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
 <section class="section cta-section">
+  <div class="bg-img-layer" style="background-image:url('https://blogger.googleusercontent.com/img/a/AVvXsEgpriTHshe0RklXVjeET9cDnxD5LfL2za5eUkWVAA_ASyAhzyYVSITHMPxgqn24ZiIIMjTUGyd6efMwqPs5xpq0YaW7L-9Yuwdjr7odouknHuMe8szpYy49fsSTVGIY5OgeM45YtKdl6e8C_rLfdMYqUuQUFZhTMqvX8d-ysbQlqV7hNgcu8AgIdQInNGNc');background-position:center center;filter:brightness(1.3);opacity:.62;"></div>
   <div class="container" style="text-align:center;">
-    <h2 class="section-title">지금 바로 시작하세요</h2>
-    <p class="cta-desc">
-      무료 챕터 3개와 기본 서식 세트는<br>
-      회원가입 없이 이용 가능합니다.
-    </p>
+    <h2 class="section-title" data-i18n="cta.title">지금 바로 시작하세요</h2>
+    <p class="cta-desc" data-i18n="cta.desc">무료 챕터 3개와 기본 서식 세트는<br>회원가입 없이 이용 가능합니다.</p>
     <div class="cta-buttons">
-      <a href="ebook.html" class="btn-cta-primary">무료로 시작하기</a>
-      <a href="forms.html" class="btn-cta-secondary">서식 라이브러리 보기</a>
+      <a href="ebook.html" class="btn-cta-primary" data-i18n="cta.btn1">무료로 시작하기</a>
+      <a href="forms.html" class="btn-cta-secondary" data-i18n="cta.btn2">서식 라이브러리 보기</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-logo">
-    <div class="footer-logo-icon">
-      <svg width="14" height="14" viewBox="0 0 20 20" fill="#C9A84C"><circle cx="10" cy="10" r="8"/></svg>
-    </div>
+    <div class="footer-logo-icon"><svg width="14" height="14" viewBox="0 0 20 20" fill="#C9A84C"><circle cx="10" cy="10" r="8"/></svg></div>
     finarchitect.com
   </div>
-  <div class="footer-copy">© 2025 Finarchitect. All rights reserved.</div>
+  <div class="footer-copy" data-i18n="footer.copy">© 2025 Finarchitect. All rights reserved.</div>
   <div class="footer-links">
-    <a href="#">이용약관</a>
-    <a href="#">개인정보처리방침</a>
-    <a href="#">소개서</a>
+    <a href="terms.html" data-i18n="footer.terms">이용약관</a>
+    <a href="privacy.html" data-i18n="footer.privacy">개인정보처리방침</a>
+    <a href="about.html" data-i18n="footer.about">소개서</a>
   </div>
 </footer>
 
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/nav.js?v=2"></script>
+<script>
+const strip = document.getElementById('featureStrip');
+document.getElementById('stripLeft').addEventListener('click', () => strip.scrollBy({ left: -220, behavior: 'smooth' }));
+document.getElementById('stripRight').addEventListener('click', () => strip.scrollBy({ left: 220, behavior: 'smooth' }));
+
+const carousel = document.getElementById('ytCarousel');
+const dots = document.querySelectorAll('.yt-dot');
+const ytCards = carousel.querySelectorAll('.yt-card');
+let currentIdx = 0;
+
+function scrollToCard(idx) {
+  const card = ytCards[idx];
+  if (!card) return;
+  carousel.scrollTo({ left: card.offsetLeft - carousel.offsetLeft, behavior: 'smooth' });
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  currentIdx = idx;
+}
+
+document.getElementById('ytLeft').addEventListener('click', () => scrollToCard(Math.max(0, currentIdx - 1)));
+document.getElementById('ytRight').addEventListener('click', () => scrollToCard(Math.min(ytCards.length - 1, currentIdx + 1)));
+carousel.addEventListener('scroll', () => {
+  const cardW = ytCards[0].offsetWidth + 20;
+  const idx = Math.round(carousel.scrollLeft / cardW);
+  if (idx !== currentIdx) { dots.forEach((d, i) => d.classList.toggle('active', i === idx)); currentIdx = idx; }
+}, { passive: true });
+
+function openYT(videoId) {
+  if (!videoId || videoId.startsWith('VIDEO_ID')) {
+    const msg = { ko: '영상이 곧 업로드됩니다!', en: 'Video coming soon!', ja: '動画は近日公開予定です！' };
+    alert(msg[window._siteLang || 'ko']); return;
+  }
+  window.open('https://www.youtube.com/watch?v=' + videoId, '_blank');
+}
+</script>
 </body>
 </html>

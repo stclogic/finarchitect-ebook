@@ -1,14 +1,274 @@
 <!DOCTYPE html>
+<!-- eBook 뷰어 진입 페이지 — 목차·진행도·Paywall 표시 -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>eBook 라이브러리 — Finarchitect</title>
 <link rel="stylesheet" href="assets/css/site.css">
+<style>
+/* ── 페이지 헤더 ── */
+.page-header {
+  max-width: 1100px;
+  margin: 2.5rem auto 0;
+  padding: 0 2rem;
+}
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 0.25rem;
+}
+.page-header p {
+  font-size: 0.875rem;
+  color: var(--text3);
+}
+
+/* ── 언어 탭 ── */
+.lang-tabs {
+  max-width: 1100px;
+  margin: 1.5rem auto 0;
+  padding: 0 2rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.lang-tab {
+  padding: 7px 20px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s;
+}
+.lang-tab.active {
+  background: var(--dark);
+  color: var(--white);
+  border-color: var(--dark);
+}
+
+/* ── 메인 레이아웃 ── */
+.ebook-layout {
+  max-width: 1100px;
+  margin: 2rem auto 5rem;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── 책 커버 ── */
+.book-mockup-wrap {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  aspect-ratio: 2/3;
+  background: var(--dark);
+  position: sticky;
+  top: 90px;
+}
+.book-mockup-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── 읽기 진행 카드 ── */
+.book-progress-card {
+  margin-top: 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+}
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 0.6rem;
+}
+.progress-pct {
+  color: var(--accent);
+  font-weight: 700;
+}
+.progress-bar {
+  height: 6px;
+  background: var(--cream);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width .4s;
+}
+.progress-sub {
+  font-size: 0.75rem;
+  color: var(--text3);
+}
+
+/* ── 목차 헤더 ── */
+.chapter-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.chapter-list-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--dark);
+}
+.free-count {
+  font-size: 0.78rem;
+  color: var(--text3);
+  font-weight: 600;
+}
+
+/* ── 챕터 아이템 ── */
+.chapter-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--white);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all .15s;
+}
+.chapter-item:hover:not(.locked) {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+.chapter-item.locked {
+  cursor: default;
+  opacity: 0.7;
+}
+.chapter-num {
+  width: 28px;
+  height: 28px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+.chapter-item:not(.locked) .chapter-num {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+.chapter-info { flex: 1; min-width: 0; }
+.chapter-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chapter-meta {
+  font-size: 0.75rem;
+  color: var(--text3);
+  margin-top: 2px;
+}
+.badge-free {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #22C55E;
+  color: #fff;
+  flex-shrink: 0;
+}
+.badge-unlock {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  color: var(--text3);
+  flex-shrink: 0;
+}
+.chapter-arrow {
+  font-size: 1.1rem;
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── 업그레이드 배너 ── */
+.upgrade-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: linear-gradient(135deg, var(--primary) 0%, #7C3AED 100%);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1rem;
+}
+.upgrade-banner-text .title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+.upgrade-banner-text .sub {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.75);
+}
+.btn-upgrade {
+  padding: 10px 22px;
+  background: #fff;
+  color: var(--primary);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: box-shadow .2s;
+}
+.btn-upgrade:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+
+/* ── 반응형 ── */
+@media (max-width: 760px) {
+  .ebook-layout {
+    grid-template-columns: 1fr;
+  }
+  .book-mockup-wrap {
+    max-width: 200px;
+    position: static;
+  }
+  .upgrade-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-upgrade { width: 100%; text-align: center; }
+}
+</style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- 네비게이션 -->
 <nav class="site-nav">
   <a href="landing.html" class="nav-logo">
     <div class="nav-logo-icon">
@@ -17,61 +277,59 @@
     finarchitect
   </a>
   <div class="nav-links">
-    <a href="landing.html" class="nav-link">홈</a>
-    <a href="ebook.html" class="nav-link active">eBook</a>
-    <a href="forms.html" class="nav-link">서식</a>
+    <a href="landing.html" class="nav-link" data-i18n="nav.home">홈</a>
+    <a href="library.html" class="nav-link" data-i18n="nav.library">라이브러리</a>
+    <a href="ebook.html" class="nav-link active" data-i18n="nav.ebook">eBook</a>
+    <a href="forms.html" class="nav-link" data-i18n="nav.forms">서식</a>
+    <a href="consulting.html" class="nav-link" data-i18n="nav.consulting">컨설팅</a>
+    <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">요금제</a>
   </div>
   <div class="nav-actions">
-    <button class="btn-login">로그인</button>
-    <a href="#" class="btn-start">시작하기</a>
+    <div class="lang-switcher">
+      <button class="ls-btn" data-lang="ko">KO</button>
+      <button class="ls-btn" data-lang="en">EN</button>
+      <button class="ls-btn" data-lang="ja">JA</button>
+    </div>
+    <button class="btn-login" data-i18n="nav.login">로그인</button>
+    <a href="pricing.html" class="btn-start" data-i18n="nav.start">시작하기</a>
   </div>
 </nav>
 
-<!-- PAGE HEADER -->
+<!-- 페이지 헤더 -->
 <div class="page-header">
-  <div class="page-header-row">
-    <div>
-      <h1>eBook 라이브러리</h1>
-      <p>Vol.1 · 16챕터 · 3개국어</p>
-    </div>
-    <button class="dark-toggle" id="darkToggle" title="다크모드">🌙</button>
-  </div>
+  <h1 data-i18n="ebook.header.title">eBook 라이브러리</h1>
+  <p data-i18n="ebook.header.sub">Vol.1 · 16챕터 · 3개국어</p>
 </div>
 
-<!-- LANGUAGE TABS -->
+<!-- 언어 탭 -->
 <div class="lang-tabs">
   <button class="lang-tab active" data-lang="ko">한국어</button>
   <button class="lang-tab" data-lang="en">English</button>
   <button class="lang-tab" data-lang="ja">日本語</button>
 </div>
 
-<!-- MAIN LAYOUT -->
+<!-- 메인 레이아웃 -->
 <div class="ebook-layout">
 
-  <!-- LEFT: Book Card + Progress -->
+  <!-- 왼쪽: 커버 + 진행도 -->
   <div>
-    <div class="book-cover-card" id="bookCover">
-      <div class="book-cover-bar"></div>
-      <div class="book-cover-vol">FINARCHITECT VOL.1</div>
-      <div class="book-cover-title" id="coverTitle">구조로 돈을<br>설계하는 사람들</div>
-      <div class="book-cover-sub" id="coverSub">금융 설계의 원리와 실천</div>
-      <div class="book-cover-lang" id="coverLang">KO</div>
-      <div class="book-cover-circle"></div>
+    <div class="book-mockup-wrap">
+      <img class="book-mockup-img" id="bookMockupImg" src="" alt="book cover">
     </div>
     <div class="book-progress-card">
       <div class="progress-header">
-        <span>읽기 진행도</span>
+        <span data-i18n="ebook.progress.title">읽기 진행도</span>
         <span class="progress-pct">37%</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:37%"></div></div>
-      <div class="progress-sub">Ch.3까지 완료 · 5챕터 남음</div>
+      <div class="progress-sub" data-i18n="ebook.progress.sub">Ch.3까지 완료 · 5챕터 남음</div>
     </div>
   </div>
 
-  <!-- RIGHT: Chapter List -->
+  <!-- 오른쪽: 목차 -->
   <div>
     <div class="chapter-list-header">
-      <span class="chapter-list-title">목차</span>
+      <span class="chapter-list-title" data-i18n="ebook.toc">목차</span>
       <span class="free-count" id="freeCount">3 / 16 챕터 무료</span>
     </div>
 
@@ -79,109 +337,111 @@
 
     <div class="upgrade-banner">
       <div class="upgrade-banner-text">
-        <div class="title">모든 챕터 잠금 해제하기</div>
+        <div class="title" data-i18n="ebook.upgrade.title">모든 챕터 잠금 해제하기</div>
         <div class="sub" id="upgradePrice">월 ₩29,000 · 서식 라이브러리 전체 포함</div>
       </div>
-      <button class="btn-upgrade">업그레이드</button>
+      <button class="btn-upgrade" onclick="location.href='pricing.html'">업그레이드</button>
     </div>
   </div>
 </div>
 
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span data-i18n="footer.copy">© 2025 Finarchitect. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="terms.html" data-i18n="footer.terms">이용약관</a>
+      <a href="privacy.html" data-i18n="footer.privacy">개인정보처리방침</a>
+      <a href="about.html" data-i18n="footer.about">소개서</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/nav.js?v=2"></script>
 <script>
+const COVER_IMAGES = {
+  ko: 'https://blogger.googleusercontent.com/img/a/AVvXsEg_vp-V3WiYE73mCUoPW1Euu6_LDy-YLMaTzupa-MFDJxGdIXEk9QEL26XmNHqDeYPhLj9lHXEMlfWDPemrLzrdU9NGMQuBcLkEjRw0PwgZku-yVHv2v9EWCZ5qdkSj0Pz5OavCjekTrAc0ASFXhXc2iLep_eeRjjuk1HVZmKu7kyS-NIod-NMY1hDoehQh',
+  en: 'https://blogger.googleusercontent.com/img/a/AVvXsEgTUoOW9m9QoDkjg6x26UfPpF1qnrFZjGTVVUg4rqe26NwjahaWZhf3kPuiJ3Q-G00Fb0Es7YOIomyoCOpd44oXxfdoYfUYztx8TTweT8mT7eX7Frk_tNa8fB2S5xEqkYrkX1RnmAJp1k2hm591fIK8mjZHwn2zaStHsZ0XrjaHMq3tW7pZEPQdTE-opnUF',
+  ja: 'https://blogger.googleusercontent.com/img/a/AVvXsEh-6sZxlRq-QbXHdGSyo2sB1jr1VYy41vaqRt1Vewr4qn4tZDscdXrK3fPmIg-zXST0q3FvFKPc6YQpdhNlK14kaRegTP16hNLAoS4z6-UTRZkDDRO0keHKqrQ_pE1WwZaPICxQ2t9noKph6qYI77_uPI8dTuIwgRsd7yGI0E1Q1CJqqQdeVfVGrcsspG1B',
+};
+
 const LANGS = {
   ko: {
-    coverTitle: '구조로 돈을<br>설계하는 사람들',
-    coverSub: '금융 설계의 원리와 실천',
-    lang: 'KO',
-    coverBg: '#13162A',
-    coverBar: '#C9A84C',
-    circleColor: 'rgba(201,168,76,0.6)',
     freeCount: '3 / 16 챕터 무료',
     upgradePrice: '월 ₩29,000 · 서식 라이브러리 전체 포함',
     chapters: [
-      { num: 1, name: 'Ch.1 금융은 왜 존재하는가', meta: '45분 · 핵심 개념', free: true, url: 'index.html' },
-      { num: 2, name: 'Ch.2 금융기관과 시장의 역할', meta: '52분 · 실무 사례', free: true, url: 'index.html' },
-      { num: 3, name: 'Ch.3 이자, 리스크, 시간의 언어', meta: '61분 · 계산 실습', free: true, url: 'index.html' },
-      { num: 4, name: 'Ch.4 자산운용의 시작', meta: '78분 · 실전 포트폴리오', free: false },
-      { num: 5, name: 'Ch.5 전략적 자산배분', meta: '55분 · 배분 전략', free: false },
-      { num: 6, name: 'Ch.6 계좌와 상품의 이해', meta: '68분 · 상품 분석', free: false },
-      { num: 7, name: 'Ch.7 투자 심리와 실패 패턴', meta: '72분 · 심리 분석', free: false },
-      { num: 8, name: 'Ch.8 자금조달의 언어', meta: '49분 · 조달 구조', free: false },
-      { num: 9, name: 'Ch.9 PF 선순위 구조 설계', meta: '83분 · PF 심화', free: false },
-      { num: 10, name: 'Ch.10 후순위 구조와 STO 설계', meta: '76분 · STO 입문', free: false },
-      { num: 11, name: 'Ch.11 IR 피칭 배틀', meta: '65분 · IR 실전', free: false },
-      { num: 12, name: 'Ch.12 글로벌 자본 플랫폼', meta: '58분 · 해외 구조', free: false },
-      { num: 13, name: 'Ch.13 SPV의 모든 것', meta: '71분 · SPV 심화', free: false },
-      { num: 14, name: 'Ch.14 STO 유동화', meta: '64분 · 토큰 증권', free: false },
-      { num: 15, name: 'Ch.15 ADDX · Sygnum · INX', meta: '59분 · 플랫폼 비교', free: false },
-      { num: 16, name: 'Ch.16 Exit — 5가지 출구전략', meta: '88분 · 출구 설계', free: false },
+      { num: 1,  name: 'Ch.1 금융은 왜 존재하는가',     meta: '45분 · 핵심 개념',   free: true,  url: 'index.html' },
+      { num: 2,  name: 'Ch.2 금융기관과 시장의 역할',   meta: '52분 · 실무 사례',   free: true,  url: 'index.html' },
+      { num: 3,  name: 'Ch.3 이자, 리스크, 시간의 언어',meta: '61분 · 계산 실습',   free: true,  url: 'index.html' },
+      { num: 4,  name: 'Ch.4 자산운용의 시작',          meta: '78분 · 실전 포트폴리오', free: false },
+      { num: 5,  name: 'Ch.5 전략적 자산배분',          meta: '55분 · 배분 전략',   free: false },
+      { num: 6,  name: 'Ch.6 계좌와 상품의 이해',       meta: '68분 · 상품 분석',   free: false },
+      { num: 7,  name: 'Ch.7 투자 심리와 실패 패턴',    meta: '72분 · 심리 분석',   free: false },
+      { num: 8,  name: 'Ch.8 자금조달의 언어',          meta: '49분 · 조달 구조',   free: false },
+      { num: 9,  name: 'Ch.9 PF 선순위 구조 설계',      meta: '83분 · PF 심화',     free: false },
+      { num: 10, name: 'Ch.10 후순위 구조와 STO 설계',  meta: '76분 · STO 입문',    free: false },
+      { num: 11, name: 'Ch.11 IR 피칭 배틀',            meta: '65분 · IR 실전',     free: false },
+      { num: 12, name: 'Ch.12 글로벌 자본 플랫폼',      meta: '58분 · 해외 구조',   free: false },
+      { num: 13, name: 'Ch.13 SPV의 모든 것',           meta: '71분 · SPV 심화',    free: false },
+      { num: 14, name: 'Ch.14 STO 유동화',              meta: '64분 · 토큰 증권',   free: false },
+      { num: 15, name: 'Ch.15 ADDX · Sygnum · INX',    meta: '59분 · 플랫폼 비교', free: false },
+      { num: 16, name: 'Ch.16 Exit — 5가지 출구전략',   meta: '88분 · 출구 설계',   free: false },
     ]
   },
   en: {
-    coverTitle: 'Money<br>Architecture',
-    coverSub: 'Principles of Financial Design',
-    lang: 'EN',
-    coverBg: '#0D2A1A',
-    coverBar: '#22C55E',
-    circleColor: 'rgba(34,197,94,0.6)',
     freeCount: '3 / 16 Chapters Free',
     upgradePrice: '₩29,000/mo · Includes Full Forms Library',
     chapters: [
-      { num: 1, name: 'Ch.1 Why Does Finance Exist?', meta: '45 min · Core Concepts', free: true, url: 'index_en.html' },
-      { num: 2, name: 'Ch.2 The Role of Financial Institutions', meta: '52 min · Case Studies', free: true, url: 'index_en.html' },
-      { num: 3, name: 'Ch.3 Interest, Risk & Time', meta: '61 min · Calculations', free: true, url: 'index_en.html' },
-      { num: 4, name: 'Ch.4 The Start of Asset Management', meta: '78 min · Portfolio', free: false },
-      { num: 5, name: 'Ch.5 Strategic Asset Allocation', meta: '55 min · Strategy', free: false },
-      { num: 6, name: 'Ch.6 Accounts & Financial Products', meta: '68 min · Product Analysis', free: false },
-      { num: 7, name: 'Ch.7 Investment Psychology & Failure', meta: '72 min · Behavioral Finance', free: false },
-      { num: 8, name: 'Ch.8 The Language of Capital Raising', meta: '49 min · Funding Structure', free: false },
-      { num: 9, name: 'Ch.9 Senior PF Structure Design', meta: '83 min · PF Deep Dive', free: false },
-      { num: 10, name: 'Ch.10 Mezzanine & STO Design', meta: '76 min · STO Intro', free: false },
-      { num: 11, name: 'Ch.11 IR Pitching Battle', meta: '65 min · IR Practice', free: false },
-      { num: 12, name: 'Ch.12 Global Capital Platforms', meta: '58 min · Overseas Structure', free: false },
-      { num: 13, name: 'Ch.13 Everything About SPVs', meta: '71 min · SPV Deep Dive', free: false },
-      { num: 14, name: 'Ch.14 STO Securitization', meta: '64 min · Token Securities', free: false },
-      { num: 15, name: 'Ch.15 ADDX · Sygnum · INX', meta: '59 min · Platform Compare', free: false },
-      { num: 16, name: 'Ch.16 Exit — 5 Strategies', meta: '88 min · Exit Design', free: false },
+      { num: 1,  name: 'Ch.1 Why Does Finance Exist?',           meta: '45 min · Core Concepts',      free: true,  url: 'index_en.html' },
+      { num: 2,  name: 'Ch.2 The Role of Financial Institutions', meta: '52 min · Case Studies',       free: true,  url: 'index_en.html' },
+      { num: 3,  name: 'Ch.3 Interest, Risk & Time',             meta: '61 min · Calculations',       free: true,  url: 'index_en.html' },
+      { num: 4,  name: 'Ch.4 The Start of Asset Management',     meta: '78 min · Portfolio',          free: false },
+      { num: 5,  name: 'Ch.5 Strategic Asset Allocation',        meta: '55 min · Strategy',           free: false },
+      { num: 6,  name: 'Ch.6 Accounts & Financial Products',     meta: '68 min · Product Analysis',   free: false },
+      { num: 7,  name: 'Ch.7 Investment Psychology & Failure',   meta: '72 min · Behavioral Finance', free: false },
+      { num: 8,  name: 'Ch.8 The Language of Capital Raising',   meta: '49 min · Funding Structure',  free: false },
+      { num: 9,  name: 'Ch.9 Senior PF Structure Design',        meta: '83 min · PF Deep Dive',       free: false },
+      { num: 10, name: 'Ch.10 Mezzanine & STO Design',           meta: '76 min · STO Intro',          free: false },
+      { num: 11, name: 'Ch.11 IR Pitching Battle',               meta: '65 min · IR Practice',        free: false },
+      { num: 12, name: 'Ch.12 Global Capital Platforms',         meta: '58 min · Overseas Structure',  free: false },
+      { num: 13, name: 'Ch.13 Everything About SPVs',            meta: '71 min · SPV Deep Dive',      free: false },
+      { num: 14, name: 'Ch.14 STO Securitization',               meta: '64 min · Token Securities',   free: false },
+      { num: 15, name: 'Ch.15 ADDX · Sygnum · INX',             meta: '59 min · Platform Compare',   free: false },
+      { num: 16, name: 'Ch.16 Exit — 5 Strategies',             meta: '88 min · Exit Design',        free: false },
     ]
   },
   ja: {
-    coverTitle: 'マネー<br>アーキテクチャー',
-    coverSub: '金融設計の原理と実践',
-    lang: 'JA',
-    coverBg: '#1A0D2A',
-    coverBar: '#A855F7',
-    circleColor: 'rgba(168,85,247,0.6)',
     freeCount: '3 / 16 チャプター無料',
     upgradePrice: '月₩29,000 · フォームライブラリ全体含む',
     chapters: [
-      { num: 1, name: 'Ch.1 金融はなぜ存在するのか', meta: '45分 · 基礎概念', free: true, url: 'index_ja.html' },
-      { num: 2, name: 'Ch.2 金融機関と市場の役割', meta: '52分 · 実務事例', free: true, url: 'index_ja.html' },
-      { num: 3, name: 'Ch.3 利子、リスク、時間', meta: '61分 · 計算実習', free: true, url: 'index_ja.html' },
-      { num: 4, name: 'Ch.4 資産運用のはじまり', meta: '78分 · 実践', free: false },
-      { num: 5, name: 'Ch.5 戦略的資産配分', meta: '55分 · 配分戦略', free: false },
-      { num: 6, name: 'Ch.6 口座と商品の理解', meta: '68分 · 商品分析', free: false },
-      { num: 7, name: 'Ch.7 投資心理と失敗パターン', meta: '72分 · 心理分析', free: false },
-      { num: 8, name: 'Ch.8 資金調達の言語', meta: '49分 · 調達構造', free: false },
-      { num: 9, name: 'Ch.9 シニアPF構造設計', meta: '83分 · PF深掘り', free: false },
-      { num: 10, name: 'Ch.10 メザニン構造とSTO設計', meta: '76分 · STO入門', free: false },
-      { num: 11, name: 'Ch.11 IRピッチングバトル', meta: '65分 · IR実践', free: false },
-      { num: 12, name: 'Ch.12 グローバル資本プラットフォーム', meta: '58分 · 海外構造', free: false },
-      { num: 13, name: 'Ch.13 SPVのすべて', meta: '71分 · SPV深掘り', free: false },
-      { num: 14, name: 'Ch.14 STO流動化', meta: '64分 · トークン証券', free: false },
-      { num: 15, name: 'Ch.15 ADDX・Sygnum・INX', meta: '59分 · プラットフォーム比較', free: false },
-      { num: 16, name: 'Ch.16 Exit — 5つの出口戦略', meta: '88分 · 出口設計', free: false },
+      { num: 1,  name: 'Ch.1 金融はなぜ存在するのか',           meta: '45分 · 基礎概念',           free: true,  url: 'index_ja.html' },
+      { num: 2,  name: 'Ch.2 金融機関と市場の役割',             meta: '52分 · 実務事例',           free: true,  url: 'index_ja.html' },
+      { num: 3,  name: 'Ch.3 利子、リスク、時間',               meta: '61分 · 計算実習',           free: true,  url: 'index_ja.html' },
+      { num: 4,  name: 'Ch.4 資産運用のはじまり',               meta: '78分 · 実践',               free: false },
+      { num: 5,  name: 'Ch.5 戦略的資産配分',                   meta: '55分 · 配分戦略',           free: false },
+      { num: 6,  name: 'Ch.6 口座と商品の理解',                 meta: '68分 · 商品分析',           free: false },
+      { num: 7,  name: 'Ch.7 投資心理と失敗パターン',           meta: '72分 · 心理分析',           free: false },
+      { num: 8,  name: 'Ch.8 資金調達の言語',                   meta: '49分 · 調達構造',           free: false },
+      { num: 9,  name: 'Ch.9 シニアPF構造設計',                 meta: '83分 · PF深掘り',           free: false },
+      { num: 10, name: 'Ch.10 メザニン構造とSTO設計',           meta: '76分 · STO入門',            free: false },
+      { num: 11, name: 'Ch.11 IRピッチングバトル',               meta: '65分 · IR実践',             free: false },
+      { num: 12, name: 'Ch.12 グローバル資本プラットフォーム', meta: '58分 · 海外構造',           free: false },
+      { num: 13, name: 'Ch.13 SPVのすべて',                     meta: '71分 · SPV深掘り',          free: false },
+      { num: 14, name: 'Ch.14 STO流動化',                       meta: '64分 · トークン証券',       free: false },
+      { num: 15, name: 'Ch.15 ADDX・Sygnum・INX',               meta: '59分 · プラットフォーム比較', free: false },
+      { num: 16, name: 'Ch.16 Exit — 5つの出口戦略',            meta: '88分 · 出口設計',           free: false },
     ]
   }
 };
 
-let currentLang = 'ko';
+let currentLang = localStorage.getItem('site-lang') || 'ko';
 
 function renderChapters(lang) {
-  const d = LANGS[lang];
-  const list = document.getElementById('chapterList');
-  list.innerHTML = d.chapters.map(ch => `
-    <div class="chapter-item ${ch.free ? '' : 'locked'}" ${ch.free && ch.url ? `onclick="location.href='${ch.url}'"` : ''}>
+  const d = LANGS[lang] || LANGS.ko;
+  const lockLabel = (window.SITE_I18N && SITE_I18N[lang] && SITE_I18N[lang]['ebook.badge.lock']) || '잠금 해제';
+
+  document.getElementById('chapterList').innerHTML = d.chapters.map(ch => `
+    <div class="chapter-item${ch.free ? '' : ' locked'}"${ch.free && ch.url ? ` onclick="location.href='${ch.url}'"` : ''}>
       <div class="chapter-num">${ch.num}</div>
       <div class="chapter-info">
         <div class="chapter-name">${ch.name}</div>
@@ -189,33 +449,47 @@ function renderChapters(lang) {
       </div>
       ${ch.free
         ? `<span class="badge-free">FREE</span><span class="chapter-arrow">›</span>`
-        : `<span class="badge-unlock">잠금 해제</span>`
+        : `<span class="badge-unlock">🔒 ${lockLabel}</span>`
       }
     </div>
   `).join('');
 
-  // cover
-  const cover = document.getElementById('bookCover');
-  cover.style.background = d.coverBg;
-  document.querySelector('.book-cover-bar').style.background = d.coverBar;
-  document.querySelector('.book-cover-circle').style.borderColor = d.circleColor;
-  document.getElementById('coverTitle').innerHTML = d.coverTitle;
-  document.getElementById('coverSub').textContent = d.coverSub;
-  document.getElementById('coverLang').textContent = d.lang;
+  document.getElementById('bookMockupImg').src = COVER_IMAGES[lang] || COVER_IMAGES.ko;
   document.getElementById('freeCount').textContent = d.freeCount;
   document.getElementById('upgradePrice').textContent = d.upgradePrice;
 }
 
+// 언어 탭 클릭
 document.querySelectorAll('.lang-tab').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentLang = btn.dataset.lang;
     renderChapters(currentLang);
+    // 사이트 언어도 동기화
+    if (typeof applyLang === 'function') applyLang(currentLang);
   });
 });
 
-renderChapters('ko');
+// applyLang 연동
+const _ebOrigApply = window.applyLang;
+window.applyLang = function(lang) {
+  if (_ebOrigApply) _ebOrigApply(lang);
+  currentLang = lang;
+  // 탭 active 동기화
+  document.querySelectorAll('.lang-tab').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  renderChapters(lang);
+};
+
+// 초기 렌더
+renderChapters(currentLang);
+
+// 초기 탭 active 동기화
+document.querySelectorAll('.lang-tab').forEach(b =>
+  b.classList.toggle('active', b.dataset.lang === currentLang)
+);
 </script>
 </body>
 </html>

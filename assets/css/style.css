@@ -73,15 +73,14 @@ body {
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .logo-badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  background: var(--gold);
-  color: #1a0e00;
-  padding: 3px 10px;
-  border-radius: 3px;
-  margin-bottom: 0.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.logo-badge img {
+  height: 48px;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
 .logo-title {
   font-family: var(--font-serif);

@@ -6,10 +6,10 @@
 <title>요금제 — Finarchitect</title>
 <link rel="stylesheet" href="assets/css/site.css">
 <style>
-.pricing-hero { text-align: center; padding: 64px 2rem 48px; background: var(--dark); }
-.pricing-hero .section-tag { color: var(--gold); }
-.pricing-hero .section-title { color: var(--white); margin-bottom: 0.75rem; }
-.pricing-hero-desc { color: rgba(255,255,255,0.5); font-size: 1rem; }
+.pricing-hero { text-align: center; padding: 64px 2rem 48px; background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 40%, #EC4899 100%); position: relative; overflow: hidden; }
+.pricing-hero .section-tag { color: rgba(255,255,255,0.85); position: relative; z-index: 2; }
+.pricing-hero .section-title { color: #fff; margin-bottom: 0.75rem; position: relative; z-index: 2; }
+.pricing-hero-desc { color: rgba(255,255,255,0.75); font-size: 1rem; position: relative; z-index: 2; }
 
 .pricing-body { padding: 48px 2rem 80px; max-width: 1000px; margin: 0 auto; }
 
@@ -71,22 +71,29 @@
     finarchitect
   </a>
   <div class="nav-links">
-    <a href="landing.html" class="nav-link">홈</a>
-    <a href="ebook.html" class="nav-link">eBook</a>
-    <a href="forms.html" class="nav-link">서식</a>
-    <a href="pricing.html" class="nav-link active">요금제</a>
+    <a href="landing.html" class="nav-link" data-i18n="nav.home">홈</a>
+    <a href="library.html" class="nav-link" data-i18n="nav.library">라이브러리</a>
+    <a href="forms.html" class="nav-link" data-i18n="nav.forms">서식</a>
+    <a href="consulting.html" class="nav-link" data-i18n="nav.consulting">컨설팅</a>
+    <a href="pricing.html" class="nav-link active" data-i18n="nav.pricing">요금제</a>
   </div>
   <div class="nav-actions">
-    <button class="btn-login">로그인</button>
-    <a href="ebook.html" class="btn-start">시작하기</a>
+    <div class="lang-switcher">
+      <button class="ls-btn" data-lang="ko">KO</button>
+      <button class="ls-btn" data-lang="en">EN</button>
+      <button class="ls-btn" data-lang="ja">JA</button>
+    </div>
+    <button class="btn-login" data-i18n="nav.login">로그인</button>
+    <a href="ebook.html" class="btn-start" data-i18n="nav.start">시작하기</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="pricing-hero">
-  <div class="section-tag">PRICING</div>
-  <h1 class="section-title">투명한 요금제</h1>
-  <p class="pricing-hero-desc">PayPal · 신용카드 · 체크카드로 결제 가능합니다.</p>
+  <div class="bg-img-layer" style="background-image:url('https://blogger.googleusercontent.com/img/a/AVvXsEgBAILFx3yPVdPUr6oEWuRd5HJJAaCBsmWSgQ74GiaY8kPX_LHQonuQY7_XHIdG8lPqWFw1h6mUHS-qVo6joiZ-w0BZYZ_giqmgk7P-PtLx10OR7vUHKlgS89nRQx_sYX1Ym4hsXXdw1a2EZo4uOEoAE39fMVGnMMXwVee864KfF7XcdiaD4esV7o4tpWXt');background-position:center bottom;filter:brightness(1.5);opacity:.72;"></div>
+  <div class="section-tag" data-i18n="pricing.tag">PRICING</div>
+  <h1 class="section-title" data-i18n="pricing.title">투명한 요금제</h1>
+  <p class="pricing-hero-desc" data-i18n="pricing.desc">PayPal · 신용카드 · 체크카드로 결제 가능합니다.</p>
 </div>
 
 <!-- PLANS -->
@@ -96,21 +103,21 @@
     <!-- PLAN 1: 서식 라이브러리 -->
     <div class="plan-card">
       <div class="plan-icon" style="background:#EFF6FF">📋</div>
-      <div class="plan-name">서식 라이브러리</div>
-      <div class="plan-desc">법률·금융·세무 250+ 서식 템플릿 연간 무제한 이용</div>
+      <div class="plan-name" data-i18n="pricing.plan1.name">서식 라이브러리</div>
+      <div class="plan-desc" data-i18n="pricing.plan1.desc">법률·금융·세무 250+ 서식 템플릿 연간 무제한 이용</div>
       <div class="plan-price">
-        <span class="currency">$</span><span class="amount">10</span><span class="period">/ 1년</span>
+        <span class="currency">$</span><span class="amount">10</span><span class="period" data-i18n="pricing.plan1.period">/ 1년</span>
       </div>
       <ul class="plan-features">
-        <li>250+ 서식 템플릿 전체 이용</li>
-        <li>DOCX · PDF · HWP 다운로드</li>
-        <li>법률·금융·세무·노무 전 카테고리</li>
-        <li>신규 서식 업데이트 자동 포함</li>
+        <li data-i18n="pricing.plan1.f1">250+ 서식 템플릿 전체 이용</li>
+        <li data-i18n="pricing.plan1.f2">DOCX · PDF · HWP 다운로드</li>
+        <li data-i18n="pricing.plan1.f3">법률·금융·세무·노무 전 카테고리</li>
+        <li data-i18n="pricing.plan1.f4">신규 서식 업데이트 자동 포함</li>
       </ul>
       <div id="paypal-forms" class="paypal-wrap">
         <div class="paypal-loading">결제 버튼 로딩 중...</div>
       </div>
-      <p class="pay-note">PayPal 계정 없이 카드 결제 가능</p>
+      <p class="pay-note" data-i18n="pricing.note">PayPal 계정 없이 카드 결제 가능</p>
       <div class="pay-success" id="success-forms">
         <div class="check">✅</div>
         <p><strong>결제 완료!</strong><br>서식 라이브러리 이용권이 활성화되었습니다.<br>이메일을 확인해 주세요.</p>
@@ -119,24 +126,24 @@
 
     <!-- PLAN 2: eBook (FEATURED) -->
     <div class="plan-card featured">
-      <div class="plan-badge">⭐ 가장 인기</div>
+      <div class="plan-badge" data-i18n="pricing.plan2.badge">⭐ 가장 인기</div>
       <div class="plan-icon" style="background:#FEF9E7">📖</div>
-      <div class="plan-name">eBook Vol.1</div>
-      <div class="plan-desc">구조로 돈을 설계하는 사람들 — 전체 16챕터 + 1년 서식 이용권 포함</div>
+      <div class="plan-name" data-i18n="pricing.plan2.name">eBook Vol.1</div>
+      <div class="plan-desc" data-i18n="pricing.plan2.desc">구조로 돈을 설계하는 사람들 — 전체 16챕터 + 1년 서식 이용권 포함</div>
       <div class="plan-price">
-        <span class="currency">$</span><span class="amount">19</span><span class="period">/ 도서 1권</span>
+        <span class="currency">$</span><span class="amount">19</span><span class="period" data-i18n="pricing.plan2.period">/ 도서 1권</span>
       </div>
       <ul class="plan-features">
-        <li>전체 16챕터 + 부록 무제한 열람</li>
-        <li>한국어 · English · 日本語 3개국어</li>
-        <li>서식 라이브러리 1년 무료 이용</li>
-        <li>향후 업데이트 콘텐츠 자동 포함</li>
-        <li>PDF 저장 가능</li>
+        <li data-i18n="pricing.plan2.f1">전체 16챕터 + 부록 무제한 열람</li>
+        <li data-i18n="pricing.plan2.f2">한국어 · English · 日本語 3개국어</li>
+        <li data-i18n="pricing.plan2.f3">서식 라이브러리 1년 무료 이용</li>
+        <li data-i18n="pricing.plan2.f4">향후 업데이트 콘텐츠 자동 포함</li>
+        <li data-i18n="pricing.plan2.f5">PDF 저장 가능</li>
       </ul>
       <div id="paypal-ebook" class="paypal-wrap">
         <div class="paypal-loading">결제 버튼 로딩 중...</div>
       </div>
-      <p class="pay-note">PayPal 계정 없이 카드 결제 가능</p>
+      <p class="pay-note" data-i18n="pricing.note">PayPal 계정 없이 카드 결제 가능</p>
       <div class="pay-success" id="success-ebook">
         <div class="check">✅</div>
         <p><strong>결제 완료!</strong><br>eBook 전체 챕터가 열렸습니다.<br>서식 라이브러리 1년 이용권도 함께 활성화되었습니다.</p>
@@ -146,30 +153,31 @@
     <!-- PLAN 3: 금융 컨설팅 -->
     <div class="plan-card">
       <div class="plan-icon" style="background:#F0FDF4">💼</div>
-      <div class="plan-name">금융 컨설팅</div>
-      <div class="plan-desc">프로젝트별 맞춤 금융 구조 설계 · PF · SPV · STO 전략 수립</div>
+      <div class="plan-name" data-i18n="pricing.plan3.name">금융 컨설팅</div>
+      <div class="plan-desc" data-i18n="pricing.plan3.desc">프로젝트별 맞춤 금융 구조 설계 · PF · SPV · STO 전략 수립</div>
       <div class="plan-price">
-        <div class="consult-range">$999 ~ $499,999<br><span style="font-size:0.78rem; color:var(--text2); font-weight:400;">프로젝트 규모에 따라 협의</span></div>
+        <div class="consult-range" data-i18n="pricing.plan3.range">$9,999 ~ $499,999</div>
+        <div style="font-size:0.78rem; color:var(--text2);" data-i18n="pricing.plan3.range.sub">프로젝트 규모에 따라 협의</div>
       </div>
       <ul class="plan-features">
-        <li>금융 구조 설계 (PF · SPV · STO)</li>
-        <li>투자 유치 전략 수립</li>
-        <li>법률·세무 연계 자문</li>
-        <li>IR 자료 · 계약서 검토</li>
-        <li>1:1 전담 컨설턴트 배정</li>
+        <li data-i18n="pricing.plan3.f1">금융 구조 설계 (PF · SPV · STO)</li>
+        <li data-i18n="pricing.plan3.f2">투자 유치 전략 수립</li>
+        <li data-i18n="pricing.plan3.f3">법률·세무 연계 자문</li>
+        <li data-i18n="pricing.plan3.f4">IR 자료 · 계약서 검토</li>
+        <li data-i18n="pricing.plan3.f5">1:1 전담 컨설턴트 배정</li>
       </ul>
       <form class="consult-form" id="consultForm">
-        <input type="text" name="name" placeholder="성함" required>
-        <input type="email" name="email" placeholder="이메일" required>
+        <input type="text" name="name" data-i18n="pricing.consult.name" placeholder="성함" required>
+        <input type="email" name="email" data-i18n="pricing.consult.email" placeholder="이메일" required>
         <select name="budget">
-          <option value="" disabled selected>예상 프로젝트 규모</option>
-          <option value="under1k">$999 ~ $4,999</option>
-          <option value="5k">$5,000 ~ $49,999</option>
-          <option value="50k">$50,000 ~ $499,999</option>
-          <option value="500k">$500,000+</option>
+          <option value="" disabled selected data-i18n="pricing.consult.budget">예상 프로젝트 규모</option>
+          <option value="under1k" data-i18n="pricing.consult.budget.opt1">$999 ~ $4,999</option>
+          <option value="5k" data-i18n="pricing.consult.budget.opt2">$5,000 ~ $49,999</option>
+          <option value="50k" data-i18n="pricing.consult.budget.opt3">$50,000 ~ $499,999</option>
+          <option value="500k" data-i18n="pricing.consult.budget.opt4">$500,000+</option>
         </select>
-        <textarea name="message" rows="3" placeholder="프로젝트 개요를 간략히 설명해 주세요."></textarea>
-        <button type="submit" class="btn-consult">무료 상담 신청</button>
+        <textarea name="message" rows="3" data-i18n="pricing.consult.message" placeholder="프로젝트 개요를 간략히 설명해 주세요."></textarea>
+        <button type="submit" class="btn-consult" data-i18n="pricing.consult.submit">무료 상담 신청</button>
       </form>
       <div class="pay-success" id="success-consult">
         <div class="check">📩</div>
@@ -181,14 +189,16 @@
 
   <!-- 공통 안내 -->
   <div style="text-align:center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
-    <p style="font-size:0.82rem; color:var(--text3); line-height:1.8;">
-      모든 결제는 PayPal을 통해 안전하게 처리됩니다. · 환불 정책: 구매 후 7일 이내 미사용 시 전액 환불<br>
-      문의: stclogic@gmail.com
+    <p style="font-size:0.82rem; color:var(--text3); line-height:1.8;" data-i18n="pricing.footer.note">
+      모든 결제는 PayPal을 통해 안전하게 처리됩니다. · 환불 정책: 구매 후 7일 이내 미사용 시 전액 환불
     </p>
+    <p style="font-size:0.82rem; color:var(--text3); margin-top:4px;">stclogic@gmail.com</p>
   </div>
 
 </div><!-- /pricing-body -->
 
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/nav.js?v=2"></script>
 <!-- PayPal SDK -->
 <script src="https://www.paypal.com/sdk/js?client-id=AcGitOCgnIT766ru2cnaxQ79ViM0rkvcp1kYtf7eoEj0HLh9moLHdDdqQ6cqYQ7OqTdK6M5kQQPrGQzX&currency=USD&locale=ko_KR"></script>
 

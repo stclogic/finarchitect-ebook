@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<!-- 금융 컨설팅 전문 페이지 — KO/EN/JA 다국어, PF·SPV·STO·IR·이민자산·Exit -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>금융 컨설팅 — Finarchitect</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+/* ── HERO ── */
+.cs-hero {
+  background: linear-gradient(135deg, #0F0C29 0%, #302B63 50%, #24243E 100%);
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cs-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 30%, rgba(79,70,229,0.45) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 85% 70%, rgba(236,72,153,0.35) 0%, transparent 60%);
+  z-index: 1;
+}
+.cs-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.85);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 999px;
+  padding: 5px 16px;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(10px);
+}
+.cs-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+}
+.cs-hero h1 span { color: #A78BFA; }
+.cs-hero p {
+  font-size: 1rem;
+  color: rgba(255,255,255,.65);
+  max-width: 560px;
+  margin: 0 auto 2.5rem;
+  position: relative;
+  z-index: 2;
+  line-height: 1.7;
+}
+.cs-hero-btns { position: relative; z-index: 2; }
+.cs-hero-btns {
+  display: flex;
+  gap: .75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+.cs-hero-btns .btn-primary {
+  background: linear-gradient(90deg, #6366F1, #EC4899);
+  color: #fff;
+  padding: 13px 30px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: .9rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.cs-hero-btns .btn-outline {
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .9rem;
+  border: 1.5px solid rgba(255,255,255,.3);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  backdrop-filter: blur(8px);
+}
+
+/* ── STATS ── */
+.cs-stats {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 2rem;
+}
+.cs-stats-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  text-align: center;
+}
+.cs-stat-num {
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #4F46E5, #EC4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.cs-stat-label {
+  font-size: .75rem;
+  color: var(--text2);
+  font-weight: 600;
+}
+
+/* ── SECTION SHARED ── */
+.cs-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+.cs-section-tag {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--primary);
+  margin-bottom: .5rem;
+}
+.cs-section-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: .75rem;
+  line-height: 1.25;
+}
+.cs-section-desc {
+  font-size: .9rem;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+/* ── SERVICE CARDS ── */
+.cs-service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+.cs-service-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+}
+.cs-service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(79,70,229,.1);
+}
+.cs-service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 20px 20px 0 0;
+}
+.cs-service-card.indigo::before  { background: linear-gradient(90deg, #4F46E5, #818CF8); }
+.cs-service-card.violet::before  { background: linear-gradient(90deg, #7C3AED, #A78BFA); }
+.cs-service-card.pink::before    { background: linear-gradient(90deg, #EC4899, #F9A8D4); }
+.cs-service-card.emerald::before { background: linear-gradient(90deg, #10B981, #6EE7B7); }
+.cs-service-card.amber::before   { background: linear-gradient(90deg, #F59E0B, #FCD34D); }
+.cs-service-card.sky::before     { background: linear-gradient(90deg, #0EA5E9, #7DD3FC); }
+
+.cs-service-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+.icon-indigo  { background: #EEF2FF; }
+.icon-violet  { background: #F5F3FF; }
+.icon-pink    { background: #FDF2F8; }
+.icon-emerald { background: #ECFDF5; }
+.icon-amber   { background: #FFFBEB; }
+.icon-sky     { background: #F0F9FF; }
+
+.cs-service-tag {
+  display: inline-block;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: .6rem;
+}
+.tag-indigo  { background: #EEF2FF; color: #4F46E5; }
+.tag-violet  { background: #F5F3FF; color: #7C3AED; }
+.tag-pink    { background: #FDF2F8; color: #DB2777; }
+.tag-emerald { background: #ECFDF5; color: #059669; }
+.tag-amber   { background: #FFFBEB; color: #D97706; }
+.tag-sky     { background: #F0F9FF; color: #0284C7; }
+
+.cs-service-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: .5rem;
+}
+.cs-service-desc {
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.cs-service-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cs-service-item {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--text2);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 9px;
+}
+
+/* ── PROCESS ── */
+.cs-process-bg {
+  background: linear-gradient(135deg, #F8FAFF 0%, #EEF2FF 50%, #FDF4FF 100%);
+  padding: 4rem 2rem;
+}
+.cs-process-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0;
+  margin-top: 2.5rem;
+  position: relative;
+}
+.cs-process-steps::before {
+  content: '';
+  position: absolute;
+  top: 30px; left: 10%; right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, #4F46E5, #EC4899);
+  opacity: .25;
+}
+.cs-process-step {
+  text-align: center;
+  padding: 0 1rem;
+  position: relative;
+}
+.cs-process-num {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4F46E5, #7C3AED);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 20px rgba(79,70,229,.3);
+}
+.cs-process-step-title {
+  font-size: .9rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: .4rem;
+}
+.cs-process-step-desc {
+  font-size: .78rem;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+/* ── EXPERTISE ── */
+.cs-expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.cs-expertise-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.4rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.cs-expertise-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.cs-expertise-title {
+  font-size: .88rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: .25rem;
+}
+.cs-expertise-desc {
+  font-size: .78rem;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+/* ── PRICING TIERS ── */
+.cs-tiers {
+  background: var(--dark);
+  padding: 4rem 2rem;
+}
+.cs-tiers-inner { max-width: 900px; margin: 0 auto; }
+.cs-tiers-inner .cs-section-title { color: #fff; }
+.cs-tiers-inner .cs-section-desc { color: rgba(255,255,255,.6); }
+.cs-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.cs-tier {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  padding: 1.75rem;
+}
+.cs-tier.featured {
+  background: linear-gradient(135deg, rgba(99,102,241,.3), rgba(236,72,153,.2));
+  border-color: rgba(99,102,241,.5);
+}
+.cs-tier-label {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: #A78BFA;
+  margin-bottom: .5rem;
+}
+.cs-tier-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: .3rem;
+}
+.cs-tier-price {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  margin: .75rem 0 .25rem;
+}
+.cs-tier-price-sub {
+  font-size: .75rem;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 1rem;
+}
+.cs-tier-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.cs-tier-features li {
+  font-size: .8rem;
+  color: rgba(255,255,255,.7);
+  padding: .35rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  display: flex;
+  gap: .5rem;
+  align-items: flex-start;
+}
+.cs-tier-features li::before {
+  content: '✓';
+  color: #A78BFA;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* ── CONTACT FORM ── */
+.cs-contact-bg {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 40%, #EC4899 100%);
+  padding: 4rem 2rem;
+}
+.cs-contact-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.cs-contact-inner .cs-section-title { color: #fff; }
+.cs-contact-inner .cs-section-desc { color: rgba(255,255,255,.75); }
+.cs-form {
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 24px;
+  padding: 2rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.cs-form input,
+.cs-form select,
+.cs-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: .88rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s;
+}
+.cs-form input::placeholder,
+.cs-form textarea::placeholder { color: rgba(255,255,255,.5); }
+.cs-form select option { background: #302B63; color: #fff; }
+.cs-form input:focus,
+.cs-form select:focus,
+.cs-form textarea:focus { border-color: rgba(255,255,255,.6); }
+.cs-form textarea { resize: vertical; min-height: 110px; }
+.cs-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.cs-form-submit {
+  width: 100%;
+  padding: 14px;
+  background: #fff;
+  color: #4F46E5;
+  font-weight: 800;
+  font-size: .95rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity .15s;
+}
+.cs-form-submit:hover { opacity: .9; }
+.cs-form-done {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+}
+.cs-form-done .done-icon { font-size: 2.5rem; margin-bottom: .75rem; }
+.cs-form-done h3 { color: #fff; font-size: 1.1rem; margin-bottom: .4rem; }
+.cs-form-done p { color: rgba(255,255,255,.75); font-size: .85rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .cs-stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .cs-process-steps::before { display: none; }
+  .cs-form-row { grid-template-columns: 1fr; }
+  .cs-tier-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <a href="landing.html" class="nav-logo">
+    <div class="nav-logo-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg></div>
+    finarchitect
+  </a>
+  <div class="nav-links">
+    <a href="landing.html"   class="nav-link" data-i18n="nav.home">홈</a>
+    <a href="library.html"  class="nav-link" data-i18n="nav.library">라이브러리</a>
+    <a href="forms.html"    class="nav-link" data-i18n="nav.forms">서식</a>
+    <a href="consulting.html" class="nav-link active" data-i18n="nav.consulting">컨설팅</a>
+    <a href="pricing.html"  class="nav-link" data-i18n="nav.pricing">요금제</a>
+  </div>
+  <div class="nav-actions">
+    <div class="lang-switcher">
+      <button class="ls-btn" data-lang="ko">KO</button>
+      <button class="ls-btn" data-lang="en">EN</button>
+      <button class="ls-btn" data-lang="ja">JA</button>
+    </div>
+    <button class="btn-login" data-i18n="nav.login">로그인</button>
+    <a href="#cs-contact" class="btn-start" id="navCta">상담 신청</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="cs-hero">
+  <div class="bg-img-layer" style="background-image:url('https://blogger.googleusercontent.com/img/a/AVvXsEi1V4FDqRLyxN0o-2t0EH9YWE4Q818_ZpljAYTthHZI-fu2y-g5llhR2M7vk-snbIeb59D48_X6JRiY8aS6zlmwZ2sdrzpyO1Q1BVZci2wijAkBRCKz3QnR5Rt89cUUVkVJeuXf6QbRhbZZPXCl2L_cfUKLK-nzH0WXa2RWjLRBl8SL21H-LkTsRem-B1nw');background-position:center top;filter:brightness(1.45);opacity:.68;"></div>
+  <div class="cs-hero-tag" id="heroTag">⬡ FINANCIAL CONSULTING</div>
+  <h1 id="heroTitle">자본시장의 구조를<br><span>설계하는</span> 전문가들</h1>
+  <p id="heroDesc">PF·SPV·STO·투자유치·이민자산·Exit 전략까지.<br>복잡한 금융 구조를 실행 가능한 형태로 설계합니다.</p>
+  <div class="cs-hero-btns">
+    <a href="#cs-contact" class="btn-primary" id="heroCta1">무료 상담 신청</a>
+    <a href="#cs-services" class="btn-outline" id="heroCta2">서비스 보기</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="cs-stats">
+  <div class="cs-stats-inner">
+    <div><div class="cs-stat-num" id="stat1Num">$2.4B+</div><div class="cs-stat-label" id="stat1Label">자문 프로젝트 규모</div></div>
+    <div><div class="cs-stat-num" id="stat2Num">180+</div><div class="cs-stat-label" id="stat2Label">완료 프로젝트</div></div>
+    <div><div class="cs-stat-num" id="stat3Num">23개국</div><div class="cs-stat-label" id="stat3Label">글로벌 운용 경험</div></div>
+    <div><div class="cs-stat-num" id="stat4Num">94%</div><div class="cs-stat-label" id="stat4Label">고객 재계약률</div></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="cs-services">
+  <div class="cs-section">
+    <div class="cs-section-tag" id="serviceTag">SERVICES</div>
+    <div class="cs-section-title" id="serviceTitle">6대 전문 컨설팅 영역</div>
+    <div class="cs-section-desc" id="serviceDesc">각 영역은 독립적으로도, 통합 패키지로도 설계 가능합니다.</div>
+    <div class="cs-service-grid" id="serviceGrid"></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<div class="cs-process-bg">
+  <div class="cs-section" style="padding-top:0; padding-bottom:0;">
+    <div class="cs-section-tag" id="processTag">PROCESS</div>
+    <div class="cs-section-title" id="processTitle">컨설팅 진행 방식</div>
+    <div class="cs-section-desc" id="processDesc">첫 상담부터 구조 완성까지 4단계로 진행됩니다.</div>
+    <div class="cs-process-steps" id="processSteps"></div>
+  </div>
+</div>
+
+<!-- EXPERTISE -->
+<section>
+  <div class="cs-section">
+    <div class="cs-section-tag" id="expertTag">EXPERTISE</div>
+    <div class="cs-section-title" id="expertTitle">전문 역량</div>
+    <div class="cs-section-desc" id="expertDesc">금융·법률·세무·글로벌 4개 축에서 완결된 자문을 제공합니다.</div>
+    <div class="cs-expertise-grid" id="expertGrid"></div>
+  </div>
+</section>
+
+<!-- PRICING TIERS -->
+<div class="cs-tiers">
+  <div class="cs-tiers-inner">
+    <div class="cs-section-tag" style="color:#A78BFA;" id="tierTag">PRICING</div>
+    <div class="cs-section-title" id="tierTitle">컨설팅 요금 구조</div>
+    <div class="cs-section-desc" id="tierDesc">프로젝트 규모와 복잡도에 따라 협의합니다.</div>
+    <div class="cs-tier-grid" id="tierGrid"></div>
+  </div>
+</div>
+
+<!-- CONTACT FORM -->
+<div class="cs-contact-bg" id="cs-contact">
+  <div class="cs-contact-inner">
+    <div class="cs-section-tag" style="color:rgba(255,255,255,.8);" id="contactTag">FREE CONSULTATION</div>
+    <div class="cs-section-title" id="contactTitle">무료 초기 상담 신청</div>
+    <div class="cs-section-desc" id="contactDesc">프로젝트 개요를 남겨주시면 영업일 1~2일 내 담당자가 연락드립니다.</div>
+    <form class="cs-form" id="csForm">
+      <div class="cs-form-row">
+        <input type="text"  id="fName"  placeholder="" data-ph="name" required>
+        <input type="email" id="fEmail" placeholder="" data-ph="email" required>
+      </div>
+      <select id="fService" required>
+        <option value="" disabled selected data-ph="service"></option>
+        <option value="pf"   data-ph="opt.pf"></option>
+        <option value="spv"  data-ph="opt.spv"></option>
+        <option value="sto"  data-ph="opt.sto"></option>
+        <option value="ir"   data-ph="opt.ir"></option>
+        <option value="hnwi" data-ph="opt.hnwi"></option>
+        <option value="exit" data-ph="opt.exit"></option>
+        <option value="etc"  data-ph="opt.etc"></option>
+      </select>
+      <select id="fBudget" required>
+        <option value="" disabled selected data-ph="budget"></option>
+        <option value="a" data-ph="opt.b1"></option>
+        <option value="b" data-ph="opt.b2"></option>
+        <option value="c" data-ph="opt.b3"></option>
+        <option value="d" data-ph="opt.b4"></option>
+      </select>
+      <textarea id="fMsg" placeholder="" data-ph="msg" rows="4"></textarea>
+      <button type="submit" class="cs-form-submit" id="fSubmit"></button>
+    </form>
+    <div class="cs-form-done" id="csDone">
+      <div class="done-icon">📩</div>
+      <h3 id="doneTitle"></h3>
+      <p id="doneDesc"></p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span data-i18n="footer.copy">© 2025 Finarchitect. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="terms.html"   data-i18n="footer.terms">이용약관</a>
+      <a href="privacy.html" data-i18n="footer.privacy">개인정보처리방침</a>
+      <a href="about.html"   data-i18n="footer.about">소개서</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── 다국어 데이터 ──────────────────────────────────────────────────
+const CS_I18N = {
+  ko: {
+    heroTag: '⬡ FINANCIAL CONSULTING',
+    heroTitle: '자본시장의 구조를<br><span>설계하는</span> 전문가들',
+    heroDesc: 'PF·SPV·STO·투자유치·이민자산·Exit 전략까지.<br>복잡한 금융 구조를 실행 가능한 형태로 설계합니다.',
+    heroCta1: '무료 상담 신청', heroCta2: '서비스 보기',
+    stat1Num: '$2.4B+', stat1Label: '자문 프로젝트 규모',
+    stat2Num: '180+',  stat2Label: '완료 프로젝트',
+    stat3Num: '23개국', stat3Label: '글로벌 운용 경험',
+    stat4Num: '94%',   stat4Label: '고객 재계약률',
+    serviceTag: 'SERVICES', serviceTitle: '6대 전문 컨설팅 영역',
+    serviceDesc: '각 영역은 독립적으로도, 통합 패키지로도 설계 가능합니다.',
+    processTag: 'PROCESS', processTitle: '컨설팅 진행 방식',
+    processDesc: '첫 상담부터 구조 완성까지 4단계로 진행됩니다.',
+    expertTag: 'EXPERTISE', expertTitle: '전문 역량',
+    expertDesc: '금융·법률·세무·글로벌 4개 축에서 완결된 자문을 제공합니다.',
+    tierTag: 'PRICING', tierTitle: '컨설팅 요금 구조',
+    tierDesc: '프로젝트 규모와 복잡도에 따라 협의합니다.',
+    contactTag: 'FREE CONSULTATION', contactTitle: '무료 초기 상담 신청',
+    contactDesc: '프로젝트 개요를 남겨주시면 영업일 1~2일 내 담당자가 연락드립니다.',
+    navCta: '상담 신청',
+    'ph.name': '성함', 'ph.email': '이메일 주소',
+    'ph.service': '관심 서비스 선택',
+    'ph.opt.pf': 'PF (프로젝트 파이낸싱)',
+    'ph.opt.spv': 'SPV 설계',
+    'ph.opt.sto': 'STO (토큰 증권)',
+    'ph.opt.ir': '투자 유치 (IR)',
+    'ph.opt.hnwi': 'HNWI 이민 자산 설계',
+    'ph.opt.exit': 'Exit 전략',
+    'ph.opt.etc': '기타 (직접 설명)',
+    'ph.budget': '프로젝트 규모',
+    'ph.opt.b1': '$9,999 ~ $49,999',
+    'ph.opt.b2': '$50,000 ~ $199,999',
+    'ph.opt.b3': '$200,000 ~ $499,999',
+    'ph.opt.b4': '$500,000+',
+    'ph.msg': '프로젝트 개요를 간략히 설명해 주세요.',
+    'ph.submit': '무료 상담 신청하기',
+    doneTitle: '상담 신청이 접수되었습니다!', doneDesc: '영업일 1~2일 내 stclogic@gmail.com으로 연락드리겠습니다.',
+  },
+  en: {
+    heroTag: '⬡ FINANCIAL CONSULTING',
+    heroTitle: 'Architects of<br><span>Capital Structure</span>',
+    heroDesc: 'PF · SPV · STO · IR · HNWI Immigration · Exit Strategy.<br>We turn complex financial structures into executable plans.',
+    heroCta1: 'Book Free Consultation', heroCta2: 'Explore Services',
+    stat1Num: '$2.4B+', stat1Label: 'Advisory Volume',
+    stat2Num: '180+',  stat2Label: 'Projects Completed',
+    stat3Num: '23',    stat3Label: 'Countries Covered',
+    stat4Num: '94%',   stat4Label: 'Client Retention Rate',
+    serviceTag: 'SERVICES', serviceTitle: '6 Core Consulting Domains',
+    serviceDesc: 'Each domain works as a standalone engagement or as part of an integrated capital strategy.',
+    processTag: 'PROCESS', processTitle: 'How We Work',
+    processDesc: 'From initial consultation to executed structure — four clear phases.',
+    expertTag: 'EXPERTISE', expertTitle: 'Our Expertise',
+    expertDesc: 'Complete advisory across four pillars: Finance · Law · Tax · Global Markets.',
+    tierTag: 'PRICING', tierTitle: 'Consulting Fee Structure',
+    tierDesc: 'Fees are negotiated based on project scope and complexity.',
+    contactTag: 'FREE CONSULTATION', contactTitle: 'Book a Free Consultation',
+    contactDesc: 'Leave your project outline and our team will reach out within 1–2 business days.',
+    navCta: 'Get Consultation',
+    'ph.name': 'Full Name', 'ph.email': 'Email Address',
+    'ph.service': 'Select Service',
+    'ph.opt.pf': 'PF (Project Finance)',
+    'ph.opt.spv': 'SPV Design',
+    'ph.opt.sto': 'STO (Security Token)',
+    'ph.opt.ir': 'Investment Attraction (IR)',
+    'ph.opt.hnwi': 'HNWI Immigration Asset Design',
+    'ph.opt.exit': 'Exit Strategy',
+    'ph.opt.etc': 'Other (Describe Below)',
+    'ph.budget': 'Project Scale',
+    'ph.opt.b1': '$9,999 ~ $49,999',
+    'ph.opt.b2': '$50,000 ~ $199,999',
+    'ph.opt.b3': '$200,000 ~ $499,999',
+    'ph.opt.b4': '$500,000+',
+    'ph.msg': 'Briefly describe your project.',
+    'ph.submit': 'Request Free Consultation',
+    doneTitle: 'Inquiry Received!', doneDesc: 'We will contact you at stclogic@gmail.com within 1–2 business days.',
+  },
+  ja: {
+    heroTag: '⬡ FINANCIAL CONSULTING',
+    heroTitle: '資本市場の構造を<br><span>設計する</span>専門家たち',
+    heroDesc: 'PF·SPV·STO·投資誘致·移民資産·Exit戦略まで。<br>複雑な金融構造を実行可能な形に設計します。',
+    heroCta1: '無料相談を申し込む', heroCta2: 'サービスを見る',
+    stat1Num: '$2.4B+', stat1Label: 'アドバイザリー規模',
+    stat2Num: '180+',  stat2Label: '完了プロジェクト',
+    stat3Num: '23カ国', stat3Label: 'グローバル運用実績',
+    stat4Num: '94%',   stat4Label: '顧客再契約率',
+    serviceTag: 'SERVICES', serviceTitle: '6つの専門コンサルティング領域',
+    serviceDesc: '各領域は単独でも、統合パッケージとしても設計可能です。',
+    processTag: 'PROCESS', processTitle: 'コンサルティングの進め方',
+    processDesc: '初回相談から構造完成まで、4つのフェーズで進めます。',
+    expertTag: 'EXPERTISE', expertTitle: '専門的な強み',
+    expertDesc: '金融·法律·税務·グローバルの4つの軸で完結したアドバイスを提供します。',
+    tierTag: 'PRICING', tierTitle: 'コンサルティング料金体系',
+    tierDesc: 'プロジェクトの規模と複雑さに応じて協議のうえ決定します。',
+    contactTag: 'FREE CONSULTATION', contactTitle: '無料初回相談の申し込み',
+    contactDesc: 'プロジェクトの概要をご記入いただければ、営業日1〜2日以内にご連絡いたします。',
+    navCta: '相談申込',
+    'ph.name': 'お名前', 'ph.email': 'メールアドレス',
+    'ph.service': 'サービスを選択',
+    'ph.opt.pf': 'PF（プロジェクトファイナンス）',
+    'ph.opt.spv': 'SPV設計',
+    'ph.opt.sto': 'STO（セキュリティトークン）',
+    'ph.opt.ir': '投資誘致（IR）',
+    'ph.opt.hnwi': 'HNWI移民資産設計',
+    'ph.opt.exit': 'Exit戦略',
+    'ph.opt.etc': 'その他（詳細を記入）',
+    'ph.budget': 'プロジェクト規模',
+    'ph.opt.b1': '$9,999 ~ $49,999',
+    'ph.opt.b2': '$50,000 ~ $199,999',
+    'ph.opt.b3': '$200,000 ~ $499,999',
+    'ph.opt.b4': '$500,000+',
+    'ph.msg': 'プロジェクトの概要を簡単にご説明ください。',
+    'ph.submit': '無料相談を申し込む',
+    doneTitle: 'お問い合わせを受け付けました！', doneDesc: '営業日1〜2日以内にstclogic@gmail.comよりご連絡いたします。',
+  }
+};
+
+// ── 서비스 데이터 ──────────────────────────────────────────────────
+const SERVICES = [
+  {
+    color: 'indigo', icon: '🏗',
+    tag: { ko:'프로젝트 파이낸싱', en:'Project Finance', ja:'プロジェクトファイナンス' },
+    title: { ko:'PF 구조 설계', en:'PF Structure Design', ja:'PF構造設計' },
+    desc: {
+      ko:'선순위·중순위·후순위 구조부터 SPC 설립, 담보 설정, 리파이낸싱까지 프로젝트 파이낸싱 전 구조를 설계합니다.',
+      en:'Full PF structuring: senior/mezzanine/subordinate tranches, SPC formation, collateral setup, and refinancing.',
+      ja:'シニア·メザニン·劣後構造から SPC 設立、担保設定、リファイナンシングまで PF 全構造を設計します。'
+    },
+    items: { ko:['선순위 구조','SPC 설립','담보 설계','리파이낸싱'], en:['Senior Tranche','SPC Formation','Collateral','Refinancing'], ja:['シニア構造','SPC設立','担保設計','リファイナンシング'] }
+  },
+  {
+    color: 'violet', icon: '🔷',
+    tag: { ko:'특수목적법인', en:'Special Purpose Vehicle', ja:'特別目的会社' },
+    title: { ko:'SPV 설계', en:'SPV Design', ja:'SPV設計' },
+    desc: {
+      ko:'프로젝트별 최적 SPV 구조를 설계하고 해외 법인 설립, 지배구조, 세무 최적화까지 통합 관리합니다.',
+      en:'Optimal SPV structuring for each project: offshore incorporation, governance, and tax optimization.',
+      ja:'プロジェクトごとの最適な SPV 構造を設計。海外法人設立、ガバナンス、税務最適化まで一括対応。'
+    },
+    items: { ko:['구조 설계','해외 법인','지배구조','세무 최적화'], en:['Structure','Offshore Corp','Governance','Tax Opt.'], ja:['構造設計','海外法人','ガバナンス','税務最適化'] }
+  },
+  {
+    color: 'pink', icon: '🪙',
+    tag: { ko:'토큰 증권', en:'Security Token', ja:'セキュリティトークン' },
+    title: { ko:'STO 구조 설계', en:'STO Structuring', ja:'STO構造設計' },
+    desc: {
+      ko:'부동산·PF·사모펀드 자산을 토큰화하여 글로벌 투자자에게 유동성을 제공합니다. ADDX·Sygnum·INX 플랫폼 연계.',
+      en:'Tokenize real estate, PF, and private fund assets for global liquidity. Integration with ADDX, Sygnum, INX.',
+      ja:'不動産·PF·私募ファンド資産をトークン化し、グローバル投資家に流動性を提供。ADDX·Sygnum·INX連携。'
+    },
+    items: { ko:['자산 토큰화','플랫폼 연계','규제 준수','유동성 설계'], en:['Tokenization','Platform Link','Compliance','Liquidity'], ja:['トークン化','プラットフォーム連携','規制対応','流動性設計'] }
+  },
+  {
+    color: 'emerald', icon: '📊',
+    tag: { ko:'투자 유치', en:'Investment Attraction', ja:'投資誘致' },
+    title: { ko:'IR & 투자 유치 전략', en:'IR & Investment Strategy', ja:'IR·投資誘致戦略' },
+    desc: {
+      ko:'글로벌 기관투자자, PE·VC, 패밀리오피스 대상 IR 전략 수립과 텀시트 협상, 투자 계약서 검토를 지원합니다.',
+      en:'IR strategy for global institutional investors, PE/VC, and family offices — term sheet negotiation and deal structuring.',
+      ja:'グローバル機関投資家、PE·VC、ファミリーオフィス向けのIR戦略立案、タームシート交渉、投資契約レビュー。'
+    },
+    items: { ko:['IR 자료 작성','피치 전략','텀시트','투자 계약'], en:['IR Deck','Pitch Strategy','Term Sheet','Deal Docs'], ja:['IR資料','ピッチ戦略','タームシート','投資契約'] }
+  },
+  {
+    color: 'amber', icon: '🌏',
+    tag: { ko:'HNWI 이민 전략', en:'HNWI Immigration', ja:'HNWI移民戦略' },
+    title: { ko:'고자산가 이민 자산 설계', en:'HNWI Asset & Residency Design', ja:'富裕層移民資産設計' },
+    desc: {
+      ko:'투자이민, 시민권 취득, 글로벌 자산 분산을 연계한 고자산가 맞춤 이민 전략과 금융 구조를 설계합니다.',
+      en:'Bespoke immigration and asset design for HNWIs: investor visas, citizenship programs, and global asset diversification.',
+      ja:'投資移民、市民権取得、グローバル資産分散を連携させた富裕層向けのオーダーメイド移民戦略と金融構造を設計。'
+    },
+    items: { ko:['투자이민 구조','자산 분산','세무 최적화','시민권 전략'], en:['Investor Visa','Asset Diversification','Tax Planning','Citizenship'], ja:['投資移民','資産分散','税務最適化','市民権'] }
+  },
+  {
+    color: 'sky', icon: '🚀',
+    tag: { ko:'Exit 전략', en:'Exit Strategy', ja:'Exit戦略' },
+    title: { ko:'Exit & 지분 매각 전략', en:'Exit & Equity Sale Strategy', ja:'Exit·株式売却戦略' },
+    desc: {
+      ko:'M&A, IPO, 지분 매각, 세컨더리 마켓 매각 등 5가지 Exit 경로별 최적 구조와 실행 타이밍을 설계합니다.',
+      en:'Five exit pathways — M&A, IPO, equity sale, secondary market, buyout — optimally structured and timed.',
+      ja:'M&A、IPO、株式売却、セカンダリーマーケット売却など5つのExitルートごとに最適な構造と実行タイミングを設計。'
+    },
+    items: { ko:['M&A 구조','IPO 준비','지분 매각','세컨더리'], en:['M&A','IPO Prep','Equity Sale','Secondary'], ja:['M&A','IPO準備','株式売却','セカンダリー'] }
+  }
+];
+
+// ── 프로세스 ──────────────────────────────────────────────────────
+const PROCESS = [
+  {
+    num: '01',
+    title: { ko:'무료 초기 상담', en:'Free Initial Consultation', ja:'無料初回相談' },
+    desc: { ko:'프로젝트 개요와 목표를 파악하고 적합한 서비스 방향을 제안합니다.', en:'We assess your project and goals, then propose the right advisory path.', ja:'プロジェクト概要と目標を把握し、最適なサービス方向を提案します。' }
+  },
+  {
+    num: '02',
+    title: { ko:'구조 분석 & 제안서', en:'Structure Analysis & Proposal', ja:'構造分析·提案書' },
+    desc: { ko:'프로젝트 규모와 리스크를 분석해 최적 금융 구조와 수수료를 제안합니다.', en:'We analyze project scale and risk, then propose the optimal structure and fee.', ja:'プロジェクト規模とリスクを分析し、最適な金融構造と報酬を提案します。' }
+  },
+  {
+    num: '03',
+    title: { ko:'설계 & 실행', en:'Design & Execution', ja:'設計·実行' },
+    desc: { ko:'법률·세무·금융 전문가 팀이 구조를 설계하고 서류 작성·검토를 진행합니다.', en:'Our legal, tax, and finance team designs the structure and prepares all documentation.', ja:'法律·税務·金融の専門家チームが構造を設計し、書類作成·審査を進めます。' }
+  },
+  {
+    num: '04',
+    title: { ko:'완료 & 사후 관리', en:'Completion & Aftercare', ja:'完了·アフターケア' },
+    desc: { ko:'구조 완성 후 운용 모니터링과 리파이낸싱·Exit 단계까지 지속 지원합니다.', en:'Post-execution monitoring, ongoing advisory, and support through refinancing or exit.', ja:'構造完成後の運用モニタリング、リファイナンシング·Exitフェーズまで継続サポート。' }
+  }
+];
+
+// ── 전문 역량 ─────────────────────────────────────────────────────
+const EXPERTISE = [
+  { icon:'🏦', title:{ ko:'기관 자본 연계', en:'Institutional Capital Access', ja:'機関資本アクセス' }, desc:{ ko:'글로벌 기관투자자, 국부펀드, PE/VC와의 네트워크를 통한 자본 연계', en:'Capital linkage via global institutional investors, sovereign funds, PE/VC networks', ja:'グローバル機関投資家、ソブリンファンド、PE/VCネットワークを通じた資本連携' } },
+  { icon:'⚖', title:{ ko:'법률·컴플라이언스', en:'Legal & Compliance', ja:'法律·コンプライアンス' }, desc:{ ko:'한국·싱가포르·케이맨·홍콩 등 다중 법역 컴플라이언스 동시 처리', en:'Multi-jurisdiction compliance: Korea, Singapore, Cayman Islands, Hong Kong', ja:'韓国·シンガポール·ケイマン·香港など複数法域のコンプライアンスを同時対応' } },
+  { icon:'📊', title:{ ko:'세무 구조 최적화', en:'Tax Structure Optimization', ja:'税務構造最適化' }, desc:{ ko:'글로벌 세무 전략을 통한 유효세율 최소화와 이중과세 방지 설계', en:'Global tax strategy: minimizing effective rates and preventing double taxation', ja:'グローバル税務戦略による実効税率最小化と二重課税防止設計' } },
+  { icon:'🌐', title:{ ko:'글로벌 STO 플랫폼', en:'Global STO Platforms', ja:'グローバルSTOプラットフォーム' }, desc:{ ko:'ADDX, Sygnum, INX, tZERO 등 글로벌 플랫폼과의 직접 연계 채널 보유', en:'Direct channel access to ADDX, Sygnum, INX, tZERO, and other global platforms', ja:'ADDX、Sygnum、INX、tZEROなどグローバルプラットフォームへの直接連携チャンネルを保有' } },
+  { icon:'🏢', title:{ ko:'부동산 PF 특화', en:'Real Estate PF Specialist', ja:'不動産PF特化' }, desc:{ ko:'상업용·주거용·물류 부동산 PF 구조 설계 및 인허가 자문 전문', en:'Specialized in commercial, residential, and logistics real estate PF structuring', ja:'商業·住宅·物流不動産のPF構造設計および許認可アドバイス専門' } },
+  { icon:'💼', title:{ ko:'패밀리오피스 자문', en:'Family Office Advisory', ja:'ファミリーオフィス顧問' }, desc:{ ko:'고자산가 패밀리오피스 설립, 신탁 구조, 상속 설계 종합 서비스', en:'Family office setup, trust structuring, and estate planning for HNWIs', ja:'富裕層ファミリーオフィス設立、信託構造、相続設計の総合サービス' } }
+];
+
+// ── 요금 티어 ─────────────────────────────────────────────────────
+const TIERS = [
+  {
+    label: { ko:'소형 프로젝트', en:'Small Project', ja:'小規模プロジェクト' },
+    name:  { ko:'스탠다드', en:'Standard', ja:'スタンダード' },
+    price: '$9,999', sub: { ko:'~ $49,999 · 프로젝트 규모에 따라', en:'~ $49,999 · based on scope', ja:'~ $49,999 · 規模により' },
+    features: {
+      ko:['기초 구조 설계','IR 자료 기본 세트','법률 검토 1회','이메일 지원 3개월'],
+      en:['Basic Structure Design','Standard IR Deck','1 Legal Review','3-Month Email Support'],
+      ja:['基礎構造設計','標準IR資料','法律審査1回','メールサポート3ヶ月']
+    }
+  },
+  {
+    label: { ko:'중형 프로젝트', en:'Mid-Scale Project', ja:'中規模プロジェクト' },
+    name:  { ko:'프로페셔널', en:'Professional', ja:'プロフェッショナル' },
+    price: '$50,000',
+    sub:   { ko:'~ $199,999 · 협의', en:'~ $199,999 · negotiated', ja:'~ $199,999 · 協議' },
+    featured: true,
+    features: {
+      ko:['통합 금융 구조 설계','SPV / SPC 설립 지원','전문 IR 피칭 패키지','법률·세무 검토 전과정','온라인 미팅 월 2회','6개월 사후 관리'],
+      en:['Full Financial Structure Design','SPV / SPC Formation Support','Professional IR Pitch Package','Full Legal & Tax Review','2 Monthly Online Meetings','6-Month Aftercare'],
+      ja:['統合金融構造設計','SPV / SPC設立支援','プロIRピッチパッケージ','法律·税務審査全過程','月2回オンラインMTG','6ヶ月アフターケア']
+    }
+  },
+  {
+    label: { ko:'대형 프로젝트', en:'Large-Scale Project', ja:'大規模プロジェクト' },
+    name:  { ko:'엔터프라이즈', en:'Enterprise', ja:'エンタープライズ' },
+    price: '$200,000',
+    sub:   { ko:'~ $499,999+ · 별도 협의', en:'~ $499,999+ · custom', ja:'~ $499,999+ · 別途協議' },
+    features: {
+      ko:['전략 수립부터 Exit까지 풀사이클','글로벌 플랫폼 STO 연계','다중 법역 법률·세무 통합 자문','전담 컨설턴트 팀 배정','월 정기 보고 및 모니터링','기간 제한 없는 지속 지원'],
+      en:['Full Cycle: Strategy to Exit','Global Platform STO Integration','Multi-Jurisdiction Legal & Tax','Dedicated Consultant Team','Monthly Reporting & Monitoring','Ongoing Support (No Time Limit)'],
+      ja:['戦略立案からExitまでフルサイクル','グローバルプラットフォームSTO連携','多法域法律·税務統合アドバイス','専任コンサルタントチーム配置','月次報告·モニタリング','期間制限なし継続サポート']
+    }
+  }
+];
+
+// ── 렌더 함수 ─────────────────────────────────────────────────────
+function getLang() {
+  return (typeof getSiteLang === 'function' ? getSiteLang() : null)
+      || localStorage.getItem('site-lang') || 'ko';
+}
+
+function tx(obj) {
+  const l = getLang(); return obj[l] || obj.ko;
+}
+
+function renderAll() {
+  const l = getLang();
+  const d = CS_I18N[l] || CS_I18N.ko;
+
+  // 정적 텍스트
+  const ids = ['heroTag','heroTitle','heroDesc','heroCta1','heroCta2',
+    'stat1Num','stat1Label','stat2Num','stat2Label','stat3Num','stat3Label','stat4Num','stat4Label',
+    'serviceTag','serviceTitle','serviceDesc','processTag','processTitle','processDesc',
+    'expertTag','expertTitle','expertDesc','tierTag','tierTitle','tierDesc',
+    'contactTag','contactTitle','contactDesc','navCta'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && d[id] !== undefined) el.innerHTML = d[id];
+  });
+
+  // 폼 placeholder 및 옵션 텍스트
+  document.querySelectorAll('[data-ph]').forEach(el => {
+    const key = 'ph.' + el.dataset.ph;
+    if (d[key]) {
+      if (el.tagName === 'OPTION') el.textContent = d[key];
+      else el.placeholder = d[key];
+    }
+  });
+  document.getElementById('fSubmit').textContent = d['ph.submit'];
+
+  // 서비스 카드
+  document.getElementById('serviceGrid').innerHTML = SERVICES.map(s => `
+    <div class="cs-service-card ${s.color}">
+      <div class="cs-service-icon icon-${s.color}">${s.icon}</div>
+      <span class="cs-service-tag tag-${s.color}">${tx(s.tag)}</span>
+      <div class="cs-service-title">${tx(s.title)}</div>
+      <div class="cs-service-desc">${tx(s.desc)}</div>
+      <div class="cs-service-items">${tx(s.items).map(i=>`<span class="cs-service-item">${i}</span>`).join('')}</div>
+    </div>
+  `).join('');
+
+  // 프로세스 단계
+  document.getElementById('processSteps').innerHTML = PROCESS.map(p => `
+    <div class="cs-process-step">
+      <div class="cs-process-num">${p.num}</div>
+      <div class="cs-process-step-title">${tx(p.title)}</div>
+      <div class="cs-process-step-desc">${tx(p.desc)}</div>
+    </div>
+  `).join('');
+
+  // 전문 역량
+  document.getElementById('expertGrid').innerHTML = EXPERTISE.map(e => `
+    <div class="cs-expertise-card">
+      <div class="cs-expertise-icon">${e.icon}</div>
+      <div>
+        <div class="cs-expertise-title">${tx(e.title)}</div>
+        <div class="cs-expertise-desc">${tx(e.desc)}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // 요금 티어
+  document.getElementById('tierGrid').innerHTML = TIERS.map(t => `
+    <div class="cs-tier${t.featured?' featured':''}">
+      <div class="cs-tier-label">${tx(t.label)}</div>
+      <div class="cs-tier-name">${tx(t.name)}</div>
+      <div class="cs-tier-price">${t.price}</div>
+      <div class="cs-tier-price-sub">${tx(t.sub)}</div>
+      <ul class="cs-tier-features">${tx(t.features).map(f=>`<li>${f}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+}
+
+// 폼 제출
+document.getElementById('csForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const l = getLang();
+  const d = CS_I18N[l] || CS_I18N.ko;
+  this.style.display = 'none';
+  const done = document.getElementById('csDone');
+  done.style.display = 'block';
+  document.getElementById('doneTitle').textContent = d.doneTitle;
+  document.getElementById('doneDesc').textContent = d.doneDesc;
+});
+
+renderAll();
+</script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/nav.js?v=2"></script>
+<script>
+(function() {
+  const _orig = window.applyLang;
+  window.applyLang = function(lang) {
+    if (_orig) _orig(lang);
+    renderAll();
+  };
+})();
+</script>
+</body>
+</html>

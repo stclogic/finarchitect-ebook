@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<!-- 소개서 페이지 — KO/EN/JA 3개국어 회사 소개 문서 -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소개서 — Finarchitect</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+.legal-hero {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 40%, #EC4899 100%);
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+}
+.legal-hero h1 { color: #fff; font-size: clamp(1.6rem,4vw,2.4rem); font-weight: 800; margin-bottom: .5rem; }
+.legal-hero p  { color: rgba(255,255,255,.7); font-size: .9rem; }
+.legal-body { max-width: 780px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+.legal-section { display: none; }
+.legal-section.active { display: block; }
+.legal-body h2 { font-size: 1.05rem; font-weight: 800; color: var(--dark); margin: 2rem 0 .6rem; }
+.legal-body h2:first-of-type { margin-top: 0; }
+.legal-body p, .legal-body li { font-size: .88rem; color: var(--text); line-height: 1.8; }
+.legal-body ul { padding-left: 1.4rem; margin: .4rem 0 .8rem; }
+.legal-body li { margin-bottom: .3rem; }
+.legal-highlight { background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; padding: .75rem 1rem; margin: 1rem 0; font-size: .85rem; color: var(--dark); line-height: 1.7; }
+
+.about-value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+.about-value-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.2rem;
+}
+.about-value-icon { font-size: 1.6rem; margin-bottom: .5rem; }
+.about-value-title { font-size: .88rem; font-weight: 800; color: var(--dark); margin-bottom: .3rem; }
+.about-value-desc { font-size: .78rem; color: var(--text2); line-height: 1.6; }
+
+.about-service-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: .9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.about-service-row:last-child { border-bottom: none; }
+.about-service-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: #EEF2FF; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.about-service-text h3 { font-size: .88rem; font-weight: 800; color: var(--dark); margin-bottom: .2rem; }
+.about-service-text p  { font-size: .78rem; color: var(--text2); line-height: 1.6; }
+
+.about-contact-box {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+.about-contact-box h3 { color: #fff; font-size: 1.1rem; font-weight: 800; margin-bottom: .5rem; }
+.about-contact-box p  { color: rgba(255,255,255,.8); font-size: .85rem; margin-bottom: 1rem; }
+.about-contact-box a  {
+  display: inline-block;
+  background: #fff;
+  color: var(--primary);
+  font-weight: 800;
+  font-size: .85rem;
+  padding: 10px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="landing.html" class="nav-logo">
+    <div class="nav-logo-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg></div>
+    finarchitect
+  </a>
+  <div class="nav-links">
+    <a href="landing.html" class="nav-link" data-i18n="nav.home">홈</a>
+    <a href="library.html" class="nav-link" data-i18n="nav.library">라이브러리</a>
+    <a href="forms.html" class="nav-link" data-i18n="nav.forms">서식</a>
+    <a href="consulting.html" class="nav-link" data-i18n="nav.consulting">컨설팅</a>
+    <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">요금제</a>
+  </div>
+  <div class="nav-actions">
+    <div class="lang-switcher">
+      <button class="ls-btn" data-lang="ko">KO</button>
+      <button class="ls-btn" data-lang="en">EN</button>
+      <button class="ls-btn" data-lang="ja">JA</button>
+    </div>
+    <button class="btn-login" data-i18n="nav.login">로그인</button>
+    <a href="pricing.html" class="btn-start" data-i18n="nav.start">시작하기</a>
+  </div>
+</nav>
+
+<div class="legal-hero">
+  <h1>소개서</h1>
+  <p>About Finarchitect</p>
+</div>
+
+
+<div class="legal-body">
+
+  <!-- ── 한국어 ── -->
+  <div class="legal-section active" id="legal-ko">
+
+    <h2>Finarchitect란</h2>
+    <p>Finarchitect는 STCLOGIC이 운영하는 금융 전문 교육·서식 플랫폼입니다. '금융은 감정이 아니라 구조다'라는 철학 아래, 복잡한 금융·법률·세무 지식을 누구나 실행 가능한 형태로 전달합니다.</p>
+    <p>저희는 단순한 정보 제공을 넘어, 학습(eBook) → 실행(서식 라이브러리) → 전략 수립(컨설팅)이 하나의 흐름으로 연결되는 플랫폼을 지향합니다.</p>
+
+    <h2>미션</h2>
+    <div class="legal-highlight">
+      금융 구조 설계의 언어를 민주화한다. 자본시장과 법률 체계에 대한 이해를 특정 집단의 전유물이 아닌, 모두가 접근 가능한 지식으로 만든다.
+    </div>
+
+    <h2>핵심 가치</h2>
+    <div class="about-value-grid">
+      <div class="about-value-card">
+        <div class="about-value-icon">⚖</div>
+        <div class="about-value-title">정확성</div>
+        <div class="about-value-desc">모든 콘텐츠는 현행 법령을 기준으로 작성되며, 법률·세무 전문가의 감수를 거칩니다.</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">🌐</div>
+        <div class="about-value-title">글로벌</div>
+        <div class="about-value-desc">한국어·영어·일본어 3개 언어로 제공되어 국경을 초월한 금융 지식 접근을 가능하게 합니다.</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">⚡</div>
+        <div class="about-value-title">실행력</div>
+        <div class="about-value-desc">배움에서 즉시 실행으로 이어지는 서식과 템플릿을 제공합니다.</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">🔒</div>
+        <div class="about-value-title">신뢰</div>
+        <div class="about-value-desc">결제·데이터 처리에서 투명성을 최우선으로 합니다.</div>
+      </div>
+    </div>
+
+    <h2>서비스 구성</h2>
+    <div>
+      <div class="about-service-row">
+        <div class="about-service-icon">📖</div>
+        <div class="about-service-text">
+          <h3>eBook 라이브러리</h3>
+          <p>금융 구조 설계, 이민 전략, PF·SPV·STO 등 전문 분야의 eBook을 한국어·영어·일본어로 제공합니다. Vol.1 「구조로 돈을 설계하는 사람들」은 현재 3개국어로 출판 완료되었습니다.</p>
+        </div>
+      </div>
+      <div class="about-service-row">
+        <div class="about-service-icon">📄</div>
+        <div class="about-service-text">
+          <h3>서식 라이브러리</h3>
+          <p>법률·금융·세무·노무 분야 250종 이상의 서식 템플릿(DOCX·PDF·HWP)을 제공합니다. 근로계약서, 임대차계약서, NDA, 투자계약서 등 실무에 즉시 적용 가능한 서식입니다.</p>
+        </div>
+      </div>
+      <div class="about-service-row">
+        <div class="about-service-icon">💼</div>
+        <div class="about-service-text">
+          <h3>금융 컨설팅</h3>
+          <p>PF(프로젝트 파이낸싱), SPV, STO, 투자 유치, 법인 설립, 이민 자산 구조 설계 등 프로젝트별 맞춤 전략 수립 서비스를 제공합니다. 컨설팅 비용: $9,999 ~ $499,999 (프로젝트 규모에 따라 협의).</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>이용 약관 및 법적 고지</h2>
+    <p>본 플랫폼에서 제공하는 eBook 및 서식은 정보 제공 및 참고 목적으로 제작되었습니다. 제공되는 서식은 법적 효력을 보장하지 않으며, 중요한 법률 행위에는 반드시 공인된 법률 전문가(변호사, 법무사 등)의 확인을 받으시기 바랍니다. 세무 관련 서식은 최신 세법을 기준으로 작성되었으나, 개인별 상황에 따라 달라질 수 있으므로 세무사 또는 공인회계사의 자문을 권장합니다.</p>
+
+    <div class="about-contact-box">
+      <h3>문의하기</h3>
+      <p>서비스·컨설팅·제휴 관련 모든 문의는 아래 이메일로 연락 주세요. 영업일 1~2일 내 답변드립니다.</p>
+      <a href="mailto:stclogic@gmail.com">stclogic@gmail.com</a>
+    </div>
+  </div>
+
+  <!-- ── English ── -->
+  <div class="legal-section" id="legal-en">
+
+    <h2>About Finarchitect</h2>
+    <p>Finarchitect is a professional financial education and forms platform operated by STCLOGIC. Built on the philosophy that <em>"Finance is structure, not emotion,"</em> we translate complex financial, legal, and tax knowledge into immediately actionable resources.</p>
+    <p>We go beyond information delivery — our platform creates a seamless flow from learning (eBook) to execution (Forms Library) to strategic implementation (Consulting).</p>
+
+    <h2>Mission</h2>
+    <div class="legal-highlight">
+      To democratize the language of financial structure design — making capital market knowledge and legal frameworks accessible to everyone, not just insiders.
+    </div>
+
+    <h2>Core Values</h2>
+    <div class="about-value-grid">
+      <div class="about-value-card">
+        <div class="about-value-icon">⚖</div>
+        <div class="about-value-title">Accuracy</div>
+        <div class="about-value-desc">All content is based on current law and reviewed by legal and tax professionals.</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">🌐</div>
+        <div class="about-value-title">Global</div>
+        <div class="about-value-desc">Available in Korean, English, and Japanese — enabling borderless access to financial knowledge.</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">⚡</div>
+        <div class="about-value-title">Actionability</div>
+        <div class="about-value-desc">We provide templates and forms that bridge learning and immediate execution.</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">🔒</div>
+        <div class="about-value-title">Trust</div>
+        <div class="about-value-desc">Transparency in payments, data handling, and content quality is our top priority.</div>
+      </div>
+    </div>
+
+    <h2>Our Services</h2>
+    <div>
+      <div class="about-service-row">
+        <div class="about-service-icon">📖</div>
+        <div class="about-service-text">
+          <h3>eBook Library</h3>
+          <p>Professional eBooks covering financial structure design, immigration strategy for HNWIs, PF·SPV·STO, and more — published in Korean, English, and Japanese. Vol.1 "Money Architecture" is now available in all three languages.</p>
+        </div>
+      </div>
+      <div class="about-service-row">
+        <div class="about-service-icon">📄</div>
+        <div class="about-service-text">
+          <h3>Forms Library</h3>
+          <p>Over 250 ready-to-use form templates (DOCX · PDF · HWP) across legal, financial, tax, and labor categories — including employment contracts, lease agreements, NDAs, and investment term sheets.</p>
+        </div>
+      </div>
+      <div class="about-service-row">
+        <div class="about-service-icon">💼</div>
+        <div class="about-service-text">
+          <h3>Financial Consulting</h3>
+          <p>Bespoke financial structure strategy: project finance (PF), SPV design, STO structuring, investor relations, corporate formation, and HNWI immigration asset design. Fees: $9,999 – $499,999, negotiated by project scope.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Legal Disclaimer</h2>
+    <p>The eBooks and form templates provided on this platform are for informational and reference purposes only. They do not constitute legal advice and do not guarantee legal validity in any specific jurisdiction. For important legal transactions, always consult a licensed attorney or qualified professional. Tax-related forms are prepared based on current tax law, but individual circumstances vary — please consult a certified tax professional before use.</p>
+
+    <div class="about-contact-box">
+      <h3>Get in Touch</h3>
+      <p>For service inquiries, consulting, or partnership discussions — reach us anytime. We respond within 1–2 business days.</p>
+      <a href="mailto:stclogic@gmail.com">stclogic@gmail.com</a>
+    </div>
+  </div>
+
+  <!-- ── 日本語 ── -->
+  <div class="legal-section" id="legal-ja">
+
+    <h2>Finarchitectとは</h2>
+    <p>FinarchitectはSTCLOGICが運営する金融専門の教育・書式プラットフォームです。「金融は感情ではなく、構造だ」という哲学のもと、複雑な金融・法律・税務の知識を誰もがすぐに実践できる形で提供します。</p>
+    <p>単なる情報提供にとどまらず、学習（eBook）→ 実行（書式ライブラリ）→ 戦略立案（コンサルティング）がひとつの流れでつながるプラットフォームを目指しています。</p>
+
+    <h2>ミッション</h2>
+    <div class="legal-highlight">
+      金融構造設計の言語を民主化する。資本市場と法律体系への理解を、一部の専門家だけのものでなく、すべての人がアクセスできる知識にする。
+    </div>
+
+    <h2>コアバリュー</h2>
+    <div class="about-value-grid">
+      <div class="about-value-card">
+        <div class="about-value-icon">⚖</div>
+        <div class="about-value-title">正確性</div>
+        <div class="about-value-desc">すべてのコンテンツは現行法令に基づき作成され、法律・税務の専門家による監修を経ています。</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">🌐</div>
+        <div class="about-value-title">グローバル</div>
+        <div class="about-value-desc">韓国語・英語・日本語の3言語で提供し、国境を越えた金融知識へのアクセスを実現します。</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">⚡</div>
+        <div class="about-value-title">実行力</div>
+        <div class="about-value-desc">学びからすぐに実行できる書式とテンプレートを提供します。</div>
+      </div>
+      <div class="about-value-card">
+        <div class="about-value-icon">🔒</div>
+        <div class="about-value-title">信頼</div>
+        <div class="about-value-desc">決済・データ処理・コンテンツ品質において、透明性を最優先にしています。</div>
+      </div>
+    </div>
+
+    <h2>サービス内容</h2>
+    <div>
+      <div class="about-service-row">
+        <div class="about-service-icon">📖</div>
+        <div class="about-service-text">
+          <h3>eBookライブラリ</h3>
+          <p>金融構造設計、富裕層の移民戦略、PF・SPV・STOなど専門分野のeBookを韓国語・英語・日本語で提供します。Vol.1「マネー・アーキテクチャー」は現在3言語で出版済みです。</p>
+        </div>
+      </div>
+      <div class="about-service-row">
+        <div class="about-service-icon">📄</div>
+        <div class="about-service-text">
+          <h3>書式ライブラリ</h3>
+          <p>法律・金融・税務・労務分野の250種類以上の書式テンプレート（DOCX・PDF・HWP）を提供します。雇用契約書、賃貸借契約書、NDA、投資契約書など、すぐに実務で活用できる書式です。</p>
+        </div>
+      </div>
+      <div class="about-service-row">
+        <div class="about-service-icon">💼</div>
+        <div class="about-service-text">
+          <h3>金融コンサルティング</h3>
+          <p>PF（プロジェクトファイナンス）、SPV設計、STO組成、投資誘致、法人設立、富裕層の移民資産設計など、プロジェクト別の戦略立案サービスを提供します。費用：$9,999〜$499,999（プロジェクト規模により協議）。</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>法的免責事項</h2>
+    <p>本プラットフォームで提供するeBookおよび書式テンプレートは、情報提供・参考資料としてのみご利用いただくものです。法的効力を保証するものではなく、重要な法律行為を行う前には必ず弁護士・司法書士・行政書士等の有資格専門家にご相談ください。税務関連の書式は最新の税法を基準に作成されていますが、個別の状況により異なる場合がありますので、税理士または公認会計士のアドバイスを受けることをお勧めします。</p>
+
+    <div class="about-contact-box">
+      <h3>お問い合わせ</h3>
+      <p>サービス・コンサルティング・提携に関するご相談は、下記メールにてお気軽にお問い合わせください。営業日1〜2日以内にご返答します。</p>
+      <a href="mailto:stclogic@gmail.com">stclogic@gmail.com</a>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span data-i18n="footer.copy">© 2025 Finarchitect. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="terms.html" data-i18n="footer.terms">이용약관</a>
+      <a href="privacy.html" data-i18n="footer.privacy">개인정보처리방침</a>
+      <a href="about.html" data-i18n="footer.about">소개서</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/nav.js?v=2"></script>
+<script>
+function switchLegalLang(lang) {
+  document.querySelectorAll('.legal-section').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('legal-' + lang) || document.getElementById('legal-ko');
+  if (target) target.classList.add('active');
+}
+const _origApplyLang = applyLang;
+applyLang = function(lang) {
+  _origApplyLang(lang);
+  switchLegalLang(lang);
+};
+switchLegalLang(localStorage.getItem('site-lang') || 'ko');
+</script>
+</body>
+</html>

@@ -12,6 +12,8 @@
 <script>
   (async function () {
     try {
+      // 로컬 개발 환경은 전체 열람 허용
+      if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { return; }
       const user = JSON.parse(localStorage.getItem('site-user') || 'null');
       // 미로그인 → 무료 챕터만 허용 (IS_FREE_ACCESS = true)
       if (!user) { window.IS_FREE_ACCESS = true; return; }

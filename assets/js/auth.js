@@ -181,10 +181,17 @@
       const btn = document.getElementById('loginBtn');
       const err = document.getElementById('loginError');
       btn.disabled = true; btn.textContent = '로그인 중...'; err.textContent = '';
+      const email = document.getElementById('loginEmail').value.trim();
+      // 로컬 개발 환경: stclogic@gmail.com으로 즉시 바이패스
+      if ((location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+          && email === 'stclogic@gmail.com') {
+        onAuthSuccess({ id: 'local-dev', email, user_metadata: { name: 'stclogic' } });
+        return;
+      }
       try {
         const sb = await getSupabase();
         const { data, error } = await sb.auth.signInWithPassword({
-          email: document.getElementById('loginEmail').value,
+          email,
           password: document.getElementById('loginPw').value,
         });
         if (error) throw error;

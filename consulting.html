@@ -566,12 +566,14 @@
     <div class="cs-section-tag" style="color:rgba(255,255,255,.8);" id="contactTag">FREE CONSULTATION</div>
     <div class="cs-section-title" id="contactTitle">무료 초기 상담 신청</div>
     <div class="cs-section-desc" id="contactDesc">프로젝트 개요를 남겨주시면 영업일 1~2일 내 담당자가 연락드립니다.</div>
-    <form class="cs-form" id="csForm">
+    <form class="cs-form" id="csForm" name="consulting-inquiry" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="consulting-inquiry">
+      <input type="hidden" name="bot-field" style="display:none">
       <div class="cs-form-row">
-        <input type="text"  id="fName"  placeholder="" data-ph="name" required>
-        <input type="email" id="fEmail" placeholder="" data-ph="email" required>
+        <input type="text"  id="fName"  name="name"    placeholder="" data-ph="name" required>
+        <input type="email" id="fEmail" name="email"   placeholder="" data-ph="email" required>
       </div>
-      <select id="fService" required>
+      <select id="fService" name="service" required>
         <option value="" disabled selected data-ph="service"></option>
         <option value="pf"   data-ph="opt.pf"></option>
         <option value="spv"  data-ph="opt.spv"></option>
@@ -581,14 +583,14 @@
         <option value="exit" data-ph="opt.exit"></option>
         <option value="etc"  data-ph="opt.etc"></option>
       </select>
-      <select id="fBudget" required>
+      <select id="fBudget" name="budget" required>
         <option value="" disabled selected data-ph="budget"></option>
         <option value="a" data-ph="opt.b1"></option>
         <option value="b" data-ph="opt.b2"></option>
         <option value="c" data-ph="opt.b3"></option>
         <option value="d" data-ph="opt.b4"></option>
       </select>
-      <textarea id="fMsg" placeholder="" data-ph="msg" rows="4"></textarea>
+      <textarea id="fMsg" name="message" placeholder="" data-ph="msg" rows="4"></textarea>
       <button type="submit" class="cs-form-submit" id="fSubmit"></button>
     </form>
     <div class="cs-form-done" id="csDone">
@@ -950,16 +952,32 @@ function renderAll() {
   `).join('');
 }
 
-// 폼 제출
-document.getElementById('csForm').addEventListener('submit', function(e) {
+// 폼 제출 — Netlify Forms POST
+document.getElementById('csForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const l = getLang();
-  const d = CS_I18N[l] || CS_I18N.ko;
-  this.style.display = 'none';
-  const done = document.getElementById('csDone');
-  done.style.display = 'block';
-  document.getElementById('doneTitle').textContent = d.doneTitle;
-  document.getElementById('doneDesc').textContent = d.doneDesc;
+  const btn = document.getElementById('fSubmit');
+  btn.disabled = true;
+  btn.textContent = '전송 중...';
+
+  try {
+    await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(this)).toString()
+    });
+    const l = getLang();
+    const d = CS_I18N[l] || CS_I18N.ko;
+    this.style.display = 'none';
+    const done = document.getElementById('csDone');
+    done.style.display = 'block';
+    document.getElementById('doneTitle').textContent = d.doneTitle;
+    document.getElementById('doneDesc').textContent = d.doneDesc;
+  } catch (err) {
+    btn.disabled = false;
+    const l = getLang();
+    btn.textContent = CS_I18N[l]['ph.submit'] || '무료 상담 신청하기';
+    alert('전송 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+  }
 });
 
 renderAll();

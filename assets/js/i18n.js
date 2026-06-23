@@ -60,8 +60,8 @@ const SITE_I18N = {
 
     // LANDING — youtube
     'yt.tag': 'VIDEO GUIDE',
-    'yt.title': '거래 전 반드시 알아야 할 것들',
-    'yt.desc': '실제 거래에서 발생하는 법적 리스크와 금융 함정을 영상으로 확인하세요.<br>전문가가 직접 사례를 분석합니다.',
+    'yt.title': '책을 읽기 전, 영상으로 먼저 만나보세요',
+    'yt.desc': '저자가 직접 설명하는 핵심 개념과 집필 배경.<br>영상으로 흐름을 잡은 뒤 eBook을 읽으면 이해가 훨씬 깊어집니다.',
     'yt.soon': '영상 준비 중',
     'yt1.tag': '⚠ 계약 리스크',
     'yt1.title': '계약서 한 줄이 수천만 원을 날린다',
@@ -224,8 +224,8 @@ const SITE_I18N = {
     'workflow.step3.desc': 'Finalize legal, tax, and financial documents to build your actual financial structure.',
 
     'yt.tag': 'VIDEO GUIDE',
-    'yt.title': 'What You Must Know Before Any Deal',
-    'yt.desc': 'Watch experts analyze legal risks and financial traps from real transactions.<br>Case-by-case breakdowns.',
+    'yt.title': 'Watch Before You Read',
+    'yt.desc': 'The author explains key concepts and the story behind each book.<br>Grasp the big picture first — your reading will go much deeper.',
     'yt.soon': 'Video coming soon',
     'yt1.tag': '⚠ Contract Risk',
     'yt1.title': 'One Line in a Contract Can Cost Millions',
@@ -382,8 +382,8 @@ const SITE_I18N = {
     'workflow.step3.desc': '法律・税務・財務書類を完成させ、実際の金融構造を構築します。',
 
     'yt.tag': 'VIDEO GUIDE',
-    'yt.title': '取引前に必ず知っておくべきこと',
-    'yt.desc': '実際の取引で発生する法的リスクと金融の落とし穴を動画で確認してください。<br>専門家が実際の事例を分析します。',
+    'yt.title': '読む前に、まず動画でご覧ください',
+    'yt.desc': '著者が直接語る核心概念と執筆の背景。<br>動画で全体の流れをつかんでから読むと、理解がぐっと深まります。',
     'yt.soon': '動画準備中',
     'yt1.tag': '⚠ 契約リスク',
     'yt1.title': '契約書の一行が数千万円を失わせる',

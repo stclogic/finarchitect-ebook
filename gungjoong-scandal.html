@@ -1,0 +1,755 @@
+<!-- 궁중 스캔들 실록 무료 eBook 독자 페이지 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>궁중 스캔들 실록 — Book Coupling</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { background: #faf7f4; }
+.reader-wrap {
+  max-width: 780px;
+  margin: 2.5rem auto 6rem;
+  padding: 0 1.5rem;
+  font-family: 'Noto Serif KR', 'Apple SD Gothic Neo', serif;
+  color: #2e1b1b;
+  line-height: 1.9;
+}
+
+.book-cover-header {
+  text-align: center;
+  padding: 3rem 1.5rem 2.5rem;
+  background: linear-gradient(160deg, #3d0c0c 0%, #7a1f1f 60%, #a83232 100%);
+  border-radius: 20px;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.book-cover-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 30% 30%, rgba(255,200,150,0.1) 0%, transparent 70%);
+}
+.book-cover-img {
+  width: 240px;
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+.book-cover-header h1 {
+  font-size: clamp(1.3rem, 4vw, 1.85rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.4rem;
+  position: relative;
+  z-index: 1;
+}
+.book-cover-header .subtitle {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.65);
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+.book-cover-header .free-badge {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 5px 18px;
+  background: #c0392b;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 1;
+}
+
+.toc-box {
+  background: #fff;
+  border: 1px solid #e4d4d0;
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 3rem;
+}
+.toc-box h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #7a2929;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+.toc-list { list-style: none; padding: 0; margin: 0; }
+.toc-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed #e4d4d0;
+  font-size: 0.88rem;
+  color: #5e2e2e;
+  cursor: pointer;
+  transition: color .15s;
+}
+.toc-list li:last-child { border-bottom: none; }
+.toc-list li:hover { color: #c0392b; }
+.toc-list li .toc-num {
+  font-size: 0.72rem;
+  color: #c8a8a8;
+  flex-shrink: 0;
+  width: 28px;
+}
+.toc-list li a { color: inherit; text-decoration: none; }
+
+.chapter-section {
+  background: #fff;
+  border: 1px solid #e2d0cc;
+  border-radius: 16px;
+  padding: 2.5rem 2.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.chapter-section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #7c2a2a;
+  margin-bottom: 0.4rem;
+}
+.chapter-section .ch-subtitle {
+  font-size: 0.88rem;
+  color: #9e6868;
+  font-style: italic;
+  margin-bottom: 1.75rem;
+}
+.chapter-section hr {
+  border: none;
+  border-top: 1px dashed #c8b0a8;
+  margin: 1.5rem 0;
+}
+.chapter-section h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #752c2c;
+  margin: 1.75rem 0 0.6rem;
+}
+.chapter-section h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #6b2f23;
+  margin: 1.25rem 0 0.5rem;
+}
+.chapter-section p {
+  margin: 0 0 1rem;
+  font-size: 0.94rem;
+}
+.chapter-section blockquote {
+  border-left: 4px solid #c8a8a0;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  background: #fdf7f4;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: #7a4a4a;
+}
+.chapter-section ul {
+  padding-left: 1.5rem;
+  color: #5f3535;
+  margin: 0.75rem 0 1rem;
+}
+.chapter-section ul li { margin-bottom: 0.5rem; font-size: 0.92rem; }
+.chapter-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.88rem;
+}
+.chapter-section th {
+  background: #f5e8e4;
+  color: #7a2929;
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid #e0c8c4;
+}
+.chapter-section td {
+  padding: 8px 12px;
+  border: 1px solid #e0c8c4;
+  color: #5e2e2e;
+}
+.chapter-section tr:nth-child(even) td { background: #fdf7f4; }
+
+.back-bar {
+  max-width: 780px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.5rem;
+}
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text2);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--white);
+  transition: all .15s;
+}
+.btn-back:hover { border-color: #c0392b; color: #c0392b; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="landing.html" class="nav-logo">
+    <div class="nav-logo-icon"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEhTRH1ue_k8m5K50HkxS1r7OTUPQ3kGFa3jjvYtTeXcexrNd_LKV8SyVVXRj0rLiVSjiUAMjXidi92y_JngIIBNLqEyzpuGw_OcWhakb4djvEB2jDrPk2nrjyKmnBSly0-Uq8YqwmvNdlgnS0MgDVYmSSGLrO-VKndzuodO27f31bj1emME5YhWjv8Wx7i7" alt="bookcoupling logo"></div>
+    bookcoupling
+  </a>
+  <div class="nav-links">
+    <a href="landing.html" class="nav-link">홈</a>
+    <a href="library.html" class="nav-link active">라이브러리</a>
+    <a href="forms.html" class="nav-link">서식</a>
+    <a href="consulting.html" class="nav-link">컨설팅</a>
+    <a href="pricing.html" class="nav-link">요금제</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-login" onclick="openAuthModal('login')">로그인</button>
+    <a href="pricing.html" class="btn-start">시작하기</a>
+  </div>
+</nav>
+
+<div class="back-bar">
+  <a href="library.html" class="btn-back">← 라이브러리로</a>
+</div>
+
+<div class="reader-wrap">
+
+  <div class="book-cover-header">
+    <img class="book-cover-img"
+      src="https://blogger.googleusercontent.com/img/a/AVvXsEi_Mz8Ra0IIKXFiXQMkXT8rQDsTCR2HBoE_FmqGG8HpazxV-5KAmGwrby5Mxa1TaHU-O7rGPjk0WfL2eYjQpQ71NBXE3A-RBeenVutcxzPQSy1_EfKHpbnLfc2LLzMRG0RigjV2A2rWfaXjb-y43jWGcx0AF78Z4x_gLmSijgz_RB_FSRjll8xpuvxIUfJ8"
+      alt="궁중 스캔들 실록 표지">
+    <h1>《궁중 스캔들 실록》</h1>
+    <p class="subtitle">왕실이라 쓰고 사람이라 읽는다 — 풍류선생</p>
+    <span class="free-badge">📜 FREE</span>
+  </div>
+
+  <div class="toc-box">
+    <h2>📋 목차</h2>
+    <ul class="toc-list">
+      <li><span class="toc-num">01</span><a href="#ch1">궁중 스캔들 실록 — 왕비와 후궁, 그 질투의 기류</a></li>
+      <li><span class="toc-num">02</span><a href="#ch2">비밀야사 — 궁녀의 뒷모습에 담긴 조선의 숨결</a></li>
+      <li><span class="toc-num">03</span><a href="#ch3">비밀야사 속편 — 상궁의 암호와 궁녀의 미인계</a></li>
+      <li><span class="toc-num">04</span><a href="#ch4">야사비첩 특별편 — 운현각 밤의 실태 보고서</a></li>
+      <li><span class="toc-num">05</span><a href="#ch5">비망록 금침편 — 잠자리 위의 권력과 정사</a></li>
+      <li><span class="toc-num">06</span><a href="#ch6">비밀편 — 궁녀들의 일기장 발췌록</a></li>
+      <li><span class="toc-num">07</span><a href="#ch7">폐비동맹실록 — 비밀 정사와 복수의 서사</a></li>
+      <li><span class="toc-num">08</span><a href="#ch8">비선비첩 속편 — 폐비들의 연합과 복수의 장막</a></li>
+      <li><span class="toc-num">09</span><a href="#ch9">비밀실록 — 조선의 여인 권력 3파전</a></li>
+      <li><span class="toc-num">10</span><a href="#ch10">조선 미인계 총람 — 웃음 하나로 천하를 흔들다</a></li>
+      <li><span class="toc-num">11</span><a href="#ch11">비밀조직열전 — 매화방의 실체와 그 밤의 작전</a></li>
+      <li><span class="toc-num">12</span><a href="#ch12">비밀실록 속편 — 왕의 침소 배정 시스템</a></li>
+      <li><span class="toc-num">13</span><a href="#ch13">금침배정 실록 — 오늘 밤 누구의 방인가</a></li>
+      <li><span class="toc-num">14</span><a href="#ch14">비밀야담 — 금침 위 후궁들의 밀담록</a></li>
+      <li><span class="toc-num">15</span><a href="#ch15">궁중 라스트 댄스 — 마지막 밤을 청한 여자들</a></li>
+      <li><span class="toc-num">16</span><a href="#ch16">궁녀의 뒷마음첩 — 떠난 이들의 말 없는 편지</a></li>
+      <li><span class="toc-num">17</span><a href="#ch17">기억에 남은 그녀의 흔적 — 왕의 손에 닿은 마지막 물건들</a></li>
+      <li><span class="toc-num">18</span><a href="#ch18">조선 회고록 — 내가 잊지 못한 그 순간</a></li>
+      <li><span class="toc-num">19</span><a href="#ch19">조선 진심기 — 향기가 아닌 마음에 취한 사내</a></li>
+      <li><span class="toc-num">20</span><a href="#ch20">궁중 스캔들 실록 마지막 장</a></li>
+    </ul>
+  </div>
+
+  <!-- 제1편 -->
+  <div class="chapter-section" id="ch1">
+    <h2>📜 제1편 — 궁중 스캔들 실록</h2>
+    <p class="ch-subtitle">왕실이라 쓰고 사람이라 읽는다 / "금침 속엔 진심이 없고, 담장 너머엔 사랑이 있었도다"</p>
+    <hr>
+    <h3>제1장 — 왕비와 후궁, 그 질투의 기류</h3>
+    <p>"왕비는 법이요, 후궁은 욕망이었소. 그러나 욕망은 언제나 법을 무너뜨릴 줄 알았소."</p>
+    <p>궁궐에서는 사랑도 신분을 보고 내렸으나,<br>
+    왕의 눈길 한 줄기가 바뀌면 후궁이 용포를 노렸고,<br>
+    왕비는 책봉 대신 침묵으로 왕을 조종했소.</p>
+    <p><strong>스캔들 1: "침소를 나누는 순서에 암투가 있다"</strong><br>
+    매주 화요일이면 상궁들 속닥였소.<br>
+    "오늘 밤은 윤씨가 들겠다더라."<br>
+    "허면 민씨가 또 폐색이겠다…"<br>
+    그리고 민씨는 그 밤에, "약탕기 속 약재를 살짝 바꾸었다"는 소문을 남기고 사라졌소…</p>
+    <h3>제2장 — 세자빈과 세자의 불꽃 싸움</h3>
+    <p>세자는 충직했고, 세자빈은 정숙했으나—<br>
+    정작 부부의 마음엔 정이 없었소.<br>
+    다만 조정과 사가(私家)의 체면이 그들을 붙잡았을 뿐.</p>
+    <p><strong>스캔들 2: "세자가 궁녀에게 눈을 주었다"</strong><br>
+    은밀한 밤, 문풍지 너머에서 세자의 음성 들려왔소.<br>
+    "궁녀라 하여도… 마음은 백성이 아니오. 난 마음을 따르려 하오."<br>
+    결국 세자빈, 병을 핑계 삼아 친정으로 돌아가고—<br>
+    궁 안엔 "세손은 궁녀 소생이라더라"는 풍문만 남았소.</p>
+    <h3>제3장 — 대감마님의 숨겨진 연모</h3>
+    <p>조정에서 '강직'이라 불리던 대감 하나,<br>
+    그러나 늦은 밤마다 장의문 너머 나인 하나를 찾았소.</p>
+    <p><strong>스캔들 3: "상소문보다 더 길었던 연서(戀書)"</strong><br>
+    "그댈 보고도 참아야 한다면, 이 벼슬은 내게 족쇄일 뿐이오."</p>
+    <p>하지만 나인의 신분으로는 그를 만날 수 없었고,<br>
+    그녀는 스스로 궁을 떠나 불교로 귀의했다 하였소.<br>
+    그리고 대감은 다시는 글을 쓰지 않았다고—<br>
+    오직 남긴 것은 연서 뭉치 세 권. <em>'비밀일기첩 – 홍씨 나인을 위하여'</em></p>
+    <h3>제4장 — 왕의 형과 외척의 밀회</h3>
+    <p>"피를 나눈 형제라 하나, 왕좌 앞에선 모두가 서로의 칼집이었소."</p>
+    <p><strong>스캔들 4: "유배지에서 꽃이 피었다"</strong><br>
+    두 사람은 격식을 버리고 서로를 편지로 불렀소.<br>
+    그 편지엔 궁서체로 적혀 있었소:<br>
+    "궁은 감옥이었고, 유배지는 당신이 있어 궁궐 같소이다."</p>
+    <p>훗날, 편지가 발각되어 왕비는 눈물로 고모의 추방을 청했고,<br>
+    그 이후로 왕은 단 한 번도 의왕을 입에 올리지 않았소.</p>
+  </div>
+
+  <!-- 제2편 -->
+  <div class="chapter-section" id="ch2">
+    <h2>👘 제2편 — 비밀야사</h2>
+    <p class="ch-subtitle">궁녀의 뒷모습에 담긴 조선의 숨결 / "궁중이 조용했다면, 그건 거짓이었소."</p>
+    <hr>
+    <h3>1장 — 궁녀의 궁댕이란 무엇인가</h3>
+    <p>궁녀의 궁댕이는 단순한 엉덩이가 아니오.<br>
+    그건 권력에 들이밀지 못한 자유,<br>
+    금침 위를 걸으며도 허리 한번 못 펴 본 인내,<br>
+    그리고… 밤마다 궁중 어딘가서 울려 퍼지는 작은 반항이었소.</p>
+    <p>그 곡선은<br>
+    단아와 농염 사이,<br>
+    신분과 감정 사이,<br>
+    명령과 욕망 사이에서 만든 완곡한 곡선이었소.</p>
+    <h3>2장 — 어느 밤, 뒤태 하나가 흔든 한 사내</h3>
+    <p>그날 밤,<br>
+    궁녀 홍씨는 국화 향을 맡으며 수라간 앞을 지나갔소.<br>
+    허리춤에서 살짝 흘러내린 고름과<br>
+    가마솥 열기 머금은 뒤태는—</p>
+    <p>대감 하나를 죽을 때까지 눈물 짓게 만들었소.<br>
+    그는 후에 이렇게 술회했더이다:<br>
+    "그댄 나를 본 적 없을 것이오.<br>
+    허나 그대의 뒷모습이<br>
+    내 평생 중 가장 선명한 앞모습이었소."</p>
+    <h3>3장 — 궁녀들의 비밀스런 '걸음의 언어'</h3>
+    <p>상궁들은 말보다 걸음으로 신호를 보냈소.<br>
+    느린 발걸음은 "들어오라"는 뜻이었고,<br>
+    빠른 걸음은 "지금은 위험하다"는 뜻이었소.</p>
+    <p>그리고 가만히 서서 등을 보이는 것… 그것이 '허락'이었소.<br>
+    그 순간, 대감들은 숨을 죽이고, 상궁들은 속삭였소:</p>
+    <blockquote>"그댄 아직 고개를 돌릴 자격이 없소.<br>
+    허나 이 뒷모습을 기억하시오.<br>
+    조만간… 정면도 허락되리이다."</blockquote>
+    <h3>4장 — 왕조차 설렜던 어느 궁녀의 퇴장</h3>
+    <p>조선 제13대 임금이 연회 자리에서<br>
+    궁녀 하나가 국자 하나 들고 물러나는 뒷모습을 보고—<br>
+    저렇게 말했소.</p>
+    <p>"등 굽은 여인 하나가<br>
+    내 심장을 일으켜 세우는구나."</p>
+    <p>그 궁녀, 훗날 내명부 기록에서 사라졌으나,<br>
+    조선의 궁담(宮談)에는<br>
+    <strong>'국자 하나로 왕을 휘어잡은 여자'</strong>라 전해졌소이다.</p>
+    <p>이제야 그대의 밤잠도<br>
+    궁녀의 걸음소리 따라 부드럽게 내려앉을 것이오.</p>
+    <p><em>뒷모습이 궁금하다면,<br>
+    앞모습은 어디쯤 감춰두셨사옵니까?</em></p>
+  </div>
+
+  <!-- 제3편 -->
+  <div class="chapter-section" id="ch3">
+    <h2>🌸 제3편 — 비밀야사 속편</h2>
+    <p class="ch-subtitle">상궁의 암호와 궁녀의 미인계 / "말보다 눈짓이 빠르고, 손놀림은 첩보보다 치명적이었소."</p>
+    <hr>
+    <h3>1장 — 암호는 말이 아니오, '물건'이었소</h3>
+    <p>궁녀들끼리 대화를 나눌 때 직접 말을 섞는 일은 드물었소.<br>
+    그들은 항아리 뚜껑의 방향,<br>
+    휘장 속 촛불의 깜빡임,<br>
+    밥상에 놓인 배추김치의 수로 소통했소이다.</p>
+    <p><strong>암호 예시:</strong><br>
+    수라상에 깍두기 3조각 → "지금은 위험, 방자 따라붙음"<br>
+    호롱불 왼쪽 바람망으로 살짝 기울기 → "방앗간 쪽 길로 우회하시오."</p>
+    <p>상궁 홍씨는 늘 말없이 행동했으나,<br>
+    그녀의 손짓 하나에 내금위장 셋이 움직였고,<br>
+    댕기 끄트머리 매듭이 풀리면<br>
+    <strong>'그 밤에 일이 벌어진다는 신호'</strong>였소이다.</p>
+    <h3>2장 — 미인계, 그것은 '말의 춤'이었소</h3>
+    <p>조선의 미인계란<br>
+    드러내지 않고 흔들고,<br>
+    웃지 않되 설레게 하며,<br>
+    물러나면서도 끌리는 기법이었소.</p>
+    <p><strong>신호 해석:</strong><br>
+    눈 아래 두세 번 떨기 → 관심 있음<br>
+    물 따라주며 손등 스치기 → 은밀한 허락<br>
+    괜히 옷고름을 만지작 → 심중에 그대를 품었소</p>
+    <p>궁녀 중 유씨 하나,<br>
+    말 한마디 없었으되<br>
+    그저 대감의 찻잔에 홍매를 띄워주고 돌아섰다 하오.</p>
+    <p>그 대감,<br>
+    일주일 뒤 그 찻잔만 쳐다보다 관직을 반납하고 낙향했다더이다.</p>
+    <h3>3장 — 정사를 흐트러뜨린 치명적 연기술</h3>
+    <p>한 궁녀, 연기를 병으로 가장하여<br>
+    매번 입궐하는 의원을 통해 정보를 빼냈고,<br>
+    또 다른 궁녀는 글을 모르던 척하며 세자의 연서를 외워 전달했소.</p>
+    <p><em>그녀의 전략:</em><br>
+    "소인이 무식하다 하시며,<br>
+    글자 대신 그대의 목소리로만 배우고 싶사옵니다."</p>
+    <p>그 말에 세자는 그녀의 손등에 시 한 수를 읊었고,<br>
+    그 궁녀는 손등을 감싸 안으며 속으로 되뇌었소:<br>
+    <strong>"이 글귀 하나로, 조선을 뒤집을 것이다."</strong></p>
+    <h3>4장 — 마지막의 '그녀들만의 연합'</h3>
+    <p>역사는 말하지 않았지만,<br>
+    궁중엔 실제로 궁녀들의 비밀 동맹이 있었소.</p>
+    <p>그 이름도 <strong>'매화방'</strong> —<br>
+    나인, 상궁, 침방, 수라간 여인들이 조용히 연결된 비선 조직이었소이다.</p>
+    <p><strong>그들의 원칙은 단 하나.</strong><br>
+    "임금을 흔드는 건 왕후가 아니라,<br>
+    그의 새벽을 아는 여인들이오."</p>
+    <p><em>암호는 눈짓에,<br>
+    권력은 뒷모습에,<br>
+    혁명은 연지곤지에 숨어 있었으니…</em></p>
+  </div>
+
+  <!-- 제4편 -->
+  <div class="chapter-section" id="ch4">
+    <h2>🏮 제4편 — 야사비첩 특별편</h2>
+    <p class="ch-subtitle">운현각 밤의 실태 보고서 / "왕족의 피를 타고 흐르던 것은 피로만은 아니었소."</p>
+    <hr>
+    <h3>1장 — 운현각이란 무엇인가</h3>
+    <p>운현각은 왕족, 권신, 비선 세력들이 밤에 들락날락하던 은밀한 공간이었소.<br>
+    명목은 "왕의 거처"였지만, 실상은 사극판 프라이빗 라운지,<br>
+    권력자들의 욕망이 고요히 속삭이던 밤의 장막이었소.</p>
+    <blockquote><em>"낮에는 조정, 밤에는 운현"</em><br>— 조선 말기 고위 나인의 입에서 전해진 말이오.</blockquote>
+    <h3>2장 — 밤마다 바뀌는 자리 배치</h3>
+    <p><em>"자리 하나 놓고 조선이 흔들렸다"</em>는 말, 결코 과장이 아니오.</p>
+    <h3>3장 — 진짜 주인은 '술'이 아니었소</h3>
+    <p>운현각에서는 진귀한 술들이 오갔으나, 정작 취하게 만든 것은 술이 아닌 말이었소.</p>
+    <blockquote><em>"운현각에선 말이 칼이고, 웃음은 방패요."</em></blockquote>
+    <h3>4~6장 — 궁녀와 기녀, 비밀 장부, 밤이 끝나고</h3>
+    <p>운현각에서 나오는 자들은 말이 없었소.<br>
+    말이 없는 자들만이 오래 살아남았으니까.</p>
+    <p>서리출신 대감은 눈빛 하나로 정2품에 올랐고,<br>
+    한 기녀는 두 번 웃고 후궁으로 들었소.</p>
+    <p><strong>운현각은</strong> 단지 건물이 아니었소.<br>
+    말할 수 없는 것이 숨쉬던 장소,<br>
+    웃음 뒤에 칼이 숨어 있던 연회,<br>
+    뒷모습이 곧 암호였던 밤의 궁궐이었소이다.</p>
+  </div>
+
+  <!-- 제5편 -->
+  <div class="chapter-section" id="ch5">
+    <h2>🛏️ 제5편 — 비망록 금침편</h2>
+    <p class="ch-subtitle">잠자리 위의 권력과 정사(政事) / "그가 사랑한 이가 곧 내일의 관직이 되었도다."</p>
+    <hr>
+    <h3>1장 — '내실'이 조선을 움직였다</h3>
+    <p>금침이란, 단지 잠자는 자리가 아니었소.<br>
+    그곳은 국정의 방향이 정해지는 밀실,<br>
+    왕이 가장 '무방비'한 상태에서 속삭임으로 설득당하는 공간이었소이다.</p>
+    <blockquote><em>"그대는 내 곁에 있는 동안,<br>
+    조선의 바람을 바꿀 수 있소."</em></blockquote>
+    <h3>3장 — 정사를 움직이는 잠자리의 기술</h3>
+    <p>궁중 여인들은 잠자리에 들기 전,<br>
+    <strong>그 밤을 정치로 만들기 위한 기술</strong>을 익혔소.</p>
+    <ul>
+      <li>대화 주제 선점</li>
+      <li>왕이 좋아하는 시 구절 활용</li>
+      <li>오늘 조정 상황 요약</li>
+      <li>다른 후궁에 대한 의심만 유도</li>
+      <li><strong>결정적 침묵의 타이밍</strong> 확보</li>
+    </ul>
+    <h3>5장 — 마지막, 왕이 가장 약해지는 순간</h3>
+    <p>왕은 낮에는 신하를 다스렸으나,<br>
+    밤에는 한 여인의 숨결 앞에서 <em>한 남자</em>가 되었소.</p>
+    <blockquote><em>"그대가 오늘 밤 내 곁을 떠나면,<br>
+    내일은 조선이 흔들릴 것이오."</em></blockquote>
+    <p>어떤 왕은 그 말을 믿고<br>
+    <strong>동이(숙빈 최씨)</strong>를 세워,<br>
+    결국 <strong>영조</strong>라는 이름을 조선 역사에 남겼소이다.</p>
+    <p><em>금침은 단순한 이불 위가 아니었소.<br>
+    그곳은 —<br>
+    말보다 더한 외교의 장,<br>
+    보고보다 강한 설득의 장,<br>
+    조선의 권력 추가 쏠린 정사 위의 무대였소이다.</em></p>
+  </div>
+
+  <!-- 제6편 -->
+  <div class="chapter-section" id="ch6">
+    <h2>📜 제6편 — 비밀편</h2>
+    <p class="ch-subtitle">궁녀들의 일기장 발췌록 / "그대가 모르는 밤, 우리는 살아 있었다."</p>
+    <hr>
+    <h3>일기장 1 — 상궁 홍씨</h3>
+    <blockquote>"나는 매일 침묵을 베고 자오.<br>
+    말을 하면 정치가 되고,<br>
+    침묵하면 여자가 되오."</blockquote>
+    <h3>일기장 2 — 궁녀 유씨</h3>
+    <blockquote>"사랑이란 말은 입에 담은 적 없으나,<br>
+    나는 매일 그를 위해 가장 고운 고름을 골랐소.<br>
+    그건 나의 연모였고, 나의 항명이었소."</blockquote>
+    <h3>일기장 3 — 침방 나인 김씨</h3>
+    <blockquote>"그가 잠든 사이,<br>
+    나는 그 발치에 닿는 옷자락을 정리하였소.<br>
+    사랑은 손끝으로도 전해지는 법이라 믿었소."</blockquote>
+    <h3>일기장 4 — 폐비 민씨</h3>
+    <blockquote>"왕이 나를 버렸지만,<br>
+    역사가 나를 잊지 않을 것이오."</blockquote>
+    <p><em>이 일기장들은 종이 위에서 써졌으나,<br>
+    그들의 심장은 매일 무너지고 타오르며 이 글을 남겼소이다.</em></p>
+  </div>
+
+  <!-- 제7~8편 -->
+  <div class="chapter-section" id="ch7">
+    <h2>👑 제7편 — 폐비동맹실록</h2>
+    <p class="ch-subtitle">그들의 비밀 정사와 복수의 서사 / "윷짝은 전략이었고, 침묵은 전쟁이었다"</p>
+    <hr>
+    <h3>1장 — 폐비들의 은밀한 회합, '운당계(雲堂契)'</h3>
+    <p>경복궁 동편, 잊힌 운당(雲堂)에서 매월 보름 모임이 열렸소.<br>
+    <strong>표면은 시회, 실제론 내명부의 그늘 정세를 공유하던 비밀동맹</strong>이었소.</p>
+    <blockquote>"운당의 달은 찬란하지 않소. <br>
+    다만, 가장 어두운 밤에만 뜨는 빛이라오."</blockquote>
+    <h3>2장 — 윷판 위의 모의(謀議)</h3>
+    <ul>
+      <li><strong>도 = 암살 지시 전달</strong></li>
+      <li><strong>걸 = 후궁 진입 타이밍</strong></li>
+      <li><strong>빽도 = 제거된 자의 귀환 전략</strong></li>
+    </ul>
+    <h3>4장 — 폐비의 복수, 단칼이 아닌 단어</h3>
+    <blockquote>"말보다 시가 무섭소. 특히, 누구도 이해하지 못한 시 한 수는 더더욱."</blockquote>
+    <h3>5장 — 장도(匠刀)에 숨긴 마지막 비밀</h3>
+    <blockquote>"세상을 흔든 손은 붓이 아니라,<br>
+    바느질하던 손이었다."</blockquote>
+    <p><strong>그대는 아직 조선의 밤을 모르는 것이오.</strong><br>
+    그들은 꽃이 아니었소. 정적 속에서 피어난 전략이었소.</p>
+  </div>
+
+  <div class="chapter-section" id="ch8">
+    <h2>📜 제8편 — 비선비첩 속편</h2>
+    <p class="ch-subtitle">폐비들의 연합과 복수의 장막 / "궁궐 안의 가장 조용한 쿠데타"</p>
+    <hr>
+    <h3>2장 — 비밀 모임 '은월방(隱月房)'의 실체</h3>
+    <ul>
+      <li>조정 대신 매수</li>
+      <li>후궁 주변 궁녀 포섭</li>
+      <li>상궁통제소 내부 정보 교란</li>
+      <li>왕의 건강 루머 유포</li>
+    </ul>
+    <h3>4장 — 복수는 칼이 아니요, 자식이었다</h3>
+    <blockquote><em>"내 자손이 그 자리에 앉는 날, 내 모든 수모는 국새로 복수되리이다."</em></blockquote>
+    <h3>5장 — 폐비들의 마지막 한 수, '기억을 조작하라'</h3>
+    <blockquote>"폐비가 억울한 사람 같더라."<br>
+    그 말 한 줄이, 복수의 완성이었소.</blockquote>
+    <p><em>궁녀들의 윷놀이는 바둑보다 깊었고,<br>
+    폐비들의 침묵은 대군보다 강했소.</em></p>
+  </div>
+
+  <!-- 제9~10편 -->
+  <div class="chapter-section" id="ch9">
+    <h2>📜 제9편 — 비밀실록</h2>
+    <p class="ch-subtitle">조선의 여인 권력 3파전 – 중전 vs 후궁 vs 상궁 / "방석 위의 전쟁은, 피보다 진했다"</p>
+    <hr>
+    <h3>3장 — 상궁, 실세 중 실세</h3>
+    <blockquote>"궁궐이란 커다란 악기요.<br>
+    왕이 현이라면, 상궁은 그 활이었소."<br>
+    — 내명부 비밀교본 中</blockquote>
+    <h3>5장 — 뒷담화, 향 냄새, 웃음… 모두 전술이었다</h3>
+    <ul>
+      <li><strong>중전의 향</strong>: 백단 — 정통과 위엄</li>
+      <li><strong>후궁의 향</strong>: 홍매 + 녹차 — 유혹과 기세</li>
+      <li><strong>상궁의 향</strong>: 무향 — "향은 흔적이 되오. 상궁은 자취를 남기지 않소."</li>
+    </ul>
+    <p>그녀들의 웃음은 <strong>검보다 예리한 칼날</strong>이었고,<br>
+    그 고요함은 <em>전쟁 전의 침묵</em>이었소이다.</p>
+  </div>
+
+  <div class="chapter-section" id="ch10">
+    <h2>📜 제10편 — 조선 미인계 총람</h2>
+    <p class="ch-subtitle">웃음 하나로 천하를 흔들다 / "향이 없어야 기억에 남고, 말이 없어야 권력을 움직이니라"</p>
+    <hr>
+    <h3>1장 — 미인의 정의는 얼굴이 아니었소</h3>
+    <blockquote><em>"미인은 거울 속에 있지 않고, 남자의 결정 직전, 그 눈빛 옆에 있었소."</em></blockquote>
+    <h3>2장 — 유형별 미인계 5대 분류</h3>
+    <ul>
+      <li><strong>은근형</strong> — "보고도 안 본 척"</li>
+      <li><strong>능청형</strong> — "내가 모를 것 같소?"</li>
+      <li><strong>지략형</strong> — "내 곁에 있는 이유는 단 하나"</li>
+      <li><strong>연민형</strong> — "슬픔이 무기인 여인"</li>
+      <li><strong>무향형</strong> — "기억에 남지 않는 듯, 끝까지 남는 자"</li>
+    </ul>
+    <h3>4장 — 전설의 미인계 사례</h3>
+    <ul>
+      <li><strong>숙빈 최씨</strong>: 무향의 교과서. 말 없는 내조로 <strong>영조</strong>를 남김.</li>
+      <li><strong>장희빈</strong>: 연민+지략형. 감정 연기로 조정을 흔듦.</li>
+      <li><strong>홍씨 나인</strong>: 차를 내리는 손목 방향 하나로 <em>좌의정의 운명을 정함</em>.</li>
+    </ul>
+  </div>
+
+  <!-- 제11~13편 -->
+  <div class="chapter-section" id="ch11">
+    <h2>📜 제11편 — 비밀조직열전</h2>
+    <p class="ch-subtitle">매화방의 실체와 그 밤의 작전 / "그녀들이 나눈 것은 다과가 아니라 정권이었소."</p>
+    <hr>
+    <h3>매화방이란 무엇인가</h3>
+    <p>겉으론 단순한 침방 여인들의 차모임이었지만, 실상은 폐비, 후궁, 상궁, 내의녀, 수라간 주모, 한성부 여첩까지 아우른 여성 중심의 비선 정치 연합체였소이다.</p>
+    <blockquote>"공식 권력이 남자에게 있다면,<br>매화방은 그 권력의 귓속말을 만든 곳이었소."</blockquote>
+    <h3>내부 직책 구조</h3>
+    <table>
+      <tr><th>직책</th><th>역할</th></tr>
+      <tr><td>매화수령</td><td>폐비 출신 혹은 내명부 원로 상궁</td></tr>
+      <tr><td>설매</td><td>전략 수립 담당. 매 회의 안건 기획자</td></tr>
+      <tr><td>은향</td><td>독극물·약재 담당. 내의녀 출신 많음</td></tr>
+      <tr><td>암류</td><td>정보 유통, 궁녀·나인들과의 접선 담당</td></tr>
+      <tr><td>풍점</td><td>사건 발생 시 시선 돌릴 이슈 생성자</td></tr>
+    </table>
+    <blockquote>"매화는 피지만 향기를 자랑하지 않소.<br>그러니 우리는 피고, 조선은 향기에 흔들리게 하리라."</blockquote>
+  </div>
+
+  <div class="chapter-section" id="ch12">
+    <h2>📜 제12편 — 비밀실록 속편</h2>
+    <p class="ch-subtitle">왕의 침소 배정 시스템 / "등불은 하나요, 기다리는 마음은 여럿이었소"</p>
+    <hr>
+    <h3>2장 — 배정의 방식, 실은 정무의 한 갈래</h3>
+    <p>공식적으로는 상궁이 내명부의 배정표에 따라 순번을 정한다고 했으나— 그 배정표는 <strong>왕의 눈치, 신하들의 청탁, 후궁 간의 암투</strong>에 따라 매일처럼 조정되었소.</p>
+    <h3>5장 — 상궁의 '암묵적 권력'</h3>
+    <p>상궁만이 왕에게 "오늘은 무릇 어디가 조용하옵니다"라 말할 수 있었기 때문이오.</p>
+    <blockquote>"밤은 짧았으되, 그 여운은 사흘을 갔고<br>왕은 잠들었으되, 조선은 깨어 있었소이다."</blockquote>
+  </div>
+
+  <div class="chapter-section" id="ch13">
+    <h2>📜 제13편 — 금침배정 실록</h2>
+    <p class="ch-subtitle">오늘밤 누구의 방인가 / "왕의 발길이 권력의 향방을 정하였소."</p>
+    <hr>
+    <h3>1장 — 침소 배정, 단순히 정이 아니었소</h3>
+    <ul>
+      <li>후궁의 생리 주기</li>
+      <li>친정가문의 정치세력</li>
+      <li>소문과 민심의 흐름</li>
+      <li>외척과의 거리 조정</li>
+      <li>그리고 왕의 눈빛 한 줄기</li>
+    </ul>
+    <blockquote>"왕이 발을 들이기 전, 이미 판은 짜여 있었소."</blockquote>
+    <h3>5장 — 오늘밤, 그대의 결정은?</h3>
+    <blockquote>"그 밤의 발걸음 하나가, 조선의 운명을 가르리이다."</blockquote>
+  </div>
+
+  <!-- 제14~15편 -->
+  <div class="chapter-section" id="ch14">
+    <h2>📜 제14편 — 비밀야담</h2>
+    <p class="ch-subtitle">금침 위 후궁들의 밀담록 / "그가 자는 줄 알았건만, 그 밤 그의 숨결이 떨렸소."</p>
+    <hr>
+    <h3>밀담 3 — 최씨 나인의 혼잣말</h3>
+    <p>"전하, 오늘 밤 내 차가 쓰지 않았는지요?"</p>
+    <p>"나는 말이 없으되, 그대의 숨소리로 내 마음을 부르짖었소."</p>
+    <p><em>(이 말을 들은 왕은 눈을 감고 있었으나, 다음 날 아침 그녀의 손에 직접 붓을 쥐어주었다고 전해지오.)</em></p>
+    <h3>밀담 4 — 폐비 민씨의 서신 초안, 전하지 못한 편지</h3>
+    <blockquote>"그날 밤… 그대가 나를 불렀다면, 나는 다시 조선이 되었을 것이오."</blockquote>
+  </div>
+
+  <div class="chapter-section" id="ch15">
+    <h2>📜 제15편 — 궁중 라스트 댄스</h2>
+    <p class="ch-subtitle">마지막 밤을 청한 여자들 / "그가 마지막으로 기억한 그녀는, 어떤 발소리를 남겼는가"</p>
+    <hr>
+    <h3>그녀 2 — 폐비의 밀사, 나인 윤씨</h3>
+    <p>그 밤, 왕은 그 향기 속으로 걸어 들어갔고,<br>
+    한동안 잊었던 손글씨로<br>
+    <strong>"은(隱)"</strong> 자 하나를 붓끝에 남겼소.<br>
+    그건 다시 꺼내지 못할 이름을 기억하는 방식이었소.</p>
+    <h3>그녀 3 — 나인 최씨의 용기</h3>
+    <p>그리고 다음날,<br>
+    그녀에게 이름을 내렸소.<br>
+    <strong>"정은(情恩) 최씨"</strong><br>
+    정치가 끝나고 남은 마지막 감정이라는 뜻이었소.</p>
+    <blockquote><strong>"미움도 원망도, 결국 정(情)이다."</strong></blockquote>
+  </div>
+
+  <!-- 제16~19편 -->
+  <div class="chapter-section" id="ch16">
+    <h2>📜 제16편 — 궁녀의 뒷마음첩</h2>
+    <p class="ch-subtitle">떠난 이들의 말 없는 편지 / "그가 내게 닿았는지, 나는 마지막에 알았소이다."</p>
+    <hr>
+    <h3>4. 폐비 민씨, 세월이 흐른 뒤</h3>
+    <blockquote>"그가 내 손을 놓은 것은 정치였고,<br>
+    내가 그를 미워하지 못한 것은… 사랑이었소."</blockquote>
+    <p>"이젠 그도 늙었겠구나.<br>
+    허나 내 기억 속 그이는 아직<br>
+    따뜻한 손과, 무거운 눈빛을 지닌 남자로 남아 있소이다."</p>
+  </div>
+
+  <div class="chapter-section" id="ch17">
+    <h2>📜 제17편 — 기억에 남은 그녀의 흔적</h2>
+    <p class="ch-subtitle">왕의 손에 닿은 마지막 물건들 / "그녀는 떠났고, 물건이 남았으되, 정은 여전히 머물렀소이다."</p>
+    <hr>
+    <h3>4. 손수건 — 폐비 민씨의 마지막 격식</h3>
+    <p>흰 명주 손수건 한 장, 접힌 모서리에 붉은 실로 '내외(內外)'라 수놓음.<br>
+    왕은 그 손수건을 별실 서랍 깊숙이 넣어두고, 절대 타인에게 열지 못하게 명하였소.<br>
+    그리고 홀로 있는 밤마다—<br>
+    <em>그 손수건 위에 술 한 방울씩 놓았다 전해지오.</em></p>
+    <h3>5. 미처 주지 못한 편지</h3>
+    <blockquote>"전하께선 소인을 기억하지 않으실지라도, 소인은 전하의 '모른다'는 말까지도 기억하였사옵니다."</blockquote>
+    <p>왕은 그 필통을 연 뒤, 조용히 침소 등불을 꺼버렸다고 하오.</p>
+  </div>
+
+  <div class="chapter-section" id="ch18">
+    <h2>📜 제18편 — 조선 회고록</h2>
+    <p class="ch-subtitle">내가 잊지 못한 그 순간 / "사랑은 떠났고, 나는 남았소. 허나 마음은 함께였소."</p>
+    <hr>
+    <h3>기억 1 — 비 오는 날, 옷깃을 덮어주며</h3>
+    <blockquote>"그녀의 소매 끝이 젖는 걸 보며,<br>
+    나는 아무 말 없이 내 옷자락을 벗어주었소.<br>
+    그녀는 고개를 숙였고,<br>
+    나는 그 순간, 내 마음이 젖고 있음을 깨달았소."</blockquote>
+    <h3>기억 4 — 침소에 홀로 남아</h3>
+    <blockquote>"나는 많은 이들을 품었고,<br>
+    단 한 사람에게 마음을 맡겼으며,<br>
+    결국… 나조차 몰랐던 감정에 오래 머물렀소."</blockquote>
+  </div>
+
+  <div class="chapter-section" id="ch19">
+    <h2>📜 제19편 — 조선 진심기</h2>
+    <p class="ch-subtitle">향기가 아닌 마음에 취한 사내 / "그녀들은 나를 향기로 유혹했으되, 나는 진심으로 무너졌소이다."</p>
+    <hr>
+    <h3>2. 나인 최씨 — 모든 여인들이 웃을 때, 혼자 내 무표정을 읽던 자</h3>
+    <blockquote>"모두가 나의 말에 박수쳤으나,<br>
+    그녀만은 고개를 기울였소.<br>
+    내 웃음 너머의 번민을<br>
+    그녀는 침묵으로 껴안았소이다."</blockquote>
+    <h3>3. 병든 밤에 내 손을 덥혀주던 내의녀</h3>
+    <blockquote>"그건 치유가 아니라<br>
+    나를 아끼는 사람의 '걱정'이었소.<br>
+    나는 그 걱정에 취했고,<br>
+    한참을 잠들 수 없었소이다."</blockquote>
+  </div>
+
+  <!-- 마지막 장 -->
+  <div class="chapter-section" id="ch20">
+    <h2>📜 마지막 장 — 궁중 스캔들 실록의 끝</h2>
+    <p class="ch-subtitle">"기록은 멈췄으되, 여운은 아직 그 침소에 머무르나이다"</p>
+    <hr>
+    <p>조선의 밤은 늘 조용했으되,<br>
+    그 조용함은 고요가 아니라 숨죽인 권력의 파동이었소이다.<br>
+    왕이 발길을 들이는 그 한 칸의 방,<br>
+    그 문이 닫히면 곧 정국이 바뀌었고,<br>
+    그 안의 숨결 하나로 대감의 운명이 정해졌소.</p>
+    <p>그러나 정작 가장 깊은 이야기는<br>
+    사관의 붓끝에도 오르지 못한 여인들의 목소리였소이다.</p>
+    <p>그녀들은 말보다 <strong>눈빛</strong>으로 정사를 흔들었고,<br>
+    사랑보다 <strong>기억</strong>으로 왕을 붙들었으며,<br>
+    <strong>침묵</strong> 속에서 수백 년의 궁중을 흔들었소.</p>
+    <hr>
+    <blockquote>"그대가 궁을 다스린다 믿었으나,<br>
+    진정 궁을 움직인 이는,<br>
+    금침의 여인들이었소."</blockquote>
+    <hr>
+    <p>이제, <strong><em>《궁중 스캔들 실록》</em></strong>은<br>
+    다시 장롱 깊숙이 감춰두고,<br>
+    다만 한밤중 <strong>눈물 어린 독서燈</strong> 아래<br>
+    곁에 머무는 기록으로 남기겠소이다.</p>
+    <blockquote><strong>"사랑은 권세보다 짧고, 기억보다 길었소."</strong></blockquote>
+  </div>
+
+</div>
+
+<script src="assets/js/auth.js"></script>
+</body>
+</html>

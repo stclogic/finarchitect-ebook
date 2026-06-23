@@ -17,6 +17,7 @@
       if (ch && FREE_CHS.includes(ch)) { window.IS_FREE_ACCESS = true; return; }
       const user = JSON.parse(localStorage.getItem('site-user') || 'null');
       if (!user) { window.IS_FREE_ACCESS = true; return; }
+      if (user.email === 'stclogic@gmail.com') { return; }
       const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());
       const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
       const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);

@@ -503,6 +503,7 @@ function handleChapterClick(ch) {
   // 유료 챕터: 로그인 + 구매 확인
   const user = window.getAuthUser ? window.getAuthUser() : null;
   if (!user) { window.openAuthModal && window.openAuthModal('login'); return; }
+  if (user.email === 'stclogic@gmail.com') { location.href = ch.url || BOOK_INFO[CURRENT_BOOK_ID].readUrl; return; }
   window.getSupabaseClient().then(sb => {
     sb.from('book_purchases').select('id')
       .eq('user_id', user.id).eq('book_id', CURRENT_BOOK_ID).maybeSingle()

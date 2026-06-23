@@ -290,7 +290,7 @@
         <div class="title">모든 챕터 잠금 해제하기</div>
         <div class="sub" id="upgradePrice">$49 USD · 글로벌 자산가의 이민 전략 완전판</div>
       </div>
-      <button class="btn-upgrade" onclick="location.href='pricing.html'">지금 구매하기</button>
+      <button class="btn-upgrade" onclick="openPayModal()">지금 구매하기</button>
     </div>
   </div>
 </div>
@@ -465,10 +465,10 @@ function handleChapterClick(idx, lang) {
       if (data) {
         location.href = 'index2.html?ch=' + (idx); // 해당 챕터로 이동
       } else {
-        location.href = 'pricing.html';
+        openPayModal();
       }
     } catch (e) {
-      location.href = 'pricing.html';
+      openPayModal();
     }
   })();
 }
@@ -498,6 +498,81 @@ renderChapters(currentLang);
 document.querySelectorAll('.lang-tab').forEach(b =>
   b.classList.toggle('active', b.dataset.lang === currentLang)
 );
+</script>
+
+<!-- 결제 모달 -->
+<div id="payModal" style="display:none;position:fixed;inset:0;background:rgba(15,12,41,0.65);backdrop-filter:blur(4px);z-index:99999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:420px;margin:1rem;position:relative;box-shadow:0 24px 64px rgba(0,0,0,0.2);">
+    <button onclick="closePayModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.1rem;color:#9CA3AF;cursor:pointer;">✕</button>
+    <div style="font-size:1.15rem;font-weight:700;color:#1E1B4B;margin-bottom:0.25rem;">HNWI 코드 구매</div>
+    <div style="font-size:0.85rem;color:#6B7280;margin-bottom:1.5rem;">부자들의 비밀 이민 전략 · 전 챕터 영구 열람</div>
+    <div style="display:flex;align-items:baseline;gap:0.5rem;margin-bottom:1.5rem;">
+      <span style="font-size:2rem;font-weight:800;color:#4F46E5;">$49</span>
+      <span style="font-size:0.85rem;color:#9CA3AF;">USD · 1회 결제</span>
+    </div>
+    <ul style="font-size:0.82rem;color:#374151;margin:0 0 1.5rem;padding-left:1.2rem;line-height:1.9;">
+      <li>한국어·영어·일본어 전 언어 열람</li>
+      <li>연재 소설 《황금 국적자들》 포함</li>
+      <li>구매 후 즉시 전 챕터 잠금 해제</li>
+      <li>PayPal · 신용카드 · 체크카드 결제</li>
+    </ul>
+    <div id="paypal-hnwi" style="min-height:48px;"></div>
+    <div id="pay-success" style="display:none;text-align:center;padding:1rem 0;">
+      <div style="font-size:1.5rem;margin-bottom:0.5rem;">🎉</div>
+      <div style="font-weight:700;color:#10B981;margin-bottom:0.25rem;">결제 완료!</div>
+      <div style="font-size:0.85rem;color:#6B7280;margin-bottom:1rem;">전 챕터가 열렸습니다. 지금 바로 읽어보세요.</div>
+      <button onclick="location.href='index2.html'" style="background:#4F46E5;color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:0.95rem;font-weight:700;cursor:pointer;">바로 읽기 →</button>
+    </div>
+    <p style="text-align:center;font-size:0.75rem;color:#9CA3AF;margin:0.75rem 0 0;">구매 후 7일 이내 미사용 시 전액 환불</p>
+  </div>
+</div>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AcGitOCgnIT766ru2cnaxQ79ViM0rkvcp1kYtf7eoEj0HLh9moLHdDdqQ6cqYQ7OqTdK6M5kQQPrGQzX&currency=USD&locale=ko_KR"></script>
+<script>
+let _paypalRendered = false;
+
+function openPayModal() {
+  const user = window.getAuthUser ? window.getAuthUser() : null;
+  if (!user) {
+    window.openAuthModal && window.openAuthModal('login', () => openPayModal());
+    return;
+  }
+  document.getElementById('payModal').style.display = 'flex';
+  if (_paypalRendered) return;
+  _paypalRendered = true;
+  paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay', height: 45 },
+    createOrder(data, actions) {
+      return actions.order.create({
+        purchase_units: [{ description: 'HNWI 코드 — 부자들의 비밀 이민 전략', amount: { currency_code: 'USD', value: '49.00' } }]
+      });
+    },
+    async onApprove(data, actions) {
+      await actions.order.capture();
+      // Supabase에 구매 기록 저장
+      try {
+        const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());
+        const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+        const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+        const user = window.getAuthUser();
+        await sb.from('book_purchases').upsert({ user_id: user.id, book_id: 'hnwi-code' });
+      } catch(e) { console.warn('구매 기록 저장 실패:', e); }
+      document.getElementById('paypal-hnwi').style.display = 'none';
+      document.getElementById('pay-success').style.display = 'block';
+    },
+    onError(err) { console.error(err); alert('결제 중 오류가 발생했습니다. 다시 시도해 주세요.'); }
+  }).render('#paypal-hnwi');
+}
+
+function closePayModal() {
+  document.getElementById('payModal').style.display = 'none';
+}
+
+// 모달 바깥 클릭 시 닫기
+document.getElementById('payModal').addEventListener('click', function(e) {
+  if (e.target === this) closePayModal();
+});
 </script>
 </body>
 </html>

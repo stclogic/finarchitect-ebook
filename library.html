@@ -486,6 +486,20 @@ const FREE_BOOKS = [
 
 const BOOKS = [
   {
+    id: 'global-wealth-shift',
+    genre: 'finance',
+    cover: { ko: 'https://blogger.googleusercontent.com/img/a/AVvXsEgFPW4jkxR0b2x3UjJ4rSlanffHadZ-yZR6Bo6mJsP6v3pwXUSUcHEb0ukgCmNBUlcZxN1ME-ZDcSorPIK1iVnto4VZamDvNyCQpuewSNZ6j47JRGBHGmNN6eEAti8zSpic01wiCSFRLY6mqgSDsrRHRS_TjQzZCg0CAQLplZZdSB_AikHBDi5yoRrGwWrX', en: 'https://blogger.googleusercontent.com/img/a/AVvXsEgFPW4jkxR0b2x3UjJ4rSlanffHadZ-yZR6Bo6mJsP6v3pwXUSUcHEb0ukgCmNBUlcZxN1ME-ZDcSorPIK1iVnto4VZamDvNyCQpuewSNZ6j47JRGBHGmNN6eEAti8zSpic01wiCSFRLY6mqgSDsrRHRS_TjQzZCg0CAQLplZZdSB_AikHBDi5yoRrGwWrX', ja: 'https://blogger.googleusercontent.com/img/a/AVvXsEgFPW4jkxR0b2x3UjJ4rSlanffHadZ-yZR6Bo6mJsP6v3pwXUSUcHEb0ukgCmNBUlcZxN1ME-ZDcSorPIK1iVnto4VZamDvNyCQpuewSNZ6j47JRGBHGmNN6eEAti8zSpic01wiCSFRLY6mqgSDsrRHRS_TjQzZCg0CAQLplZZdSB_AikHBDi5yoRrGwWrX' },
+    title: { ko: '글로벌 부(富)의 대이동', en: 'Global Wealth Migration', ja: 'グローバル富の大移動' },
+    subtitle: { ko: 'From Ordinary to Dynasty', en: 'From Ordinary to Dynasty', ja: 'From Ordinary to Dynasty' },
+    author: 'stclogic',
+    vol: 'Part 1~7 + 부록',
+    chapters: 7,
+    rating: null,
+    is_free: true,
+    langs: [{ code: 'ko', flag: '🇰🇷', label: '한국어', sub: 'Korean', url: 'global-wealth-shift.html', free: true }],
+    published: true,
+  },
+  {
     id: 'hnwi-code',
     genre: 'law',
     cover: {
@@ -628,7 +642,7 @@ function renderPublished(filter) {
     <div class="book-card" onclick="openLangModal('${b.id}')">
       <div class="book-cover-wrap">
         <img src="${b.cover[lang] || b.cover.ko}" alt="${b.title[lang]}" loading="lazy">
-        ${b.updating ? `<span class="book-badge book-badge-updating">${updatingLabel[lang] || updatingLabel.ko}</span>` : ''}
+        ${b.is_free ? `<span class="book-badge book-badge-free">FREE</span>` : b.updating ? `<span class="book-badge book-badge-updating">${updatingLabel[lang] || updatingLabel.ko}</span>` : ''}
       </div>
       <div class="book-meta">
         <div class="book-lang-flags">

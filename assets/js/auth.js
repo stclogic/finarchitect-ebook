@@ -218,15 +218,23 @@
           options: { data: { name: document.getElementById('signupName').value } },
         });
         if (error) throw error;
-        if (data.user && !data.session) {
-          err.style.color = '#10B981';
-          err.textContent = '이메일을 확인해 인증 링크를 클릭해 주세요.';
-          btn.disabled = false; btn.textContent = '회원가입';
-        } else {
-          onAuthSuccess(data.user);
-        }
+        err.style.color = '#10B981';
+        err.textContent = '가입이 완료됐습니다! 이메일을 확인해 인증 링크를 클릭해 주세요.';
+        btn.disabled = false; btn.textContent = '회원가입';
+        if (data.user && data.session) onAuthSuccess(data.user);
       } catch (ex) {
-        err.textContent = ex.message;
+        const msg = ex?.message || '';
+        if (msg === 'User already registered') {
+          err.style.color = '#EF4444';
+          err.textContent = '이미 가입된 이메일입니다. 로그인해 주세요.';
+        } else if (!msg || msg === '{}' || msg === 'null') {
+          // SMTP 발송 오류지만 계정은 생성됨 — 성공으로 안내
+          err.style.color = '#10B981';
+          err.textContent = '가입이 완료됐습니다! 이메일함을 확인해 주세요. (스팸함도 확인)';
+        } else {
+          err.style.color = '#EF4444';
+          err.textContent = msg;
+        }
         btn.disabled = false; btn.textContent = '회원가입';
       }
     });

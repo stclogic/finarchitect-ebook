@@ -472,7 +472,6 @@ const BOOKS = [
   {
     id: 'hnwi-code',
     genre: 'law',
-    updating: true,
     cover: {
       ko: 'https://blogger.googleusercontent.com/img/a/AVvXsEg3Od9dQh8tYVvQqY_yH305LCHFTKRV_w5MW5mayxEJdrB13BVZGXxPyPQktd5QZMdwlDYucNov3V8VucB8cfRJYjicVvced3H8kzHIqtSLN185NzqonrkEplrhT4KfuXisQ3XI1fVvxkhi13op4YyWRLNmjdF-rbe9FDx_qEgx9rPGOLKO3RD_APTAKuyn',
       en: 'https://blogger.googleusercontent.com/img/a/AVvXsEg3Od9dQh8tYVvQqY_yH305LCHFTKRV_w5MW5mayxEJdrB13BVZGXxPyPQktd5QZMdwlDYucNov3V8VucB8cfRJYjicVvced3H8kzHIqtSLN185NzqonrkEplrhT4KfuXisQ3XI1fVvxkhi13op4YyWRLNmjdF-rbe9FDx_qEgx9rPGOLKO3RD_APTAKuyn',
@@ -493,9 +492,9 @@ const BOOKS = [
     chapters: null,
     rating: null,
     langs: [
-      { code: 'ko', flag: '🇰🇷', label: '한국어', sub: 'Korean', url: '#', free: false },
-      { code: 'en', flag: '🇺🇸', label: 'English', sub: 'English', url: '#', free: false },
-      { code: 'ja', flag: '🇯🇵', label: '日本語', sub: 'Japanese', url: '#', free: false },
+      { code: 'ko', flag: '🇰🇷', label: '한국어', sub: 'Korean', url: 'ebook2.html', free: false },
+      { code: 'en', flag: '🇺🇸', label: 'English', sub: 'English', url: 'ebook2.html', free: false },
+      { code: 'ja', flag: '🇯🇵', label: '日本語', sub: 'Japanese', url: 'ebook2.html', free: false },
     ],
     published: true,
   },
@@ -700,39 +699,14 @@ async function handleLangOptionClick(el, book) {
   const isFree = el.dataset.free === 'true';
   const readUrl = el.dataset.url;
 
-  // 무료 책: 바로 열람
+  // 무료 책 또는 무료 챕터: 바로 열람
   if (book.is_free || isFree) {
     location.href = readUrl;
     return;
   }
 
-  // 유료 책: 로그인 확인
-  window.requireAuth(async (user) => {
-    // 구매 여부 확인
-    const sb = await window.getSupabaseClient();
-    const { data } = await sb
-      .from('book_purchases')
-      .select('id')
-      .eq('user_id', user.id)
-      .eq('book_id', book.id)
-      .maybeSingle();
-
-    if (data) {
-      // 구매 완료 → 바로 열람
-      location.href = readUrl;
-    } else {
-      // 미구매 → 결제 모달
-      document.getElementById('langModalOverlay').classList.remove('open');
-      const lang = getSiteLang();
-      const priceMap = { 'money-arch': 29, 'hnwi-code': 49 };
-      window.startBookPayment({
-        bookId: book.id,
-        title: book.title[lang] || book.title.ko,
-        price: priceMap[book.id] || 29,
-        readUrl,
-      });
-    }
-  });
+  // 유료 책: reader로 바로 이동 (reader 내부에서 구매 여부 확인 후 챕터 접근 제어)
+  location.href = readUrl;
 }
 
 document.getElementById('langModalOverlay').addEventListener('click', function(e) {

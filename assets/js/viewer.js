@@ -105,7 +105,7 @@ function goChapter(idx) {
     const FREE_IDS = new Set(['ch-cover', 'cover-proposal', 'cover-preface', 'ch1', 'ch2', 'ch3']);
     const ch = chapters[idx];
     if (ch && !FREE_IDS.has(ch.id)) {
-      location.href = 'ebook.html';
+      location.href = window.PAYWALL_URL || 'ebook.html';
       return;
     }
   }

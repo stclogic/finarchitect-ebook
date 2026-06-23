@@ -125,29 +125,29 @@
       </div>
     </div>
 
-    <!-- PLAN 2: eBook (FEATURED) -->
+    <!-- PLAN 2: 평생 패스키 (FEATURED) -->
     <div class="plan-card featured">
-      <div class="plan-badge" data-i18n="pricing.plan2.badge">⭐ 가장 인기</div>
-      <div class="plan-icon" style="background:#FEF9E7">📖</div>
-      <div class="plan-name" data-i18n="pricing.plan2.name">eBook Vol.1</div>
-      <div class="plan-desc" data-i18n="pricing.plan2.desc">구조로 돈을 설계하는 사람들 — 전체 16챕터 + 1년 서식 이용권 포함</div>
+      <div class="plan-badge">⭐ 가장 인기</div>
+      <div class="plan-icon" style="background:#FEF9E7">🔑</div>
+      <div class="plan-name">평생 패스키</div>
+      <div class="plan-desc">현재 및 향후 출판되는 모든 유료 eBook을 평생 무제한 열람</div>
       <div class="plan-price">
-        <span class="currency">$</span><span class="amount">29</span><span class="period" data-i18n="pricing.plan2.period">/ 도서 1권</span>
+        <span class="currency">$</span><span class="amount">999</span><span class="period">/ 평생</span>
       </div>
       <ul class="plan-features">
-        <li data-i18n="pricing.plan2.f1">전체 16챕터 + 부록 무제한 열람</li>
-        <li data-i18n="pricing.plan2.f2">한국어 · English · 日本語 3개국어</li>
-        <li data-i18n="pricing.plan2.f3">서식 라이브러리 1년 무료 이용</li>
-        <li data-i18n="pricing.plan2.f4">향후 업데이트 콘텐츠 자동 포함</li>
-        <li data-i18n="pricing.plan2.f5">PDF 저장 가능</li>
+        <li>현재 출판된 모든 유료 eBook 전체 열람</li>
+        <li>향후 신규 출판 eBook 자동 포함</li>
+        <li>한국어 · English · 日本語 3개국어</li>
+        <li>서식 라이브러리 평생 무료 이용</li>
+        <li>업데이트 콘텐츠 자동 반영</li>
       </ul>
-      <div id="paypal-ebook" class="paypal-wrap">
+      <div id="paypal-passkey" class="paypal-wrap">
         <div class="paypal-loading">결제 버튼 로딩 중...</div>
       </div>
-      <p class="pay-note" data-i18n="pricing.note">PayPal 계정 없이 카드 결제 가능</p>
-      <div class="pay-success" id="success-ebook">
+      <p class="pay-note">PayPal 계정 없이 카드 결제 가능</p>
+      <div class="pay-success" id="success-passkey">
         <div class="check">✅</div>
-        <p><strong>결제 완료!</strong><br>eBook 전체 챕터가 열렸습니다.<br>서식 라이브러리 1년 이용권도 함께 활성화되었습니다.</p>
+        <p><strong>결제 완료!</strong><br>평생 패스키가 활성화되었습니다.<br>모든 eBook에 즉시 접근할 수 있습니다.</p>
       </div>
     </div>
 
@@ -188,9 +188,22 @@
 
   </div><!-- /plans-grid -->
 
+  <!-- 개별 도서 구입 안내 -->
+  <div style="margin-top:2.5rem; background:var(--cream); border:1px solid var(--border); border-radius:16px; padding:1.75rem 2rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;">
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <div style="font-size:2rem; flex-shrink:0;">📚</div>
+      <div>
+        <div style="font-size:1rem; font-weight:700; color:var(--dark); margin-bottom:0.25rem;">개별 도서 구입</div>
+        <div style="font-size:0.85rem; color:var(--text2); line-height:1.6;">원하는 책만 골라 개별 구매할 수 있습니다. 각 eBook 페이지에서 바로 결제하세요.<br>
+        <span style="color:var(--text3); font-size:0.8rem;">구조로 돈을 설계하는 사람들 $49 · HNWI 코드 $49</span></div>
+      </div>
+    </div>
+    <a href="library.html" style="flex-shrink:0; padding:12px 24px; background:var(--dark); color:#fff; border-radius:999px; font-size:0.875rem; font-weight:700; text-decoration:none; transition:background .2s;" onmouseover="this.style.background='#2a2d4a'" onmouseout="this.style.background='var(--dark)'">라이브러리 바로가기 →</a>
+  </div>
+
   <!-- 공통 안내 -->
-  <div style="text-align:center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
-    <p style="font-size:0.82rem; color:var(--text3); line-height:1.8;" data-i18n="pricing.footer.note">
+  <div style="text-align:center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+    <p style="font-size:0.82rem; color:var(--text3); line-height:1.8;">
       모든 결제는 PayPal을 통해 안전하게 처리됩니다. · 환불 정책: 구매 후 7일 이내 미사용 시 전액 환불
     </p>
     <p style="font-size:0.82rem; color:var(--text3); margin-top:4px;">stclogic@gmail.com</p>
@@ -219,25 +232,25 @@
 <script src="https://www.paypal.com/sdk/js?client-id=AcGitOCgnIT766ru2cnaxQ79ViM0rkvcp1kYtf7eoEj0HLh9moLHdDdqQ6cqYQ7OqTdK6M5kQQPrGQzX&currency=USD&locale=ko_KR"></script>
 
 <script>
-// ── eBook $29 버튼 ──
+// ── 평생 패스키 $999 버튼 ──
 paypal.Buttons({
   style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay', height: 45 },
   createOrder(data, actions) {
     return actions.order.create({
       purchase_units: [{
-        description: 'Book Coupling eBook Vol.1 (전체 챕터 + 서식 1년)',
-        amount: { currency_code: 'USD', value: '29.00' }
+        description: 'Book Coupling 평생 패스키 — 모든 유료 eBook 평생 열람',
+        amount: { currency_code: 'USD', value: '999.00' }
       }]
     });
   },
   onApprove(data, actions) {
     return actions.order.capture().then(() => {
-      document.getElementById('paypal-ebook').style.display = 'none';
-      document.getElementById('success-ebook').style.display = 'block';
+      document.getElementById('paypal-passkey').style.display = 'none';
+      document.getElementById('success-passkey').style.display = 'block';
     });
   },
   onError(err) { console.error(err); alert('결제 중 오류가 발생했습니다. 다시 시도해 주세요.'); }
-}).render('#paypal-ebook');
+}).render('#paypal-passkey');
 
 // ── 서식 라이브러리 $10 버튼 ──
 paypal.Buttons({

@@ -47,7 +47,10 @@
             </div>
             <div class="auth-field">
               <label>비밀번호</label>
-              <input type="password" id="loginPw" placeholder="비밀번호" required>
+              <div class="pw-wrap">
+                <input type="password" id="loginPw" placeholder="비밀번호" required>
+                <button type="button" class="pw-toggle" data-target="loginPw">보기</button>
+              </div>
             </div>
             <p class="auth-error" id="loginError"></p>
             <button type="submit" class="auth-submit" id="loginBtn">로그인</button>
@@ -66,7 +69,17 @@
             </div>
             <div class="auth-field">
               <label>비밀번호</label>
-              <input type="password" id="signupPw" placeholder="8자 이상" required minlength="8">
+              <div class="pw-wrap">
+                <input type="password" id="signupPw" placeholder="8자 이상" required minlength="8">
+                <button type="button" class="pw-toggle" data-target="signupPw">보기</button>
+              </div>
+            </div>
+            <div class="auth-field">
+              <label>비밀번호 확인</label>
+              <div class="pw-wrap">
+                <input type="password" id="signupPwConfirm" placeholder="비밀번호 재입력" required>
+                <button type="button" class="pw-toggle" data-target="signupPwConfirm">보기</button>
+              </div>
             </div>
             <p class="auth-error" id="signupError"></p>
             <button type="submit" class="auth-submit" id="signupBtn">회원가입</button>
@@ -129,6 +142,14 @@
       .auth-submit:disabled { opacity: 0.6; cursor: not-allowed; }
       .auth-hint { text-align: center; font-size: 0.8rem; color: #9CA3AF; margin: 0; }
       .auth-hint a { color: #4F46E5; font-weight: 600; }
+      .pw-wrap { position: relative; display: flex; }
+      .pw-wrap input { flex: 1; padding-right: 52px; }
+      .pw-toggle {
+        position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+        background: none; border: none; font-size: 0.75rem; color: #6B7280;
+        cursor: pointer; padding: 2px 4px; white-space: nowrap;
+      }
+      .pw-toggle:hover { color: #4F46E5; }
     `;
     document.head.appendChild(style);
   }
@@ -142,6 +163,16 @@
     // 탭 전환
     document.querySelectorAll('.auth-tab').forEach(btn => {
       btn.addEventListener('click', () => switchAuthTab(btn.dataset.tab));
+    });
+
+    // 비밀번호 보기/숨기기 토글
+    document.querySelectorAll('.pw-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.dataset.target);
+        const show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.textContent = show ? '숨기기' : '보기';
+      });
     });
 
     // 로그인
@@ -172,11 +203,18 @@
       const btn = document.getElementById('signupBtn');
       const err = document.getElementById('signupError');
       btn.disabled = true; btn.textContent = '가입 중...'; err.textContent = '';
+      const pw = document.getElementById('signupPw').value;
+      const pwConfirm = document.getElementById('signupPwConfirm').value;
+      if (pw !== pwConfirm) {
+        err.textContent = '비밀번호가 일치하지 않습니다.';
+        btn.disabled = false; btn.textContent = '회원가입';
+        return;
+      }
       try {
         const sb = await getSupabase();
         const { data, error } = await sb.auth.signUp({
           email: document.getElementById('signupEmail').value,
-          password: document.getElementById('signupPw').value,
+          password: pw,
           options: { data: { name: document.getElementById('signupName').value } },
         });
         if (error) throw error;

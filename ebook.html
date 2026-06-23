@@ -338,7 +338,7 @@
     <div class="upgrade-banner">
       <div class="upgrade-banner-text">
         <div class="title" data-i18n="ebook.upgrade.title">모든 챕터 잠금 해제하기</div>
-        <div class="sub" id="upgradePrice">월 ₩29,000 · 서식 라이브러리 전체 포함</div>
+        <div class="sub" id="upgradePrice">$49 USD · 서식 라이브러리 전체 포함</div>
       </div>
       <button class="btn-upgrade" id="upgradeBannerBtn" onclick="handleBookPurchase()">지금 구매하기</button>
     </div>
@@ -370,7 +370,7 @@ const COVER_IMAGES = {
 const LANGS = {
   ko: {
     freeCount: '3 / 16 챕터 무료',
-    upgradePrice: '$29 USD · 서식 라이브러리 전체 포함',
+    upgradePrice: '$49 USD · 서식 라이브러리 전체 포함',
     chapters: [
       { num: 1,  name: 'Ch.1 금융은 왜 존재하는가',     meta: '45분 · 핵심 개념',   free: true,  url: 'index.html?ch=1' },
       { num: 2,  name: 'Ch.2 금융기관과 시장의 역할',   meta: '52분 · 실무 사례',   free: true,  url: 'index.html?ch=2' },
@@ -392,7 +392,7 @@ const LANGS = {
   },
   en: {
     freeCount: '3 / 16 Chapters Free',
-    upgradePrice: '$29 USD · Includes Full Forms Library',
+    upgradePrice: '$49 USD · Includes Full Forms Library',
     chapters: [
       { num: 1,  name: 'Ch.1 Why Does Finance Exist?',           meta: '45 min · Core Concepts',      free: true,  url: 'index_en.html?ch=1' },
       { num: 2,  name: 'Ch.2 The Role of Financial Institutions', meta: '52 min · Case Studies',       free: true,  url: 'index_en.html?ch=2' },
@@ -414,7 +414,7 @@ const LANGS = {
   },
   ja: {
     freeCount: '3 / 16 チャプター無料',
-    upgradePrice: '$29 USD · フォームライブラリ全体含む',
+    upgradePrice: '$49 USD · フォームライブラリ全体含む',
     chapters: [
       { num: 1,  name: 'Ch.1 金融はなぜ存在するのか',           meta: '45分 · 基礎概念',           free: true,  url: 'index_ja.html?ch=1' },
       { num: 2,  name: 'Ch.2 金融機関と市場の役割',             meta: '52分 · 実務事例',           free: true,  url: 'index_ja.html?ch=2' },
@@ -518,7 +518,7 @@ function handleChapterClick(ch) {
 
 // ── 책 구매 처리 ────────────────────────────────
 const BOOK_INFO = {
-  'money-arch': { title: '구조로 돈을 설계하는 사람들', price: 29, readUrl: 'index.html' },
+  'money-arch': { title: '구조로 돈을 설계하는 사람들', price: 49, readUrl: 'index.html' },
   'hnwi-code':  { title: 'HNWI코드: 부자들의 비밀 이민전략', price: 49, readUrl: 'index.html' },
 };
 const CURRENT_BOOK_ID = 'money-arch';

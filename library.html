@@ -530,6 +530,7 @@ const COMING_SOON = [
     subtitle: { ko: '프로젝트 파이낸싱의 모든 것', en: 'The Complete Guide to Project Finance', ja: 'プロジェクトファイナンスの全て' },
     author: 'STCLOGIC',
     vol: 'Vol.2',
+    cover: 'https://blogger.googleusercontent.com/img/a/AVvXsEgY9BR7OGuvLNi-OlgJFPiLKx71TdJEjIRsktofJhOBXra8KtmVh6rcirMoWHQbLFxTEk31uvzcaE9nZb3MaIQrYuctF3InwwLepbVTz9NrcS687PhNOj9KjEjvS7nTDraDW-9m4Hq2eMVW93cojCZOgTYTsGqnAQ_uvz1QMg30YQ6UTgPiieprt3VaauuX',
   },
   {
     id: 'sto-guide',
@@ -538,6 +539,7 @@ const COMING_SOON = [
     subtitle: { ko: '토큰 증권 발행의 법적 구조', en: 'Legal Framework for Security Tokens', ja: 'セキュリティトークン発行の法的構造' },
     author: 'STCLOGIC',
     vol: 'Vol.3',
+    cover: 'https://blogger.googleusercontent.com/img/a/AVvXsEjvBovjLQ52i5LaKAlJ0zHQrHYbjaEd9Odp6mTbBDXlcKAQ35-_qAu8oEqC_UhLcFXpSHJSl0IqTqV_jri5ZGUgnjmdkIEUl2UJtwAjirCBdAqYjPUOW5EPERBOWhYoP_0Pk6SajNaC-J34XV01RwJv5wjbzj-XJO27bxDBfoZPTluJXsjjwTpX2OmZWM_g',
   },
   {
     id: 'exit-strategy',
@@ -546,6 +548,7 @@ const COMING_SOON = [
     subtitle: { ko: 'M&A · IPO · 지분 매각의 전체 지도', en: 'M&A · IPO · Equity Sale — The Full Map', ja: 'M&A・IPO・株式売却 全ガイド' },
     author: 'STCLOGIC',
     vol: 'Vol.4',
+    cover: 'https://blogger.googleusercontent.com/img/a/AVvXsEjPAs7XvPP9MXa2BCGvGx6DEbE2caLqqw22-98S4ufNiOiTQnassyYZfwLOQmZsZSmBgFpWUqJJ1mJdiqe7y10GmFFSdY9HjcwQqDUfuj3ap-EnCYpugxxJ38ikaDOf_vuvA4vNQluK73UeqDJscQe-MNqVPT9wZkm6sgxHD3KxH6xiwMoRdSO3HxDgT7Y2',
   },
 ];
 
@@ -632,12 +635,11 @@ function renderComingSoon(filter) {
   const lang = getSiteLang();
   const books = filter === 'all' ? COMING_SOON : COMING_SOON.filter(b => b.genre === filter);
   document.getElementById('comingSoonGrid').innerHTML = books.map(b => `
-    <div class="book-card" style="opacity:.65; cursor:default">
+    <div class="book-card" style="opacity:.75; cursor:default">
       <div class="book-cover-wrap">
-        <div class="book-cover-placeholder">
-          <div class="ph-icon">📖</div>
-          <div class="ph-text">COMING SOON</div>
-        </div>
+        ${b.cover
+          ? `<img class="book-cover-img" src="${b.cover}" alt="${b.title[lang]}" loading="lazy">`
+          : `<div class="book-cover-placeholder"><div class="ph-icon">📖</div><div class="ph-text">COMING SOON</div></div>`}
         <span class="book-badge book-badge-soon">준비중</span>
       </div>
       <div class="book-meta">

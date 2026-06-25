@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/stclogic/finarchitect-ebook#readme",
   "dependencies": {
-    "@supabase/supabase-js": "^2.108.2"
+    "@supabase/supabase-js": "^2.108.2",
+    "stripe": "^22.3.0"
   }
 }

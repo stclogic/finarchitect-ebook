@@ -126,7 +126,7 @@ const SITE_I18N = {
 
     // PRICING page
     'pricing.tag': 'PRICING',
-    'pricing.title': '투명한 요금제',
+    'pricing.title': '가치기반 합리적 가격정책',
     'pricing.desc': 'PayPal · 신용카드 · 체크카드로 결제 가능합니다.',
     'pricing.plan1.name': '서식 라이브러리',
     'pricing.plan1.desc': '법률·금융·세무 250+ 서식 템플릿 연간 무제한 이용',
@@ -284,7 +284,7 @@ const SITE_I18N = {
     'forms.upgrade.btn': 'Upgrade to PRO',
 
     'pricing.tag': 'PRICING',
-    'pricing.title': 'Transparent Pricing',
+    'pricing.title': 'Value-Based Pricing Policy',
     'pricing.desc': 'Pay with PayPal, credit card, or debit card.',
     'pricing.plan1.name': 'Forms Library',
     'pricing.plan1.desc': 'Unlimited annual access to 250+ legal, financial & tax form templates',
@@ -442,7 +442,7 @@ const SITE_I18N = {
     'forms.upgrade.btn': 'PROにアップグレード',
 
     'pricing.tag': 'PRICING',
-    'pricing.title': '明確な料金体系',
+    'pricing.title': '価値基準の合理的な価格方針',
     'pricing.desc': 'PayPal・クレジットカード・デビットカードでお支払いいただけます。',
     'pricing.plan1.name': '書式ライブラリ',
     'pricing.plan1.desc': '法律·金融·税務 250+ 書式テンプレート年間無制限利用',

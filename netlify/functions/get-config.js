@@ -10,8 +10,6 @@ export const handler = async () => {
       supabaseUrl: (process.env.SUPABASE_URL || '').replace(/\/$/, ''),
       supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
       paypalClientId: process.env.PAYPAL_CLIENT_ID,
-      stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-      tossClientKey: process.env.TOSS_CLIENT_KEY,
     }),
   };
 };

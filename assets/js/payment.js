@@ -29,7 +29,7 @@
           </div>
           <div class="pay-divider"></div>
           <div id="bookPaypalBtn"></div>
-          <p class="pay-note">PayPal · Google Pay · Apple Pay · 신용카드로 결제할 수 있습니다.</p>
+          <p class="pay-note">PayPal 계정 또는 신용·체크카드로 결제할 수 있습니다.</p>
           <p class="pay-note">결제 후 즉시 열람 가능합니다.</p>
         </div>
       </div>

@@ -7,7 +7,7 @@
     if (window._paypalLoading) return window._paypalLoading;
     window._paypalLoading = new Promise((resolve, reject) => {
       const s = document.createElement('script');
-      s.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&enable-funding=googlepay,applepay,card,paylater`;
+      s.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&enable-funding=card,paylater`;
       s.onload = resolve;
       s.onerror = reject;
       document.head.appendChild(s);

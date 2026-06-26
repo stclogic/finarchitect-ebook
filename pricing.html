@@ -232,49 +232,49 @@
 <script src="assets/js/nav.js?v=3"></script>
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/payment.js"></script>
-<!-- PayPal SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=AcGitOCgnIT766ru2cnaxQ79ViM0rkvcp1kYtf7eoEj0HLh9moLHdDdqQ6cqYQ7OqTdK6M5kQQPrGQzX&currency=USD&locale=ko_KR"></script>
-
 <script>
-// ── 평생 패스키 $999 버튼 ──
-paypal.Buttons({
-  style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay', height: 45 },
-  createOrder(data, actions) {
-    return actions.order.create({
-      purchase_units: [{
-        description: 'Book Coupling 평생 패스키 — 모든 유료 eBook 평생 열람',
-        amount: { currency_code: 'USD', value: '999.00' }
-      }]
-    });
-  },
-  onApprove(data, actions) {
-    return actions.order.capture().then(() => {
-      document.getElementById('paypal-passkey').style.display = 'none';
-      document.getElementById('success-passkey').style.display = 'block';
-    });
-  },
-  onError(err) { console.error(err); alert('결제 중 오류가 발생했습니다. 다시 시도해 주세요.'); }
-}).render('#paypal-passkey');
+// ── get-config로 Client ID 받아온 뒤 PayPal SDK 동적 로드 ──
+(async () => {
+  const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());
+  const s = document.createElement('script');
+  s.src = `https://www.paypal.com/sdk/js?client-id=${cfg.paypalClientId}&currency=USD&enable-funding=card`;
+  s.onload = () => {
+    // ── 평생 패스키 $999 버튼 ──
+    paypal.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay', height: 45 },
+      createOrder(data, actions) {
+        return actions.order.create({
+          purchase_units: [{ description: 'Book Coupling 평생 패스키 — 모든 유료 eBook 평생 열람', amount: { currency_code: 'USD', value: '999.00' } }]
+        });
+      },
+      onApprove(data, actions) {
+        return actions.order.capture().then(() => {
+          document.getElementById('paypal-passkey').style.display = 'none';
+          document.getElementById('success-passkey').style.display = 'block';
+        });
+      },
+      onError(err) { console.error(err); alert('결제 중 오류가 발생했습니다. 다시 시도해 주세요.'); }
+    }).render('#paypal-passkey');
 
-// ── 서식 라이브러리 $10 버튼 ──
-paypal.Buttons({
-  style: { layout: 'vertical', color: 'blue', shape: 'pill', label: 'pay', height: 45 },
-  createOrder(data, actions) {
-    return actions.order.create({
-      purchase_units: [{
-        description: 'Book Coupling 서식 라이브러리 연간 이용권',
-        amount: { currency_code: 'USD', value: '10.00' }
-      }]
-    });
-  },
-  onApprove(data, actions) {
-    return actions.order.capture().then(() => {
-      document.getElementById('paypal-forms').style.display = 'none';
-      document.getElementById('success-forms').style.display = 'block';
-    });
-  },
-  onError(err) { console.error(err); alert('결제 중 오류가 발생했습니다. 다시 시도해 주세요.'); }
-}).render('#paypal-forms');
+    // ── 서식 라이브러리 $10 버튼 ──
+    paypal.Buttons({
+      style: { layout: 'vertical', color: 'blue', shape: 'pill', label: 'pay', height: 45 },
+      createOrder(data, actions) {
+        return actions.order.create({
+          purchase_units: [{ description: 'Book Coupling 서식 라이브러리 연간 이용권', amount: { currency_code: 'USD', value: '10.00' } }]
+        });
+      },
+      onApprove(data, actions) {
+        return actions.order.capture().then(() => {
+          document.getElementById('paypal-forms').style.display = 'none';
+          document.getElementById('success-forms').style.display = 'block';
+        });
+      },
+      onError(err) { console.error(err); alert('결제 중 오류가 발생했습니다. 다시 시도해 주세요.'); }
+    }).render('#paypal-forms');
+  };
+  document.head.appendChild(s);
+})();
 
 // ── 컨설팅 문의 폼 ──
 document.getElementById('consultForm').addEventListener('submit', function(e) {

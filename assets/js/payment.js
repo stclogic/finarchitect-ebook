@@ -7,7 +7,7 @@
     if (window._paypalLoading) return window._paypalLoading;
     window._paypalLoading = new Promise((resolve, reject) => {
       const s = document.createElement('script');
-      s.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&enable-funding=card,paylater`;
+      s.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&enable-funding=card`;
       s.onload = resolve;
       s.onerror = reject;
       document.head.appendChild(s);
@@ -88,7 +88,10 @@
         <div class="pay-book-title">${title}</div>
         <div class="pay-book-price">$${price} <span>USD</span></div>
       `;
-      document.getElementById('bookPaypalBtn').innerHTML = '';
+      const oldBtn = document.getElementById('bookPaypalBtn');
+      const newBtn = document.createElement('div');
+      newBtn.id = 'bookPaypalBtn';
+      oldBtn.replaceWith(newBtn);
       document.getElementById('bookPayOverlay').classList.add('open');
 
       const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());

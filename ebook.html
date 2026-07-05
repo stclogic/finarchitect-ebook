@@ -473,6 +473,7 @@ document.querySelectorAll('.lang-tab').forEach(btn => {
     document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentLang = btn.dataset.lang;
+    localStorage.setItem('site-lang', currentLang);
     renderChapters(currentLang);
     // 사이트 언어도 동기화
     if (typeof applyLang === 'function') applyLang(currentLang);
@@ -526,7 +527,7 @@ function handleChapterClick(ch) {
 // ── 책 구매 처리 ────────────────────────────────
 const BOOK_INFO = {
   'money-arch': { title: '구조로 돈을 설계하는 사람들', price: 49, readUrl: 'index.html' },
-  'hnwi-code':  { title: 'HNWI코드: 부자들의 비밀 이민전략', price: 49, readUrl: 'index.html' },
+  'hnwi-code':  { title: 'HNWI코드: 부자들의 비밀 이민전략', price: 49, readUrl: 'index2.html' },
 };
 const CURRENT_BOOK_ID = 'money-arch';
 

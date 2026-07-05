@@ -516,6 +516,11 @@ function applyLang(lang) {
   // 저장
   localStorage.setItem('site-lang', lang);
   window._siteLang = lang;
+
+  // index2.html: document.write로 데이터 파일이 고정되므로 리로드로 재로드
+  if (location.pathname.endsWith('index2.html')) {
+    location.reload();
+  }
 }
 
 function getSiteLang() {
@@ -534,10 +539,6 @@ function initLangSwitcher() {
       applyLang(lang);
       // ebook.html의 자체 LANGS 렌더러가 있으면 연동
       if (typeof renderChapters === 'function') renderChapters(lang);
-      // index2.html: 데이터 파일이 페이지 로드 시 document.write로 고정되므로 리로드 필요
-      if (location.pathname.endsWith('index2.html')) {
-        location.reload();
-      }
     });
   });
   applyLang(current);

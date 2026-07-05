@@ -657,6 +657,7 @@ function openFreeBook(bookId) {
   if (!book) return;
   const lang = getSiteLang();
   const langObj = book.langs.find(l => l.code === lang) || book.langs[0];
+  localStorage.setItem('site-lang', langObj.code);
   location.href = langObj.url;
 }
 
@@ -757,6 +758,8 @@ async function handleLangOptionClick(el, book) {
 
   const isFree = el.dataset.free === 'true';
   const readUrl = el.dataset.url;
+  const langCode = el.dataset.langCode;
+  localStorage.setItem('site-lang', langCode);
 
   // 무료 책 또는 무료 챕터: 바로 열람
   if (book.is_free || isFree) {

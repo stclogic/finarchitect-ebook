@@ -102,7 +102,14 @@
 </div>
 
 <script>window.PAYWALL_URL = 'ebook2.html';</script>
-<script src="data/vol2.js?v=20260623"></script>
+<script>
+// 언어 설정에 따라 올바른 데이터 파일 동적 로드
+(function() {
+  var lang = localStorage.getItem('site-lang') || 'ko';
+  var src = lang === 'en' ? 'data/vol2_en.js' : lang === 'ja' ? 'data/vol2_ja.js' : 'data/vol2.js';
+  document.write('<script src="' + src + '?v=20260705"><\/script>');
+})();
+</script>
 <script>
 // vol2.js flat-section → viewer.js section→blocks 구조 변환 + 필드명 정규화
 (function() {

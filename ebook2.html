@@ -249,8 +249,8 @@
 </nav>
 
 <div class="page-header">
-  <h1>HNWI 코드: 부자들의 비밀 이민 전략</h1>
-  <p>Vol.1 · 29챕터 · 한국어</p>
+  <h1 id="pageTitle">HNWI 코드: 부자들의 비밀 이민 전략</h1>
+  <p id="pageSubtitle">Vol.1 · 29챕터</p>
 </div>
 
 <div class="lang-tabs">
@@ -279,7 +279,7 @@
 
   <div>
     <div class="chapter-list-header">
-      <span class="chapter-list-title">목차</span>
+      <span class="chapter-list-title" id="tocLabel">목차</span>
       <span class="free-count" id="freeCount">3 / 29 챕터 무료</span>
     </div>
 
@@ -290,7 +290,7 @@
         <div class="title">모든 챕터 잠금 해제하기</div>
         <div class="sub" id="upgradePrice">$49 USD · 글로벌 자산가의 이민 전략 완전판</div>
       </div>
-      <button class="btn-upgrade" onclick="openPayModal()">지금 구매하기</button>
+      <button class="btn-upgrade" id="buyBtn" onclick="openPayModal()">지금 구매하기</button>
     </div>
   </div>
 </div>
@@ -415,6 +415,76 @@ const CHAPTERS = {
   ],
 };
 
+
+const PAGE_UI = {
+  ko: {
+    title: 'HNWI 코드: 부자들의 비밀 이민 전략',
+    subtitle: 'Vol.1 · 29챕터',
+    toc: '목차',
+    buy: '지금 구매하기',
+    modalTitle: 'HNWI 코드 구매',
+    modalSub: '부자들의 비밀 이민 전략 · 전 챕터 영구 열람',
+    features: ['한국어·영어·일본어 전 언어 열람','연재 소설 《황금 국적자들》 포함','구매 후 즉시 전 챕터 잠금 해제','PayPal · 신용카드 · 체크카드 결제'],
+    readBtn: '바로 읽기 →',
+    successTitle: '결제 완료!',
+    successSub: '전 챕터가 열렸습니다. 지금 바로 읽어보세요.',
+    lock: '🔒 잠금 해제',
+  },
+  en: {
+    title: 'HNWI Code: The Wealthy's Secret Immigration Strategy',
+    subtitle: 'Vol.1 · 29 Chapters',
+    toc: 'Contents',
+    buy: 'Purchase Now',
+    modalTitle: 'Purchase HNWI Code',
+    modalSub: 'The Wealthy's Secret Immigration Strategy · Lifetime Access',
+    features: ['Access in Korean · English · Japanese','Includes serialized novel Golden Nationals','All chapters unlocked immediately after purchase','PayPal · Credit/Debit Card'],
+    readBtn: 'Start Reading →',
+    successTitle: 'Payment Complete!',
+    successSub: 'All chapters unlocked. Start reading now.',
+    lock: '🔒 Unlock',
+  },
+  ja: {
+    title: 'HNWIコード：富裕層の秘密の移民戦略',
+    subtitle: 'Vol.1 · 29チャプター',
+    toc: '目次',
+    buy: '今すぐ購入',
+    modalTitle: 'HNWIコードを購入',
+    modalSub: '富裕層の秘密の移民戦略 · 全チャプター永久閲覧',
+    features: ['韓国語・英語・日本語で閲覧可能','連載小説《黄金国籍者たち》含む','購入後すぐ全チャプター解放','PayPal · クレジット/デビットカード'],
+    readBtn: '今すぐ読む →',
+    successTitle: '決済完了！',
+    successSub: '全チャプターが開放されました。今すぐお読みください。',
+    lock: '🔒 ロック解除',
+  },
+};
+
+function updatePageUI(lang) {
+  const ui = PAGE_UI[lang] || PAGE_UI.ko;
+  const t = document.getElementById('pageTitle');
+  const s = document.getElementById('pageSubtitle');
+  const toc = document.getElementById('tocLabel');
+  const btn = document.getElementById('buyBtn');
+  if (t) t.textContent = ui.title;
+  if (s) s.textContent = ui.subtitle;
+  if (toc) toc.textContent = ui.toc;
+  if (btn) btn.textContent = ui.buy;
+  // 잠금 배지 업데이트
+  document.querySelectorAll('.badge-unlock').forEach(el => { el.textContent = ui.lock; });
+  // 모달 텍스트 업데이트
+  const mTitle = document.querySelector('#payModal [style*="font-size:1.15rem"]');
+  const mSub = document.querySelector('#payModal [style*="font-size:0.85rem;color:#6B7280;margin-bottom:1.5rem"]');
+  const mFeatures = document.querySelector('#payModal ul');
+  const mReadBtn = document.querySelector('#payModal button[onclick*="index2"]');
+  const mSuccessTitle = document.querySelector('#pay-success [style*="font-weight:700;color:#10B981"]');
+  const mSuccessSub = document.querySelector('#pay-success [style*="font-size:0.85rem;color:#6B7280;margin-bottom:1rem"]');
+  if (mTitle) mTitle.textContent = ui.modalTitle;
+  if (mSub) mSub.textContent = ui.modalSub;
+  if (mFeatures) mFeatures.innerHTML = ui.features.map(f => '<li>' + f + '</li>').join('');
+  if (mReadBtn) mReadBtn.textContent = ui.readBtn;
+  if (mSuccessTitle) mSuccessTitle.textContent = ui.successTitle;
+  if (mSuccessSub) mSuccessSub.textContent = ui.successSub;
+}
+
 const FREE_COUNTS = { ko: '3 / 29 챕터 무료', en: '3 / 29 Chapters Free', ja: '3 / 29 チャプター無料' };
 const UPGRADE_PRICES = {
   ko: '$49 USD · 글로벌 자산가의 이민 전략 완전판',
@@ -504,9 +574,11 @@ window.applyLang = function(lang) {
     b.classList.toggle('active', b.dataset.lang === lang)
   );
   renderChapters(lang);
+  updatePageUI(lang);
 };
 
 renderChapters(currentLang);
+updatePageUI(currentLang);
 document.querySelectorAll('.lang-tab').forEach(b =>
   b.classList.toggle('active', b.dataset.lang === currentLang)
 );
@@ -539,8 +611,15 @@ document.querySelectorAll('.lang-tab').forEach(b =>
   </div>
 </div>
 
-<!-- PayPal SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=AcGitOCgnIT766ru2cnaxQ79ViM0rkvcp1kYtf7eoEj0HLh9moLHdDdqQ6cqYQ7OqTdK6M5kQQPrGQzX&currency=USD&locale=ko_KR"></script>
+<!-- PayPal SDK 동적 로드 -->
+<script>
+(async function() {
+  const cfg = await fetch('/.netlify/functions/get-config').then(r => r.json());
+  const s = document.createElement('script');
+  s.src = `https://www.paypal.com/sdk/js?client-id=${cfg.paypalClientId}&currency=USD&enable-funding=card`;
+  document.head.appendChild(s);
+})();
+</script>
 <script>
 let _paypalRendered = false;
 

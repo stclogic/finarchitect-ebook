@@ -73,6 +73,11 @@
         </div>
       </div>
       <div class="topbar-right">
+        <div class="lang-switcher" id="reader-lang-sw" style="display:flex;gap:2px;margin-right:4px;">
+          <button class="ls-btn" data-lang="ko" onclick="readerSetLang('ko')">KO</button>
+          <button class="ls-btn" data-lang="en" onclick="readerSetLang('en')">EN</button>
+          <button class="ls-btn" data-lang="ja" onclick="readerSetLang('ja')">JA</button>
+        </div>
         <div class="font-size-wrap" aria-label="글자 크기 조절">
           <button onclick="changeFont(-1)" aria-label="글자 작게"><i class="ti ti-minus" aria-hidden="true"></i></button>
           <span id="font-size-val">16</span>
@@ -102,6 +107,18 @@
 </div>
 
 <script>window.PAYWALL_URL = 'ebook2.html';</script>
+<script>
+function readerSetLang(lang) {
+  localStorage.setItem('site-lang', lang);
+  location.reload();
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var cur = localStorage.getItem('site-lang') || 'ko';
+  document.querySelectorAll('#reader-lang-sw .ls-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.lang === cur);
+  });
+});
+</script>
 <script>
 // 언어 설정에 따라 올바른 데이터 파일 동적 로드
 (function() {

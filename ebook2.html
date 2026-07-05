@@ -561,6 +561,7 @@ document.querySelectorAll('.lang-tab').forEach(btn => {
     document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentLang = btn.dataset.lang;
+    localStorage.setItem('site-lang', currentLang);
     renderChapters(currentLang);
     if (typeof applyLang === 'function') applyLang(currentLang);
   });

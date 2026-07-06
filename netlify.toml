@@ -7,6 +7,10 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# PAYPAL_MODE 값("live")이 콘텐츠 텍스트와 일치해 false positive 발생 — 스캔 제외
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "PAYPAL_MODE"
+
 # HTML 파일 캐시 방지 — 코드 수정이 즉시 반영되도록
 [[headers]]
   for = "/*.html"

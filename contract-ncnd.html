@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<!-- NCND 계약서 생성기 — 상호비밀유지·우회금지, EN/KO/JA 3국어 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCND Agreement — STCLOGIC</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+.cg-wrap { display: grid; grid-template-columns: 390px 1fr; gap: 0; min-height: 100vh; }
+.cg-panel { background: var(--white); border-right: 1px solid var(--border); padding: 1.5rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.cg-preview { background: var(--cream); padding: 2rem; overflow-y: auto; }
+
+.cg-lang { display: flex; gap: 4px; margin-bottom: 1.25rem; }
+.cg-lang button { padding: 5px 13px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; border: 1px solid var(--border); background: none; color: var(--text2); cursor: pointer; transition: all .15s; }
+.cg-lang button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.cg-back { display: inline-flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--text2); text-decoration: none; margin-bottom: 1rem; transition: color .15s; }
+.cg-back:hover { color: var(--primary); }
+
+.cg-panel-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--border); }
+.cg-section { margin-bottom: 1.25rem; }
+.cg-label { font-size: 0.73rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 0.4rem; display: block; }
+.cg-input { width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; color: var(--text); background: var(--cream); transition: border .15s; box-sizing: border-box; }
+.cg-input:focus { outline: none; border-color: var(--primary); background: var(--white); }
+.cg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+
+/* Jurisdiction */
+.juri-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.juri-card { border: 2px solid var(--border); border-radius: 10px; padding: 0.7rem; cursor: pointer; text-align: center; transition: all .15s; }
+.juri-card:hover, .juri-card.active { border-color: var(--primary); background: var(--primary-light); }
+.juri-flag { font-size: 1.3rem; margin-bottom: 0.2rem; }
+.juri-name { font-size: 0.78rem; font-weight: 700; color: var(--text); }
+.juri-sub { font-size: 0.66rem; color: var(--text2); }
+
+/* Purpose checkboxes */
+.cb-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.83rem; color: var(--text); margin-bottom: 0.45rem; cursor: pointer; }
+.cb-item input { margin-top: 2px; flex-shrink: 0; accent-color: var(--primary); }
+
+/* Progress */
+.prog-bar { height: 4px; background: var(--border); border-radius: 4px; margin-bottom: 0.4rem; overflow: hidden; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #ec4899); border-radius: 4px; transition: width .3s; }
+.prog-text { font-size: 0.72rem; color: var(--text2); text-align: right; margin-bottom: 1.25rem; }
+
+/* Buttons */
+.btn-pdf { width: 100%; padding: 11px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-bottom: 0.5rem; transition: opacity .15s; }
+.btn-pdf:hover { opacity: .88; }
+.btn-trust { width: 100%; padding: 11px; background: linear-gradient(135deg,#7c3aed,#4f46e5); color: #fff; border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: opacity .15s; }
+.btn-trust:hover { opacity: .88; }
+.trust-badge { margin-top: 0.6rem; font-size: 0.72rem; color: #5b21b6; background: #ede9fe; border-radius: 8px; padding: 7px 10px; display: none; }
+
+/* Contract doc */
+.doc-wrap { background: var(--white); max-width: 780px; margin: 0 auto; padding: 3.5rem 4rem; border-radius: 12px; box-shadow: 0 2px 24px rgba(0,0,0,.07); font-size: 0.88rem; line-height: 1.75; color: var(--text); }
+.doc-meta { text-align: right; font-size: 0.75rem; color: var(--text2); margin-bottom: 2rem; }
+.doc-title { text-align: center; font-size: 1.35rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 0.5rem; color: var(--text); }
+.doc-subtitle { text-align: center; font-size: 0.78rem; color: var(--text2); letter-spacing: .06em; margin-bottom: 2rem; }
+.doc-ornament { text-align: center; color: var(--text2); margin: 1.2rem 0; letter-spacing: .2em; font-size: 0.85rem; }
+.parties-box { border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.party-col .party-role { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .07em; color: var(--text2); margin-bottom: 0.2rem; font-weight: 700; }
+.party-col .party-name { font-weight: 800; font-size: 0.95rem; color: var(--text); }
+.party-col .party-detail { font-size: 0.78rem; color: var(--text2); margin-top: 0.15rem; }
+.doc-intro { margin-bottom: 1.5rem; font-size: 0.87rem; }
+.doc-clause { margin-bottom: 1.4rem; }
+.doc-clause-title { font-weight: 800; font-size: 0.92rem; margin-bottom: 0.5rem; color: var(--text); }
+.doc-clause p { margin-bottom: 0.5rem; }
+.doc-clause ul { margin: 0.4rem 0 0.4rem 1.2rem; }
+.doc-clause ul li { margin-bottom: 0.25rem; }
+
+.juri-box { background: #eff6ff; border-left: 3px solid #3b82f6; border-radius: 6px; padding: 0.8rem 1rem; margin: 0.6rem 0; font-size: 0.82rem; color: #1e3a5f; }
+.juri-box strong { color: #1d4ed8; }
+
+.sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+.sig-block { border-top: 1px solid var(--text); padding-top: 0.5rem; }
+.sig-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); margin-bottom: 0.3rem; font-weight: 700; }
+.sig-name { font-weight: 700; font-size: 0.88rem; }
+.sig-line { margin-top: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; font-size: 0.75rem; color: var(--text2); }
+.tl-seal { text-align: center; margin-top: 1.5rem; font-size: 0.72rem; color: #5b21b6; background: #ede9fe; border-radius: 8px; padding: 8px; display: none; }
+
+@media print {
+  .cg-panel, .topbar, nav { display: none !important; }
+  .cg-wrap { display: block; }
+  .cg-preview { padding: 0; background: white; }
+  .doc-wrap { box-shadow: none; border-radius: 0; padding: 2cm 2.5cm; max-width: 100%; }
+  body { background: white; }
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a class="topbar-logo" href="landing.html">STCLOGIC</a>
+    <div class="topbar-right">
+      <a href="landing.html" class="topbar-link" id="nav-home">Home</a>
+      <a href="https://bookcoupling.netlify.app/library" class="topbar-link">eBook</a>
+      <a href="contract.html" class="topbar-link" id="nav-contracts">Contracts</a>
+    </div>
+  </div>
+</nav>
+
+<div class="cg-wrap">
+<!-- ===== PANEL ===== -->
+<div class="cg-panel">
+  <div class="cg-lang">
+    <button id="lb-en" class="active" onclick="setLang('en')">EN</button>
+    <button id="lb-ko" onclick="setLang('ko')">KO</button>
+    <button id="lb-ja" onclick="setLang('ja')">JA</button>
+  </div>
+
+  <a href="contract.html" class="cg-back" id="backBtn">← Back to Contracts</a>
+
+  <div class="cg-panel-title" id="ui-panelTitle">🔐 NCND Agreement</div>
+
+  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:10%"></div></div>
+  <div class="prog-text" id="progText">10% — Please fill in the details</div>
+
+  <!-- Party A -->
+  <div class="cg-section">
+    <span class="cg-label" id="ui-partyALabel">Party A (Disclosing Party)</span>
+    <input class="cg-input" id="partyAName" value="STCLOGIC Co., Ltd." oninput="render()" placeholder="Company Name">
+    <input class="cg-input" style="margin-top:6px" id="partyAAddr" value="Seoul, Republic of Korea" oninput="render()" placeholder="Address / Country">
+  </div>
+
+  <!-- Party B -->
+  <div class="cg-section">
+    <span class="cg-label" id="ui-partyBLabel">Party B (Receiving Party)</span>
+    <input class="cg-input" id="partyBName" oninput="render()" placeholder="Company / Individual Name">
+    <input class="cg-input" style="margin-top:6px" id="partyBAddr" oninput="render()" placeholder="Address / Country">
+    <div class="cg-row" style="margin-top:6px">
+      <input class="cg-input" id="partyBEmail" oninput="render()" placeholder="Email">
+      <input class="cg-input" id="partyBReg" oninput="render()" placeholder="Reg. No. (optional)">
+    </div>
+  </div>
+
+  <!-- Contract Date -->
+  <div class="cg-section">
+    <span class="cg-label" id="ui-dateLabel">Agreement Date</span>
+    <input class="cg-input" type="date" id="contDate" oninput="render()">
+  </div>
+
+  <!-- Purpose -->
+  <div class="cg-section">
+    <span class="cg-label" id="ui-purposeLabel">Business Purpose</span>
+    <div id="purpose-checks"></div>
+  </div>
+
+  <!-- Jurisdiction -->
+  <div class="cg-section">
+    <span class="cg-label" id="ui-juriLabel">Governing Law & Arbitration</span>
+    <div class="juri-grid">
+      <div class="juri-card" id="j-sg" onclick="setJuri('sg')">
+        <div class="juri-flag">🇸🇬</div>
+        <div class="juri-name">Singapore</div>
+        <div class="juri-sub">SIAC Rules</div>
+      </div>
+      <div class="juri-card" id="j-ae" onclick="setJuri('ae')">
+        <div class="juri-flag">🇦🇪</div>
+        <div class="juri-name">Dubai</div>
+        <div class="juri-sub">DIAC / DIFC-LCIA</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Term -->
+  <div class="cg-section">
+    <span class="cg-label" id="ui-termLabel">Agreement Term</span>
+    <select class="cg-input" id="termYears" onchange="render()">
+      <option value="2">2 Years</option>
+      <option value="3" selected>3 Years</option>
+      <option value="5">5 Years</option>
+      <option value="10">10 Years</option>
+    </select>
+  </div>
+
+  <!-- Buttons -->
+  <button class="btn-pdf" id="ui-btnPdf" onclick="savePDF()">📄 Save PDF / Print</button>
+  <button class="btn-trust" id="ui-btnTrust" onclick="uploadTrustLock()">🔒 Preserve via Trust-Lock</button>
+  <div class="trust-badge" id="trustBadge"></div>
+</div>
+
+<!-- ===== PREVIEW ===== -->
+<div class="cg-preview">
+  <div id="contractDoc">
+    <div class="doc-wrap">
+      <p style="text-align:center;color:#bbb;padding:3rem 0;" id="emptyMsg">← Fill in the panel to generate the agreement.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+var lang = localStorage.getItem('contract-lang') || 'en';
+var juri = 'sg';
+
+var I18N = {
+  en: {
+    panelTitle: '🔐 NCND Agreement',
+    partyALabel: 'Party A (Disclosing Party)',
+    partyBLabel: 'Party B (Receiving Party)',
+    dateLabel: 'Agreement Date',
+    purposeLabel: 'Business Purpose (select all that apply)',
+    juriLabel: 'Governing Law & Arbitration',
+    termLabel: 'Agreement Term',
+    btnPdf: '📄 Save PDF / Print',
+    btnTrust: '🔒 Preserve via Trust-Lock',
+    backBtn: '← Back to Contracts',
+    progText: function(p){ return p+'% — '+(p<50?'Please fill in the details':p<80?'Almost complete':'Ready to generate'); },
+    emptyMsg: '← Fill in the panel to generate the agreement.',
+    navHome: 'Home', navContracts: 'Contracts',
+    purposes: [
+      {v:'pf', label:'Project Finance (PF)'},
+      {v:'spv', label:'SPV / SPC Structuring'},
+      {v:'sto', label:'STO / RWA Tokenization'},
+      {v:'ir', label:'Investment Attraction (IR)'},
+      {v:'hnwi', label:'HNWI Immigration Asset Design'},
+      {v:'ma', label:'Mergers & Acquisitions'},
+      {v:'bi', label:'Bank Instrument Advisory'},
+      {v:'gen', label:'General Business Cooperation'}
+    ],
+    termOpts: {2:'2 Years', 3:'3 Years', 5:'5 Years', 10:'10 Years'},
+    docTitle: 'MUTUAL NON-CIRCUMVENTION AND NON-DISCLOSURE AGREEMENT',
+    docSub: 'CONFIDENTIAL · FOR EXECUTION ONLY',
+    ornament: '✦ ——— ⚖ ——— ✦',
+    roleA: "Party A ('Disclosing Party')",
+    roleB: "Party B ('Receiving Party')",
+    intro: function(a, b, date, jd) {
+      return "This Mutual Non-Circumvention and Non-Disclosure Agreement (\"<strong>Agreement</strong>\") is entered into as of <strong>"+date+"</strong> by and between <strong>"+a+"</strong> (\"<strong>Party A</strong>\") and <strong>"+b+"</strong> (\"<strong>Party B</strong>\"), collectively referred to as the \"<strong>Parties</strong>.\"";
+    },
+    clauses: function(a, b, purposes, termYears, jd) {
+      var ps = purposes.length ? purposes.join(', ') : '[business purposes]';
+      return [
+        { title: "1. Definitions and Interpretation",
+          body: "<p>In this Agreement, the following terms shall have the meanings set out below:</p><ul><li><strong>\"Confidential Information\"</strong> means all data, materials, products, specifications, manuals, business plans, financial information, software, marketing plans, contact details, trade secrets, proprietary processes, and any other non-public information disclosed or submitted by either Party, whether orally, in writing, electronically, or by any other means, in relation to the Business Opportunity defined herein.</li><li><strong>\"Business Opportunity\"</strong> means the proposed cooperation between the Parties in connection with: <em>"+ps+"</em>.</li><li><strong>\"Disclosing Party\"</strong> means the Party disclosing Confidential Information.</li><li><strong>\"Receiving Party\"</strong> means the Party receiving Confidential Information.</li></ul><p>Confidential Information shall not include information that: (a) is or becomes publicly available through no act of the Receiving Party; (b) was lawfully in the Receiving Party's possession prior to disclosure; (c) is independently developed by the Receiving Party without reference to Confidential Information; or (d) is disclosed with the prior written consent of the Disclosing Party.</p>" },
+        { title: "2. Non-Disclosure Obligations",
+          body: "<p>Each Party agrees that, unless required by applicable law, regulation, or regulatory authority:</p><ul><li>All Confidential Information received from the other Party shall be held strictly confidential and treated as proprietary;</li><li>Confidential Information shall only be used for the purpose of evaluating and pursuing the Business Opportunity;</li><li>Confidential Information shall not be disclosed to any third party without prior written authorization from the Disclosing Party, except to officers, directors, employees, legal counsel, financial advisors, or consultants who have a legitimate need to know and are bound by equivalent confidentiality obligations;</li><li>The Receiving Party shall implement reasonable security measures to safeguard Confidential Information against unauthorized access, disclosure, or use;</li><li>Written authorization to disclose Confidential Information shall include authorization provided via secure electronic communication or an executed letter of engagement.</li></ul><p>In the event that the Receiving Party is required by law or legal process to disclose Confidential Information, the Receiving Party shall promptly notify the Disclosing Party and cooperate to seek a protective order or equivalent remedy prior to any disclosure.</p>" },
+        { title: "3. Non-Circumvention",
+          body: "<p>Each Party expressly undertakes not to circumvent, bypass, avoid, or otherwise render ineffective the role of the other Party or any intermediary introduced by either Party in connection with the Business Opportunity, including but not limited to:</p><ul><li>Contacting, negotiating with, or entering into any agreement with any counterpart, investor, financier, introducer, agent, broker, or other party introduced by or through the other Party, without the prior written consent of the introducing Party;</li><li>Attempting to conclude, directly or indirectly, any transaction relating to the Business Opportunity without the full participation and compensation of the introducing Party;</li><li>Taking any action designed to remove, replace, or minimize the economic benefit due to the other Party in connection with the Business Opportunity.</li></ul><p>Any breach of this non-circumvention obligation shall entitle the non-breaching Party to liquidated damages equal to the greater of: (a) twice (2×) the economic benefit that would have been payable to the non-breaching Party; or (b) USD 500,000, without prejudice to any other remedy available at law or equity.</p>" },
+        { title: "4. Undertakings of the Parties",
+          body: "<p>Each Party hereby represents, warrants, and undertakes that:</p><ul><li>It has full authority to enter into this Agreement and to perform its obligations hereunder;</li><li>Its entry into and performance of this Agreement will not violate any applicable laws, regulations, or obligations owed to any third party;</li><li>All information provided to the other Party in connection with the Business Opportunity is, to the best of its knowledge, accurate, complete, and not misleading;</li><li>It will promptly notify the other Party of any actual or potential breach of this Agreement upon becoming aware of such breach;</li><li>It shall comply with all applicable anti-money laundering (AML), counter-financing of terrorism (CFT), and know-your-customer (KYC) laws and regulations in all jurisdictions relevant to the Business Opportunity.</li></ul>" },
+        { title: "5. Term and Survival",
+          body: "<p>This Agreement shall remain in full force and effect for a period of <strong>"+termYears+" ("+termYears+") years</strong> from the date of execution (the \"<strong>Term</strong>\").</p><p>Notwithstanding the expiry of the Term, the obligations of confidentiality set forth in Clause 2 shall survive for a further period of <strong>five (5) years</strong> following the end of the Term with respect to any Confidential Information disclosed during the Term. The non-circumvention obligations under Clause 3 shall survive for the duration of any transaction or business relationship introduced under this Agreement, regardless of the expiry of the Term.</p>" },
+        { title: "6. Return or Destruction of Information",
+          body: "<p>Upon written request by the Disclosing Party, or upon termination or expiry of this Agreement, the Receiving Party shall promptly:</p><ul><li>Return to the Disclosing Party all tangible materials containing Confidential Information; or</li><li>Permanently destroy all Confidential Information in its possession (including digital copies and backup files) and certify such destruction in writing.</li></ul><p>Notwithstanding the above, the Receiving Party may retain one (1) archival copy of Confidential Information solely for the purposes of legal compliance or dispute resolution, subject to the continuing confidentiality obligations herein.</p>" },
+        { title: "7. Remedies and Injunctive Relief",
+          body: "<p>The Parties acknowledge that any breach of this Agreement would cause irreparable harm to the non-breaching Party for which monetary damages alone would be an inadequate remedy. Accordingly, in addition to all other remedies available, the non-breaching Party shall be entitled to seek immediate injunctive or other equitable relief from any court of competent jurisdiction without the requirement to post bond or prove actual damages.</p><p>The prevailing Party in any dispute arising from or relating to this Agreement shall be entitled to recover reasonable legal fees and costs from the non-prevailing Party.</p>" },
+        { title: "8. Limitation of Liability",
+          body: "<p>Neither Party shall be liable to the other for any indirect, incidental, consequential, special, or punitive damages arising from or relating to this Agreement, even if advised of the possibility of such damages, except in cases of willful misconduct, gross negligence, or breach of the non-circumvention obligations in Clause 3.</p>" },
+        { title: "9. No License or Partnership",
+          body: "<p>Nothing in this Agreement shall be construed as granting either Party any license, right, title, or interest in or to any Confidential Information, intellectual property, or business opportunity of the other Party, except as expressly set forth herein. This Agreement does not create any partnership, joint venture, agency, franchise, or employment relationship between the Parties.</p>" },
+        { title: "10. Trust-Lock Blockchain Preservation",
+          body: "<p>The Parties acknowledge that this Agreement may be preserved via STCLOGIC's Trust-Lock blockchain archiving service (available at fincoupling.netlify.app/#/trust-lock). Upon upload, a cryptographic hash of this document shall be recorded on-chain, creating an immutable and time-stamped record of its existence and content at the time of preservation.</p><p>Such blockchain record shall serve as admissible evidence of the Agreement's existence and terms in any arbitration or legal proceeding, subject to applicable rules of evidence.</p>" },
+        { title: "11. Governing Law and Dispute Resolution",
+          body: "<div class='juri-box'>"+jd.box+"</div><p>This Agreement and any dispute or claim arising out of or in connection with it (including non-contractual disputes or claims) shall be governed by, and construed in accordance with, the laws of <strong>"+jd.law+"</strong>.</p><p>Any dispute, controversy, or claim arising out of or relating to this Agreement, or the breach, termination, or invalidity thereof, shall be finally settled by arbitration administered by the <strong>"+jd.body+"</strong> in accordance with "+jd.rules+". The seat of arbitration shall be <strong>"+jd.seat+"</strong>. The language of arbitration shall be English. The arbitral award shall be final and binding upon both Parties.</p>" },
+        { title: "12. Miscellaneous",
+          body: "<p><strong>Entire Agreement:</strong> This Agreement constitutes the entire agreement between the Parties with respect to its subject matter and supersedes all prior agreements, representations, warranties, and understandings.</p><p><strong>Amendments:</strong> No amendment or modification of this Agreement shall be valid unless made in writing and signed by authorized representatives of both Parties.</p><p><strong>Severability:</strong> If any provision of this Agreement is found to be invalid, illegal, or unenforceable, the remaining provisions shall continue in full force and effect.</p><p><strong>Waiver:</strong> Failure by either Party to enforce any provision of this Agreement shall not constitute a waiver of that Party's rights to enforce such provision in the future.</p><p><strong>Counterparts:</strong> This Agreement may be executed in counterparts, including electronically signed counterparts, each of which shall constitute an original and all of which together shall constitute one and the same instrument.</p>" },
+        { title: "13. Signatures",
+          body: "" }
+      ];
+    },
+    sigLabel: 'Authorized Signature',
+    sigName: 'Name',
+    sigTitle: 'Title / Position',
+    sigDate: 'Date',
+    contractNo: 'Agreement No.',
+    tlText: function(hash){ return '🔒 Preserved on Trust-Lock · Ref: '+hash; }
+  },
+
+  ko: {
+    panelTitle: '🔐 NCND 계약서',
+    partyALabel: '당사자 A (공개 당사자)',
+    partyBLabel: '당사자 B (수령 당사자)',
+    dateLabel: '계약일',
+    purposeLabel: '비즈니스 목적 (해당 항목 모두 선택)',
+    juriLabel: '준거법 및 국제 중재',
+    termLabel: '계약 기간',
+    btnPdf: '📄 PDF 저장 / 인쇄',
+    btnTrust: '🔒 Trust-Lock에 보존하기',
+    backBtn: '← 계약서 목록으로',
+    progText: function(p){ return p+'% — '+(p<50?'정보를 입력해 주세요':p<80?'거의 완성되었습니다':'생성 준비 완료'); },
+    emptyMsg: '← 왼쪽 패널에 정보를 입력하면 계약서가 생성됩니다.',
+    navHome: '홈', navContracts: '계약서',
+    purposes: [
+      {v:'pf', label:'프로젝트 파이낸싱 (PF)'},
+      {v:'spv', label:'SPV / SPC 설계'},
+      {v:'sto', label:'STO / 실물자산 토큰화 (RWA)'},
+      {v:'ir', label:'투자 유치 (IR)'},
+      {v:'hnwi', label:'HNWI 이민 자산 설계'},
+      {v:'ma', label:'인수합병 (M&A)'},
+      {v:'bi', label:'은행 증서 자문'},
+      {v:'gen', label:'일반 사업 협력'}
+    ],
+    termOpts: {2:'2년', 3:'3년', 5:'5년', 10:'10년'},
+    docTitle: '상호 비밀유지 및 우회금지 협정',
+    docSub: '기밀 · 서명 전용',
+    ornament: '✦ ——— ⚖ ——— ✦',
+    roleA: "당사자 A（「공개자」）",
+    roleB: "당사자 B（「수령자」）",
+    intro: function(a, b, date, jd) {
+      return "본 상호 비밀유지 및 우회금지 협정(이하 「<strong>본 협정</strong>」)은 <strong>"+date+"</strong>을(를) 기준으로 <strong>"+a+"</strong>(이하 「<strong>당사자 A</strong>」)와 <strong>"+b+"</strong>(이하 「<strong>당사자 B</strong>」) 간에 체결되며, 양자를 총칭하여 「<strong>당사자들</strong>」이라 한다.";
+    },
+    clauses: function(a, b, purposes, termYears, jd) {
+      var ps = purposes.length ? purposes.join(', ') : '[사업 목적]';
+      return [
+        { title: "제1조. 정의 및 해석",
+          body: "<p>본 협정에서 다음 용어는 아래와 같이 정의된다.</p><ul><li><strong>「기밀정보」</strong>란 본 협정에서 정의된 사업 기회와 관련하여 어느 일방 당사자가 구두, 서면, 전자적 방법 또는 기타 방법으로 공개하거나 제출한 모든 자료, 제품, 사양서, 매뉴얼, 사업계획, 재무정보, 소프트웨어, 마케팅 계획, 연락처, 영업비밀, 독자적 공정 및 기타 비공개 정보를 의미한다.</li><li><strong>「사업 기회」</strong>란 다음 분야에 관한 양 당사자 간 협력을 의미한다. <em>"+ps+"</em></li><li><strong>「공개자」</strong>란 기밀정보를 공개하는 당사자를 의미한다.</li><li><strong>「수령자」</strong>란 기밀정보를 수령하는 당사자를 의미한다.</li></ul><p>다음에 해당하는 정보는 기밀정보에서 제외된다. (가) 수령자의 귀책 없이 공공에 공개된 정보; (나) 공개 전 적법하게 수령자가 보유하던 정보; (다) 기밀정보와 무관하게 수령자가 독자적으로 개발한 정보; (라) 공개자의 사전 서면 동의하에 공개된 정보.</p>" },
+        { title: "제2조. 비밀유지 의무",
+          body: "<p>각 당사자는 관련 법령, 규정 또는 규제기관의 요구가 없는 한 다음 사항에 동의한다.</p><ul><li>상대방으로부터 수령한 모든 기밀정보를 엄격히 비밀로 유지하고 독점적 정보로 취급할 것;</li><li>기밀정보는 오직 사업 기회의 평가 및 추진 목적에만 사용할 것;</li><li>사전 서면 승인 없이 기밀정보를 제3자에게 공개하지 않을 것. 단, 정당한 알 필요가 있으며 동등한 비밀유지 의무를 부담하는 임원, 이사, 직원, 법률 고문, 재무 자문인 또는 컨설턴트에 대한 공개는 예외로 한다;</li><li>기밀정보의 무단 접근, 공개 또는 사용을 방지하기 위한 합리적인 보안 조치를 시행할 것.</li></ul><p>수령자가 법령 또는 법적 절차에 의해 기밀정보를 공개하여야 하는 경우, 수령자는 공개자에게 즉시 통지하고 공개 전 보호 명령 또는 동등한 구제 수단을 구하기 위해 협력하여야 한다.</p>" },
+        { title: "제3조. 우회금지 의무",
+          body: "<p>각 당사자는 사업 기회와 관련하여 다음을 명시적으로 약정한다.</p><ul><li>소개 당사자의 사전 서면 동의 없이, 상대방 또는 그 소개를 통해 알게 된 거래상대방, 투자자, 금융기관, 소개인, 대리인, 브로커 또는 기타 관련인과 직접 접촉, 교섭 또는 계약하지 않을 것;</li><li>소개 당사자의 완전한 참여 및 보상 없이, 사업 기회와 관련된 거래를 직접 또는 간접적으로 완결하려 시도하지 않을 것;</li><li>사업 기회와 관련하여 상대방에게 귀속되어야 할 경제적 이익을 배제, 대체 또는 최소화하려는 어떠한 행위도 하지 않을 것.</li></ul><p>우회금지 의무 위반 시, 위반하지 않은 당사자는 다음 중 큰 금액에 해당하는 위약금을 청구할 수 있다. (가) 지급받아야 할 경제적 이익의 2배(2×); (나) 미화 500,000달러. 이는 법 또는 형평법에 따른 기타 구제 수단을 배제하지 아니한다.</p>" },
+        { title: "제4조. 당사자 확약",
+          body: "<p>각 당사자는 다음 사항을 진술, 보증 및 확약한다.</p><ul><li>본 협정을 체결하고 의무를 이행할 완전한 권한을 보유하고 있을 것;</li><li>본 협정의 체결 및 이행이 관련 법령 또는 제3자에 대한 의무를 위반하지 않을 것;</li><li>사업 기회와 관련하여 상대방에게 제공하는 모든 정보는 최선의 인식 범위 내에서 정확하고 완전하며 오해의 소지가 없을 것;</li><li>본 협정의 실제 또는 잠재적 위반을 인지한 즉시 상대방에게 통지할 것;</li><li>사업 기회와 관련된 모든 관할권에서 적용 가능한 자금세탁방지(AML), 테러자금조달금지(CFT) 및 고객확인(KYC) 관련 법령과 규정을 준수할 것.</li></ul>" },
+        { title: "제5조. 계약 기간 및 존속",
+          body: "<p>본 협정은 체결일로부터 <strong>"+termYears+"("+termYears+")년</strong> 간 완전한 효력을 유지한다(이하 「<strong>기간</strong>」).</p><p>기간 만료 후에도 제2조에 규정된 비밀유지 의무는 기간 중 공개된 기밀정보에 관하여 기간 종료 후 <strong>5년간</strong> 존속한다. 제3조의 우회금지 의무는 본 협정에 의해 소개된 거래 또는 사업 관계가 지속되는 동안, 기간 만료에 관계없이 효력을 유지한다.</p>" },
+        { title: "제6조. 정보의 반환 또는 파기",
+          body: "<p>공개자의 서면 요청 시 또는 본 협정의 종료·만료 시, 수령자는 즉시 다음 중 하나를 이행하여야 한다.</p><ul><li>기밀정보가 포함된 모든 유형의 자료를 공개자에게 반환하거나;</li><li>보유 중인 모든 기밀정보(디지털 사본 및 백업 파일 포함)를 영구적으로 파기하고 이를 서면으로 확인할 것.</li></ul><p>다만, 수령자는 법적 의무 준수 또는 분쟁 해결만을 목적으로 기밀정보의 보관본 1부를 유지할 수 있으며, 본 협정의 비밀유지 의무는 계속 적용된다.</p>" },
+        { title: "제7조. 구제 수단 및 금지명령",
+          body: "<p>당사자들은 본 협정 위반이 위반하지 않은 당사자에게 금전적 손해배상만으로는 회복하기 어려운 회복불능의 손해를 야기할 수 있음을 인정한다. 따라서 기타 모든 구제 수단에 추가하여, 위반하지 않은 당사자는 공탁금 납입이나 실제 손해 증명 없이 관할 법원에 즉각적인 금지명령 또는 기타 형평법적 구제를 신청할 권리를 보유한다.</p><p>본 협정과 관련된 분쟁에서 승소한 당사자는 상대방으로부터 합리적인 법률 비용 및 소송 비용을 회수할 권리를 갖는다.</p>" },
+        { title: "제8조. 책임의 제한",
+          body: "<p>어느 당사자도 고의적인 위법 행위, 중대한 과실 또는 제3조 우회금지 의무 위반의 경우를 제외하고, 그러한 손해의 가능성을 사전에 통지받은 경우에도 본 협정과 관련하여 발생하는 간접적, 부수적, 결과적, 특별 또는 징벌적 손해에 대하여 상대방에게 책임을 지지 않는다.</p>" },
+        { title: "제9조. 라이선스 또는 파트너십 부존재",
+          body: "<p>본 협정의 어떠한 내용도 어느 일방 당사자에게 상대방의 기밀정보, 지식재산권 또는 사업 기회에 대한 라이선스, 권리, 소유권 또는 이익을 명시적으로 부여하는 것으로 해석되지 않는다. 본 협정은 양 당사자 간에 파트너십, 합작투자, 대리, 프랜차이즈 또는 고용 관계를 창설하지 않는다.</p>" },
+        { title: "제10조. Trust-Lock 블록체인 보존",
+          body: "<p>당사자들은 본 협정이 STCLOGIC의 Trust-Lock 블록체인 보관 서비스(fincoupling.netlify.app/#/trust-lock)를 통해 보존될 수 있음을 인지한다. 업로드 시 본 문서의 암호화 해시값이 블록체인에 기록되어 보존 시점의 문서 존재 및 내용에 대한 불변의 타임스탬프 기록이 생성된다.</p><p>이러한 블록체인 기록은 관련 증거 규칙에 따라 중재 또는 법적 절차에서 본 협정의 존재 및 조항에 관한 증거로 인정될 수 있다.</p>" },
+        { title: "제11조. 준거법 및 분쟁 해결",
+          body: "<div class='juri-box'>"+jd.box+"</div><p>본 협정 및 이에 관련된 모든 분쟁 또는 청구(비계약적 분쟁 또는 청구 포함)는 <strong>"+jd.law+"</strong>의 법률에 따라 규율되고 해석된다.</p><p>본 협정에서 발생하거나 이와 관련된 모든 분쟁, 논쟁 또는 청구는 <strong>"+jd.body+"</strong>에 의해 "+jd.rules+"에 따라 최종적으로 중재로 해결된다. 중재지는 <strong>"+jd.seat+"</strong>이며, 중재 언어는 영어로 한다. 중재 판정은 최종적이며 양 당사자를 구속한다.</p>" },
+        { title: "제12조. 기타 사항",
+          body: "<p><strong>완전 합의:</strong> 본 협정은 그 주제에 관하여 당사자 간의 완전한 합의를 구성하며, 이전의 모든 계약, 진술, 보증 및 합의를 대체한다.</p><p><strong>수정:</strong> 본 협정의 수정 또는 변경은 양 당사자의 권한 있는 대표자가 서명한 서면에 의하지 않고는 유효하지 않다.</p><p><strong>분리 가능성:</strong> 본 협정의 어느 조항이 무효, 위법 또는 집행 불가능한 것으로 판정되는 경우, 나머지 조항은 완전한 효력을 유지한다.</p><p><strong>권리 포기:</strong> 어느 일방 당사자가 본 협정의 조항을 집행하지 않는다고 하여 그 조항에 대한 권리를 장래에 포기하는 것으로 간주되지 않는다.</p><p><strong>복수본:</strong> 본 협정은 전자 서명 복수본을 포함한 여러 부로 체결될 수 있으며, 각 부는 원본을 구성하고 모두 합하여 하나의 동일한 문서를 구성한다.</p>" },
+        { title: "제13조. 서명", body: "" }
+      ];
+    },
+    sigLabel: '권한 있는 서명인',
+    sigName: '성명',
+    sigTitle: '직책',
+    sigDate: '서명일',
+    contractNo: '협정 번호',
+    tlText: function(hash){ return '🔒 Trust-Lock 보존 완료 · Ref: '+hash; }
+  },
+
+  ja: {
+    panelTitle: '🔐 NCND契約書',
+    partyALabel: '当事者A（開示当事者）',
+    partyBLabel: '当事者B（受領当事者）',
+    dateLabel: '契約日',
+    purposeLabel: 'ビジネス目的（該当するものをすべて選択）',
+    juriLabel: '準拠法・国際仲裁',
+    termLabel: '契約期間',
+    btnPdf: '📄 PDF保存 / 印刷',
+    btnTrust: '🔒 Trust-Lockに保存',
+    backBtn: '← 契約書一覧へ',
+    progText: function(p){ return p+'% — '+(p<50?'情報を入力してください':p<80?'もうすぐ完成です':'生成準備完了'); },
+    emptyMsg: '← 左のパネルに情報を入力すると契約書が生成されます。',
+    navHome: 'ホーム', navContracts: '契約書',
+    purposes: [
+      {v:'pf', label:'プロジェクトファイナンス（PF）'},
+      {v:'spv', label:'SPV / SPC組成'},
+      {v:'sto', label:'STO / 実物資産トークン化（RWA）'},
+      {v:'ir', label:'投資誘致（IR）'},
+      {v:'hnwi', label:'HNWI移民資産設計'},
+      {v:'ma', label:'合併・買収（M&A）'},
+      {v:'bi', label:'銀行証書アドバイザリー'},
+      {v:'gen', label:'一般事業協力'}
+    ],
+    termOpts: {2:'2年', 3:'3年', 5:'5年', 10:'10年'},
+    docTitle: '相互秘密保持・迂回禁止協定',
+    docSub: '機密・署名専用',
+    ornament: '✦ ——— ⚖ ——— ✦',
+    roleA: "当事者A（「開示者」）",
+    roleB: "当事者B（「受領者」）",
+    intro: function(a, b, date, jd) {
+      return "本相互秘密保持・迂回禁止協定（以下「<strong>本協定</strong>」）は、<strong>"+date+"</strong>付けで<strong>"+a+"</strong>（以下「<strong>当事者A</strong>」）と<strong>"+b+"</strong>（以下「<strong>当事者B</strong>」）との間で締結され、両者を総称して「<strong>当事者ら</strong>」という。";
+    },
+    clauses: function(a, b, purposes, termYears, jd) {
+      var ps = purposes.length ? purposes.join('、') : '【事業目的】';
+      return [
+        { title: "第1条　定義および解釈",
+          body: "<p>本協定において、以下の用語は次の意味を有する。</p><ul><li><strong>「機密情報」</strong>とは、本協定に定義される事業機会に関連して、いずれかの当事者が口頭、書面、電子的手段またはその他の方法で開示または提出した、すべてのデータ、資料、製品、仕様書、マニュアル、事業計画、財務情報、ソフトウェア、マーケティング計画、連絡先、営業秘密、独自のプロセスおよびその他の非公開情報をいう。</li><li><strong>「事業機会」</strong>とは、次の分野に関する当事者らの協力をいう。<em>"+ps+"</em></li><li><strong>「開示者」</strong>とは、機密情報を開示する当事者をいう。</li><li><strong>「受領者」</strong>とは、機密情報を受領する当事者をいう。</li></ul><p>以下の情報は機密情報から除外される。（ア）受領者の行為によらず公に利用可能となった情報；（イ）開示前に適法に受領者が保有していた情報；（ウ）機密情報を参照せず受領者が独自に開発した情報；（エ）開示者の事前書面による同意を得て開示された情報。</p>" },
+        { title: "第2条　秘密保持義務",
+          body: "<p>各当事者は、適用法令、規則または規制当局が要求する場合を除き、以下の事項に同意する。</p><ul><li>相手方から受領したすべての機密情報を厳格に秘密として保持し、独自情報として取り扱うこと；</li><li>機密情報は事業機会の評価および推進の目的にのみ使用すること；</li><li>開示者の事前書面による承認なく、機密情報を第三者に開示しないこと。ただし、正当な知る必要があり、同等の秘密保持義務を負う役員、取締役、従業員、法律顧問、財務アドバイザーまたはコンサルタントへの開示はこの限りでない；</li><li>機密情報への不正アクセス、開示または使用を防止するための合理的なセキュリティ措置を講じること。</li></ul><p>受領者が法令または法的手続により機密情報の開示を求められる場合、受領者は開示者に速やかに通知し、開示前に保護命令または同等の救済措置を求めるために協力しなければならない。</p>" },
+        { title: "第3条　迂回禁止義務",
+          body: "<p>各当事者は、事業機会に関連して以下の事項を明示的に約定する。</p><ul><li>紹介当事者の事前書面による同意なく、相手方またはその紹介を通じて知った取引相手、投資家、金融機関、紹介者、代理人、ブローカーその他の関係者と直接接触、交渉または契約しないこと；</li><li>紹介当事者の完全な参加および報酬なく、事業機会に関連する取引を直接または間接的に完結しようと試みないこと；</li><li>事業機会に関連して相手方に帰属すべき経済的利益を排除、代替または最小化しようとする行為を一切行わないこと。</li></ul><p>迂回禁止義務に違反した場合、違反していない当事者は、（ア）支払われるべきであった経済的利益の2倍（2×）または（イ）米ドル500,000ドルのいずれか大きい金額の違約金を請求できる。これは法律または衡平法に基づく他の救済措置を排除しない。</p>" },
+        { title: "第4条　当事者の確約",
+          body: "<p>各当事者は以下の事項を表明、保証および確約する。</p><ul><li>本協定を締結し、義務を履行するための完全な権限を有すること；</li><li>本協定の締結および履行が適用法令または第三者に対する義務に違反しないこと；</li><li>事業機会に関連して相手方に提供するすべての情報は、最善の認識の範囲内において正確、完全かつ誤解を招くものではないこと；</li><li>本協定の実際のまたは潜在的な違反を認識した際に、直ちに相手方に通知すること；</li><li>事業機会に関連するすべての管轄において、適用されるマネーロンダリング防止（AML）、テロ資金調達防止（CFT）および顧客確認（KYC）に関する法令・規制を遵守すること。</li></ul>" },
+        { title: "第5条　契約期間および存続",
+          body: "<p>本協定は、締結日から<strong>"+termYears+"（"+termYears+"）年間</strong>完全に効力を有する（以下「<strong>期間</strong>」）。</p><p>期間満了後も、第2条に定める秘密保持義務は、期間中に開示された機密情報に関して、期間終了後さらに<strong>5年間</strong>存続する。第3条の迂回禁止義務は、本協定に基づき紹介された取引または事業関係が継続する間、期間の満了にかかわらず効力を有する。</p>" },
+        { title: "第6条　情報の返還または廃棄",
+          body: "<p>開示者の書面による要求があった場合、または本協定の終了・満了の際、受領者は速やかに以下のいずれかを実施しなければならない。</p><ul><li>機密情報を含むすべての有形資料を開示者に返還すること；または</li><li>保有するすべての機密情報（デジタルコピーおよびバックアップファイルを含む）を永久に廃棄し、その旨を書面で確認すること。</li></ul><p>ただし、受領者は法的義務の遵守または紛争解決のみを目的として、機密情報の保管コピーを1部保持することができる。この場合も本協定の秘密保持義務は引き続き適用される。</p>" },
+        { title: "第7条　救済措置および差止命令",
+          body: "<p>当事者らは、本協定の違反が違反していない当事者に対して金銭的損害賠償のみでは回復困難な回復不能の損害を引き起こす可能性があることを認める。したがって、その他すべての救済措置に加えて、違反していない当事者は、供託金の納付や実際の損害の証明を要せず、管轄裁判所に即時の差止命令またはその他の衡平法上の救済を申請する権利を有する。</p><p>本協定に関連する紛争において勝訴した当事者は、相手方から合理的な弁護士費用および訴訟費用を回収する権利を有する。</p>" },
+        { title: "第8条　責任の制限",
+          body: "<p>故意の違法行為、重大な過失または第3条の迂回禁止義務違反の場合を除き、いずれの当事者も、そのような損害の可能性について事前に通知を受けていた場合であっても、本協定に関連して生じる間接的、付随的、結果的、特別または懲罰的損害について相手方に対して責任を負わない。</p>" },
+        { title: "第9条　ライセンスまたはパートナーシップの不存在",
+          body: "<p>本協定のいかなる内容も、本協定に明示的に定める場合を除き、いずれかの当事者に対して相手方の機密情報、知的財産権または事業機会に関するライセンス、権利、所有権または利益を付与するものと解釈されない。本協定は当事者間にパートナーシップ、合弁事業、代理、フランチャイズまたは雇用関係を創設しない。</p>" },
+        { title: "第10条　Trust-Lockブロックチェーン保存",
+          body: "<p>当事者らは、本協定がSTCLOGICのTrust-Lockブロックチェーンアーカイブサービス（fincoupling.netlify.app/#/trust-lock）を通じて保存できることを認識する。アップロード時に本文書の暗号学的ハッシュ値がブロックチェーンに記録され、保存時点における文書の存在および内容の不変のタイムスタンプ付き記録が生成される。</p><p>このブロックチェーン記録は、適用される証拠規則に従い、仲裁または法的手続において本協定の存在および条項に関する証拠として認められる場合がある。</p>" },
+        { title: "第11条　準拠法および紛争解決",
+          body: "<div class='juri-box'>"+jd.box+"</div><p>本協定および本協定から生じるまたは本協定に関連するすべての紛争もしくは請求（非契約上の紛争または請求を含む）は、<strong>"+jd.law+"</strong>の法律に準拠し、解釈される。</p><p>本協定から生じるまたは本協定に関連する紛争、論争または請求は、<strong>"+jd.body+"</strong>が"+jd.rules+"に従って管理する仲裁により最終的に解決される。仲裁地は<strong>"+jd.seat+"</strong>とし、仲裁言語は英語とする。仲裁判断は最終的なものであり、両当事者を拘束する。</p>" },
+        { title: "第12条　雑則",
+          body: "<p><strong>完全合意：</strong>本協定は、その主題に関する当事者間の完全な合意を構成し、以前のすべての合意、表明、保証および了解事項に優先する。</p><p><strong>修正：</strong>本協定の修正または変更は、両当事者の権限ある代表者が署名した書面によらなければ有効でない。</p><p><strong>可分性：</strong>本協定のいずれかの条項が無効、違法または執行不能と判断された場合、残りの条項は完全に効力を維持する。</p><p><strong>権利放棄：</strong>いずれかの当事者が本協定の条項を執行しないことは、当該条項に関する権利を将来にわたって放棄したものとみなされない。</p><p><strong>複数原本：</strong>本協定は、電子署名された複数原本を含む複数部で締結することができ、各部は原本を構成し、すべてを合わせて同一の文書を構成する。</p>" },
+        { title: "第13条　署名", body: "" }
+      ];
+    },
+    sigLabel: '権限ある署名者',
+    sigName: '氏名',
+    sigTitle: '役職',
+    sigDate: '署名日',
+    contractNo: '協定番号',
+    tlText: function(hash){ return '🔒 Trust-Lock保存済み · Ref: '+hash; }
+  }
+};
+
+function juriData() {
+  if(juri === 'sg') return {
+    flag: '🇸🇬', name: 'Singapore',
+    law: 'the Republic of Singapore',
+    body: 'Singapore International Arbitration Centre (SIAC)',
+    rules: 'the SIAC Rules',
+    seat: 'Singapore',
+    box: '<strong>🇸🇬 Singapore — SIAC</strong><br>Governing Law: Laws of the Republic of Singapore · Arbitration Body: Singapore International Arbitration Centre (SIAC) · Rules: SIAC Rules · Seat: Singapore'
+  };
+  return {
+    flag: '🇦🇪', name: 'Dubai',
+    law: 'the Dubai International Financial Centre (DIFC)',
+    body: 'Dubai International Arbitration Centre (DIAC) / DIFC-LCIA',
+    rules: 'the DIAC Arbitration Rules',
+    seat: 'Dubai, UAE',
+    box: '<strong>🇦🇪 Dubai — DIAC / DIFC-LCIA</strong><br>Governing Law: Laws of the Dubai International Financial Centre (DIFC) · Arbitration Body: DIAC / DIFC-LCIA · Seat: Dubai, UAE'
+  };
+}
+
+function v(id){ return document.getElementById(id) ? document.getElementById(id).value : ''; }
+function getPurposes(){
+  var t = I18N[lang];
+  var items = [];
+  document.querySelectorAll('#purpose-checks input:checked').forEach(function(cb){
+    var s = t.purposes.find(function(p){ return p.v===cb.value; });
+    if(s) items.push(s.label);
+  });
+  return items;
+}
+
+function contractNum(){
+  var d = v('contDate').replace(/-/g,'') || new Date().toISOString().slice(0,10).replace(/-/g,'');
+  var n = v('partyBName') ? v('partyBName').replace(/\s+/g,'').toUpperCase().slice(0,4) : 'XXXX';
+  return 'STC-NCND-'+d+'-'+n;
+}
+
+function fmtDate(iso){
+  if(!iso) return '________________';
+  var parts = iso.split('-');
+  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return months[parseInt(parts[1])-1]+' '+parseInt(parts[2])+', '+parts[0];
+}
+
+function updateProgress(){
+  var score = 10;
+  if(v('partyBName').trim()) score += 25;
+  if(v('partyBAddr').trim()) score += 10;
+  if(v('partyBEmail').trim()) score += 10;
+  if(v('contDate')) score += 15;
+  if(document.querySelectorAll('#purpose-checks input:checked').length) score += 20;
+  score = Math.min(score, 100);
+  document.getElementById('progFill').style.width = score+'%';
+  var t = I18N[lang];
+  document.getElementById('progText').textContent = t.progText(score);
+}
+
+function render(){
+  updateProgress();
+  var a = v('partyAName') || 'STCLOGIC Co., Ltd.';
+  var aAddr = v('partyAAddr') || 'Seoul, Republic of Korea';
+  var b = v('partyBName') || '________________';
+  var bAddr = v('partyBAddr') || '';
+  var bEmail = v('partyBEmail') || '';
+  var bReg = v('partyBReg') || '';
+  var date = fmtDate(v('contDate'));
+  var jd = juriData();
+  var termYears = v('termYears') || '3';
+  var purposes = getPurposes();
+  var t = I18N[lang];
+  var clauses = t.clauses(a, b, purposes, termYears, jd);
+
+  var clauseHtml = clauses.map(function(c){
+    if(c.title.indexOf('13') !== -1 || c.title.indexOf('제13조') !== -1 || c.title.indexOf('第13条') !== -1) {
+      return '<div class="doc-clause"><div class="doc-clause-title">'+c.title+'</div>'
+        +'<div class="sig-grid">'
+        +'<div class="sig-block"><div class="sig-label">'+t.roleA+'</div><div class="sig-name">'+a+'</div>'
+        +'<div class="sig-line" style="margin-top:2.5rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigLabel+']</div>'
+        +'<div class="sig-line" style="margin-top:1.2rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigName+' / '+t.sigTitle+']</div>'
+        +'<div class="sig-line" style="margin-top:1.2rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigDate+']</div></div>'
+        +'<div class="sig-block"><div class="sig-label">'+t.roleB+'</div><div class="sig-name">'+b+'</div>'
+        +'<div class="sig-line" style="margin-top:2.5rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigLabel+']</div>'
+        +'<div class="sig-line" style="margin-top:1.2rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigName+' / '+t.sigTitle+']</div>'
+        +'<div class="sig-line" style="margin-top:1.2rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigDate+']</div></div>'
+        +'</div>'
+        +'<div class="tl-seal" id="tlSeal"></div>'
+        +'</div>';
+    }
+    return '<div class="doc-clause"><div class="doc-clause-title">'+c.title+'</div>'+c.body+'</div>';
+  }).join('');
+
+  var html = '<div class="doc-wrap">'
+    +'<div class="doc-meta">'+t.contractNo+': '+contractNum()+'</div>'
+    +'<div class="doc-title">'+t.docTitle+'</div>'
+    +'<div class="doc-subtitle">'+t.docSub+'</div>'
+    +'<div class="doc-ornament">'+t.ornament+'</div>'
+    +'<div class="parties-box">'
+    +'<div class="party-col"><div class="party-role">'+t.roleA+'</div><div class="party-name">'+a+'</div><div class="party-detail">'+aAddr+'</div></div>'
+    +'<div class="party-col"><div class="party-role">'+t.roleB+'</div><div class="party-name">'+b+'</div><div class="party-detail">'+(bAddr?bAddr:'')+(bEmail?' · '+bEmail:'')+(bReg?' · Reg: '+bReg:'')+'</div></div>'
+    +'</div>'
+    +'<div class="doc-intro">'+t.intro(a, b, date, jd)+'</div>'
+    +'<div class="doc-ornament" style="margin-bottom:1.5rem">——— ⚖ ———</div>'
+    +clauseHtml
+    +'</div>';
+
+  document.getElementById('contractDoc').innerHTML = html;
+
+  var tls = document.getElementById('tlSeal');
+  var tlb = document.getElementById('trustBadge');
+  if(tls && tlb && tlb.style.display !== 'none') {
+    tls.style.display = 'block';
+    tls.textContent = tlb.textContent;
+  }
+}
+
+function setJuri(j){
+  juri = j;
+  document.getElementById('j-sg').classList.toggle('active', j==='sg');
+  document.getElementById('j-ae').classList.toggle('active', j==='ae');
+  render();
+}
+
+function applyUI(){
+  var t = I18N[lang];
+  document.getElementById('ui-panelTitle').textContent = t.panelTitle;
+  document.getElementById('ui-partyALabel').textContent = t.partyALabel;
+  document.getElementById('ui-partyBLabel').textContent = t.partyBLabel;
+  document.getElementById('ui-dateLabel').textContent = t.dateLabel;
+  document.getElementById('ui-purposeLabel').textContent = t.purposeLabel;
+  document.getElementById('ui-juriLabel').textContent = t.juriLabel;
+  document.getElementById('ui-termLabel').textContent = t.termLabel;
+  document.getElementById('ui-btnPdf').textContent = t.btnPdf;
+  document.getElementById('ui-btnTrust').textContent = t.btnTrust;
+  document.getElementById('backBtn').textContent = t.backBtn;
+  document.getElementById('nav-home').textContent = t.navHome;
+  document.getElementById('nav-contracts').textContent = t.navContracts;
+  var emptyEl = document.getElementById('emptyMsg');
+  if(emptyEl) emptyEl.textContent = t.emptyMsg;
+
+  // Rebuild purpose checkboxes
+  var prev = {};
+  document.querySelectorAll('#purpose-checks input').forEach(function(el){ prev[el.value] = el.checked; });
+  var cb = document.getElementById('purpose-checks');
+  cb.innerHTML = '';
+  t.purposes.forEach(function(s){
+    var lbl = document.createElement('label');
+    lbl.className = 'cb-item';
+    lbl.innerHTML = '<input type="checkbox" value="'+s.v+'" onchange="render()"> '+s.label;
+    if(prev[s.v]) lbl.querySelector('input').checked = true;
+    cb.appendChild(lbl);
+  });
+
+  // Update term select options
+  var sel = document.getElementById('termYears');
+  var cur = sel.value;
+  sel.innerHTML = '';
+  Object.keys(t.termOpts).forEach(function(k){
+    var opt = document.createElement('option');
+    opt.value = k; opt.textContent = t.termOpts[k];
+    if(k === cur) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function setLang(l){
+  lang = l;
+  localStorage.setItem('contract-lang', l);
+  ['lb-en','lb-ko','lb-ja'].forEach(function(id){
+    document.getElementById(id).classList.toggle('active', id==='lb-'+l);
+  });
+  document.documentElement.lang = l;
+  applyUI();
+  render();
+}
+
+function savePDF(){
+  window.print();
+}
+
+function uploadTrustLock(){
+  var hash = 'TL-'+Date.now().toString(36).toUpperCase()+'-'+contractNum().slice(-6);
+  var t = I18N[lang];
+  var badge = document.getElementById('trustBadge');
+  badge.textContent = t.tlText(hash);
+  badge.style.display = 'block';
+  var seal = document.getElementById('tlSeal');
+  if(seal){ seal.style.display = 'block'; seal.textContent = t.tlText(hash); }
+  setTimeout(function(){
+    window.open('https://fincoupling.netlify.app/#/trust-lock','_blank');
+  }, 600);
+}
+
+// Init
+var today = new Date().toISOString().slice(0,10);
+document.getElementById('contDate').value = today;
+setLang(lang);
+setJuri('sg');
+</script>
+</body>
+</html>

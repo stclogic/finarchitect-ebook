@@ -47,6 +47,8 @@ const SITE_I18N = {
     'feature.legal.sub': '변호사 감수 완료',
     'feature.lang.title': '3개국어 지원',
     'feature.lang.sub': '한국어·영어·일본어',
+    'feature.contract.title': '계약서 센터',
+    'feature.contract.sub': 'NCND·컨설팅 계약서',
 
     // LANDING — workflow
     'workflow.tag': 'WORKFLOW',
@@ -213,6 +215,8 @@ const SITE_I18N = {
     'feature.legal.sub': 'Attorney-verified',
     'feature.lang.title': 'Trilingual Support',
     'feature.lang.sub': 'Korean · English · Japanese',
+    'feature.contract.title': 'Contract Center',
+    'feature.contract.sub': 'NCND · Consulting Agreement',
 
     'workflow.tag': 'WORKFLOW',
     'workflow.title': 'From Learning to Execution, in One Flow',
@@ -371,6 +375,8 @@ const SITE_I18N = {
     'feature.legal.sub': '弁護士監修済み',
     'feature.lang.title': '3言語対応',
     'feature.lang.sub': '韓国語·英語·日本語',
+    'feature.contract.title': '契約書センター',
+    'feature.contract.sub': 'NCND·コンサル契約書',
 
     'workflow.tag': 'WORKFLOW',
     'workflow.title': '学びから実践まで、ひとつの流れで',

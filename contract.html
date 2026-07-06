@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 컨설팅 서비스 계약서 생성기 — 티어 선택·PDF 저장·Trust-Lock 업로드 -->
+<!-- 컨설팅 서비스 계약서 생성기 — EN/KO/JA 3국어, 티어 선택·PDF·Trust-Lock -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,205 +7,192 @@
 <title>Consulting Agreement — STCLOGIC</title>
 <link rel="stylesheet" href="assets/css/site.css">
 <style>
-/* ── Layout ── */
-.cg-wrap { display: grid; grid-template-columns: 380px 1fr; gap: 0; min-height: 100vh; }
-.cg-panel { background: var(--white); border-right: 1px solid var(--border); padding: 2rem 1.5rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.cg-wrap { display: grid; grid-template-columns: 390px 1fr; gap: 0; min-height: 100vh; }
+.cg-panel { background: var(--white); border-right: 1px solid var(--border); padding: 1.5rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
 .cg-preview { background: var(--cream); padding: 2rem; overflow-y: auto; }
 
-/* ── Panel ── */
-.cg-panel-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-.cg-section { margin-bottom: 1.5rem; }
-.cg-label { font-size: 0.78rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 0.5rem; display: block; }
-.cg-input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; color: var(--text); background: var(--cream); transition: border .15s; box-sizing: border-box; }
+/* Lang switcher */
+.cg-lang { display: flex; gap: 4px; margin-bottom: 1.25rem; }
+.cg-lang button { padding: 5px 13px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; border: 1px solid var(--border); background: none; color: var(--text2); cursor: pointer; transition: all .15s; }
+.cg-lang button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.cg-panel-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--border); }
+.cg-section { margin-bottom: 1.25rem; }
+.cg-label { font-size: 0.73rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 0.4rem; display: block; }
+.cg-input { width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; color: var(--text); background: var(--cream); transition: border .15s; box-sizing: border-box; }
 .cg-input:focus { outline: none; border-color: var(--primary); background: var(--white); }
-.cg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.cg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
 
-/* ── Tier Cards ── */
-.tier-grid { display: flex; flex-direction: column; gap: 0.5rem; }
-.tier-card { border: 2px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; cursor: pointer; transition: all .15s; display: flex; align-items: flex-start; gap: 0.75rem; }
-.tier-card:hover { border-color: var(--primary); background: var(--primary-light); }
-.tier-card.active { border-color: var(--primary); background: var(--primary-light); }
-.tier-radio { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 50%; margin-top: 2px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+/* Tier */
+.tier-grid { display: flex; flex-direction: column; gap: 0.45rem; }
+.tier-card { border: 2px solid var(--border); border-radius: 10px; padding: 0.8rem 0.9rem; cursor: pointer; transition: all .15s; display: flex; align-items: flex-start; gap: 0.7rem; }
+.tier-card:hover, .tier-card.active { border-color: var(--primary); background: var(--primary-light); }
+.tier-radio { width: 17px; height: 17px; border: 2px solid var(--border); border-radius: 50%; margin-top: 2px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
 .tier-card.active .tier-radio { border-color: var(--primary); background: var(--primary); }
-.tier-card.active .tier-radio::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: white; }
-.tier-name { font-weight: 700; font-size: 0.9rem; color: var(--text); }
-.tier-range { font-size: 0.78rem; color: var(--text2); margin-top: 1px; }
-.tier-badge { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: auto; flex-shrink: 0; }
-.badge-std { background: #E0F2FE; color: #0369A1; }
-.badge-pro { background: #EDE9FE; color: #5B21B6; }
-.badge-ent { background: #FEF3C7; color: #92400E; }
+.tier-card.active .tier-radio::after { content:''; width:6px; height:6px; border-radius:50%; background:#fff; display:block; }
+.tier-name { font-weight: 700; font-size: 0.88rem; color: var(--text); }
+.tier-range { font-size: 0.75rem; color: var(--text2); margin-top: 1px; }
+.tier-badge { font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; margin-left: auto; flex-shrink: 0; }
+.badge-std { background:#E0F2FE; color:#0369A1; }
+.badge-pro { background:#EDE9FE; color:#5B21B6; }
+.badge-ent { background:#FEF3C7; color:#92400E; }
 
-/* ── Checkboxes ── */
-.cb-grid { display: flex; flex-direction: column; gap: 0.4rem; }
-.cb-item { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.85rem; color: var(--text); }
-.cb-item input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--primary); }
+/* Checkboxes */
+.cb-grid { display: flex; flex-direction: column; gap: 0.35rem; }
+.cb-item { display: flex; align-items: center; gap: 0.55rem; cursor: pointer; font-size: 0.83rem; color: var(--text); }
+.cb-item input[type=checkbox] { width: 14px; height: 14px; accent-color: var(--primary); }
 
-/* ── Jurisdiction ── */
-.juri-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-.juri-card { border: 2px solid var(--border); border-radius: 8px; padding: 0.75rem; cursor: pointer; text-align: center; transition: all .15s; }
-.juri-card:hover { border-color: var(--primary); }
-.juri-card.active { border-color: var(--primary); background: var(--primary-light); }
-.juri-flag { font-size: 1.4rem; }
-.juri-name { font-size: 0.8rem; font-weight: 700; color: var(--text); margin-top: 2px; }
-.juri-body { font-size: 0.7rem; color: var(--text2); }
+/* Jurisdiction */
+.juri-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+.juri-card { border: 2px solid var(--border); border-radius: 8px; padding: 0.65rem; cursor: pointer; text-align: center; transition: all .15s; }
+.juri-card:hover, .juri-card.active { border-color: var(--primary); background: var(--primary-light); }
+.juri-flag { font-size: 1.3rem; }
+.juri-name { font-size: 0.78rem; font-weight: 700; color: var(--text); margin-top: 2px; }
+.juri-body { font-size: 0.68rem; color: var(--text2); }
 
-/* ── Action Buttons ── */
-.cg-actions { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
-.btn-pdf { padding: 11px; background: var(--primary); color: white; border: none; border-radius: 999px; font-weight: 700; font-size: 0.875rem; cursor: pointer; transition: background .2s; }
+/* Completion */
+.completion-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 0.5rem; overflow: hidden; }
+.completion-fill { height: 100%; background: linear-gradient(90deg,var(--primary),#EC4899); border-radius: 2px; transition: width .4s; }
+.completion-text { font-size: 0.73rem; color: var(--text2); margin-bottom: 1rem; text-align: right; }
+
+/* Actions */
+.cg-actions { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+.btn-pdf { padding: 10px; background: var(--primary); color: #fff; border: none; border-radius: 999px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background .2s; }
 .btn-pdf:hover { background: var(--primary-dark); }
-.btn-trust { padding: 11px; background: linear-gradient(90deg, #0EA5E9, #6366F1); color: white; border: none; border-radius: 999px; font-weight: 700; font-size: 0.875rem; cursor: pointer; transition: opacity .2s; }
-.btn-trust:hover { opacity: .9; }
-.btn-print { padding: 11px; background: none; color: var(--text2); border: 1px solid var(--border); border-radius: 999px; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all .2s; }
+.btn-trust { padding: 10px; background: linear-gradient(90deg,#0EA5E9,#6366F1); color: #fff; border: none; border-radius: 999px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: opacity .2s; }
+.btn-trust:hover { opacity: .88; }
+.btn-print { padding: 10px; background: none; color: var(--text2); border: 1px solid var(--border); border-radius: 999px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all .2s; }
 .btn-print:hover { border-color: var(--primary); color: var(--primary); }
+.tl-badge { display:none; background:linear-gradient(90deg,#0EA5E9,#6366F1); color:#fff; border-radius:8px; padding:0.65rem 0.9rem; font-size:0.75rem; margin-top:0.4rem; line-height:1.6; }
+.tl-badge.show { display:block; }
 
-/* ── Trust-Lock Badge ── */
-.tl-badge { display: none; background: linear-gradient(90deg,#0EA5E9,#6366F1); color: white; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.78rem; margin-top: 0.5rem; }
-.tl-badge.show { display: block; }
+/* Contract doc */
+.contract-doc { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 3.5rem; max-width: 760px; margin: 0 auto; box-shadow: var(--shadow); font-family: 'Times New Roman', Georgia, 'Apple SD Gothic Neo', serif; font-size: 0.9rem; line-height: 1.85; color: #1a1a2e; }
+.contract-doc h1 { font-size: 1.25rem; font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 0.2rem; }
+.contract-doc .doc-subtitle { text-align:center; font-size:0.83rem; color:#666; margin-bottom:1.75rem; }
+.contract-doc .doc-ref { font-size:0.78rem; color:#999; text-align:right; margin-bottom:1.75rem; }
+.ornament { text-align:center; color:#b0a070; font-size:1rem; margin:1.4rem 0; letter-spacing:.12em; }
+.parties-box { border:1px solid #d4c89a; border-radius:6px; padding:1.1rem 1.4rem; background:#FAFAF5; margin-bottom:1.4rem; }
+.parties-box .party { margin-bottom:0.7rem; }
+.parties-box .party:last-child { margin-bottom:0; }
+.p-role { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:#999; }
+.p-name { font-weight:700; font-size:0.97rem; color:#1a1a2e; }
+.p-detail { font-size:0.8rem; color:#666; }
+.clause { margin-bottom:1.4rem; }
+.clause-title { font-weight:700; font-size:0.86rem; text-transform:uppercase; letter-spacing:.05em; border-bottom:1px solid #e0d8c0; padding-bottom:4px; margin-bottom:0.7rem; }
+.clause p { margin-bottom:0.45rem; }
+.clause ol { padding-left:1.4rem; }
+.clause ol li { margin-bottom:0.35rem; }
+.tier-highlight { background:#FFF8E7; border:1px solid #F59E0B; border-radius:6px; padding:0.9rem 1.1rem; margin:0.7rem 0; }
+.th-label { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:#B45309; margin-bottom:0.35rem; }
+.juri-highlight { background:#EFF6FF; border:1px solid #3B82F6; border-radius:6px; padding:0.9rem 1.1rem; margin:0.7rem 0; }
+.sig-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2.5rem; }
+.sig-box { border-top:1px solid #1a1a2e; padding-top:0.7rem; }
+.sig-role { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#999; }
+.sig-name { font-size:0.88rem; font-weight:700; margin-top:0.2rem; }
+.sig-line { height:38px; border-bottom:1px solid #aaa; margin:0.7rem 0 0.2rem; }
+.sig-date { font-size:0.78rem; color:#999; }
+.tl-seal { border:1px solid #0EA5E9; border-radius:8px; padding:0.7rem 0.9rem; margin-top:1.4rem; font-size:0.73rem; color:#0369A1; background:#F0F9FF; display:none; }
+.tl-seal.show { display:block; }
 
-/* ── Contract Document ── */
-.contract-doc { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 3.5rem; max-width: 760px; margin: 0 auto; box-shadow: var(--shadow); font-family: 'Times New Roman', Georgia, serif; font-size: 0.9rem; line-height: 1.8; color: #1a1a2e; }
-.contract-doc h1 { font-size: 1.3rem; font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 0.25rem; }
-.contract-doc .doc-subtitle { text-align: center; font-size: 0.85rem; color: #555; margin-bottom: 2rem; }
-.contract-doc .doc-ref { font-size: 0.8rem; color: #888; text-align: right; margin-bottom: 2rem; }
-.ornament { text-align: center; color: #b0a070; font-size: 1.1rem; margin: 1.5rem 0; letter-spacing: .15em; }
-.parties-box { border: 1px solid #d4c89a; border-radius: 6px; padding: 1.25rem 1.5rem; background: #FAFAF5; margin-bottom: 1.5rem; }
-.parties-box .party { margin-bottom: 0.75rem; }
-.parties-box .party:last-child { margin-bottom: 0; }
-.parties-box .p-role { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #888; }
-.parties-box .p-name { font-weight: 700; font-size: 1rem; color: #1a1a2e; }
-.parties-box .p-detail { font-size: 0.82rem; color: #555; }
-.clause { margin-bottom: 1.5rem; }
-.clause-title { font-weight: 700; text-transform: uppercase; font-size: 0.88rem; letter-spacing: .06em; border-bottom: 1px solid #e0d8c0; padding-bottom: 4px; margin-bottom: 0.75rem; }
-.clause p { margin-bottom: 0.5rem; }
-.clause ol { padding-left: 1.5rem; }
-.clause ol li { margin-bottom: 0.4rem; }
-.tier-highlight { background: #FFF8E7; border: 1px solid #F59E0B; border-radius: 6px; padding: 1rem 1.25rem; margin: 0.75rem 0; }
-.tier-highlight .th-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #B45309; margin-bottom: 0.4rem; }
-.juri-highlight { background: #EFF6FF; border: 1px solid #3B82F6; border-radius: 6px; padding: 1rem 1.25rem; margin: 0.75rem 0; }
-.sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
-.sig-box { border-top: 1px solid #1a1a2e; padding-top: 0.75rem; }
-.sig-box .sig-role { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #888; }
-.sig-box .sig-name { font-size: 0.9rem; font-weight: 700; margin-top: 0.25rem; }
-.sig-box .sig-line { height: 40px; border-bottom: 1px solid #aaa; margin: 0.75rem 0 0.25rem; }
-.sig-box .sig-date { font-size: 0.8rem; color: #888; }
-.tl-seal { border: 1px solid #0EA5E9; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 1.5rem; font-size: 0.75rem; color: #0369A1; background: #F0F9FF; display: none; }
-.tl-seal.show { display: block; }
-
-/* ── Completion status ── */
-.completion-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 1rem; overflow: hidden; }
-.completion-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #EC4899); border-radius: 2px; transition: width .4s; }
-.completion-text { font-size: 0.75rem; color: var(--text2); margin-bottom: 1rem; text-align: right; }
-
-/* ── Print ── */
 @media print {
-  .cg-panel, .cg-preview > *:not(.contract-doc) { display: none !important; }
-  .cg-wrap { display: block; }
-  .cg-preview { padding: 0; background: white; }
-  .contract-doc { border: none; box-shadow: none; border-radius: 0; padding: 1.5cm 2cm; max-width: 100%; font-size: 10pt; }
-  .contract-doc h1 { font-size: 14pt; }
-  .clause-title { font-size: 10pt; }
-  .sig-grid { margin-top: 3cm; }
-  @page { size: A4; margin: 0; }
+  .cg-panel, nav, header, footer { display:none !important; }
+  .cg-wrap { display:block; }
+  .cg-preview { padding:0; background:#fff; }
+  .contract-doc { border:none; box-shadow:none; border-radius:0; padding:1.5cm 2cm; max-width:100%; font-size:10pt; line-height:1.7; }
+  .contract-doc h1 { font-size:13pt; }
+  .clause-title { font-size:9.5pt; }
+  .sig-grid { margin-top:3cm; page-break-inside:avoid; }
+  @page { size:A4; margin:0; }
 }
-@media (max-width: 900px) {
-  .cg-wrap { grid-template-columns: 1fr; }
-  .cg-panel { position: static; height: auto; }
+@media (max-width:900px) {
+  .cg-wrap { grid-template-columns:1fr; }
+  .cg-panel { position:static; height:auto; }
 }
 </style>
 </head>
 <body>
-
 <div class="cg-wrap">
 
 <!-- ══ LEFT PANEL ══ -->
 <div class="cg-panel">
-  <div class="cg-panel-title">⚖️ Contract Generator</div>
+
+  <!-- Language switcher -->
+  <div class="cg-lang">
+    <button onclick="setLang('en')" id="lb-en" class="active">EN</button>
+    <button onclick="setLang('ko')" id="lb-ko">KO</button>
+    <button onclick="setLang('ja')" id="lb-ja">JA</button>
+  </div>
+
+  <div class="cg-panel-title" id="ui-title">⚖️ Contract Generator</div>
 
   <div class="completion-bar"><div class="completion-fill" id="compFill" style="width:0%"></div></div>
-  <div class="completion-text" id="compText">0% — 정보를 입력해 주세요</div>
+  <div class="completion-text" id="compText"></div>
 
   <!-- Provider -->
   <div class="cg-section">
-    <span class="cg-label">Service Provider (우리 회사)</span>
+    <span class="cg-label" id="ui-provLabel"></span>
     <input class="cg-input" id="provName" value="STCLOGIC Co., Ltd." oninput="render()">
-    <div style="height:0.5rem"></div>
+    <div style="height:.4rem"></div>
     <input class="cg-input" id="provAddr" value="Seoul, Republic of Korea" oninput="render()">
   </div>
 
   <!-- Client -->
   <div class="cg-section">
-    <span class="cg-label">Client Information (의뢰인)</span>
-    <input class="cg-input" id="cliName" placeholder="Client Full Name / Company Name" oninput="render()">
-    <div style="height:0.5rem"></div>
-    <input class="cg-input" id="cliAddr" placeholder="Address / Country" oninput="render()">
-    <div style="height:0.5rem"></div>
+    <span class="cg-label" id="ui-cliLabel"></span>
+    <input class="cg-input" id="cliName" oninput="render()">
+    <div style="height:.4rem"></div>
+    <input class="cg-input" id="cliAddr" oninput="render()">
+    <div style="height:.4rem"></div>
     <div class="cg-row">
-      <input class="cg-input" id="cliEmail" placeholder="Email" oninput="render()">
-      <input class="cg-input" id="cliReg" placeholder="Reg. No. (optional)" oninput="render()">
+      <input class="cg-input" id="cliEmail" oninput="render()">
+      <input class="cg-input" id="cliReg" oninput="render()">
     </div>
   </div>
 
-  <!-- Contract Date -->
+  <!-- Date -->
   <div class="cg-section">
-    <span class="cg-label">Contract Date</span>
+    <span class="cg-label" id="ui-dateLabel"></span>
     <input class="cg-input" id="contDate" type="date" oninput="render()">
   </div>
 
   <!-- Tier -->
   <div class="cg-section">
-    <span class="cg-label">Service Tier 선택</span>
+    <span class="cg-label" id="ui-tierLabel"></span>
     <div class="tier-grid">
       <div class="tier-card" id="t-std" onclick="setTier('std')">
         <div class="tier-radio" id="tr-std"></div>
-        <div>
-          <div class="tier-name">Standard</div>
-          <div class="tier-range">$9,999 – $49,999</div>
-        </div>
-        <span class="tier-badge badge-std">STANDARD</span>
+        <div><div class="tier-name">Standard</div><div class="tier-range">$9,999 – $49,999</div></div>
+        <span class="tier-badge badge-std">STD</span>
       </div>
       <div class="tier-card" id="t-pro" onclick="setTier('pro')">
         <div class="tier-radio" id="tr-pro"></div>
-        <div>
-          <div class="tier-name">Professional</div>
-          <div class="tier-range">$50,000 – $199,999</div>
-        </div>
+        <div><div class="tier-name">Professional</div><div class="tier-range">$50,000 – $199,999</div></div>
         <span class="tier-badge badge-pro">PRO</span>
       </div>
       <div class="tier-card" id="t-ent" onclick="setTier('ent')">
         <div class="tier-radio" id="tr-ent"></div>
-        <div>
-          <div class="tier-name">Enterprise</div>
-          <div class="tier-range">$200,000 +</div>
-        </div>
-        <span class="tier-badge badge-ent">ENTERPRISE</span>
+        <div><div class="tier-name">Enterprise</div><div class="tier-range">$200,000 +</div></div>
+        <span class="tier-badge badge-ent">ENT</span>
       </div>
     </div>
   </div>
 
-  <!-- Fee Amount -->
+  <!-- Fee -->
   <div class="cg-section">
-    <span class="cg-label">Agreed Fee Amount (USD)</span>
-    <input class="cg-input" id="feeAmt" placeholder="e.g. 75,000" oninput="render()">
+    <span class="cg-label" id="ui-feeLabel"></span>
+    <input class="cg-input" id="feeAmt" oninput="render()">
   </div>
 
   <!-- Services -->
   <div class="cg-section">
-    <span class="cg-label">Scope of Services 선택 (복수 가능)</span>
-    <div class="cb-grid">
-      <label class="cb-item"><input type="checkbox" value="pf" onchange="render()"> Project Finance (PF)</label>
-      <label class="cb-item"><input type="checkbox" value="spv" onchange="render()"> SPV / SPC Structuring</label>
-      <label class="cb-item"><input type="checkbox" value="sto" onchange="render()"> STO / RWA Tokenization</label>
-      <label class="cb-item"><input type="checkbox" value="ir" onchange="render()"> Investment Attraction (IR)</label>
-      <label class="cb-item"><input type="checkbox" value="hnwi" onchange="render()"> HNWI Immigration Asset Design</label>
-      <label class="cb-item"><input type="checkbox" value="exit" onchange="render()"> Exit Strategy</label>
-      <label class="cb-item"><input type="checkbox" value="ncnd" onchange="render()"> NCND / Fee Agreement</label>
-      <label class="cb-item"><input type="checkbox" value="bi" onchange="render()"> Bank Instrument Advisory</label>
-    </div>
+    <span class="cg-label" id="ui-svcLabel"></span>
+    <div class="cb-grid" id="svc-checks"></div>
   </div>
 
   <!-- Jurisdiction -->
   <div class="cg-section">
-    <span class="cg-label">국제 중재 관할 선택</span>
+    <span class="cg-label" id="ui-juriLabel"></span>
     <div class="juri-grid">
       <div class="juri-card" id="j-sg" onclick="setJuri('sg')">
         <div class="juri-flag">🇸🇬</div>
@@ -222,338 +209,783 @@
 
   <!-- Actions -->
   <div class="cg-actions">
-    <button class="btn-pdf" onclick="savePDF()">📄 PDF 저장 (인쇄)</button>
-    <button class="btn-trust" onclick="uploadTrustLock()">🔐 Trust-Lock에 보존하기</button>
-    <button class="btn-print" onclick="window.print()">🖨️ 인쇄</button>
-    <div class="tl-badge" id="tlBadge">
-      ✅ Trust-Lock 보존 완료<br>
-      <strong id="tlHash"></strong><br>
-      <span id="tlTime"></span>
-    </div>
+    <button class="btn-pdf" id="ui-btnPdf" onclick="window.print()"></button>
+    <button class="btn-trust" id="ui-btnTrust" onclick="uploadTrustLock()"></button>
+    <div class="tl-badge" id="tlBadge"></div>
   </div>
 </div>
 
-<!-- ══ RIGHT: CONTRACT DOCUMENT ══ -->
+<!-- ══ RIGHT PREVIEW ══ -->
 <div class="cg-preview">
   <div class="contract-doc" id="contractDoc">
-    <!-- Dynamically rendered by JS -->
-    <p style="text-align:center;color:#aaa;padding:3rem 0;">← 왼쪽 패널에서 정보를 입력하면<br>계약서가 실시간으로 생성됩니다.</p>
+    <p style="text-align:center;color:#bbb;padding:3rem 0;" id="emptyMsg"></p>
   </div>
 </div>
-
 </div>
 
 <script>
-// ── State ──
-var state = { tier: '', juri: '' };
+// ══════════════════════════════════════════
+//  i18n DATA
+// ══════════════════════════════════════════
+var I18N = {
+en: {
+  uiTitle: '⚖️ Contract Generator',
+  provLabel: 'Service Provider',
+  cliLabel: 'Client Information',
+  cliNamePh: 'Client Full Name / Company Name',
+  cliAddrPh: 'Address / Country',
+  cliEmailPh: 'Email',
+  cliRegPh: 'Reg. No. (optional)',
+  dateLabel: 'Contract Date',
+  tierLabel: 'Service Tier',
+  feeLabel: 'Agreed Fee Amount (USD)',
+  feePh: 'e.g. 75,000',
+  svcLabel: 'Scope of Services',
+  juriLabel: 'Arbitration Jurisdiction',
+  btnPdf: '📄 Save PDF / Print',
+  btnTrust: '🔐 Preserve on Trust-Lock',
+  compDone: '100% — Contract ready',
+  compMore: '% — Please fill in more details',
+  compAlmost: '% — Almost complete',
+  emptyMsg: '← Fill in the panel to generate the contract.',
+  tlDone: '✅ Trust-Lock Preserved',
+  tlRef: 'Ref: ',
+  tlTime: 'Preserved: ',
+  tlAlert: (h,t) => `✅ Trust-Lock Preservation Complete!\n\nReference: ${h}\nTimestamp: ${t}\n\nPlease record this number on the signed contract.`,
+  tlMissing: 'Please enter client name, select a tier, and choose a jurisdiction before preserving.',
+  services: [
+    {v:'pf', label:'Project Finance (PF)'},
+    {v:'spv', label:'SPV / SPC Structuring'},
+    {v:'sto', label:'STO / RWA Tokenization'},
+    {v:'ir', label:'Investment Attraction (IR)'},
+    {v:'hnwi', label:'HNWI Immigration Asset Design'},
+    {v:'exit', label:'Exit Strategy'},
+    {v:'ncnd', label:'NCND / Fee Agreement'},
+    {v:'bi', label:'Bank Instrument Advisory'}
+  ],
+  tiers: {
+    std: { label:'Standard', retainer:'30%', support:'Email support (72h response)', deliverables:'Basic Structure Design · IR Document Set · 1× Legal Review · 3-Month Email Support', duration:'3 months' },
+    pro: { label:'Professional', retainer:'30%', support:'Priority support (24h response)', deliverables:'Full Capital Structure · SPV/SPC Blueprint · STO Advisory · 2× Legal Review · Due Diligence Support · 6-Month Priority Support', duration:'6 months' },
+    ent: { label:'Enterprise', retainer:'20%', support:'Dedicated Manager (same-day)', deliverables:'End-to-End Capital Architecture · SPV/SPC/STO Full Execution · HNWI Asset Design · Exit Strategy · Bank Instrument Advisory · NCND Framework · 12-Month Dedicated Management', duration:'12 months' }
+  },
+  juris: {
+    sg: { name:'Singapore', body:'Singapore International Arbitration Centre (SIAC)', rules:'SIAC Arbitration Rules (latest edition)', seat:'Singapore', law:'Singapore law' },
+    ae: { name:'Dubai (DIFC)', body:'Dubai International Arbitration Centre (DIAC) / DIFC-LCIA', rules:'DIAC Arbitration Rules / DIFC-LCIA Arbitration Rules (latest edition)', seat:'Dubai, United Arab Emirates', law:'UAE Federal Law (DIFC jurisdiction)' }
+  },
+  doc: {
+    title: 'CONSULTING SERVICES AGREEMENT',
+    subtitle: 'Confidential · For Execution Only',
+    cnoPrefix: 'Contract No.: ',
+    provRole: 'Service Provider ("The Advisor")',
+    cliRole: 'Client ("The Principal")',
+    intro: (prov, cli, date) => `This Consulting Services Agreement (hereinafter "<strong>the Agreement</strong>") is entered into as of <strong>${date}</strong> between <strong>${prov}</strong> (the "<strong>Advisor</strong>") and <strong>${cli}</strong> (the "<strong>Principal</strong>"), collectively referred to as "the <strong>Parties</strong>".`,
+    tierBoxLabel: (t) => `Selected Service Tier: ${t.toUpperCase()}`,
+    feeRange: 'Fee Range:',
+    retainerLabel: 'Retainer (Advance):',
+    retainerSuffix: 'of total agreed fee, due upon execution',
+    durationLabel: 'Engagement Duration:',
+    durationSuffix: 'from the Effective Date',
+    supportLabel: 'Support Level:',
+    deliverablesLabel: 'Standard Deliverables:',
+    juriBodyLabel: 'Arbitral Body:',
+    juriRulesLabel: 'Rules:',
+    juriSeatLabel: 'Seat of Arbitration:',
+    juriLawLabel: 'Governing Law:',
+    sigAdvisorRole: 'For and on behalf of the Advisor',
+    sigPrincipalRole: 'For and on behalf of the Principal',
+    sigAuth: 'Authorised Signatory',
+    sigDate: 'Date:',
+    witnessClause: 'IN WITNESS WHEREOF, the Parties have executed this Consulting Services Agreement as of the date first written above.',
+    tlSealPrefix: '🔐 This Agreement has been preserved on the Trust-Lock Blockchain Platform.',
+    tlSealRef: 'Reference:',
+    tlSealTime: 'Timestamp:',
+    noTier: '[SERVICE TIER NOT SELECTED]',
+    noJuri: '[JURISDICTION NOT SELECTED]',
+    noServices: '<li>— To be specified by mutual agreement —</li>',
+    clauses: [
+      { num:'1', title:'DEFINITIONS AND INTERPRETATION', body: (d) => `
+        <p><strong>"Agreement"</strong> means this Consulting Services Agreement including all schedules and annexures hereto.</p>
+        <p><strong>"Engagement Period"</strong> means the period commencing on the Effective Date and continuing for the duration specified under the selected Service Tier.</p>
+        <p><strong>"Confidential Information"</strong> means any non-public information disclosed by either Party in connection with this Agreement, including financial data, project details, strategies, and proprietary methodologies.</p>
+        <p><strong>"Deliverables"</strong> means all reports, documents, models, frameworks, and advisory outputs produced by the Advisor pursuant to this Agreement.</p>
+        <p><strong>"Event of Default"</strong> means any event listed in Clause 13.</p>
+        <p><strong>"Retainer"</strong> means the advance fee payable by the Principal upon execution as a precondition to commencement of services.</p>
+        <p><strong>"Trust-Lock"</strong> means the blockchain-based document preservation platform operated by STCLOGIC at fincoupling.netlify.app, onto which this Agreement is registered as an immutable record.</p>
+        <p><strong>"Business Day"</strong> means a day (other than Saturday, Sunday, or public holiday) on which banks are open in Singapore or Dubai, as applicable.</p>
+        <p>All currency references are to United States Dollars (USD) unless otherwise specified.</p>` },
+      { num:'2', title:'ENGAGEMENT AND SCOPE OF SERVICES', body: (d) => `
+        <p>The Advisor agrees to provide the Principal with professional financial consulting and advisory services on the terms and conditions set forth herein. The agreed scope of services includes:</p>
+        <ol>${d.serviceList}</ol>
+        <p>The Parties may, by mutual written agreement, expand or modify the scope of services during the Engagement Period via a signed written addendum.</p>` },
+      { num:'3', title:'SERVICE TIER, DELIVERABLES AND DURATION', body: (d) => `
+        <p>The Principal has selected the following Service Tier, which governs the fee structure, deliverables, and support level applicable to this engagement:</p>
+        ${d.tierBlock}
+        <p>The Advisor shall use commercially reasonable efforts to deliver all Deliverables within the Engagement Period, subject to the Principal's timely provision of required information per Clause 7.</p>` },
+      { num:'4', title:'FEES AND PAYMENT TERMS', body: (d) => `
+        <p>In consideration of the services provided hereunder, the Principal agrees to pay a total Consulting Fee of <strong>${d.fee}</strong>, payable as follows:</p>
+        <ol>
+          <li><strong>Retainer:</strong> ${d.retainer} of the total Consulting Fee is due upon execution. No work commences until the Retainer is received and cleared.</li>
+          <li><strong>Milestone Payments:</strong> The remaining balance is payable per a milestone schedule agreed in writing within five (5) Business Days of execution.</li>
+          <li><strong>Final Payment:</strong> Any outstanding balance is due upon delivery of final Deliverables or expiry of the Engagement Period, whichever is earlier.</li>
+        </ol>
+        <p>All payments shall be made by wire transfer (SWIFT/TT) free and clear of all taxes, deductions, and withholdings. The Principal bears all transfer and conversion charges.</p>` },
+      { num:'5', title:'LATE PAYMENT AND INTEREST', body: () => `
+        <p>5.1 Overdue amounts shall accrue interest at <strong>1.5% per month</strong> from the due date until actual payment.</p>
+        <p>5.2 The Advisor may suspend all services without liability if any payment remains outstanding for more than ten (10) Business Days after its due date.</p>
+        <p>5.3 The Advisor may require prepayment of outstanding amounts before resuming suspended services.</p>` },
+      { num:'6', title:'TERMINATION AND REFUND POLICY', body: () => `
+        <p>6.1 Either Party may terminate upon thirty (30) days' written notice.</p>
+        <p>6.2 The Retainer is non-refundable once services have commenced.</p>
+        <p>6.3 Upon termination by the Principal after commencement, the Principal shall pay all fees on a pro-rata basis for services rendered, plus all reasonable costs incurred by the Advisor.</p>
+        <p>6.4 Upon termination due to the Principal's material breach, all outstanding fees become immediately due and payable.</p>
+        <p>6.5 The Advisor may terminate immediately if the Principal engages in activities violating applicable law or the terms hereof.</p>` },
+      { num:'7', title:'CONDITIONS PRECEDENT', body: () => `
+        <p>The Advisor's obligation to commence services is subject to prior satisfaction of all of the following:</p>
+        <ol type="a">
+          <li>Receipt of the duly executed original (or electronic equivalent) of this Agreement by both Parties;</li>
+          <li>Receipt and clearance of the Retainer in full;</li>
+          <li>Submission of required KYC/KYB documentation: (a) certified government-issued photo ID; (b) proof of address within 90 days; (c) corporate registration documents (if applicable); (d) declaration of source of funds;</li>
+          <li>Completion of the Advisor's internal AML/CFT compliance check with a satisfactory result; and</li>
+          <li>Registration of this Agreement on the Trust-Lock blockchain preservation platform.</li>
+        </ol>` },
+      { num:'8', title:'REPRESENTATIONS AND WARRANTIES', body: () => `
+        <p>8.1 <strong>The Principal</strong> represents and warrants that: (a) it has full legal authority to enter into this Agreement; (b) this Agreement is its legal, valid, and binding obligation; (c) it is not subject to any sanctions or legal proceedings preventing performance; (d) all funds are from legitimate and lawful sources; and (e) no services or Deliverables will be used for any unlawful purpose including money laundering, terrorism financing, or fraud.</p>
+        <p>8.2 <strong>The Advisor</strong> represents and warrants that: (a) it possesses the expertise necessary to perform the services; (b) all services will be performed with reasonable skill and care; and (c) performance of this Agreement will not violate any applicable law.</p>
+        <p>8.3 <strong>Legal Source of Funds:</strong> Both Parties warrant that no funds exchanged hereunder are connected to any terrorist activity, money laundering, or criminal enterprise. The Advisor reserves the right to conduct ongoing due diligence throughout the Engagement Period.</p>` },
+      { num:'9', title:'CONFIDENTIALITY AND NON-DISCLOSURE', body: () => `
+        <p>9.1 Each Party shall hold the other's Confidential Information in strict confidence and not disclose it to any third party without prior written consent, except as required by law.</p>
+        <p>9.2 Confidential Information shall be used solely for the purposes of this Agreement and protected with at least the same degree of care as each Party uses for its own confidential information.</p>
+        <p>9.3 These confidentiality obligations survive termination for <strong>five (5) years</strong>.</p>
+        <p>9.4 The Advisor shall not disclose the Principal's identity or engagement details to any third party without the Principal's prior written consent.</p>` },
+      { num:'10', title:'NON-CIRCUMVENTION AND NON-DISCLOSURE (NCND)', body: () => `
+        <p>10.1 The Principal irrevocably agrees not to contact, negotiate with, engage, or transact with any person or entity introduced by the Advisor, except through the Advisor or with its prior written consent.</p>
+        <p>10.2 This obligation applies to the Principal, its directors, officers, employees, affiliates, and any persons acting on its behalf.</p>
+        <p>10.3 In the event of circumvention, the Principal shall be liable for all fees that would have been payable plus a penalty of <strong>two times (2×)</strong> such amount.</p>
+        <p>10.4 This Clause survives termination for <strong>two (2) years</strong> following the introduction of any relevant party.</p>` },
+      { num:'11', title:'INTELLECTUAL PROPERTY', body: () => `
+        <p>11.1 All intellectual property rights in Deliverables produced specifically for the Principal shall vest in the Principal upon full and final payment of all fees.</p>
+        <p>11.2 The Advisor retains all intellectual property rights in its proprietary methodologies, frameworks, templates, tools, and know-how, granting the Principal a limited, non-exclusive, non-transferable license solely for purposes contemplated by this Agreement.</p>` },
+      { num:'12', title:'LIMITATION OF LIABILITY', body: () => `
+        <p>12.1 The Advisor's total aggregate liability shall not exceed the total Consulting Fee actually paid by the Principal under this Agreement.</p>
+        <p>12.2 Neither Party shall be liable for any indirect, consequential, incidental, special, or punitive loss or damage, including loss of profit or revenue.</p>
+        <p>12.3 The advisory services do not constitute legal, tax, or investment advice. The Principal is solely responsible for all decisions made in reliance on any Deliverables.</p>` },
+      { num:'13', title:'EVENTS OF DEFAULT', body: () => `
+        <p>Each of the following shall constitute an Event of Default:</p>
+        <ol type="a">
+          <li>The Principal fails to pay any sum due within ten (10) Business Days of its due date;</li>
+          <li>The Principal breaches any material term and fails to remedy within fifteen (15) Business Days of written notice;</li>
+          <li>Any representation or warranty proves to be materially false or misleading;</li>
+          <li>The Principal becomes insolvent or ceases to carry on its business;</li>
+          <li>The Principal circumvents the Advisor in breach of Clause 10;</li>
+          <li>The Principal uses any Deliverable for an unlawful purpose.</li>
+        </ol>
+        <p>Upon an Event of Default, the Advisor may (i) suspend all services immediately; (ii) declare all outstanding fees immediately due and payable; and/or (iii) terminate this Agreement by written notice.</p>` },
+      { num:'14', title:'UNDERTAKINGS', body: () => `
+        <p>The Principal undertakes throughout the Engagement Period to:</p>
+        <ol type="a">
+          <li>Promptly provide all information, documents, and access reasonably requested by the Advisor;</li>
+          <li>Immediately notify the Advisor of any material change in its financial condition, legal status, or any Event of Default;</li>
+          <li>Obtain and maintain all necessary consents, licenses, and authorizations;</li>
+          <li>Not engage any competing advisory firm without the Advisor's prior written consent during the Engagement Period;</li>
+          <li>Cooperate fully with all KYC/AML/CFT checks conducted by the Advisor.</li>
+        </ol>` },
+      { num:'15', title:'FORCE MAJEURE', body: () => `
+        <p>15.1 Neither Party shall be liable for failure or delay caused by circumstances beyond its reasonable control, including acts of God, natural disasters, pandemics, war, terrorism, or government actions.</p>
+        <p>15.2 The affected Party shall notify the other in writing as soon as practicable and shall use all reasonable endeavours to mitigate the effects.</p>
+        <p>15.3 If a force majeure event continues for more than sixty (60) consecutive days, either Party may terminate upon written notice, with fees payable on a pro-rata basis for services already rendered.</p>` },
+      { num:'16', title:'NOTICES AND GENERAL PROVISIONS', body: () => `
+        <p>16.1 All notices shall be in writing delivered by email with read-receipt confirmation, courier, or registered mail, and deemed received upon confirmation of delivery.</p>
+        <p>16.2 This Agreement constitutes the entire agreement between the Parties and supersedes all prior agreements and understandings.</p>
+        <p>16.3 If any provision is held invalid or unenforceable, the remaining provisions continue in full force.</p>
+        <p>16.4 The Principal may not assign its rights or obligations without the prior written consent of the Advisor.</p>
+        <p>16.5 This Agreement shall be executed in the English language. Korean and Japanese translations, if prepared, are for reference only; the English text shall prevail in case of any inconsistency.</p>` },
+      { num:'17', title:'TRUST-LOCK BLOCKCHAIN PRESERVATION', body: () => `
+        <p>17.1 Upon execution, this Agreement shall be submitted to and preserved on the Trust-Lock platform at <strong>fincoupling.netlify.app/#/trust-lock</strong>.</p>
+        <p>17.2 A cryptographic hash (SHA-256) of the executed Agreement shall be recorded on the Trust-Lock ledger, creating an immutable, timestamped proof of the Agreement's existence and content.</p>
+        <p>17.3 The Trust-Lock reference number shall constitute a valid reference to this Agreement in any legal or regulatory proceeding.</p>
+        <p>17.4 Access to the Trust-Lock record shall be restricted to the Parties and their duly authorized legal representatives.</p>` },
+      { num:'18', title:'GOVERNING LAW AND INTERNATIONAL ARBITRATION', body: (d) => `
+        <p>18.1 This Agreement shall be governed by the laws of the chosen arbitral seat as specified below.</p>
+        ${d.juriBlock}
+        <p>18.2 Any dispute, controversy, or claim arising out of or relating to this Agreement shall be finally resolved by binding arbitration in accordance with the rules specified above. The arbitration shall be conducted by one (1) arbitrator. The language of arbitration shall be English.</p>
+        <p>18.3 The arbitral award shall be final and binding and may be enforced in any court of competent jurisdiction. The Parties expressly waive any right to appeal.</p>
+        <p>18.4 Nothing herein shall prevent either Party from seeking urgent interim or injunctive relief from a court of competent jurisdiction where necessary to prevent irreparable harm.</p>
+        <p>18.5 The Parties acknowledge that the chosen seat reflects their anticipated establishment of Special Purpose Companies (SPC) and Special Purpose Vehicles (SPV) in Singapore and/or Dubai.</p>` }
+    ]
+  }
+},
+
+// ─────────────────────────────────────────
+ko: {
+  uiTitle: '⚖️ 계약서 생성기',
+  provLabel: '서비스 제공자 (우리 회사)',
+  cliLabel: '의뢰인 정보',
+  cliNamePh: '의뢰인 성명 / 법인명',
+  cliAddrPh: '주소 / 국가',
+  cliEmailPh: '이메일',
+  cliRegPh: '사업자등록번호 (선택)',
+  dateLabel: '계약일',
+  tierLabel: '서비스 티어 선택',
+  feeLabel: '합의 보수 금액 (USD)',
+  feePh: '예: 75,000',
+  svcLabel: '서비스 범위 선택 (복수 가능)',
+  juriLabel: '국제 중재 관할 선택',
+  btnPdf: '📄 PDF 저장 / 인쇄',
+  btnTrust: '🔐 Trust-Lock에 보존하기',
+  compDone: '100% — 계약서 완성',
+  compMore: '% — 정보를 더 입력해 주세요',
+  compAlmost: '% — 거의 완성되었습니다',
+  emptyMsg: '← 왼쪽 패널에 정보를 입력하면 계약서가 생성됩니다.',
+  tlDone: '✅ Trust-Lock 보존 완료',
+  tlRef: '참조번호: ',
+  tlTime: '보존 시각: ',
+  tlAlert: (h,t) => `✅ Trust-Lock 보존 완료!\n\n참조번호: ${h}\n시각: ${t}\n\n이 번호를 계약서에 기재해 두십시오.`,
+  tlMissing: '의뢰인 이름, 티어, 중재 관할을 모두 선택한 후 보존할 수 있습니다.',
+  services: [
+    {v:'pf', label:'프로젝트 파이낸싱 (PF)'},
+    {v:'spv', label:'SPV / SPC 설계'},
+    {v:'sto', label:'STO / 실물자산 토큰화 (RWA)'},
+    {v:'ir', label:'투자 유치 (IR)'},
+    {v:'hnwi', label:'HNWI 이민 자산 설계'},
+    {v:'exit', label:'Exit 전략'},
+    {v:'ncnd', label:'NCND / 수수료 보호 약정'},
+    {v:'bi', label:'은행 증서 자문 (Bank Instrument)'}
+  ],
+  tiers: {
+    std: { label:'스탠다드', retainer:'30%', support:'이메일 지원 (72시간 응답)', deliverables:'기초 구조 설계 · IR 자료 세트 · 법률 검토 1회 · 3개월 이메일 지원', duration:'3개월' },
+    pro: { label:'프로페셔널', retainer:'30%', support:'우선 지원 (24시간 응답)', deliverables:'완전한 자본 구조 설계 · SPV/SPC 청사진 · STO 자문 · 법률 검토 2회 · 실사 지원 · 6개월 우선 지원', duration:'6개월' },
+    ent: { label:'엔터프라이즈', retainer:'20%', support:'전담 매니저 (당일 응답)', deliverables:'엔드-투-엔드 자본 구조 설계 · SPV/SPC/STO 완전 실행 · HNWI 자산 설계 · Exit 전략 · 은행 증서 자문 · NCND 프레임워크 · 12개월 전담 관리', duration:'12개월' }
+  },
+  juris: {
+    sg: { name:'싱가포르', body:'싱가포르 국제중재센터 (SIAC)', rules:'SIAC 중재 규칙 (최신판)', seat:'싱가포르', law:'싱가포르법' },
+    ae: { name:'두바이 (DIFC)', body:'두바이 국제중재센터 (DIAC) / DIFC-LCIA', rules:'DIAC 중재 규칙 / DIFC-LCIA 중재 규칙 (최신판)', seat:'두바이, 아랍에미리트', law:'UAE 연방법 (DIFC 관할)' }
+  },
+  doc: {
+    title: '컨설팅 서비스 계약서',
+    subtitle: '기밀 · 서명 전용',
+    cnoPrefix: '계약번호: ',
+    provRole: '서비스 제공자 ("자문사")',
+    cliRole: '의뢰인 ("의뢰사")',
+    intro: (prov, cli, date) => `본 컨설팅 서비스 계약서(이하 "<strong>본 계약</strong>")는 <strong>${date}</strong>에 <strong>${prov}</strong>(이하 "<strong>자문사</strong>")와 <strong>${cli}</strong>(이하 "<strong>의뢰사</strong>")가 체결하며, 양 당사자를 통칭하여 "<strong>계약 당사자</strong>"라 한다.`,
+    tierBoxLabel: (t) => `선택된 서비스 티어: ${t}`,
+    feeRange: '보수 범위:',
+    retainerLabel: '착수금 (선급):',
+    retainerSuffix: '(총 합의 보수의 일정 비율, 계약 체결 즉시 납부)',
+    durationLabel: '계약 기간:',
+    durationSuffix: '(효력 발생일로부터)',
+    supportLabel: '지원 수준:',
+    deliverablesLabel: '기본 산출물:',
+    juriBodyLabel: '중재 기관:',
+    juriRulesLabel: '적용 규칙:',
+    juriSeatLabel: '중재 장소:',
+    juriLawLabel: '준거법:',
+    sigAdvisorRole: '자문사를 대표하여',
+    sigPrincipalRole: '의뢰사를 대표하여',
+    sigAuth: '권한 있는 서명자',
+    sigDate: '날짜:',
+    witnessClause: '이상의 증거로서, 양 당사자는 본 계약서에 기재된 날짜에 본 컨설팅 서비스 계약을 체결하였다.',
+    tlSealPrefix: '🔐 본 계약서는 STCLOGIC이 운영하는 Trust-Lock 블록체인 플랫폼에 보존되었습니다.',
+    tlSealRef: '참조번호:',
+    tlSealTime: '보존 시각:',
+    noTier: '[서비스 티어 미선택]',
+    noJuri: '[중재 관할 미선택]',
+    noServices: '<li>— 상호 서면 합의에 의해 추후 결정 —</li>',
+    clauses: [
+      { num:'제1조', title:'정의 및 해석', body: () => `
+        <p><strong>"본 계약"</strong>이란 모든 별첨 및 첨부 문서를 포함한 본 컨설팅 서비스 계약서를 말한다.</p>
+        <p><strong>"계약 기간"</strong>이란 효력 발생일로부터 선택한 서비스 티어에 명시된 기간까지를 말한다.</p>
+        <p><strong>"기밀 정보"</strong>란 본 계약과 관련하여 일방 당사자가 타방에게 공개한 비공개 정보로서, 재무 데이터, 프로젝트 세부 사항, 전략, 독점 방법론 등을 포함한다.</p>
+        <p><strong>"산출물"</strong>이란 본 계약에 따라 자문사가 작성한 모든 보고서, 문서, 모델, 프레임워크 및 자문 결과물을 말한다.</p>
+        <p><strong>"채무불이행 사유"</strong>란 제13조에 열거된 사유 중 하나를 말한다.</p>
+        <p><strong>"착수금"</strong>이란 서비스 개시 전 의뢰사가 지급하는 선급금을 말한다.</p>
+        <p><strong>"Trust-Lock"</strong>이란 STCLOGIC이 fincoupling.netlify.app에서 운영하는 블록체인 기반 문서 보존 플랫폼을 말하며, 본 계약서가 불변의 기록으로 등록된다.</p>
+        <p><strong>"영업일"</strong>이란 토요일, 일요일 및 공휴일을 제외하고 싱가포르 또는 두바이의 은행이 영업하는 날을 말한다.</p>
+        <p>별도로 명시되지 않는 한 모든 통화 단위는 미국 달러(USD)를 기준으로 한다.</p>` },
+      { num:'제2조', title:'계약의 목적 및 서비스 범위', body: (d) => `
+        <p>자문사는 아래에 합의된 조건에 따라 의뢰사에게 전문적인 금융 컨설팅 및 자문 서비스를 제공하기로 하며, 의뢰사는 이를 위탁하기로 한다. 합의된 서비스 범위는 다음과 같다.</p>
+        <ol>${d.serviceList}</ol>
+        <p>양 당사자는 계약 기간 중 서면 합의를 통해 서비스 범위를 확대 또는 변경할 수 있으며, 이 경우 양측이 서명한 서면 추록으로 문서화한다.</p>` },
+      { num:'제3조', title:'서비스 티어, 산출물 및 계약 기간', body: (d) => `
+        <p>의뢰사는 본 계약의 보수 구조, 산출물 및 지원 수준을 결정하는 다음 서비스 티어를 선택하였다.</p>
+        ${d.tierBlock}
+        <p>자문사는 상업적으로 합리적인 노력을 기울여 계약 기간 내에 모든 산출물을 납품한다. 일정은 제7조에 따른 의뢰사의 적시 자료 제공을 전제로 한다.</p>` },
+      { num:'제4조', title:'보수 및 지급 조건', body: (d) => `
+        <p>의뢰사는 본 계약에 따른 서비스 대가로 총 컨설팅 보수 <strong>${d.fee}</strong>를 다음과 같이 지급하기로 한다.</p>
+        <ol>
+          <li><strong>착수금:</strong> 총 보수의 ${d.retainer}는 계약 체결 즉시 납부한다. 착수금이 입금·정산될 때까지 어떠한 업무도 개시되지 않는다.</li>
+          <li><strong>마일스톤 지급:</strong> 잔여 금액은 계약 체결 후 5 영업일 이내 서면으로 합의된 마일스톤 일정에 따라 지급한다.</li>
+          <li><strong>최종 지급:</strong> 미지급 잔액은 최종 산출물 납품 또는 계약 기간 만료 중 먼저 도래하는 시점에 지급한다.</li>
+        </ol>
+        <p>모든 지급은 SWIFT/TT 전신 송금으로, 일체의 세금·공제 없이 자문사가 별도 서면으로 통지하는 계좌로 납부한다. 환전 비용 및 송금 수수료는 의뢰사가 부담한다.</p>` },
+      { num:'제5조', title:'연체 이자', body: () => `
+        <p>5.1 지급 기한을 초과한 금액에 대하여는 기한 익일부터 실제 지급일까지 월 <strong>1.5%</strong>의 연체 이자가 발생한다.</p>
+        <p>5.2 자문사는 지급 기한 후 10 영업일이 경과하도록 지급이 이루어지지 않을 경우 책임 없이 모든 서비스를 중단할 수 있다.</p>
+        <p>5.3 자문사는 서비스 재개 전에 미지급 금액의 선납을 요구할 수 있다.</p>` },
+      { num:'제6조', title:'계약 해지 및 환불 정책', body: () => `
+        <p>6.1 어느 당사자든 30일 전 서면 통지로 본 계약을 해지할 수 있다.</p>
+        <p>6.2 착수금은 서비스 개시 후 어떠한 경우에도 반환되지 아니한다.</p>
+        <p>6.3 의뢰사가 서비스 개시 후 계약을 해지하는 경우, 기 제공된 서비스에 대한 보수를 일할 계산하여 지급하여야 한다.</p>
+        <p>6.4 의뢰사의 중대한 계약 위반으로 인한 해지 시, 모든 미지급 보수는 즉시 지급 의무가 발생한다.</p>
+        <p>6.5 자문사는 의뢰사가 관련 법령 또는 본 계약 조건을 위반하는 행위를 하는 경우 즉시 서면으로 계약을 해지할 수 있다.</p>` },
+      { num:'제7조', title:'선행 조건', body: () => `
+        <p>자문사의 서비스 개시 의무는 다음 조건의 충족을 전제로 한다.</p>
+        <ol type="가">
+          <li>양 당사자의 서명이 완료된 본 계약서 원본(또는 전자적 동등물)의 수령;</li>
+          <li>착수금 전액의 수령 및 정산;</li>
+          <li>다음의 KYC/KYB 서류 제출: (가) 정부 발행 신분증 공증 사본; (나) 90일 이내 발행된 주소지 증명서; (다) 법인 등록 서류(해당 시); (라) 자금 출처 확인서;</li>
+          <li>자문사 내부 AML/CFT 컴플라이언스 검토의 만족스러운 완료; 및</li>
+          <li>Trust-Lock 블록체인 플랫폼에 본 계약의 등록.</li>
+        </ol>` },
+      { num:'제8조', title:'진술 및 보장', body: () => `
+        <p>8.1 <strong>의뢰사</strong>는 다음 사항을 진술하고 보장한다. (가) 본 계약을 체결할 완전한 법적 권한을 보유하고 있다; (나) 본 계약은 적법하고 유효한 구속력 있는 의무이다; (다) 이행을 방해하는 제재 또는 법적 절차에 처해 있지 않다; (라) 본 계약과 관련된 모든 자금은 합법적인 출처에서 유래한다; (마) 어떠한 서비스나 산출물도 자금세탁, 테러 자금 조달, 사기 등 위법 목적에 사용되지 아니한다.</p>
+        <p>8.2 <strong>자문사</strong>는 다음 사항을 진술하고 보장한다. (가) 서비스 수행에 필요한 전문성과 역량을 보유하고 있다; (나) 모든 서비스는 합리적인 기술과 주의를 기울여 수행된다; (다) 본 계약의 이행이 관련 법령을 위반하지 아니한다.</p>
+        <p>8.3 <strong>자금의 합법적 출처:</strong> 양 당사자는 본 계약에서 교환되는 어떠한 자금도 테러, 자금세탁 또는 범죄 행위와 무관함을 보장한다. 자문사는 계약 기간 전반에 걸쳐 지속적인 실사를 시행할 권리를 보유한다.</p>` },
+      { num:'제9조', title:'기밀 유지 및 비공개 의무', body: () => `
+        <p>9.1 각 당사자는 타방의 기밀 정보를 엄격히 기밀로 유지하며, 법령에 의해 요구되는 경우를 제외하고 사전 서면 동의 없이 제3자에게 공개하지 아니한다.</p>
+        <p>9.2 기밀 정보는 본 계약의 목적 범위 내에서만 활용하며, 자신의 기밀 정보에 적용하는 것과 동등한 수준 이상의 주의로 보호한다.</p>
+        <p>9.3 본 기밀 유지 의무는 계약 종료 후 <strong>5년간</strong> 존속한다.</p>
+        <p>9.4 자문사는 의뢰사의 사전 서면 동의 없이 의뢰사의 신원 또는 계약 내용을 제3자에게 공개하지 아니한다.</p>` },
+      { num:'제10조', title:'비우회 및 비공개 (NCND)', body: () => `
+        <p>10.1 의뢰사는 자문사가 소개한 인물, 법인 또는 기관에 대해 자문사를 통하거나 자문사의 사전 서면 동의 없이는 직·간접적으로 접촉, 협상, 참여 또는 거래하지 아니할 것을 취소 불가능하게 약정한다.</p>
+        <p>10.2 본 의무는 의뢰사의 이사, 임원, 직원, 계열사 및 의뢰사를 대신하여 행동하는 모든 자에게 적용된다.</p>
+        <p>10.3 비우회 행위가 발생하는 경우, 의뢰사는 자문사에게 지급되었어야 할 모든 보수에 더하여 그 <strong>2배</strong>에 해당하는 위약금을 배상하여야 한다.</p>
+        <p>10.4 본 조항은 계약 종료 후 관련 당사자 소개일로부터 <strong>2년간</strong> 효력을 유지한다.</p>` },
+      { num:'제11조', title:'지식재산권', body: () => `
+        <p>11.1 의뢰사를 위해 특별히 작성된 산출물에 대한 지식재산권은 모든 보수가 최종 완납된 시점에 의뢰사에게 귀속된다.</p>
+        <p>11.2 자문사는 자사의 독점 방법론, 프레임워크, 템플릿, 도구 및 노하우에 대한 일체의 지식재산권을 보유하며, 의뢰사에게 본 계약의 목적 범위 내에서만 사용할 수 있는 제한적이고 비독점적인 사용권을 부여한다.</p>` },
+      { num:'제12조', title:'책임의 제한', body: () => `
+        <p>12.1 자문사의 총 누적 책임은 의뢰사가 본 계약에 따라 실제로 지급한 총 컨설팅 보수를 초과하지 아니한다.</p>
+        <p>12.2 어느 당사자도 이익 손실, 수익 손실을 포함한 간접적, 결과적, 우발적, 특별 또는 징벌적 손해에 대해 책임을 지지 아니한다.</p>
+        <p>12.3 본 계약에 따른 자문 서비스는 법률, 세무 또는 투자 자문을 구성하지 아니한다. 의뢰사는 산출물에 의존하여 내린 모든 결정에 단독으로 책임을 진다.</p>` },
+      { num:'제13조', title:'채무불이행 사유', body: () => `
+        <p>다음 각 호의 사유는 채무불이행 사유에 해당한다.</p>
+        <ol type="가">
+          <li>의뢰사가 지급 기일로부터 10 영업일 이내에 지급을 이행하지 아니한 경우;</li>
+          <li>의뢰사가 중대한 계약 조건을 위반하고 서면 통지 후 15 영업일 이내에 시정하지 아니한 경우;</li>
+          <li>의뢰사의 진술 또는 보장이 중대하게 허위이거나 오해의 소지가 있는 것으로 판명된 경우;</li>
+          <li>의뢰사가 지급불능 상태가 되거나 사업을 중단한 경우;</li>
+          <li>의뢰사가 제10조를 위반하여 비우회 행위를 한 경우;</li>
+          <li>의뢰사가 산출물을 위법한 목적에 사용한 경우.</li>
+        </ol>
+        <p>채무불이행 사유 발생 시, 자문사는 (i) 즉시 서비스를 중단하고, (ii) 모든 미지급 보수를 즉시 청구하며, (iii) 서면 통지로 계약을 해지할 수 있다.</p>` },
+      { num:'제14조', title:'확약', body: () => `
+        <p>의뢰사는 계약 기간 전반에 걸쳐 다음 사항을 확약한다.</p>
+        <ol type="가">
+          <li>자문사가 합리적으로 요청하는 모든 정보, 문서 및 접근을 신속하게 제공한다;</li>
+          <li>재무 상태, 법적 지위 또는 채무불이행 사유에 중대한 변화가 발생할 경우 자문사에게 즉시 통지한다;</li>
+          <li>본 계약과 관련된 모든 필요한 동의, 인허가 및 승인을 취득하고 유지한다;</li>
+          <li>계약 기간 중 자문사의 사전 서면 동의 없이 실질적으로 유사한 서비스를 제공하는 경쟁 자문사를 선임하지 아니한다;</li>
+          <li>자문사가 실시하는 모든 KYC/AML/CFT 검토에 성실히 협조한다.</li>
+        </ol>` },
+      { num:'제15조', title:'불가항력', body: () => `
+        <p>15.1 어느 당사자도 천재지변, 자연재해, 감염병, 전쟁, 테러, 정부 조치 또는 금융 인프라의 체계적 장애 등 합리적인 통제를 벗어난 사정으로 인한 의무 불이행에 대하여 책임을 지지 아니한다.</p>
+        <p>15.2 영향을 받은 당사자는 가능한 한 신속하게 상대방에게 서면으로 통지하고, 그 영향을 완화하기 위해 모든 합리적인 노력을 기울여야 한다.</p>
+        <p>15.3 불가항력 사유가 연속 60일 이상 지속되는 경우, 어느 당사자든 서면 통지로 계약을 해지할 수 있으며, 이 경우 기 제공된 서비스에 대한 보수는 일할 계산하여 지급한다.</p>` },
+      { num:'제16조', title:'통지 및 일반 조항', body: () => `
+        <p>16.1 모든 통지는 수신 확인 첨부 이메일, 택배 또는 등기우편으로 서면 전달하며, 수령 확인 시 도달한 것으로 간주한다.</p>
+        <p>16.2 본 계약은 당사자 간 해당 사항에 관한 전체 합의를 구성하며, 이전의 모든 합의 및 양해를 대체한다.</p>
+        <p>16.3 어느 조항이 무효 또는 집행 불가능한 것으로 판정되더라도, 나머지 조항은 완전한 효력을 유지한다.</p>
+        <p>16.4 의뢰사는 자문사의 사전 서면 동의 없이 본 계약상의 권리 또는 의무를 양도할 수 없다.</p>
+        <p>16.5 본 계약서는 영어로 작성된다. 한국어 또는 일본어 번역본이 준비된 경우 이는 참고용이며, 내용이 상충될 경우 영어 원문이 우선한다.</p>` },
+      { num:'제17조', title:'Trust-Lock 블록체인 보존', body: () => `
+        <p>17.1 계약 체결 즉시, 본 계약서는 <strong>fincoupling.netlify.app/#/trust-lock</strong>의 Trust-Lock 플랫폼에 제출되어 보존된다.</p>
+        <p>17.2 서명된 계약서의 암호화 해시(SHA-256)가 Trust-Lock 원장에 기록되어 계약 내용의 불변하는 타임스탬프 증거가 생성된다.</p>
+        <p>17.3 Trust-Lock 참조번호는 이후 모든 법적·규제적 절차에서 본 계약에 대한 유효한 참조로 사용된다.</p>
+        <p>17.4 Trust-Lock 기록에 대한 접근은 양 당사자 및 정당하게 수권된 법률 대리인으로 제한된다.</p>` },
+      { num:'제18조', title:'준거법 및 국제 중재', body: (d) => `
+        <p>18.1 본 계약은 아래에 명시된 중재 장소의 법률에 의해 규율되고 해석된다.</p>
+        ${d.juriBlock}
+        <p>18.2 본 계약과 관련하여 발생하는 모든 분쟁, 이견 또는 청구는 위에 명시된 기관의 규칙에 따른 구속력 있는 중재에 의해 최종 해결된다. 중재는 단독 중재인 1명에 의해 영어로 진행된다.</p>
+        <p>18.3 중재 판정은 최종적이며 구속력이 있고, 관할 법원에서 집행될 수 있다. 양 당사자는 법원에 대한 불복 신청권을 명시적으로 포기한다.</p>
+        <p>18.4 본 조항은 회복 불가능한 손해를 방지하기 위해 필요한 경우 법원에 긴급 임시 또는 금지 명령을 신청하는 것을 방해하지 아니한다.</p>
+        <p>18.5 양 당사자는 선택된 중재 장소가 본 계약에서 예정된 프로젝트와 관련하여 싱가포르 및/또는 두바이에서의 SPC·SPV 설립을 반영함을 확인한다.</p>` }
+    ]
+  }
+},
+
+// ─────────────────────────────────────────
+ja: {
+  uiTitle: '⚖️ 契約書ジェネレーター',
+  provLabel: 'サービス提供者（当社）',
+  cliLabel: '依頼人情報',
+  cliNamePh: '依頼人氏名 / 法人名',
+  cliAddrPh: '住所 / 国',
+  cliEmailPh: 'メールアドレス',
+  cliRegPh: '登録番号（任意）',
+  dateLabel: '契約日',
+  tierLabel: 'サービスティア選択',
+  feeLabel: '合意報酬額（USD）',
+  feePh: '例: 75,000',
+  svcLabel: 'サービス範囲選択（複数可）',
+  juriLabel: '国際仲裁管轄選択',
+  btnPdf: '📄 PDF保存 / 印刷',
+  btnTrust: '🔐 Trust-Lockに保存する',
+  compDone: '100% — 契約書完成',
+  compMore: '% — 情報をご入力ください',
+  compAlmost: '% — もう少しで完成です',
+  emptyMsg: '← 左のパネルに情報を入力すると契約書が生成されます。',
+  tlDone: '✅ Trust-Lock保存完了',
+  tlRef: '参照番号: ',
+  tlTime: '保存日時: ',
+  tlAlert: (h,t) => `✅ Trust-Lock保存完了！\n\n参照番号: ${h}\n日時: ${t}\n\nこの番号を契約書に記載してください。`,
+  tlMissing: '依頼人名、ティア、仲裁管轄をすべて選択してから保存してください。',
+  services: [
+    {v:'pf', label:'プロジェクトファイナンス（PF）'},
+    {v:'spv', label:'SPV / SPC組成'},
+    {v:'sto', label:'STO / 実物資産トークン化（RWA）'},
+    {v:'ir', label:'投資誘致（IR）'},
+    {v:'hnwi', label:'HNWI移民資産設計'},
+    {v:'exit', label:'Exitストラテジー'},
+    {v:'ncnd', label:'NCND / フィー保護契約'},
+    {v:'bi', label:'銀行証書アドバイザリー（BI）'}
+  ],
+  tiers: {
+    std: { label:'スタンダード', retainer:'30%', support:'メールサポート（72時間対応）', deliverables:'基礎構造設計 · IRドキュメントセット · 法的レビュー1回 · 3ヶ月メールサポート', duration:'3ヶ月' },
+    pro: { label:'プロフェッショナル', retainer:'30%', support:'優先サポート（24時間対応）', deliverables:'完全な資本構造設計 · SPV/SPC設計図 · STOアドバイザリー · 法的レビュー2回 · デューデリジェンス支援 · 6ヶ月優先サポート', duration:'6ヶ月' },
+    ent: { label:'エンタープライズ', retainer:'20%', support:'専任マネージャー（当日対応）', deliverables:'エンドツーエンド資本構造設計 · SPV/SPC/STO完全実行 · HNWI資産設計 · Exitストラテジー · 銀行証書アドバイザリー · NCNDフレームワーク · 12ヶ月専任管理', duration:'12ヶ月' }
+  },
+  juris: {
+    sg: { name:'シンガポール', body:'シンガポール国際仲裁センター（SIAC）', rules:'SIAC仲裁規則（最新版）', seat:'シンガポール', law:'シンガポール法' },
+    ae: { name:'ドバイ（DIFC）', body:'ドバイ国際仲裁センター（DIAC）/ DIFC-LCIA', rules:'DIAC仲裁規則 / DIFC-LCIA仲裁規則（最新版）', seat:'ドバイ、アラブ首長国連邦', law:'UAE連邦法（DIFC管轄）' }
+  },
+  doc: {
+    title: 'コンサルティングサービス契約書',
+    subtitle: '機密 · 署名専用',
+    cnoPrefix: '契約番号: ',
+    provRole: 'サービス提供者（「アドバイザー」）',
+    cliRole: '依頼人（「依頼社」）',
+    intro: (prov, cli, date) => `本コンサルティングサービス契約書（以下「<strong>本契約</strong>」）は、<strong>${date}</strong>付で<strong>${prov}</strong>（以下「<strong>アドバイザー</strong>」）と<strong>${cli}</strong>（以下「<strong>依頼社</strong>」）との間で締結され、両者を総称して「<strong>当事者</strong>」という。`,
+    tierBoxLabel: (t) => `選択済みサービスティア: ${t}`,
+    feeRange: '報酬範囲:',
+    retainerLabel: '着手金（前払い）:',
+    retainerSuffix: '（合意総報酬額に対する割合、契約締結時に支払い）',
+    durationLabel: '契約期間:',
+    durationSuffix: '（効力発生日より）',
+    supportLabel: 'サポートレベル:',
+    deliverablesLabel: '標準成果物:',
+    juriBodyLabel: '仲裁機関:',
+    juriRulesLabel: '適用規則:',
+    juriSeatLabel: '仲裁地:',
+    juriLawLabel: '準拠法:',
+    sigAdvisorRole: 'アドバイザーを代表して',
+    sigPrincipalRole: '依頼社を代表して',
+    sigAuth: '権限ある署名者',
+    sigDate: '日付:',
+    witnessClause: '以上の証として、両当事者は冒頭に記載の日付をもって本コンサルティングサービス契約書を締結した。',
+    tlSealPrefix: '🔐 本契約書はSTCLOGICが運営するTrust-Lockブロックチェーンプラットフォームに保存されました。',
+    tlSealRef: '参照番号:',
+    tlSealTime: '保存日時:',
+    noTier: '【サービスティア未選択】',
+    noJuri: '【仲裁管轄未選択】',
+    noServices: '<li>— 相互書面合意により後日決定 —</li>',
+    clauses: [
+      { num:'第1条', title:'定義および解釈', body: () => `
+        <p><strong>「本契約」</strong>とは、すべての別紙および付属文書を含む本コンサルティングサービス契約書をいう。</p>
+        <p><strong>「契約期間」</strong>とは、効力発生日から選択したサービスティアに定める期間までをいう。</p>
+        <p><strong>「秘密情報」</strong>とは、本契約に関連して一方当事者が他方に開示した非公開情報（財務データ、プロジェクト詳細、戦略、独自の方法論等を含む）をいう。</p>
+        <p><strong>「成果物」</strong>とは、本契約に基づきアドバイザーが作成するすべての報告書、文書、モデル、フレームワークおよびアドバイザリー成果物をいう。</p>
+        <p><strong>「債務不履行事由」</strong>とは、第13条に列挙する事由をいう。</p>
+        <p><strong>「着手金」</strong>とは、サービス開始の前提条件として依頼社が支払う前払い金をいう。</p>
+        <p><strong>「Trust-Lock」</strong>とは、STCLOGICがfincoupling.netlify.appで運営するブロックチェーン型文書保存プラットフォームをいい、本契約書が不変の記録として登録される。</p>
+        <p><strong>「営業日」</strong>とは、土曜日、日曜日および祝日を除き、シンガポールまたはドバイの銀行が営業している日をいう。</p>
+        <p>別途明示されない限り、すべての通貨は米ドル（USD）を基準とする。</p>` },
+      { num:'第2条', title:'契約の目的およびサービス範囲', body: (d) => `
+        <p>アドバイザーは以下に合意する条件に従い依頼社に対して専門的な金融コンサルティングおよびアドバイザリーサービスを提供し、依頼社はこれを委託する。合意されたサービス範囲は以下のとおりである。</p>
+        <ol>${d.serviceList}</ol>
+        <p>両当事者は契約期間中、書面による合意をもってサービス範囲を拡大または変更することができる。変更は両者が署名した書面による追補契約として文書化する。</p>` },
+      { num:'第3条', title:'サービスティア、成果物および契約期間', body: (d) => `
+        <p>依頼社は本契約の報酬体系、成果物およびサポートレベルを決定する以下のサービスティアを選択した。</p>
+        ${d.tierBlock}
+        <p>アドバイザーは商業的に合理的な努力をもって契約期間内にすべての成果物を納品する。スケジュールは第7条に基づく依頼社の適時な資料提供を前提とする。</p>` },
+      { num:'第4条', title:'報酬および支払い条件', body: (d) => `
+        <p>依頼社は本契約に基づくサービスの対価として総コンサルティング報酬<strong>${d.fee}</strong>を以下のとおり支払うものとする。</p>
+        <ol>
+          <li><strong>着手金:</strong> 総報酬の${d.retainer}を契約締結時に支払う。着手金の入金・決済が完了するまで業務は開始しない。</li>
+          <li><strong>マイルストーン支払い:</strong> 残額は契約締結後5営業日以内に書面で合意するマイルストーン・スケジュールに従い支払う。</li>
+          <li><strong>最終支払い:</strong> 未払い残額は最終成果物の納品または契約期間満了のいずれか早い時点で支払う。</li>
+        </ol>
+        <p>すべての支払いはSWIFT/TT電信送金により、あらゆる税金・控除なしに、アドバイザーが別途書面で指定する口座に行う。為替手数料および送金手数料は依頼社が負担する。</p>` },
+      { num:'第5条', title:'遅延損害金', body: () => `
+        <p>5.1 支払期日を超過した金額に対しては、期日翌日から実際の支払日まで月率<strong>1.5%</strong>の遅延損害金が発生する。</p>
+        <p>5.2 アドバイザーは支払期日から10営業日を経過しても支払いがなされない場合、責任を負うことなくすべてのサービスを停止することができる。</p>
+        <p>5.3 アドバイザーはサービス再開前に未払い金額の前払いを求めることができる。</p>` },
+      { num:'第6条', title:'契約解除および返金ポリシー', body: () => `
+        <p>6.1 いずれの当事者も30日前の書面通知により本契約を解除することができる。</p>
+        <p>6.2 着手金はサービス開始後いかなる場合も返金されない。</p>
+        <p>6.3 依頼社がサービス開始後に契約を解除する場合、既提供サービスに係る報酬を日割り計算で支払わなければならない。</p>
+        <p>6.4 依頼社の重大な契約違反による解除の場合、すべての未払い報酬は直ちに支払義務が生じる。</p>
+        <p>6.5 アドバイザーは依頼社が関連法令または本契約条件に違反する行為を行う場合、直ちに書面通知をもって契約を解除することができる。</p>` },
+      { num:'第7条', title:'先行条件', body: () => `
+        <p>アドバイザーのサービス開始義務は以下のすべての条件の充足を前提とする。</p>
+        <ol type="イ">
+          <li>両当事者が署名した本契約書原本（または電子的同等物）の受領;</li>
+          <li>着手金全額の受領および決済;</li>
+          <li>以下のKYC/KYB書類の提出: (イ) 政府発行の顔写真付き身分証明書の認証謄本; (ロ) 90日以内に発行された住所証明書; (ハ) 法人登記書類（該当する場合）; (ニ) 資金出所確認書;</li>
+          <li>アドバイザー内部のAML/CFTコンプライアンス審査の良好な完了; および</li>
+          <li>Trust-Lockブロックチェーンプラットフォームへの本契約の登録。</li>
+        </ol>` },
+      { num:'第8条', title:'表明および保証', body: () => `
+        <p>8.1 <strong>依頼社</strong>は以下を表明し保証する。(イ) 本契約を締結する完全な法的権限を有する; (ロ) 本契約はその条件に従って執行可能な法的に有効かつ拘束力ある義務を構成する; (ハ) 履行を妨げる制裁または法的手続きの対象となっていない; (ニ) 関連するすべての資金は合法的な出所に由来する; (ホ) いかなるサービスまたは成果物もマネーロンダリング、テロ資金供与、詐欺等の違法目的に使用しない。</p>
+        <p>8.2 <strong>アドバイザー</strong>は以下を表明し保証する。(イ) サービス提供に必要な専門性と能力を有する; (ロ) すべてのサービスを合理的な技術と注意をもって提供する; (ハ) 本契約の履行が関連法令に違反しない。</p>
+        <p>8.3 <strong>資金の合法的出所:</strong> 両当事者は本契約で交換されるいかなる資金もテロ、マネーロンダリングまたは犯罪行為と無関係であることを保証する。アドバイザーは契約期間全体を通じて継続的なデューデリジェンスを実施する権利を留保する。</p>` },
+      { num:'第9条', title:'秘密保持義務', body: () => `
+        <p>9.1 各当事者は相手方の秘密情報を厳格に秘密として保持し、法令により要求される場合を除き、事前の書面による同意なしに第三者に開示しない。</p>
+        <p>9.2 秘密情報は本契約の目的の範囲内においてのみ使用し、自己の秘密情報に適用するのと同等以上の注意をもって保護する。</p>
+        <p>9.3 本秘密保持義務は契約終了後<strong>5年間</strong>存続する。</p>
+        <p>9.4 アドバイザーは依頼社の事前書面による同意なしに依頼社の身元または委託内容を第三者に開示しない。</p>` },
+      { num:'第10条', title:'非迂回・非開示（NCND）', body: () => `
+        <p>10.1 依頼社はアドバイザーが紹介した人物、法人または機関に対して、アドバイザーを通じて、またはアドバイザーの事前書面による同意なしに直接・間接的に接触、交渉、関与または取引しないことを取消不能の形で約定する。</p>
+        <p>10.2 本義務は依頼社の取締役、役員、従業員、関連会社および依頼社を代理するすべての者に適用される。</p>
+        <p>10.3 迂回行為が発生した場合、依頼社はアドバイザーに対して支払われるべきであったすべての報酬に加え、その<strong>2倍</strong>に相当する違約金を賠償しなければならない。</p>
+        <p>10.4 本条は契約終了後、関係当事者紹介日から<strong>2年間</strong>効力を維持する。</p>` },
+      { num:'第11条', title:'知的財産権', body: () => `
+        <p>11.1 依頼社のために特別に作成された成果物に関する知的財産権は、すべての報酬が最終的に完納された時点で依頼社に帰属する。</p>
+        <p>11.2 アドバイザーは自社の独自の方法論、フレームワーク、テンプレート、ツールおよびノウハウに関するすべての知的財産権を保有し、依頼社に対して本契約の目的の範囲内においてのみ使用可能な限定的かつ非独占的なライセンスを付与する。</p>` },
+      { num:'第12条', title:'責任の制限', body: () => `
+        <p>12.1 アドバイザーの総累積責任は依頼社が本契約に基づき実際に支払った総コンサルティング報酬を超えない。</p>
+        <p>12.2 いずれの当事者も逸失利益、収益損失を含む間接的、結果的、偶発的、特別または懲罰的損害について責任を負わない。</p>
+        <p>12.3 本契約に基づくアドバイザリーサービスは法律、税務または投資に関するアドバイスを構成しない。依頼社は成果物に基づいて行ったすべての意思決定について単独で責任を負う。</p>` },
+      { num:'第13条', title:'債務不履行事由', body: () => `
+        <p>以下の各号は債務不履行事由に該当する。</p>
+        <ol type="イ">
+          <li>依頼社が支払期日から10営業日以内に支払いを履行しない場合;</li>
+          <li>依頼社が重大な契約条件に違反し、書面通知後15営業日以内に是正しない場合;</li>
+          <li>依頼社の表明または保証が重大な点において虚偽または誤解を招くものと判明した場合;</li>
+          <li>依頼社が支払不能となり、または事業を停止した場合;</li>
+          <li>依頼社が第10条に違反して迂回行為を行った場合;</li>
+          <li>依頼社が成果物を違法な目的に使用した場合。</li>
+        </ol>
+        <p>債務不履行事由発生時、アドバイザーは(i)直ちにすべてのサービスを停止し、(ii)すべての未払い報酬を即時請求し、(iii)書面通知をもって契約を解除することができる。</p>` },
+      { num:'第14条', title:'誓約', body: () => `
+        <p>依頼社は契約期間全体を通じて以下を誓約する。</p>
+        <ol type="イ">
+          <li>アドバイザーが合理的に要請するすべての情報、文書およびアクセスを速やかに提供する;</li>
+          <li>財務状況、法的地位または債務不履行事由に重大な変化が生じた場合、直ちにアドバイザーに通知する;</li>
+          <li>本契約に関連するすべての必要な同意、ライセンスおよび承認を取得し維持する;</li>
+          <li>契約期間中、アドバイザーの事前書面による同意なしに実質的に類似のサービスを提供する競合アドバイザーを起用しない;</li>
+          <li>アドバイザーが実施するすべてのKYC/AML/CFT審査に誠実に協力する。</li>
+        </ol>` },
+      { num:'第15条', title:'不可抗力', body: () => `
+        <p>15.1 いずれの当事者も、天災、自然災害、感染症、戦争、テロ、政府措置または金融インフラの体系的障害等の合理的なコントロールを超えた事情による義務不履行について責任を負わない。</p>
+        <p>15.2 影響を受けた当事者は可能な限り速やかに相手方に書面で通知し、その影響を軽減するためにあらゆる合理的な努力を払わなければならない。</p>
+        <p>15.3 不可抗力事由が連続60日以上続く場合、いずれの当事者も書面通知により契約を解除することができ、その場合、既提供サービスに係る報酬は日割り計算で支払われる。</p>` },
+      { num:'第16条', title:'通知および一般条項', body: () => `
+        <p>16.1 すべての通知は開封確認付きメール、宅配便または書留郵便で書面により送付し、受領確認時に到達したものとみなす。</p>
+        <p>16.2 本契約は当事者間の当該事項に関する完全な合意を構成し、以前のすべての合意および了解に優先する。</p>
+        <p>16.3 いずれかの条項が無効または執行不能と判断された場合も、残余の条項は完全な効力を維持する。</p>
+        <p>16.4 依頼社はアドバイザーの事前書面による同意なしに本契約上の権利または義務を譲渡することができない。</p>
+        <p>16.5 本契約書は英語で作成される。韓国語または日本語の翻訳が準備された場合は参照用であり、内容が矛盾する場合は英語原文が優先する。</p>` },
+      { num:'第17条', title:'Trust-Lockブロックチェーン保存', body: () => `
+        <p>17.1 契約締結後直ちに、本契約書は<strong>fincoupling.netlify.app/#/trust-lock</strong>のTrust-Lockプラットフォームに提出・保存される。</p>
+        <p>17.2 署名済み契約書の暗号学的ハッシュ（SHA-256）がTrust-Lock台帳に記録され、契約内容の不変のタイムスタンプ付き証拠が生成される。</p>
+        <p>17.3 Trust-Lock参照番号はその後のあらゆる法的・規制的手続きにおける本契約への有効な参照として使用される。</p>
+        <p>17.4 Trust-Lock記録へのアクセスは両当事者および正式に授権された法的代理人に限定される。</p>` },
+      { num:'第18条', title:'準拠法および国際仲裁', body: (d) => `
+        <p>18.1 本契約は以下に指定する仲裁地の法律に準拠し解釈される。</p>
+        ${d.juriBlock}
+        <p>18.2 本契約から生じるすべての紛争、論争または請求は上記に指定した機関の規則に基づく拘束力ある仲裁により最終的に解決される。仲裁は単独仲裁人1名により英語で行われる。</p>
+        <p>18.3 仲裁判断は最終的かつ拘束力を有し、管轄裁判所で執行することができる。両当事者は裁判所への不服申立て権を明示的に放棄する。</p>
+        <p>18.4 本条は回復不能な損害を防止するために必要な場合に管轄裁判所に緊急仮処分または差止命令を申請することを妨げない。</p>
+        <p>18.5 両当事者は選択された仲裁地が本契約で予定するプロジェクトに関連したシンガポールおよび/またはドバイにおけるSPC・SPVの設立を反映したものであることを確認する。</p>` }
+    ]
+  }
+}
+}; // end I18N
+
+// ══════════════════════════════════════════
+//  State
+// ══════════════════════════════════════════
+var lang = 'en';
+var tier = '';
+var juri = '';
+
+function setLang(l) {
+  lang = l;
+  ['en','ko','ja'].forEach(function(x){ document.getElementById('lb-'+x).classList.toggle('active', x===l); });
+  document.documentElement.lang = l==='ko'?'ko':l==='ja'?'ja':'en';
+  applyUI();
+  render();
+}
 
 function setTier(t) {
-  state.tier = t;
-  ['std','pro','ent'].forEach(function(x) {
+  tier = t;
+  ['std','pro','ent'].forEach(function(x){
     document.getElementById('t-'+x).classList.toggle('active', x===t);
-    document.getElementById('tr-'+x).classList.toggle('active', x===t);
   });
   render();
 }
 
 function setJuri(j) {
-  state.juri = j;
-  ['sg','ae'].forEach(function(x) {
-    document.getElementById('j-'+x).classList.toggle('active', x===j);
-  });
+  juri = j;
+  ['sg','ae'].forEach(function(x){ document.getElementById('j-'+x).classList.toggle('active', x===j); });
   render();
 }
 
-function getChecked() {
+function v(id){ return document.getElementById(id).value.trim(); }
+
+function applyUI() {
+  var t = I18N[lang];
+  document.getElementById('ui-title').textContent = t.uiTitle;
+  document.getElementById('ui-provLabel').textContent = t.provLabel;
+  document.getElementById('ui-cliLabel').textContent = t.cliLabel;
+  document.getElementById('cliName').placeholder = t.cliNamePh;
+  document.getElementById('cliAddr').placeholder = t.cliAddrPh;
+  document.getElementById('cliEmail').placeholder = t.cliEmailPh;
+  document.getElementById('cliReg').placeholder = t.cliRegPh;
+  document.getElementById('ui-dateLabel').textContent = t.dateLabel;
+  document.getElementById('ui-tierLabel').textContent = t.tierLabel;
+  document.getElementById('ui-feeLabel').textContent = t.feeLabel;
+  document.getElementById('feeAmt').placeholder = t.feePh;
+  document.getElementById('ui-svcLabel').textContent = t.svcLabel;
+  document.getElementById('ui-juriLabel').textContent = t.juriLabel;
+  document.getElementById('ui-btnPdf').textContent = t.btnPdf;
+  document.getElementById('ui-btnTrust').textContent = t.btnTrust;
+  var emptyEl = document.getElementById('emptyMsg');
+  if(emptyEl) emptyEl.textContent = t.emptyMsg;
+  // rebuild services
+  var cb = document.getElementById('svc-checks');
+  var prev = {};
+  cb.querySelectorAll('input').forEach(function(el){ prev[el.value] = el.checked; });
+  cb.innerHTML = '';
+  t.services.forEach(function(s){
+    var lbl = document.createElement('label');
+    lbl.className = 'cb-item';
+    lbl.innerHTML = '<input type="checkbox" value="'+s.v+'" onchange="render()"> '+s.label;
+    if(prev[s.v]) lbl.querySelector('input').checked = true;
+    cb.appendChild(lbl);
+  });
+}
+
+function getServices() {
   var items = [];
-  document.querySelectorAll('.cb-grid input[type=checkbox]:checked').forEach(function(cb) {
-    var labels = { pf:'Project Finance (PF)', spv:'SPV / SPC Structuring', sto:'STO / RWA Tokenization',
-      ir:'Investment Attraction (IR)', hnwi:'HNWI Immigration Asset Design',
-      exit:'Exit Strategy', ncnd:'NCND / Fee Protection Agreement', bi:'Bank Instrument Advisory' };
-    items.push(labels[cb.value]);
+  document.querySelectorAll('#svc-checks input:checked').forEach(function(cb){
+    var t2 = I18N[lang].services.find(function(s){ return s.v===cb.value; });
+    if(t2) items.push(t2.label);
   });
   return items;
-}
-
-function v(id) { return document.getElementById(id).value.trim(); }
-
-function tierData() {
-  var map = {
-    std: { label:'Standard', range:'USD $9,999 – $49,999', retainer:'30%', support:'Email (72h response)', deliverables:'Basic Structure Design · IR Document Set · 1× Legal Review · 3-Month Email Support', duration:'3 months' },
-    pro: { label:'Professional', range:'USD $50,000 – $199,999', retainer:'30%', support:'Priority (24h response)', deliverables:'Full Capital Structure · SPV/SPC Blueprint · STO Advisory · 2× Legal Review · Due Diligence Support · 6-Month Priority Support', duration:'6 months' },
-    ent: { label:'Enterprise', range:'USD $200,000 +', retainer:'20%', support:'Dedicated Manager (same-day)', deliverables:'End-to-End Capital Architecture · SPV/SPC/STO Full Execution · HNWI Asset Design · Exit Strategy · Bank Instrument Advisory · NCND Framework · 12-Month Dedicated Management', duration:'12 months' }
-  };
-  return state.tier ? map[state.tier] : null;
-}
-
-function juriData() {
-  var map = {
-    sg: { flag:'🇸🇬', name:'Singapore', body:'Singapore International Arbitration Centre (SIAC)', rules:'SIAC Arbitration Rules (latest edition)', seat:'Singapore', law:'Singapore law' },
-    ae: { flag:'🇦🇪', name:'Dubai (DIFC)', body:'Dubai International Arbitration Centre (DIAC) / DIFC-LCIA', rules:'DIAC Arbitration Rules / DIFC-LCIA Arbitration Rules (latest edition)', seat:'Dubai, United Arab Emirates', law:'UAE Federal Law (DIFC jurisdiction)' }
-  };
-  return state.juri ? map[state.juri] : null;
-}
-
-function updateCompletion() {
-  var score = 0;
-  if (v('cliName')) score += 20;
-  if (v('cliAddr')) score += 10;
-  if (v('contDate')) score += 10;
-  if (state.tier) score += 25;
-  if (state.juri) score += 20;
-  if (getChecked().length > 0) score += 15;
-  document.getElementById('compFill').style.width = score + '%';
-  document.getElementById('compText').textContent = score + '% — ' + (score < 50 ? '정보를 더 입력해 주세요' : score < 100 ? '거의 완성되었습니다' : '계약서 완성');
 }
 
 function contractNum() {
   var d = v('contDate') || new Date().toISOString().slice(0,10);
   var n = v('cliName') ? v('cliName').replace(/\s+/g,'').toUpperCase().slice(0,4) : 'XXXX';
-  return 'STC-' + d.replace(/-/g,'') + '-' + n;
+  return 'STC-'+d.replace(/-/g,'')+'-'+n;
+}
+
+function updateCompletion() {
+  var t = I18N[lang];
+  var s = 0;
+  if(v('cliName')) s+=20;
+  if(v('cliAddr')) s+=10;
+  if(v('contDate')) s+=10;
+  if(tier) s+=25;
+  if(juri) s+=20;
+  if(getServices().length>0) s+=15;
+  document.getElementById('compFill').style.width = s+'%';
+  var msg = s===100 ? t.compDone : s>=60 ? s+t.compAlmost : s+t.compMore;
+  document.getElementById('compText').textContent = msg;
 }
 
 function render() {
   updateCompletion();
-  var cli = v('cliName') || '___________________________';
-  var cliAddr = v('cliAddr') || '___________________________';
-  var cliEmail = v('cliEmail') || '___________________________';
+  var t = I18N[lang];
+  var d = t.doc;
+  var cli = v('cliName') || (lang==='ko'?'_______________':lang==='ja'?'＿＿＿＿＿':'_______________');
+  var cliAddr = v('cliAddr') || '_______________';
+  var cliEmail = v('cliEmail');
   var cliReg = v('cliReg');
   var prov = v('provName') || 'STCLOGIC Co., Ltd.';
   var provAddr = v('provAddr') || 'Seoul, Republic of Korea';
-  var dateStr = v('contDate') ? new Date(v('contDate')).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : '___  __________ 20__';
-  var fee = v('feeAmt') ? 'USD ' + v('feeAmt') : '_____________';
-  var services = getChecked();
-  var td = tierData();
-  var jd = juriData();
+  var rawDate = v('contDate');
+  var dateStr;
+  if(rawDate) {
+    var dt = new Date(rawDate);
+    if(lang==='ko') dateStr = dt.getFullYear()+'년 '+(dt.getMonth()+1)+'월 '+dt.getDate()+'일';
+    else if(lang==='ja') dateStr = dt.getFullYear()+'年'+(dt.getMonth()+1)+'月'+dt.getDate()+'日';
+    else dateStr = dt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  } else {
+    dateStr = lang==='ko'?'____년 __월 __일':lang==='ja'?'____年__月__日':'___ __________ 20__';
+  }
+  var fee = v('feeAmt') ? 'USD '+v('feeAmt') : '_______________';
+  var services = getServices();
+  var serviceList = services.length>0
+    ? services.map(function(s,i){ return '<li>'+(i+1)+'. '+s+'</li>'; }).join('')
+    : d.noServices;
+
+  var td = tier ? t.tiers[tier] : null;
+  var jd = juri ? t.juris[juri] : null;
   var cno = contractNum();
 
-  var serviceList = services.length > 0
-    ? services.map(function(s,i){ return '<li>'+(i+1).toString().padStart(2,'0')+'. '+s+'</li>'; }).join('')
-    : '<li>— To be specified by mutual agreement —</li>';
-
-  var tierBlock = td ? '<div class="tier-highlight"><div class="th-label">Selected Service Tier: ' + td.label.toUpperCase() + '</div>'
-    + '<p><strong>Fee Range:</strong> ' + td.range + '</p>'
-    + '<p><strong>Retainer (Advance):</strong> ' + td.retainer + ' of total agreed fee, due upon execution</p>'
-    + '<p><strong>Engagement Duration:</strong> ' + td.duration + ' from the Effective Date</p>'
-    + '<p><strong>Support Level:</strong> ' + td.support + '</p>'
-    + '<p><strong>Standard Deliverables:</strong> ' + td.deliverables + '</p>'
-    + '</div>' : '<p>[TIER NOT SELECTED — please select Standard / Professional / Enterprise]</p>';
+  var tierBlock = td ? '<div class="tier-highlight"><div class="th-label">'+d.tierBoxLabel(td.label)+'</div>'
+    +'<p><strong>'+d.feeRange+'</strong> '+t.tiers[tier===''?'std':tier].label+' (USD)</p>'
+    +'<p><strong>'+d.retainerLabel+'</strong> '+td.retainer+' '+d.retainerSuffix+'</p>'
+    +'<p><strong>'+d.durationLabel+'</strong> '+td.duration+' '+d.durationSuffix+'</p>'
+    +'<p><strong>'+d.supportLabel+'</strong> '+td.support+'</p>'
+    +'<p><strong>'+d.deliverablesLabel+'</strong> '+td.deliverables+'</p>'
+    +'</div>' : '<p>'+d.noTier+'</p>';
 
   var juriBlock = jd ? '<div class="juri-highlight">'
-    + '<p><strong>Arbitral Body:</strong> ' + jd.body + '</p>'
-    + '<p><strong>Rules:</strong> ' + jd.rules + '</p>'
-    + '<p><strong>Seat of Arbitration:</strong> ' + jd.seat + '</p>'
-    + '<p><strong>Governing Law:</strong> ' + jd.law + '</p>'
-    + '</div>' : '<p>[JURISDICTION NOT SELECTED]</p>';
+    +'<p><strong>'+d.juriBodyLabel+'</strong> '+jd.body+'</p>'
+    +'<p><strong>'+d.juriRulesLabel+'</strong> '+jd.rules+'</p>'
+    +'<p><strong>'+d.juriSeatLabel+'</strong> '+jd.seat+'</p>'
+    +'<p><strong>'+d.juriLawLabel+'</strong> '+jd.law+'</p>'
+    +'</div>' : '<p>'+d.noJuri+'</p>';
 
-  var html = '<div class="doc-ref">Contract No.: ' + cno + '</div>'
+  var dynData = { serviceList:serviceList, tierBlock:tierBlock, juriBlock:juriBlock, fee:fee, retainer:td?td.retainer:'___' };
 
-  + '<h1>Consulting Services Agreement</h1>'
-  + '<p class="doc-subtitle">Confidential · For Execution Only</p>'
-  + '<div class="ornament">✦ ── ❦ ── ✦</div>'
+  var tlShown = document.getElementById('tlBadge').classList.contains('show');
+  var tlRefTxt = document.getElementById('tlHashSpan') ? document.getElementById('tlHashSpan').textContent : '';
+  var tlTimeTxt = document.getElementById('tlTimeSpan') ? document.getElementById('tlTimeSpan').textContent : '';
 
-  + '<div class="parties-box">'
-  + '<div class="party"><div class="p-role">Service Provider ("The Advisor")</div>'
-  + '<div class="p-name">' + prov + '</div>'
-  + '<div class="p-detail">' + provAddr + ' · stclogic@gmail.com · bookcoupling.netlify.app</div></div>'
-  + '<div class="party"><div class="p-role">Client ("The Principal")</div>'
-  + '<div class="p-name">' + cli + '</div>'
-  + '<div class="p-detail">' + cliAddr + (cliEmail !== '___________________________' ? ' · ' + cliEmail : '') + (cliReg ? ' · Reg. No.: ' + cliReg : '') + '</div></div>'
-  + '</div>'
+  var html = '<div class="doc-ref">'+d.cnoPrefix+cno+'</div>'
+    +'<h1>'+d.title+'</h1>'
+    +'<p class="doc-subtitle">'+d.subtitle+'</p>'
+    +'<div class="ornament">✦ ── ❦ ── ✦</div>'
+    +'<div class="parties-box">'
+    +'<div class="party"><div class="p-role">'+d.provRole+'</div><div class="p-name">'+prov+'</div>'
+    +'<div class="p-detail">'+provAddr+' · stclogic@gmail.com · bookcoupling.netlify.app</div></div>'
+    +'<div class="party"><div class="p-role">'+d.cliRole+'</div><div class="p-name">'+cli+'</div>'
+    +'<div class="p-detail">'+cliAddr+(cliEmail?' · '+cliEmail:'')+(cliReg?' · Reg.: '+cliReg:'')+'</div></div>'
+    +'</div>'
+    +'<p>'+d.intro(prov,cli,dateStr)+'</p>'
+    +'<div class="ornament">── ❦ ──</div>';
 
-  + '<p>This Consulting Services Agreement (hereinafter "the <strong>Agreement</strong>") is entered into as of <strong>' + dateStr + '</strong> between the Advisor and the Principal (collectively "the <strong>Parties</strong>"), and sets forth the terms and conditions governing the provision of financial consulting and advisory services.</p>'
+  d.clauses.forEach(function(c){
+    html += '<div class="clause"><div class="clause-title">'+c.num+'. '+c.title+'</div>';
+    html += c.body(dynData);
+    html += '</div>';
+  });
 
-  + '<div class="ornament">── ❦ ──</div>'
-
-  // CLAUSE 1
-  + '<div class="clause"><div class="clause-title">1. Definitions and Interpretation</div>'
-  + '<p><strong>"Agreement"</strong> means this Consulting Services Agreement including all schedules and annexures hereto.</p>'
-  + '<p><strong>"Engagement Period"</strong> means the period commencing on the Effective Date and continuing for the duration specified under the selected Service Tier.</p>'
-  + '<p><strong>"Confidential Information"</strong> means any non-public information disclosed by either Party in connection with this Agreement, including but not limited to financial data, project details, client lists, strategies, and proprietary methodologies.</p>'
-  + '<p><strong>"Deliverables"</strong> means all reports, documents, models, frameworks, and advisory outputs produced by the Advisor pursuant to this Agreement.</p>'
-  + '<p><strong>"Event of Default"</strong> means any event listed in Clause 13.</p>'
-  + '<p><strong>"Retainer"</strong> means the advance fee payable by the Principal upon execution of this Agreement as a precondition to the commencement of services.</p>'
-  + '<p><strong>"Trust-Lock"</strong> means the blockchain-based document preservation platform operated by STCLOGIC at fincoupling.netlify.app, onto which this Agreement shall be registered as an immutable record.</p>'
-  + '<p><strong>"Business Day"</strong> means a day (other than Saturday, Sunday, or public holiday) on which banks are open for business in Singapore or Dubai, as applicable.</p>'
-  + '<p>All references to currency are to United States Dollars (USD) unless otherwise specified. Clause headings are for convenience only and shall not affect interpretation.</p></div>'
-
-  // CLAUSE 2
-  + '<div class="clause"><div class="clause-title">2. Engagement and Scope of Services</div>'
-  + '<p>The Advisor agrees to provide the Principal with professional financial consulting and advisory services, and the Principal agrees to engage the Advisor, on the terms and conditions set forth herein.</p>'
-  + '<p>The scope of services to be rendered under this Agreement includes, but is not limited to, the following areas as selected and agreed by the Parties:</p>'
-  + '<ol>' + serviceList + '</ol>'
-  + '<p>The Parties may, by mutual written agreement, expand or modify the scope of services during the Engagement Period. Any such modification shall be documented in a written addendum signed by both Parties.</p></div>'
-
-  // CLAUSE 3
-  + '<div class="clause"><div class="clause-title">3. Service Tier, Deliverables and Duration</div>'
-  + '<p>The Principal has selected the following Service Tier, which determines the fee structure, deliverables, and support level applicable to this engagement:</p>'
-  + tierBlock
-  + '<p>The Advisor shall use commercially reasonable efforts to deliver all Deliverables within the agreed Engagement Period. Timelines are subject to the Principal\'s timely provision of required information and documentation as specified in Clause 7.</p></div>'
-
-  // CLAUSE 4
-  + '<div class="clause"><div class="clause-title">4. Fees and Payment Terms</div>'
-  + '<p>In consideration of the services to be provided hereunder, the Principal agrees to pay the Advisor a total consulting fee of <strong>' + fee + '</strong> (the "<strong>Consulting Fee</strong>"), payable as follows:</p>'
-  + '<ol>'
-  + '<li><strong>Retainer Payment:</strong> ' + (td ? td.retainer : '____%') + ' of the total Consulting Fee is due and payable upon execution of this Agreement and prior to commencement of any services. No work shall commence until the Retainer has been received and cleared.</li>'
-  + '<li><strong>Milestone Payments:</strong> The remaining balance shall be payable in accordance with a milestone schedule to be agreed in writing by the Parties within five (5) Business Days of execution.</li>'
-  + '<li><strong>Final Payment:</strong> Any outstanding balance is due and payable upon delivery of the final Deliverables or upon expiry of the Engagement Period, whichever occurs first.</li>'
-  + '</ol>'
-  + '<p>All payments shall be made by wire transfer (SWIFT/TT) to the Advisor\'s designated bank account, details of which shall be provided separately in writing. Payments shall be made free and clear of all taxes, deductions, and withholdings. The Principal shall bear all bank transfer charges and currency conversion costs.</p></div>'
-
-  // CLAUSE 5
-  + '<div class="clause"><div class="clause-title">5. Late Payment and Interest</div>'
-  + '<p>5.1 Any amount not paid on its due date shall accrue interest at the rate of <strong>1.5% per month</strong> (or the maximum rate permitted by applicable law, whichever is lower) calculated on a daily basis from the due date until the date of actual payment.</p>'
-  + '<p>5.2 The Advisor reserves the right to suspend all services without liability in the event that any payment remains outstanding for more than ten (10) Business Days after its due date.</p>'
-  + '<p>5.3 The Advisor may, at its sole discretion, require prepayment of any outstanding amounts before resuming suspended services.</p></div>'
-
-  // CLAUSE 6
-  + '<div class="clause"><div class="clause-title">6. Termination and Refund Policy</div>'
-  + '<p>6.1 Either Party may terminate this Agreement upon thirty (30) days\' written notice to the other Party.</p>'
-  + '<p>6.2 The Retainer is non-refundable in all circumstances once services have commenced.</p>'
-  + '<p>6.3 In the event of termination by the Principal after commencement of services, the Principal shall pay for all services rendered to the date of termination on a pro-rata basis, and for all reasonable costs and expenses incurred by the Advisor.</p>'
-  + '<p>6.4 In the event of termination by the Advisor due to the Principal\'s material breach, all outstanding fees shall become immediately due and payable.</p>'
-  + '<p>6.5 The Advisor may terminate this Agreement immediately upon written notice if the Principal engages in any activity that, in the Advisor\'s reasonable opinion, constitutes a violation of applicable law or the terms of this Agreement.</p></div>'
-
-  // CLAUSE 7
-  + '<div class="clause"><div class="clause-title">7. Conditions Precedent</div>'
-  + '<p>The Advisor\'s obligation to commence services is subject to the prior satisfaction of all of the following conditions:</p>'
-  + '<ol>'
-  + '<li>Receipt of the duly executed original (or electronic equivalent) of this Agreement by both Parties;</li>'
-  + '<li>Receipt and clearance of the Retainer payment in full;</li>'
-  + '<li>Submission by the Principal of all required KYC/KYB documentation, including: (a) a certified copy of a valid government-issued photo identification; (b) proof of address (issued within 90 days); (c) corporate registration documents (if applicable); (d) a declaration of source of funds;</li>'
-  + '<li>Completion of the Advisor\'s internal AML/CFT compliance check with a satisfactory result; and</li>'
-  + '<li>Registration of this Agreement on the Trust-Lock blockchain preservation platform.</li>'
-  + '</ol></div>'
-
-  // CLAUSE 8
-  + '<div class="clause"><div class="clause-title">8. Representations and Warranties</div>'
-  + '<p>8.1 <strong>The Principal</strong> hereby represents and warrants that: (a) it has full legal authority to enter into this Agreement; (b) this Agreement constitutes its legal, valid, and binding obligation enforceable in accordance with its terms; (c) it is not subject to any sanctions, regulatory orders, or legal proceedings that would prevent performance hereunder; (d) all funds used in connection with this Agreement originate from legitimate and lawful sources; and (e) the Principal will not use any services or Deliverables for any unlawful purpose including, without limitation, money laundering, terrorism financing, tax evasion, or fraud.</p>'
-  + '<p>8.2 <strong>The Advisor</strong> hereby represents and warrants that: (a) it possesses the expertise and qualifications necessary to perform the services; (b) all services will be performed with reasonable skill and care; (c) it is duly organized and validly existing under the laws of its jurisdiction of formation; and (d) the performance of this Agreement will not violate any applicable law or regulation.</p>'
-  + '<p>8.3 <strong>Legal Source of Funds:</strong> Both Parties warrant that no funds exchanged under this Agreement are connected to, or derived from, any terrorist activity, money laundering, or any other criminal enterprise. The Advisor reserves the right to conduct ongoing due diligence throughout the Engagement Period.</p></div>'
-
-  // CLAUSE 9
-  + '<div class="clause"><div class="clause-title">9. Confidentiality and Non-Disclosure</div>'
-  + '<p>9.1 Each Party agrees to hold the other Party\'s Confidential Information in strict confidence and not to disclose it to any third party without the prior written consent of the disclosing Party, except as required by applicable law or court order.</p>'
-  + '<p>9.2 Each Party agrees to use the Confidential Information solely for the purposes of this Agreement and to protect it with the same degree of care as it uses to protect its own confidential information, but in no event less than reasonable care.</p>'
-  + '<p>9.3 These confidentiality obligations shall survive the termination or expiry of this Agreement for a period of <strong>five (5) years</strong>.</p>'
-  + '<p>9.4 The Advisor shall not disclose the identity of the Principal or the details of this engagement to any third party without the Principal\'s prior written consent.</p></div>'
-
-  // CLAUSE 10
-  + '<div class="clause"><div class="clause-title">10. Non-Circumvention and Non-Disclosure (NCND)</div>'
-  + '<p>10.1 The Principal irrevocably agrees that it shall not, directly or indirectly, contact, negotiate with, engage, or transact with any person, entity, or institution introduced by the Advisor in the course of this engagement, except through the Advisor or with the Advisor\'s prior written consent.</p>'
-  + '<p>10.2 This non-circumvention obligation applies to the Principal, its directors, officers, employees, affiliates, and any persons acting on its behalf or at its direction.</p>'
-  + '<p>10.3 In the event of circumvention, the Principal shall be liable to the Advisor for all fees and commissions that would have been payable to the Advisor had the relevant transaction been completed through the Advisor, plus a penalty equal to <strong>two times (2×)</strong> such amount.</p>'
-  + '<p>10.4 This Clause shall survive termination of this Agreement and shall remain in full force for a period of <strong>two (2) years</strong> following the introduction of any relevant party.</p>'
-  + '<p>10.5 All circumvention disputes shall be submitted to binding arbitration pursuant to Clause 17.</p></div>'
-
-  // CLAUSE 11
-  + '<div class="clause"><div class="clause-title">11. Intellectual Property</div>'
-  + '<p>11.1 All intellectual property rights in Deliverables produced specifically for the Principal under this Agreement shall vest in the Principal upon full and final payment of all fees due hereunder.</p>'
-  + '<p>11.2 The Advisor retains all intellectual property rights in its proprietary methodologies, frameworks, templates, tools, and know-how, and grants the Principal a limited, non-exclusive, non-transferable license to use such materials solely for the purposes contemplated by this Agreement.</p>'
-  + '<p>11.3 Nothing in this Agreement shall be construed as transferring to the Principal any rights in any pre-existing intellectual property of the Advisor.</p></div>'
-
-  // CLAUSE 12
-  + '<div class="clause"><div class="clause-title">12. Limitation of Liability</div>'
-  + '<p>12.1 The Advisor\'s total aggregate liability to the Principal under or in connection with this Agreement, whether in contract, tort (including negligence), breach of statutory duty, or otherwise, shall not exceed the total Consulting Fee actually paid by the Principal under this Agreement.</p>'
-  + '<p>12.2 Neither Party shall be liable to the other for any indirect, consequential, incidental, special, or punitive loss or damage, including loss of profit, loss of revenue, or loss of anticipated savings.</p>'
-  + '<p>12.3 The advisory services provided under this Agreement do not constitute legal, tax, or investment advice. The Principal is solely responsible for all decisions made in reliance on any Deliverables.</p>'
-  + '<p>12.4 The Advisor does not guarantee any specific commercial outcome or result from the services rendered.</p></div>'
-
-  // CLAUSE 13
-  + '<div class="clause"><div class="clause-title">13. Events of Default</div>'
-  + '<p>Each of the following shall constitute an Event of Default:</p>'
-  + '<ol type="a">'
-  + '<li>The Principal fails to pay any sum due under this Agreement within ten (10) Business Days of its due date;</li>'
-  + '<li>The Principal breaches any material term of this Agreement and fails to remedy such breach within fifteen (15) Business Days of written notice;</li>'
-  + '<li>Any representation or warranty made by the Principal proves to be materially false or misleading;</li>'
-  + '<li>The Principal becomes insolvent, is subject to bankruptcy proceedings, or ceases to carry on its business;</li>'
-  + '<li>The Principal circumvents the Advisor in breach of Clause 10;</li>'
-  + '<li>The Principal uses any Deliverable for an unlawful purpose.</li>'
-  + '</ol>'
-  + '<p>Upon the occurrence of an Event of Default, the Advisor may (i) suspend all services immediately; (ii) declare all outstanding fees immediately due and payable; and/or (iii) terminate this Agreement by written notice.</p></div>'
-
-  // CLAUSE 14
-  + '<div class="clause"><div class="clause-title">14. Undertakings</div>'
-  + '<p>The Principal undertakes that, throughout the Engagement Period:</p>'
-  + '<ol type="a">'
-  + '<li>It will promptly provide all information, documents, and access reasonably requested by the Advisor;</li>'
-  + '<li>It will notify the Advisor immediately of any material change in its financial condition, legal status, or any Event of Default;</li>'
-  + '<li>It will obtain and maintain all necessary consents, licenses, and authorizations required in connection with this Agreement;</li>'
-  + '<li>It will not engage any competing advisory firm to provide substantially similar services without the Advisor\'s prior written consent during the Engagement Period;</li>'
-  + '<li>It will cooperate fully with any KYC/AML/CFT checks conducted by the Advisor.</li>'
-  + '</ol></div>'
-
-  // CLAUSE 15
-  + '<div class="clause"><div class="clause-title">15. Force Majeure</div>'
-  + '<p>15.1 Neither Party shall be liable for any failure or delay in performing its obligations under this Agreement to the extent that such failure or delay is caused by circumstances beyond its reasonable control, including but not limited to acts of God, natural disasters, pandemics, war, terrorism, government actions, or systemic failures of financial infrastructure.</p>'
-  + '<p>15.2 The affected Party shall notify the other Party in writing as soon as reasonably practicable of the occurrence of a force majeure event and shall use all reasonable endeavours to mitigate its effects.</p>'
-  + '<p>15.3 If a force majeure event continues for more than sixty (60) consecutive days, either Party may terminate this Agreement upon written notice, in which case fees shall be payable on a pro-rata basis for services already rendered.</p></div>'
-
-  // CLAUSE 16
-  + '<div class="clause"><div class="clause-title">16. Notices and Communications</div>'
-  + '<p>16.1 All notices under this Agreement shall be in writing and delivered by (i) email with read-receipt confirmation, (ii) courier to the address specified herein, or (iii) registered mail. Notices shall be deemed received upon confirmation of delivery.</p>'
-  + '<p>16.2 Each Party shall promptly notify the other of any change in its contact details.</p>'
-  + '<p>16.3 This Agreement, and all notices and communications hereunder, shall be in the English language.</p>'
-  + '<p>16.4 This Agreement shall be binding upon and inure to the benefit of the Parties and their respective permitted successors and assigns. The Principal may not assign its rights or obligations without the prior written consent of the Advisor.</p>'
-  + '<p>16.5 This Agreement constitutes the entire agreement between the Parties with respect to its subject matter and supersedes all prior agreements, representations, and understandings.</p>'
-  + '<p>16.6 If any provision of this Agreement is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.</p></div>'
-
-  // CLAUSE 17
-  + '<div class="clause"><div class="clause-title">17. Trust-Lock Blockchain Preservation</div>'
-  + '<p>17.1 Upon execution, this Agreement shall be submitted to and preserved on the Trust-Lock platform operated by STCLOGIC at <strong>fincoupling.netlify.app/#/trust-lock</strong>.</p>'
-  + '<p>17.2 A cryptographic hash (SHA-256) of the executed Agreement shall be recorded on the Trust-Lock ledger, creating an immutable, timestamped proof of the Agreement\'s existence and content.</p>'
-  + '<p>17.3 The Trust-Lock record number shall constitute a valid reference to this Agreement in any subsequent legal or regulatory proceeding.</p>'
-  + '<p>17.4 Both Parties acknowledge that the Trust-Lock record does not replace legal execution of this Agreement but serves as an additional layer of verification and evidence preservation consistent with international best practices for digital contracts.</p>'
-  + '<p>17.5 Access to the Trust-Lock record shall be restricted to the Parties and their duly authorized legal representatives.</p></div>'
-
-  // CLAUSE 18
-  + '<div class="clause"><div class="clause-title">18. Governing Law and International Arbitration</div>'
-  + '<p>18.1 This Agreement shall be governed by and construed in accordance with the substantive laws of the chosen arbitral seat as specified below, without regard to its conflict of laws provisions.</p>'
-  + juriBlock
-  + '<p>18.2 Any dispute, controversy, or claim arising out of or relating to this Agreement, or the breach, termination, or validity thereof, shall be finally resolved by binding arbitration administered by the arbitral body specified above in accordance with its applicable rules. The arbitration shall be conducted by one (1) arbitrator unless the parties agree otherwise. The language of the arbitration shall be English.</p>'
-  + '<p>18.3 The award rendered by the arbitrator shall be final and binding upon the Parties and may be enforced in any court of competent jurisdiction. The Parties expressly waive any right to appeal the award to any court.</p>'
-  + '<p>18.4 Nothing in this Clause shall prevent either Party from seeking urgent interim or injunctive relief from a court of competent jurisdiction where necessary to prevent irreparable harm.</p>'
-  + '<p>18.5 The Parties acknowledge that the chosen seat of arbitration reflects their respective business operations and the anticipated establishment of Special Purpose Companies (SPC) and Special Purpose Vehicles (SPV) in Singapore and/or Dubai in connection with projects contemplated under this Agreement.</p></div>'
-
-  // SIGNATURE
-  + '<div class="ornament">✦ ── ❦ ── ✦</div>'
-  + '<p style="text-align:center;font-size:0.8rem;color:#888;">IN WITNESS WHEREOF, the Parties have executed this Consulting Services Agreement as of the date first written above.</p>'
-  + '<div class="sig-grid">'
-  + '<div class="sig-box"><div class="sig-role">For and on behalf of the Advisor</div><div class="sig-name">' + prov + '</div><div class="sig-line"></div><div class="sig-date">Authorised Signatory &nbsp;&nbsp; Date: ___________</div></div>'
-  + '<div class="sig-box"><div class="sig-role">For and on behalf of the Principal</div><div class="sig-name">' + cli + '</div><div class="sig-line"></div><div class="sig-date">Authorised Signatory &nbsp;&nbsp; Date: ___________</div></div>'
-  + '</div>'
-  + '<div class="tl-seal ' + (document.getElementById('tlBadge').classList.contains('show') ? 'show' : '') + '" id="tlSeal">'
-  + '🔐 This Agreement has been preserved on the Trust-Lock Blockchain Platform.<br>'
-  + 'Reference: <strong id="tlSealRef"></strong> &nbsp;|&nbsp; Timestamp: <span id="tlSealTime"></span>'
-  + '</div>';
+  html += '<div class="ornament">✦ ── ❦ ── ✦</div>'
+    +'<p style="text-align:center;font-size:0.8rem;color:#888;">'+d.witnessClause+'</p>'
+    +'<div class="sig-grid">'
+    +'<div class="sig-box"><div class="sig-role">'+d.sigAdvisorRole+'</div><div class="sig-name">'+prov+'</div><div class="sig-line"></div><div class="sig-date">'+d.sigAuth+' &nbsp;&nbsp; '+d.sigDate+' ___________</div></div>'
+    +'<div class="sig-box"><div class="sig-role">'+d.sigPrincipalRole+'</div><div class="sig-name">'+cli+'</div><div class="sig-line"></div><div class="sig-date">'+d.sigAuth+' &nbsp;&nbsp; '+d.sigDate+' ___________</div></div>'
+    +'</div>'
+    +'<div class="tl-seal'+(tlShown?' show':'')+'" id="tlSeal">'
+    +d.tlSealPrefix+'<br>'
+    +d.tlSealRef+' <strong id="tlSealRef">'+tlRefTxt+'</strong> &nbsp;|&nbsp; '
+    +d.tlSealTime+' <span id="tlSealTime">'+tlTimeTxt+'</span>'
+    +'</div>';
 
   document.getElementById('contractDoc').innerHTML = html;
 }
 
-function savePDF() {
-  window.print();
-}
-
 function uploadTrustLock() {
-  var cli = v('cliName');
-  if (!cli || !state.tier || !state.juri) {
-    alert('의뢰인 이름, 티어, 중재 관할을 모두 선택한 후 Trust-Lock에 업로드할 수 있습니다.');
-    return;
-  }
-  var hash = 'TL-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
-  var now = new Date().toLocaleString('en-GB', { dateStyle:'long', timeStyle:'short' });
-  document.getElementById('tlHash').textContent = 'Ref: ' + hash;
-  document.getElementById('tlTime').textContent = 'Preserved: ' + now;
-  document.getElementById('tlBadge').classList.add('show');
-  var seal = document.getElementById('tlSeal');
-  if (seal) { seal.classList.add('show'); document.getElementById('tlSealRef').textContent = hash; document.getElementById('tlSealTime').textContent = now; }
-  alert('✅ Trust-Lock 보존 완료!\n\n참조번호: ' + hash + '\n시각: ' + now + '\n\n이 번호를 계약서에 기록해 두십시오.');
+  var t = I18N[lang];
+  if(!v('cliName') || !tier || !juri) { alert(t.tlMissing); return; }
+  var hash = 'TL-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  var now = new Date().toLocaleString(lang==='ko'?'ko-KR':lang==='ja'?'ja-JP':'en-GB',{dateStyle:'long',timeStyle:'short'});
+  var badge = document.getElementById('tlBadge');
+  badge.innerHTML = t.tlDone+'<br><strong id="tlHashSpan">'+t.tlRef+hash+'</strong><br><span id="tlTimeSpan">'+t.tlTime+now+'</span>';
+  badge.classList.add('show');
+  render();
+  alert(t.tlAlert(hash,now));
 }
 
-// Init with today's date
+// ── Init ──
 document.getElementById('contDate').value = new Date().toISOString().slice(0,10);
+applyUI();
 render();
 </script>
-
 </body>
 </html>

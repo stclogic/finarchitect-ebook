@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!-- 글로벌 부의 대이동 — 전용 eBook 뷰어 -->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>글로벌 부(富)의 대이동 — STCLOGIC</title>
+  <meta name="description" content="부를 넘어 가문을 설계하려는 이들을 위한 실질적 로드맵. From Ordinary to Dynasty.">
+  <meta name="author" content="STCLOGIC">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+<div class="app">
+
+  <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <nav class="sidebar" id="sidebar" aria-label="목차">
+    <div class="sidebar-logo">
+      <div class="logo-badge"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEjxKvEL9PUcPTScga3wa0Zz4AipbUB38uUtfdFbdlAOLsd-XCT7btcPGUwX20iLXD9MWrs-AqbiTyjBFso1Rdyxwk6edunzCZxx_4DV8gvjukOyqNf6z9dCUyVtRWc_WtQ206sIPovFwiw7OtVbiJb84LFJUhxm2Vu2qOPZ63X7TRbrKvvAlX1hp70JI-HZ" alt="STCLOGIC"></div>
+      <div class="logo-title">글로벌 부(富)의 대이동</div>
+      <div class="logo-sub">From Ordinary to Dynasty</div>
+    </div>
+
+    <div class="search-wrap">
+      <i class="ti ti-search search-icon" aria-hidden="true"></i>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="챕터 검색..."
+        aria-label="챕터 검색"
+        oninput="handleSearch(event)"
+      >
+    </div>
+
+    <div class="toc" id="toc" role="list"></div>
+  </nav>
+
+  <main class="main" id="main">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="메뉴 열기">
+          <i class="ti ti-menu-2" aria-hidden="true"></i>
+        </button>
+        <nav class="topbar-sitenav">
+          <a href="landing.html" class="tsn-link">홈</a>
+          <a href="library.html" class="tsn-link tsn-active">라이브러리</a>
+          <a href="forms.html" class="tsn-link">서식</a>
+        </nav>
+        <div class="breadcrumb">
+          글로벌 부의 대이동 &rsaquo; <span id="breadcrumb-ch">읽는 중...</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="lang-switcher" id="reader-lang-sw" style="display:flex;gap:2px;margin-right:4px;">
+          <button class="ls-btn" data-lang="ko" onclick="readerSetLang('ko')">KO</button>
+          <button class="ls-btn" data-lang="en" onclick="readerSetLang('en')">EN</button>
+          <button class="ls-btn" data-lang="ja" onclick="readerSetLang('ja')">JA</button>
+        </div>
+        <div class="font-size-wrap" aria-label="글자 크기 조절">
+          <button onclick="changeFont(-1)" aria-label="글자 작게"><i class="ti ti-minus" aria-hidden="true"></i></button>
+          <span id="font-size-val">16</span>
+          <button onclick="changeFont(1)" aria-label="글자 크게"><i class="ti ti-plus" aria-hidden="true"></i></button>
+        </div>
+        <button class="tb-btn" id="bookmark-btn" onclick="saveBookmark()" aria-label="책갈피 저장">
+          <i class="ti ti-bookmark" aria-hidden="true"></i>
+        </button>
+        <button class="tb-btn" id="theme-btn" onclick="toggleTheme()" aria-label="다크/라이트 모드 전환">
+          <i class="ti ti-moon" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="progress-bar" role="progressbar" aria-label="읽기 진행률">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+
+    <div class="content" id="content">
+      <p style="color:var(--text3);padding:2rem;text-align:center;">
+        <i class="ti ti-loader" style="font-size:24px;display:block;margin-bottom:0.5rem;" aria-hidden="true"></i>
+        콘텐츠를 불러오는 중...
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script>window.PAYWALL_URL = 'ebook3.html';</script>
+<script>
+function readerSetLang(lang) {
+  localStorage.setItem('site-lang', lang);
+  var params = new URLSearchParams(location.search);
+  params.set('lang', lang);
+  location.href = location.pathname + '?' + params.toString();
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var urlLang = new URLSearchParams(location.search).get('lang');
+  var cur = urlLang || localStorage.getItem('site-lang') || 'ko';
+  document.querySelectorAll('#reader-lang-sw .ls-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.lang === cur);
+  });
+});
+</script>
+<script>
+// 언어 설정에 따라 올바른 데이터 파일 동적 로드
+(function() {
+  var urlLang = new URLSearchParams(location.search).get('lang');
+  var lang = urlLang || localStorage.getItem('site-lang') || 'ko';
+  if (urlLang) localStorage.setItem('site-lang', urlLang);
+  var src = lang === 'en' ? 'data/global_en.js' : lang === 'ja' ? 'data/global_ja.js' : 'data/global.js';
+  document.write('<script src="' + src + '?v=20260706"><\/script>');
+})();
+</script>
+<script>
+// vol2.js flat-section → viewer.js section→blocks 구조 변환 + 필드명 정규화
+(function() {
+  function adaptBlock(b) {
+    var out = Object.assign({}, b);
+    if (out.body !== undefined) {
+      if (out.type === 'deep' || out.type === 'case') out.content = out.body;
+      else if (out.type === 'prose' || out.type === 'formula' || out.type === 'story') out.text = out.body;
+      delete out.body;
+    }
+    if (out.type === 'case' && !out.label) out.label = '사례';
+    if (out.type === 'summary' && !out.title) out.title = '핵심 요약';
+    if (out.type === 'formula' && out.text) out.type = 'prose';
+    return out;
+  }
+
+  function expandBlock(b) {
+    if (b.type === 'point' && Array.isArray(b.items)) {
+      return b.items.map(function(item) { return { type: 'point', text: item }; });
+    }
+    return [adaptBlock(b)];
+  }
+
+  VOL2_DATA.chapters.forEach(function(ch) {
+    if (!ch.sections) return;
+    var newSections = [];
+    ch.sections.forEach(function(sec, i) {
+      if (sec.blocks) { newSections.push(sec); return; }
+      if (sec.type) {
+        var blocks = expandBlock(sec);
+        newSections.push({ id: 'sec-' + i, blocks: blocks });
+      } else {
+        newSections.push(sec);
+      }
+    });
+    ch.sections = newSections;
+  });
+
+  window.VOL1_DATA = VOL2_DATA;
+})();
+</script>
+<script src="assets/js/viewer.js?v=20260706"></script>
+</body>
+</html>

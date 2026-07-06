@@ -325,6 +325,9 @@ function renderBlock(block, secId, bi) {
       return h + '</tbody></table>';
     }
     case 'point':
+      if (Array.isArray(block.items)) {
+        return block.items.map((item, i) => `<div class="point-block"><div class="point-dot"></div><span>${parseRichText(item, uid + i)}</span></div>`).join('');
+      }
       return `<div class="point-block"><div class="point-dot"></div><span>${parseRichText(block.text, uid)}</span></div>`;
     case 'summary': {
       let h = `<div class="summary-box"><div class="summary-title">${block.title}</div>`;
@@ -366,6 +369,12 @@ function renderBlock(block, secId, bi) {
         ${char ? `<div class="story-char">${char}</div>` : ''}
       </div>`;
     }
+    case 'book-ref':
+      return `<div style="border:1.5px solid #D4960A;border-radius:12px;padding:1.25rem 1.5rem;margin:1.75rem 0;background:rgba(212,150,10,0.05);">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#8B6200;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem;"><i class="ti ti-books" aria-hidden="true"></i> 더 읽기</div>
+        <div style="font-size:0.93rem;line-height:1.75;color:#1a1a1a;">${parseRichText(block.text, uid)}</div>
+        ${block.url ? `<a href="${block.url}" style="display:inline-block;margin-top:0.9rem;padding:0.45rem 1rem;background:#D4960A;color:#000;border-radius:6px;font-size:0.82rem;font-weight:700;text-decoration:none;">${block.btnText || '자세히 보기 →'}</a>` : ''}
+      </div>`;
     default: return '';
   }
 }

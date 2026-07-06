@@ -519,7 +519,7 @@ function handleChapterClick(idx, lang) {
   if (!ch) return;
 
   if (ch.free) {
-    location.href = ch.url || 'index2.html';
+    location.href = 'index2.html?ch=' + idx + '&lang=' + lang;
     return;
   }
 
@@ -532,7 +532,7 @@ function handleChapterClick(idx, lang) {
 
   // 오너 프리패스
   if (user.email === 'stclogic@gmail.com') {
-    location.href = 'index2.html?ch=' + idx;
+    location.href = 'index2.html?ch=' + idx + '&lang=' + lang;
     return;
   }
 
@@ -545,7 +545,7 @@ function handleChapterClick(idx, lang) {
       const { data } = await sb.from('book_purchases').select('id')
         .eq('user_id', user.id).eq('book_id', 'hnwi-code').maybeSingle();
       if (data) {
-        location.href = 'index2.html?ch=' + (idx);
+        location.href = 'index2.html?ch=' + idx + '&lang=' + lang;
       } else {
         openPayModal();
       }
@@ -606,7 +606,7 @@ document.querySelectorAll('.lang-tab').forEach(b =>
       <div style="font-size:1.5rem;margin-bottom:0.5rem;">🎉</div>
       <div style="font-weight:700;color:#10B981;margin-bottom:0.25rem;">결제 완료!</div>
       <div style="font-size:0.85rem;color:#6B7280;margin-bottom:1rem;">전 챕터가 열렸습니다. 지금 바로 읽어보세요.</div>
-      <button onclick="location.href='index2.html'" style="background:#4F46E5;color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:0.95rem;font-weight:700;cursor:pointer;">바로 읽기 →</button>
+      <button onclick="location.href='index2.html?lang='+currentLang" style="background:#4F46E5;color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:0.95rem;font-weight:700;cursor:pointer;">바로 읽기 →</button>
     </div>
     <p style="text-align:center;font-size:0.75rem;color:#9CA3AF;margin:0.75rem 0 0;">기술적 오류·미게재·중복결제 등 당사 귀책 사유 시 전액 환불 (열람 전 한정)</p>
   </div>

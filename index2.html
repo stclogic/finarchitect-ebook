@@ -110,10 +110,14 @@
 <script>
 function readerSetLang(lang) {
   localStorage.setItem('site-lang', lang);
-  location.reload();
+  // ch 파라미터 유지하면서 lang만 교체
+  var params = new URLSearchParams(location.search);
+  params.set('lang', lang);
+  location.href = location.pathname + '?' + params.toString();
 }
 document.addEventListener('DOMContentLoaded', function() {
-  var cur = localStorage.getItem('site-lang') || 'ko';
+  var urlLang = new URLSearchParams(location.search).get('lang');
+  var cur = urlLang || localStorage.getItem('site-lang') || 'ko';
   document.querySelectorAll('#reader-lang-sw .ls-btn').forEach(function(btn) {
     btn.classList.toggle('active', btn.dataset.lang === cur);
   });
@@ -121,8 +125,11 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 // 언어 설정에 따라 올바른 데이터 파일 동적 로드
+// URL ?lang=XX 파라미터 우선, 없으면 localStorage
 (function() {
-  var lang = localStorage.getItem('site-lang') || 'ko';
+  var urlLang = new URLSearchParams(location.search).get('lang');
+  var lang = urlLang || localStorage.getItem('site-lang') || 'ko';
+  if (urlLang) localStorage.setItem('site-lang', urlLang);
   var src = lang === 'en' ? 'data/vol2_en.js' : lang === 'ja' ? 'data/vol2_ja.js' : 'data/vol2.js';
   document.write('<script src="' + src + '?v=20260705"><\/script>');
 })();

@@ -152,6 +152,7 @@ function setLang(l) {
     document.getElementById(id).classList.toggle('active', id === 'lb-'+l);
   });
   document.documentElement.lang = l;
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(l);
   var t = I18N[l];
   Object.keys(t).forEach(function(k){
     var el = document.getElementById(k);

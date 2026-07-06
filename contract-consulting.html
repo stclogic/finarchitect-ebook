@@ -804,6 +804,7 @@ function setLang(l) {
   lang = l;
   ['en','ko','ja'].forEach(function(x){ document.getElementById('lb-'+x).classList.toggle('active', x===l); });
   document.documentElement.lang = l==='ko'?'ko':l==='ja'?'ja':'en';
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(l);
   applyUI();
   render();
 }

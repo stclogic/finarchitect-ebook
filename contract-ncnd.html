@@ -568,6 +568,7 @@ function setLang(l){
     document.getElementById(id).classList.toggle('active', id==='lb-'+l);
   });
   document.documentElement.lang = l;
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(l);
   applyUI();
   render();
 }

@@ -76,6 +76,29 @@
 .sig-line { margin-top: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; font-size: 0.75rem; color: var(--text2); }
 .tl-seal { text-align: center; margin-top: 1.5rem; font-size: 0.72rem; color: #5b21b6; background: #ede9fe; border-radius: 8px; padding: 8px; display: none; }
 
+/* Signature section */
+#sigSection { background: var(--white); max-width: 780px; margin: 1.5rem auto 0; padding: 2.5rem 4rem 3rem; border-radius: 12px; box-shadow: 0 2px 24px rgba(0,0,0,.07); font-size: 0.88rem; }
+.sig-section-title { font-weight: 800; font-size: 0.92rem; margin-bottom: 1.5rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); color: var(--text); }
+.sig-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+.sig-pad-wrap { border-top: 2px solid var(--text); padding-top: 0.6rem; }
+.sig-pad-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); font-weight: 700; margin-bottom: 0.25rem; }
+.sig-pad-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.7rem; }
+.sig-canvas { width: 100%; height: 110px; border: 1.5px solid var(--border); border-radius: 8px; background: #fafafa; cursor: crosshair; display: block; touch-action: none; }
+.sig-canvas-label { font-size: 0.68rem; color: var(--text2); text-align: center; margin-top: 3px; }
+.sig-clear { font-size: 0.68rem; color: var(--primary); background: none; border: none; cursor: pointer; padding: 0; margin-top: 2px; text-decoration: underline; }
+.sig-fields { margin-top: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.sig-field-row { display: flex; flex-direction: column; gap: 2px; }
+.sig-field-label { font-size: 0.68rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; }
+.sig-field-input { border: none; border-bottom: 1px solid var(--border); background: none; font-size: 0.83rem; color: var(--text); padding: 3px 0; width: 100%; outline: none; }
+.sig-field-input:focus { border-bottom-color: var(--primary); }
+.sig-tl-seal { text-align: center; margin-top: 1.5rem; font-size: 0.72rem; color: #5b21b6; background: #ede9fe; border-radius: 8px; padding: 8px; display: none; }
+
+@media print {
+  #sigSection { box-shadow: none; border-radius: 0; padding: 1.5cm 2.5cm; max-width: 100%; margin-top: 0; }
+  .sig-canvas { border: 1px solid #ccc; }
+  .sig-clear { display: none !important; }
+}
+
 @media print {
   .cg-panel, .site-nav { display: none !important; }
   .cg-wrap { display: block; }
@@ -175,6 +198,7 @@
       <p style="text-align:center;color:#bbb;padding:3rem 0;" id="emptyMsg">← Fill in the panel to generate the agreement.</p>
     </div>
   </div>
+  <div id="sigSection" style="display:none;"></div>
 </div>
 </div>
 
@@ -252,6 +276,12 @@ var I18N = {
     sigTitle: 'Title / Position',
     sigDate: 'Date',
     contractNo: 'Agreement No.',
+    sigSectionTitle: 'IN WITNESS WHEREOF, the Parties have executed this Agreement as of the date first written above.',
+    sigDrawHint: 'Draw signature here',
+    sigClear: 'Clear',
+    sigAlertCanvas: 'Both parties must draw their signatures before preserving via Trust-Lock.',
+    sigAlertFieldsA: 'Please complete Party A\'s name and date fields.',
+    sigAlertFieldsB: 'Please complete Party B\'s name and date fields.',
     tlText: function(hash){ return '🔒 Preserved on Trust-Lock · Ref: '+hash; }
   },
 
@@ -323,6 +353,12 @@ var I18N = {
     sigTitle: '직책',
     sigDate: '서명일',
     contractNo: '협정 번호',
+    sigSectionTitle: '이상, 당사자들은 위에 기재된 날짜에 본 협정을 체결하였음을 증명하기 위하여 아래에 서명합니다.',
+    sigDrawHint: '여기에 서명하세요',
+    sigClear: '지우기',
+    sigAlertCanvas: 'Trust-Lock 보존 전에 양 당사자 모두 서명을 완료해야 합니다.',
+    sigAlertFieldsA: '당사자 A의 성명과 서명일을 입력해 주세요.',
+    sigAlertFieldsB: '당사자 B의 성명과 서명일을 입력해 주세요.',
     tlText: function(hash){ return '🔒 Trust-Lock 보존 완료 · Ref: '+hash; }
   },
 
@@ -394,6 +430,12 @@ var I18N = {
     sigTitle: '役職',
     sigDate: '署名日',
     contractNo: '協定番号',
+    sigSectionTitle: '以上を証するため、両当事者は上記に記載された日付において本協定を締結した。',
+    sigDrawHint: 'ここに署名してください',
+    sigClear: 'クリア',
+    sigAlertCanvas: 'Trust-Lockで保存する前に、両当事者が署名を完了する必要があります。',
+    sigAlertFieldsA: '当事者Aの氏名と署名日を入力してください。',
+    sigAlertFieldsB: '当事者Bの氏名と署名日を入力してください。',
     tlText: function(hash){ return '🔒 Trust-Lock保存済み · Ref: '+hash; }
   }
 };
@@ -470,21 +512,6 @@ function render(){
   var clauses = t.clauses(a, b, purposes, termYears, jd);
 
   var clauseHtml = clauses.map(function(c){
-    if(c.title.indexOf('13') !== -1 || c.title.indexOf('제13조') !== -1 || c.title.indexOf('第13条') !== -1) {
-      return '<div class="doc-clause"><div class="doc-clause-title">'+c.title+'</div>'
-        +'<div class="sig-grid">'
-        +'<div class="sig-block"><div class="sig-label">'+t.roleA+'</div><div class="sig-name">'+a+'</div>'
-        +'<div class="sig-line" style="margin-top:2.5rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigLabel+']</div>'
-        +'<div class="sig-line" style="margin-top:1.2rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigName+' / '+t.sigTitle+']</div>'
-        +'<div class="sig-line" style="margin-top:1.2rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigDate+']</div></div>'
-        +'<div class="sig-block"><div class="sig-label">'+t.roleB+'</div><div class="sig-name">'+b+'</div>'
-        +'<div class="sig-line" style="margin-top:2.5rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigLabel+']</div>'
-        +'<div class="sig-line" style="margin-top:1.2rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigName+' / '+t.sigTitle+']</div>'
-        +'<div class="sig-line" style="margin-top:1.2rem;">&nbsp;</div><div style="font-size:.72rem;color:var(--text2)">['+t.sigDate+']</div></div>'
-        +'</div>'
-        +'<div class="tl-seal" id="tlSeal"></div>'
-        +'</div>';
-    }
     return '<div class="doc-clause"><div class="doc-clause-title">'+c.title+'</div>'+c.body+'</div>';
   }).join('');
 
@@ -503,13 +530,104 @@ function render(){
     +'</div>';
 
   document.getElementById('contractDoc').innerHTML = html;
+  appendSigSection();
+}
 
-  var tls = document.getElementById('tlSeal');
+// 서명 섹션 상태 (re-render 시에도 유지)
+var sigState = { aName:'', aTitle:'', aDate:'', bName:'', bTitle:'', bDate:'', aImg:'', bImg:'' };
+
+function appendSigSection(){
+  var t = I18N[lang];
+  var a = v('partyAName') || 'STCLOGIC Co., Ltd.';
+  var b = v('partyBName') || '________________';
+  var sec = document.getElementById('sigSection');
+  sec.style.display = 'block';
+  sec.innerHTML =
+    '<div class="sig-section-title">'+t.sigSectionTitle+'</div>'
+    +'<div class="sig-grid2">'
+    +'<div class="sig-pad-wrap">'
+      +'<div class="sig-pad-label">'+t.roleA+'</div>'
+      +'<div class="sig-pad-name">'+a+'</div>'
+      +'<canvas id="sigCanvasA" class="sig-canvas" width="340" height="110"></canvas>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+        +'<span class="sig-canvas-label">'+t.sigDrawHint+'</span>'
+        +'<button class="sig-clear" onclick="clearCanvas(\'A\')">'+t.sigClear+'</button>'
+      +'</div>'
+      +'<div class="sig-fields">'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigName+'</span><input class="sig-field-input" id="sigAName" placeholder="'+t.sigName+'" value="'+escHtml(sigState.aName)+'" oninput="sigState.aName=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigTitle+'</span><input class="sig-field-input" id="sigATitle" placeholder="'+t.sigTitle+'" value="'+escHtml(sigState.aTitle)+'" oninput="sigState.aTitle=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigDate+'</span><input class="sig-field-input" id="sigADate" type="date" value="'+escHtml(sigState.aDate)+'" oninput="sigState.aDate=this.value"></div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="sig-pad-wrap">'
+      +'<div class="sig-pad-label">'+t.roleB+'</div>'
+      +'<div class="sig-pad-name">'+b+'</div>'
+      +'<canvas id="sigCanvasB" class="sig-canvas" width="340" height="110"></canvas>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+        +'<span class="sig-canvas-label">'+t.sigDrawHint+'</span>'
+        +'<button class="sig-clear" onclick="clearCanvas(\'B\')">'+t.sigClear+'</button>'
+      +'</div>'
+      +'<div class="sig-fields">'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigName+'</span><input class="sig-field-input" id="sigBName" placeholder="'+t.sigName+'" value="'+escHtml(sigState.bName)+'" oninput="sigState.bName=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigTitle+'</span><input class="sig-field-input" id="sigBTitle" placeholder="'+t.sigTitle+'" value="'+escHtml(sigState.bTitle)+'" oninput="sigState.bTitle=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigDate+'</span><input class="sig-field-input" id="sigBDate" type="date" value="'+escHtml(sigState.bDate)+'" oninput="sigState.bDate=this.value"></div>'
+      +'</div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="sig-tl-seal" id="tlSeal"></div>';
+
+  initCanvas('A');
+  initCanvas('B');
+
   var tlb = document.getElementById('trustBadge');
-  if(tls && tlb && tlb.style.display !== 'none') {
-    tls.style.display = 'block';
-    tls.textContent = tlb.textContent;
+  if(tlb && tlb.style.display !== 'none'){
+    var seal = document.getElementById('tlSeal');
+    if(seal){ seal.style.display = 'block'; seal.textContent = tlb.textContent; }
   }
+}
+
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function initCanvas(side){
+  var canvas = document.getElementById('sigCanvas'+side);
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#1a1a2e';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  // Restore saved image
+  var saved = sigState[side.toLowerCase()+'Img'];
+  if(saved){ var img = new Image(); img.onload = function(){ ctx.drawImage(img,0,0); }; img.src = saved; }
+
+  var drawing = false, lx, ly;
+
+  function pos(e){
+    var r = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / r.width;
+    var scaleY = canvas.height / r.height;
+    var src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - r.left) * scaleX, y: (src.clientY - r.top) * scaleY };
+  }
+  function start(e){ e.preventDefault(); drawing=true; var p=pos(e); lx=p.x; ly=p.y; }
+  function move(e){ if(!drawing) return; e.preventDefault(); var p=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.stroke(); lx=p.x; ly=p.y; }
+  function end(e){ if(!drawing) return; drawing=false; sigState[side.toLowerCase()+'Img'] = canvas.toDataURL(); }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('mouseleave', end);
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', move, {passive:false});
+  canvas.addEventListener('touchend', end);
+}
+
+function clearCanvas(side){
+  var canvas = document.getElementById('sigCanvas'+side);
+  if(!canvas) return;
+  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+  sigState[side.toLowerCase()+'Img'] = '';
 }
 
 function setJuri(j){
@@ -531,8 +649,8 @@ function applyUI(){
   document.getElementById('ui-btnPdf').textContent = t.btnPdf;
   document.getElementById('ui-btnTrust').textContent = t.btnTrust;
   document.getElementById('backBtn').textContent = t.backBtn;
-  document.getElementById('nav-home').textContent = t.navHome;
-  document.getElementById('nav-contracts').textContent = t.navContracts;
+  var nh = document.getElementById('nav-home'); if(nh) nh.textContent = t.navHome;
+  var nc = document.getElementById('nav-contracts'); if(nc) nc.textContent = t.navContracts;
   var emptyEl = document.getElementById('emptyMsg');
   if(emptyEl) emptyEl.textContent = t.emptyMsg;
 
@@ -578,8 +696,13 @@ function savePDF(){
 }
 
 function uploadTrustLock(){
-  var hash = 'TL-'+Date.now().toString(36).toUpperCase()+'-'+contractNum().slice(-6);
   var t = I18N[lang];
+  // 서명 완료 검증
+  if(!sigState.aImg || !sigState.bImg){ alert(t.sigAlertCanvas); return; }
+  if(!sigState.aName.trim() || !sigState.aDate){ alert(t.sigAlertFieldsA); return; }
+  if(!sigState.bName.trim() || !sigState.bDate){ alert(t.sigAlertFieldsB); return; }
+
+  var hash = 'TL-'+Date.now().toString(36).toUpperCase()+'-'+contractNum().slice(-6);
   var badge = document.getElementById('trustBadge');
   badge.textContent = t.tlText(hash);
   badge.style.display = 'block';

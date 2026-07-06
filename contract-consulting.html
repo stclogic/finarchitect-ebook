@@ -12,6 +12,8 @@
 .cg-preview { background: var(--cream); padding: 2rem; overflow-y: auto; }
 
 /* Lang switcher */
+.cg-back { display: inline-flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--text2); text-decoration: none; margin-bottom: 1rem; transition: color .15s; }
+.cg-back:hover { color: var(--primary); }
 .cg-lang { display: flex; gap: 4px; margin-bottom: 1.25rem; }
 .cg-lang button { padding: 5px 13px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; border: 1px solid var(--border); background: none; color: var(--text2); cursor: pointer; transition: all .15s; }
 .cg-lang button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
@@ -95,6 +97,29 @@
 .tl-seal { border:1px solid #0EA5E9; border-radius:8px; padding:0.7rem 0.9rem; margin-top:1.4rem; font-size:0.73rem; color:#0369A1; background:#F0F9FF; display:none; }
 .tl-seal.show { display:block; }
 
+/* Signature section */
+#sigSection { background: var(--white,#fff); max-width: 780px; margin: 1.5rem auto 0; padding: 2.5rem 4rem 3rem; border-radius: 12px; box-shadow: 0 2px 24px rgba(0,0,0,.07); font-size: 0.88rem; }
+.sig-section-title { font-weight: 800; font-size: 0.92rem; margin-bottom: 1.5rem; padding-bottom: 0.6rem; border-bottom: 1px solid #e5e7eb; color: #1a1a2e; }
+.sig-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+.sig-pad-wrap { border-top: 2px solid #1a1a2e; padding-top: 0.6rem; }
+.sig-pad-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .06em; color: #888; font-weight: 700; margin-bottom: 0.25rem; }
+.sig-pad-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.7rem; }
+.sig-canvas { width: 100%; height: 110px; border: 1.5px solid #e5e7eb; border-radius: 8px; background: #fafafa; cursor: crosshair; display: block; touch-action: none; }
+.sig-canvas-label { font-size: 0.68rem; color: #888; text-align: center; margin-top: 3px; }
+.sig-clear { font-size: 0.68rem; color: #6366f1; background: none; border: none; cursor: pointer; padding: 0; margin-top: 2px; text-decoration: underline; }
+.sig-fields { margin-top: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.sig-field-row { display: flex; flex-direction: column; gap: 2px; }
+.sig-field-label { font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .04em; }
+.sig-field-input { border: none; border-bottom: 1px solid #e5e7eb; background: none; font-size: 0.83rem; color: #1a1a2e; padding: 3px 0; width: 100%; outline: none; }
+.sig-field-input:focus { border-bottom-color: #6366f1; }
+.sig-tl-seal { border:1px solid #0EA5E9; border-radius:8px; padding:0.7rem 0.9rem; margin-top:1.4rem; font-size:0.73rem; color:#0369A1; background:#F0F9FF; display:none; }
+
+@media print {
+  #sigSection { box-shadow: none; border-radius: 0; padding: 1.5cm 2cm; max-width: 100%; margin-top: 0; }
+  .sig-canvas { border: 1px solid #ccc; }
+  .sig-clear { display: none !important; }
+}
+
 @media print {
   .cg-panel, .site-nav, header, footer { display:none !important; }
   .cg-wrap { display:block; }
@@ -125,6 +150,7 @@
     <button onclick="setLang('ja')" id="lb-ja">JA</button>
   </div>
 
+  <a href="contract.html" class="cg-back" id="backBtn">← Back to Contracts</a>
   <div class="cg-panel-title" id="ui-title">⚖️ Contract Generator</div>
 
   <div class="completion-bar"><div class="completion-fill" id="compFill" style="width:0%"></div></div>
@@ -221,6 +247,7 @@
   <div class="contract-doc" id="contractDoc">
     <p style="text-align:center;color:#bbb;padding:3rem 0;" id="emptyMsg"></p>
   </div>
+  <div id="sigSection" style="display:none;"></div>
 </div>
 </div>
 
@@ -231,6 +258,7 @@
 var I18N = {
 en: {
   uiTitle: '⚖️ Contract Generator',
+  backBtn: '← Back to Contracts',
   provLabel: 'Service Provider',
   cliLabel: 'Client Information',
   cliNamePh: 'Client Full Name / Company Name',
@@ -254,6 +282,13 @@ en: {
   tlTime: 'Preserved: ',
   tlAlert: (h,t) => `✅ Trust-Lock Preservation Complete!\n\nReference: ${h}\nTimestamp: ${t}\n\nPlease record this number on the signed contract.`,
   tlMissing: 'Please enter client name, select a tier, and choose a jurisdiction before preserving.',
+  sigDrawHint: 'Draw signature here',
+  sigClear: 'Clear',
+  sigNameLabel: 'Name',
+  sigTitleLabel: 'Title / Position',
+  sigAlertCanvas: 'Both parties must draw their signatures before preserving via Trust-Lock.',
+  sigAlertFieldsA: 'Please complete the Advisor\'s name and date fields.',
+  sigAlertFieldsB: 'Please complete the Principal\'s name and date fields.',
   services: [
     {v:'pf', label:'Project Finance (PF)'},
     {v:'spv', label:'SPV / SPC Structuring'},
@@ -419,6 +454,7 @@ en: {
 // ─────────────────────────────────────────
 ko: {
   uiTitle: '⚖️ 계약서 생성기',
+  backBtn: '← 계약서 목록으로',
   provLabel: '서비스 제공자 (우리 회사)',
   cliLabel: '의뢰인 정보',
   cliNamePh: '의뢰인 성명 / 법인명',
@@ -442,6 +478,13 @@ ko: {
   tlTime: '보존 시각: ',
   tlAlert: (h,t) => `✅ Trust-Lock 보존 완료!\n\n참조번호: ${h}\n시각: ${t}\n\n이 번호를 계약서에 기재해 두십시오.`,
   tlMissing: '의뢰인 이름, 티어, 중재 관할을 모두 선택한 후 보존할 수 있습니다.',
+  sigDrawHint: '여기에 서명하세요',
+  sigClear: '지우기',
+  sigNameLabel: '성명',
+  sigTitleLabel: '직책',
+  sigAlertCanvas: 'Trust-Lock 보존 전에 양 당사자 모두 서명을 완료해야 합니다.',
+  sigAlertFieldsA: '자문사의 성명과 서명일을 입력해 주세요.',
+  sigAlertFieldsB: '의뢰사의 성명과 서명일을 입력해 주세요.',
   services: [
     {v:'pf', label:'프로젝트 파이낸싱 (PF)'},
     {v:'spv', label:'SPV / SPC 설계'},
@@ -607,6 +650,7 @@ ko: {
 // ─────────────────────────────────────────
 ja: {
   uiTitle: '⚖️ 契約書ジェネレーター',
+  backBtn: '← 契約書一覧へ',
   provLabel: 'サービス提供者（当社）',
   cliLabel: '依頼人情報',
   cliNamePh: '依頼人氏名 / 法人名',
@@ -630,6 +674,13 @@ ja: {
   tlTime: '保存日時: ',
   tlAlert: (h,t) => `✅ Trust-Lock保存完了！\n\n参照番号: ${h}\n日時: ${t}\n\nこの番号を契約書に記載してください。`,
   tlMissing: '依頼人名、ティア、仲裁管轄をすべて選択してから保存してください。',
+  sigDrawHint: 'ここに署名してください',
+  sigClear: 'クリア',
+  sigNameLabel: '氏名',
+  sigTitleLabel: '役職',
+  sigAlertCanvas: 'Trust-Lockで保存する前に、両当事者が署名を完了する必要があります。',
+  sigAlertFieldsA: 'アドバイザーの氏名と署名日を入力してください。',
+  sigAlertFieldsB: '依頼社の氏名と署名日を入力してください。',
   services: [
     {v:'pf', label:'プロジェクトファイナンス（PF）'},
     {v:'spv', label:'SPV / SPC組成'},
@@ -828,6 +879,7 @@ function v(id){ return document.getElementById(id).value.trim(); }
 function applyUI() {
   var t = I18N[lang];
   document.getElementById('ui-title').textContent = t.uiTitle;
+  var bbEl = document.getElementById('backBtn'); if(bbEl) bbEl.textContent = t.backBtn;
   document.getElementById('ui-provLabel').textContent = t.provLabel;
   document.getElementById('ui-cliLabel').textContent = t.cliLabel;
   document.getElementById('cliName').placeholder = t.cliNamePh;
@@ -957,30 +1009,119 @@ function render() {
     html += '</div>';
   });
 
-  html += '<div class="ornament">✦ ── ❦ ── ✦</div>'
-    +'<p style="text-align:center;font-size:0.8rem;color:#888;">'+d.witnessClause+'</p>'
-    +'<div class="sig-grid">'
-    +'<div class="sig-box"><div class="sig-role">'+d.sigAdvisorRole+'</div><div class="sig-name">'+prov+'</div><div class="sig-line"></div><div class="sig-date">'+d.sigAuth+' &nbsp;&nbsp; '+d.sigDate+' ___________</div></div>'
-    +'<div class="sig-box"><div class="sig-role">'+d.sigPrincipalRole+'</div><div class="sig-name">'+cli+'</div><div class="sig-line"></div><div class="sig-date">'+d.sigAuth+' &nbsp;&nbsp; '+d.sigDate+' ___________</div></div>'
-    +'</div>'
-    +'<div class="tl-seal'+(tlShown?' show':'')+'" id="tlSeal">'
-    +d.tlSealPrefix+'<br>'
-    +d.tlSealRef+' <strong id="tlSealRef">'+tlRefTxt+'</strong> &nbsp;|&nbsp; '
-    +d.tlSealTime+' <span id="tlSealTime">'+tlTimeTxt+'</span>'
-    +'</div>';
+  html += '<div class="ornament">✦ ── ❦ ── ✦</div>';
 
   document.getElementById('contractDoc').innerHTML = html;
+  appendSigSection();
+}
+
+// 서명 섹션 상태 (re-render 시에도 유지)
+var sigState = { aName:'', aTitle:'', aDate:'', bName:'', bTitle:'', bDate:'', aImg:'', bImg:'' };
+
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function appendSigSection(){
+  var d = I18N[lang];
+  var prov = v('provName') || 'STCLOGIC Co., Ltd.';
+  var cli = v('cliName') || '________________';
+  var sec = document.getElementById('sigSection');
+  if(!cli || cli === '________________'){ sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  sec.innerHTML =
+    '<div class="sig-section-title">'+d.witnessClause+'</div>'
+    +'<div class="sig-grid2">'
+    +'<div class="sig-pad-wrap">'
+      +'<div class="sig-pad-label">'+d.sigAdvisorRole+'</div>'
+      +'<div class="sig-pad-name">'+escHtml(prov)+'</div>'
+      +'<canvas id="sigCanvasA" class="sig-canvas" width="340" height="110"></canvas>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+        +'<span class="sig-canvas-label">'+d.sigDrawHint+'</span>'
+        +'<button class="sig-clear" onclick="clearCanvas(\'A\')">'+d.sigClear+'</button>'
+      +'</div>'
+      +'<div class="sig-fields">'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+d.sigNameLabel+'</span><input class="sig-field-input" id="sigAName" placeholder="'+d.sigNameLabel+'" value="'+escHtml(sigState.aName)+'" oninput="sigState.aName=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+d.sigTitleLabel+'</span><input class="sig-field-input" id="sigATitle" placeholder="'+d.sigTitleLabel+'" value="'+escHtml(sigState.aTitle)+'" oninput="sigState.aTitle=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+d.sigDate+'</span><input class="sig-field-input" id="sigADate" type="date" value="'+escHtml(sigState.aDate)+'" oninput="sigState.aDate=this.value"></div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="sig-pad-wrap">'
+      +'<div class="sig-pad-label">'+d.sigPrincipalRole+'</div>'
+      +'<div class="sig-pad-name">'+escHtml(cli)+'</div>'
+      +'<canvas id="sigCanvasB" class="sig-canvas" width="340" height="110"></canvas>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+        +'<span class="sig-canvas-label">'+d.sigDrawHint+'</span>'
+        +'<button class="sig-clear" onclick="clearCanvas(\'B\')">'+d.sigClear+'</button>'
+      +'</div>'
+      +'<div class="sig-fields">'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+d.sigNameLabel+'</span><input class="sig-field-input" id="sigBName" placeholder="'+d.sigNameLabel+'" value="'+escHtml(sigState.bName)+'" oninput="sigState.bName=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+d.sigTitleLabel+'</span><input class="sig-field-input" id="sigBTitle" placeholder="'+d.sigTitleLabel+'" value="'+escHtml(sigState.bTitle)+'" oninput="sigState.bTitle=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+d.sigDate+'</span><input class="sig-field-input" id="sigBDate" type="date" value="'+escHtml(sigState.bDate)+'" oninput="sigState.bDate=this.value"></div>'
+      +'</div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="sig-tl-seal" id="tlSeal"></div>';
+
+  initCanvas('A');
+  initCanvas('B');
+
+  // Trust-Lock 뱃지가 이미 있으면 복원
+  var badge = document.getElementById('tlBadge');
+  if(badge && badge.classList.contains('show')){
+    var seal = document.getElementById('tlSeal');
+    if(seal){ seal.style.display = 'block'; seal.innerHTML = badge.innerHTML; }
+  }
+}
+
+function initCanvas(side){
+  var canvas = document.getElementById('sigCanvas'+side);
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#1a1a2e';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  var saved = sigState[side.toLowerCase()+'Img'];
+  if(saved){ var img = new Image(); img.onload = function(){ ctx.drawImage(img,0,0); }; img.src = saved; }
+  var drawing = false, lx, ly;
+  function pos(e){
+    var r = canvas.getBoundingClientRect();
+    var scaleX = canvas.width/r.width, scaleY = canvas.height/r.height;
+    var src = e.touches ? e.touches[0] : e;
+    return {x:(src.clientX-r.left)*scaleX, y:(src.clientY-r.top)*scaleY};
+  }
+  function start(e){ e.preventDefault(); drawing=true; var p=pos(e); lx=p.x; ly=p.y; }
+  function move(e){ if(!drawing) return; e.preventDefault(); var p=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.stroke(); lx=p.x; ly=p.y; }
+  function end(){ if(!drawing) return; drawing=false; sigState[side.toLowerCase()+'Img']=canvas.toDataURL(); }
+  canvas.addEventListener('mousedown',start);
+  canvas.addEventListener('mousemove',move);
+  canvas.addEventListener('mouseup',end);
+  canvas.addEventListener('mouseleave',end);
+  canvas.addEventListener('touchstart',start,{passive:false});
+  canvas.addEventListener('touchmove',move,{passive:false});
+  canvas.addEventListener('touchend',end);
+}
+
+function clearCanvas(side){
+  var canvas = document.getElementById('sigCanvas'+side);
+  if(!canvas) return;
+  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+  sigState[side.toLowerCase()+'Img']='';
 }
 
 function uploadTrustLock() {
   var t = I18N[lang];
   if(!v('cliName') || !tier || !juri) { alert(t.tlMissing); return; }
+  if(!sigState.aImg || !sigState.bImg){ alert(t.sigAlertCanvas); return; }
+  if(!sigState.aName.trim() || !sigState.aDate){ alert(t.sigAlertFieldsA); return; }
+  if(!sigState.bName.trim() || !sigState.bDate){ alert(t.sigAlertFieldsB); return; }
   var hash = 'TL-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
   var now = new Date().toLocaleString(lang==='ko'?'ko-KR':lang==='ja'?'ja-JP':'en-GB',{dateStyle:'long',timeStyle:'short'});
   var badge = document.getElementById('tlBadge');
   badge.innerHTML = t.tlDone+'<br><strong id="tlHashSpan">'+t.tlRef+hash+'</strong><br><span id="tlTimeSpan">'+t.tlTime+now+'</span>';
   badge.classList.add('show');
-  render();
+  var seal = document.getElementById('tlSeal');
+  if(seal){ seal.style.display='block'; seal.innerHTML=badge.innerHTML; }
+  setTimeout(function(){ window.open('https://fincoupling.netlify.app/#/trust-lock','_blank'); }, 600);
   alert(t.tlAlert(hash,now));
 }
 

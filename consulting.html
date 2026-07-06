@@ -550,6 +550,18 @@
   </div>
 </section>
 
+<!-- ONBOARDING CTA -->
+<section>
+  <div class="cs-section" style="text-align:center;">
+    <div class="cs-section-tag" id="onboardTag">NOW ONBOARDING</div>
+    <div class="cs-section-title" id="onboardTitle">지금 바로 온보딩을 시작하세요</div>
+    <div class="cs-section-desc" id="onboardDesc">현재 진행 중인 컨설팅 프로젝트 대시보드에서 자료 열람 및 온보딩 절차를 진행할 수 있습니다.</div>
+    <div class="cs-hero-btns" style="margin-top:2rem;">
+      <a href="https://fincoupling.netlify.app/#/dashboard" target="_blank" rel="noopener" class="btn-primary" id="onboardBtn">온보딩 대시보드로 이동 →</a>
+    </div>
+  </div>
+</section>
+
 <!-- PRICING TIERS -->
 <div class="cs-tiers">
   <div class="cs-tiers-inner">
@@ -636,6 +648,9 @@ const CS_I18N = {
     processDesc: '첫 상담부터 구조 완성까지 4단계로 진행됩니다.',
     expertTag: 'EXPERTISE', expertTitle: '전문 역량',
     expertDesc: '금융·법률·세무·글로벌 4개 축에서 완결된 자문을 제공합니다.',
+    onboardTag: 'NOW ONBOARDING', onboardTitle: '지금 바로 온보딩을 시작하세요',
+    onboardDesc: '현재 진행 중인 컨설팅 프로젝트 대시보드에서 자료 열람 및 온보딩 절차를 진행할 수 있습니다.',
+    onboardBtn: '온보딩 대시보드로 이동 →',
     tierTag: 'PRICING', tierTitle: '컨설팅 요금 구조',
     tierDesc: '프로젝트 규모와 복잡도에 따라 협의합니다.',
     contactTag: 'FREE CONSULTATION', contactTitle: '무료 초기 상담 신청',
@@ -674,6 +689,9 @@ const CS_I18N = {
     processDesc: 'From initial consultation to executed structure — four clear phases.',
     expertTag: 'EXPERTISE', expertTitle: 'Our Expertise',
     expertDesc: 'Complete advisory across four pillars: Finance · Law · Tax · Global Markets.',
+    onboardTag: 'NOW ONBOARDING', onboardTitle: 'Start Your Onboarding Now',
+    onboardDesc: 'Access active consulting project documents and complete your onboarding through the dashboard.',
+    onboardBtn: 'Go to Onboarding Dashboard →',
     tierTag: 'PRICING', tierTitle: 'Consulting Fee Structure',
     tierDesc: 'Fees are negotiated based on project scope and complexity.',
     contactTag: 'FREE CONSULTATION', contactTitle: 'Book a Free Consultation',
@@ -712,6 +730,9 @@ const CS_I18N = {
     processDesc: '初回相談から構造完成まで、4つのフェーズで進めます。',
     expertTag: 'EXPERTISE', expertTitle: '専門的な強み',
     expertDesc: '金融·法律·税務·グローバルの4つの軸で完結したアドバイスを提供します。',
+    onboardTag: 'NOW ONBOARDING', onboardTitle: 'オンボーディングを今すぐ開始する',
+    onboardDesc: '進行中のコンサルティングプロジェクトのダッシュボードで資料の閲覧とオンボーディング手続きが行えます。',
+    onboardBtn: 'オンボーディングダッシュボードへ →',
     tierTag: 'PRICING', tierTitle: 'コンサルティング料金体系',
     tierDesc: 'プロジェクトの規模と複雑さに応じて協議のうえ決定します。',
     contactTag: 'FREE CONSULTATION', contactTitle: '無料初回相談の申し込み',
@@ -896,7 +917,7 @@ function renderAll() {
   const ids = ['heroTag','heroTitle','heroDesc','heroCta1','heroCta2',
     'stat1Num','stat1Label','stat2Num','stat2Label','stat3Num','stat3Label','stat4Num','stat4Label',
     'serviceTag','serviceTitle','serviceDesc','processTag','processTitle','processDesc',
-    'expertTag','expertTitle','expertDesc','tierTag','tierTitle','tierDesc',
+    'expertTag','expertTitle','expertDesc','onboardTag','onboardTitle','onboardDesc','onboardBtn','tierTag','tierTitle','tierDesc',
     'contactTag','contactTitle','contactDesc','navCta'];
   ids.forEach(id => {
     const el = document.getElementById(id);

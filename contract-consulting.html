@@ -96,7 +96,7 @@
 .tl-seal.show { display:block; }
 
 @media print {
-  .cg-panel, nav, header, footer { display:none !important; }
+  .cg-panel, .site-nav, header, footer { display:none !important; }
   .cg-wrap { display:block; }
   .cg-preview { padding:0; background:#fff; }
   .contract-doc { border:none; box-shadow:none; border-radius:0; padding:1.5cm 2cm; max-width:100%; font-size:10pt; line-height:1.7; }
@@ -112,6 +112,7 @@
 </style>
 </head>
 <body>
+<script src="assets/js/nav-inject.js"></script>
 <div class="cg-wrap">
 
 <!-- ══ LEFT PANEL ══ -->
@@ -987,5 +988,7 @@ document.getElementById('contDate').value = new Date().toISOString().slice(0,10)
 applyUI();
 render();
 </script>
+<script src="assets/js/nav.js?v=3"></script>
+<script src="assets/js/auth.js"></script>
 </body>
 </html>

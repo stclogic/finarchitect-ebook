@@ -77,7 +77,7 @@
 .tl-seal { text-align: center; margin-top: 1.5rem; font-size: 0.72rem; color: #5b21b6; background: #ede9fe; border-radius: 8px; padding: 8px; display: none; }
 
 @media print {
-  .cg-panel, .topbar, nav { display: none !important; }
+  .cg-panel, .site-nav { display: none !important; }
   .cg-wrap { display: block; }
   .cg-preview { padding: 0; background: white; }
   .doc-wrap { box-shadow: none; border-radius: 0; padding: 2cm 2.5cm; max-width: 100%; }
@@ -86,16 +86,7 @@
 </style>
 </head>
 <body>
-<nav class="topbar">
-  <div class="topbar-inner">
-    <a class="topbar-logo" href="landing.html">STCLOGIC</a>
-    <div class="topbar-right">
-      <a href="landing.html" class="topbar-link" id="nav-home">Home</a>
-      <a href="https://bookcoupling.netlify.app/library" class="topbar-link">eBook</a>
-      <a href="contract.html" class="topbar-link" id="nav-contracts">Contracts</a>
-    </div>
-  </div>
-</nav>
+<script src="assets/js/nav-inject.js"></script>
 
 <div class="cg-wrap">
 <!-- ===== PANEL ===== -->
@@ -604,5 +595,7 @@ document.getElementById('contDate').value = today;
 setLang(lang);
 setJuri('sg');
 </script>
+<script src="assets/js/nav.js?v=3"></script>
+<script src="assets/js/auth.js"></script>
 </body>
 </html>

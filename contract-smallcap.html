@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<!-- Small Cap SPV 프로그램 표준 규정 계약서 — EN/KO/JA/ZH/TH 5개 국어 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Small Cap SPV Agreement — FinCoupling</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+.cg-wrap { display: grid; grid-template-columns: 360px 1fr; gap: 0; min-height: 100vh; }
+.cg-panel { background: var(--white); border-right: 1px solid var(--border); padding: 1.5rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.cg-preview { background: var(--cream); padding: 2rem; overflow-y: auto; }
+
+.cg-lang { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.cg-lang button { padding: 5px 12px; border-radius: 999px; font-size: 0.76rem; font-weight: 700; border: 1px solid var(--border); background: none; color: var(--text2); cursor: pointer; transition: all .15s; }
+.cg-lang button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.cg-back { display: inline-flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--text2); text-decoration: none; margin-bottom: 1rem; transition: color .15s; }
+.cg-back:hover { color: var(--primary); }
+
+.cg-panel-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--border); }
+.cg-section { margin-bottom: 1.25rem; }
+.cg-label { font-size: 0.73rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 0.4rem; display: block; }
+.cg-input { width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; color: var(--text); background: var(--cream); transition: border .15s; box-sizing: border-box; }
+.cg-input:focus { outline: none; border-color: var(--primary); background: var(--white); }
+
+.btn-pdf { width: 100%; padding: 11px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-bottom: 0.5rem; transition: opacity .15s; }
+.btn-pdf:hover { opacity: .88; }
+.btn-trust { width: 100%; padding: 11px; background: linear-gradient(135deg,#7c3aed,#4f46e5); color: #fff; border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: opacity .15s; }
+.btn-trust:hover { opacity: .88; }
+.trust-badge { margin-top: 0.6rem; font-size: 0.72rem; color: #5b21b6; background: #ede9fe; border-radius: 8px; padding: 7px 10px; display: none; }
+
+/* Doc styles */
+.doc-wrap { background: var(--white); max-width: 780px; margin: 0 auto; padding: 3.5rem 4rem; border-radius: 12px; box-shadow: 0 2px 24px rgba(0,0,0,.07); font-size: 0.88rem; line-height: 1.8; color: var(--text); }
+.doc-meta { text-align: right; font-size: 0.75rem; color: var(--text2); margin-bottom: 2rem; }
+.doc-badge { display: inline-block; background: #fee2e2; color: #991b1b; font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; letter-spacing: .06em; margin-bottom: 1.2rem; }
+.doc-title { text-align: center; font-size: 1.2rem; font-weight: 900; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 0.5rem; color: var(--text); }
+.doc-subtitle { text-align: center; font-size: 0.78rem; color: var(--text2); margin-bottom: 2rem; }
+.doc-ornament { text-align: center; color: var(--text2); margin: 1.2rem 0; letter-spacing: .2em; font-size: 0.85rem; }
+.parties-box { border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.party-role { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .07em; color: var(--text2); margin-bottom: 0.2rem; font-weight: 700; }
+.party-name { font-weight: 800; font-size: 0.95rem; color: var(--text); }
+.party-detail { font-size: 0.78rem; color: var(--text2); margin-top: 0.15rem; }
+.doc-intro { margin-bottom: 1.5rem; font-size: 0.87rem; font-style: italic; color: var(--text2); border-left: 3px solid var(--primary); padding-left: 1rem; }
+.doc-article { margin-bottom: 1.8rem; }
+.doc-article-title { font-weight: 800; font-size: 0.95rem; margin-bottom: 0.7rem; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+.doc-article ol { margin: 0; padding-left: 1.4rem; }
+.doc-article ol li { margin-bottom: 0.6rem; }
+.doc-article ul { margin: 0.4rem 0 0.4rem 1.2rem; }
+.doc-article ul li { margin-bottom: 0.3rem; }
+.doc-highlight { background: #eff6ff; border-left: 3px solid #3b82f6; border-radius: 6px; padding: 0.7rem 1rem; margin: 0.5rem 0; font-size: 0.83rem; color: #1e3a5f; }
+
+/* Signature section */
+#sigSection { background: var(--white); max-width: 780px; margin: 1.5rem auto 0; padding: 2.5rem 4rem 3rem; border-radius: 12px; box-shadow: 0 2px 24px rgba(0,0,0,.07); font-size: 0.88rem; display: none; }
+.sig-section-title { font-weight: 800; font-size: 0.92rem; margin-bottom: 1.5rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); color: var(--text); }
+.sig-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+.sig-pad-wrap { border-top: 2px solid var(--text); padding-top: 0.6rem; }
+.sig-pad-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); font-weight: 700; margin-bottom: 0.25rem; }
+.sig-pad-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.7rem; }
+.sig-canvas { width: 100%; height: 110px; border: 1.5px solid var(--border); border-radius: 8px; background: #fafafa; cursor: crosshair; display: block; touch-action: none; }
+.sig-canvas-label { font-size: 0.68rem; color: var(--text2); text-align: center; margin-top: 3px; }
+.sig-clear { font-size: 0.68rem; color: var(--primary); background: none; border: none; cursor: pointer; padding: 0; margin-top: 2px; text-decoration: underline; }
+.sig-fields { margin-top: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.sig-field-row { display: flex; flex-direction: column; gap: 2px; }
+.sig-field-label { font-size: 0.68rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; }
+.sig-field-input { border: none; border-bottom: 1px solid var(--border); background: none; font-size: 0.83rem; color: var(--text); padding: 3px 0; width: 100%; outline: none; }
+.sig-field-input:focus { border-bottom-color: var(--primary); }
+.sig-tl-seal { text-align: center; margin-top: 1.5rem; font-size: 0.72rem; color: #5b21b6; background: #ede9fe; border-radius: 8px; padding: 8px; display: none; }
+.spv-note { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 0.8rem 1rem; margin-top: 1.5rem; font-size: 0.78rem; color: #166534; }
+
+@media print {
+  .cg-panel, .site-nav { display: none !important; }
+  .cg-wrap { display: block; }
+  .cg-preview { padding: 0; background: white; }
+  .doc-wrap { box-shadow: none; border-radius: 0; padding: 2cm 2.5cm; max-width: 100%; }
+  #sigSection { box-shadow: none; border-radius: 0; padding: 1.5cm 2.5cm; max-width: 100%; margin-top: 0; }
+  .sig-canvas { border: 1px solid #ccc; }
+  .sig-clear { display: none !important; }
+  body { background: white; }
+}
+@media (max-width: 900px) {
+  .cg-wrap { grid-template-columns: 1fr; }
+  .cg-panel { position: static; height: auto; }
+  .sig-grid2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<script src="assets/js/nav-inject.js"></script>
+
+<div class="cg-wrap">
+<!-- ===== PANEL ===== -->
+<div class="cg-panel">
+  <div class="cg-lang">
+    <button id="lb-en" class="active" onclick="setLang('en')">EN</button>
+    <button id="lb-ko" onclick="setLang('ko')">KO</button>
+    <button id="lb-ja" onclick="setLang('ja')">JA</button>
+    <button id="lb-zh" onclick="setLang('zh')">ZH</button>
+    <button id="lb-th" onclick="setLang('th')">TH</button>
+  </div>
+
+  <a href="contract.html" class="cg-back" id="backBtn">← Back to Contracts</a>
+  <div class="cg-panel-title" id="ui-panelTitle">📊 Small Cap SPV Agreement</div>
+
+  <div class="cg-section">
+    <label class="cg-label" id="ui-applicantLabel">Applicant Name</label>
+    <input class="cg-input" id="applicantName" placeholder="Full Legal Name" oninput="render()">
+  </div>
+  <div class="cg-section">
+    <label class="cg-label" id="ui-applicantOrgLabel">Organization / Company</label>
+    <input class="cg-input" id="applicantOrg" placeholder="Company Name (optional)" oninput="render()">
+  </div>
+  <div class="cg-section">
+    <label class="cg-label" id="ui-dateLabel">Agreement Date</label>
+    <input class="cg-input" id="contDate" type="date" oninput="render()">
+  </div>
+  <div class="cg-section">
+    <label class="cg-label" id="ui-slotsLabel">Number of Slots</label>
+    <input class="cg-input" id="slotCount" type="number" min="1" placeholder="e.g. 5" oninput="render()">
+  </div>
+
+  <button class="btn-pdf" id="ui-btnPdf" onclick="savePDF()">📄 Save PDF / Print</button>
+  <button class="btn-trust" id="ui-btnTrust" onclick="uploadTrustLock()">🔒 Preserve via Trust-Lock</button>
+  <div class="trust-badge" id="trustBadge"></div>
+</div>
+
+<!-- ===== PREVIEW ===== -->
+<div class="cg-preview">
+  <div id="contractDoc">
+    <div class="doc-wrap">
+      <p style="text-align:center;color:#bbb;padding:3rem 0;" id="emptyMsg">← Fill in the panel to generate the agreement.</p>
+    </div>
+  </div>
+  <div id="sigSection"></div>
+</div>
+</div>
+
+<script>
+var lang = localStorage.getItem('sc-lang') || 'en';
+
+var PROVIDER = 'FinCoupling';
+var PROVIDER_NOTE = '(Post-SPV: all rights and obligations transfer to the SPV)';
+
+function fmtDate(s){
+  if(!s) return '___________';
+  var d = new Date(s); if(isNaN(d)) return s;
+  return d.toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'});
+}
+function v(id){ return (document.getElementById(id)||{}).value||''; }
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ── I18N ──────────────────────────────────────────────────────────────────
+var I18N = {
+
+  en: {
+    panelTitle: '📊 Small Cap SPV Agreement',
+    backBtn: '← Back to Contracts',
+    applicantLabel: 'Applicant Name',
+    applicantOrgLabel: 'Organization / Company',
+    dateLabel: 'Agreement Date',
+    slotsLabel: 'Number of Slots',
+    btnPdf: '📄 Save PDF / Print',
+    btnTrust: '🔒 Preserve via Trust-Lock',
+    emptyMsg: '← Fill in the panel to generate the agreement.',
+    providerRole: 'Service Provider',
+    applicantRole: 'Applicant',
+    contractNo: 'Agreement No.',
+    docBadge: 'CONFIDENTIAL',
+    docTitle: 'Standard Regulations on Small Cap Program and SPV Operation',
+    docSub: 'Small Cap Private Placement Program — SPV Entrustment Agreement',
+    intro: function(app, org, date, slots){
+      return 'This Agreement is entered into as of <strong>'+date+'</strong> between <strong>FinCoupling</strong> (hereinafter "the Provider") and <strong>'+escHtml(app)+(org?', '+escHtml(org):'')+' </strong>(hereinafter "the Applicant"). Upon establishment of the SPV, all rights, obligations, and governance authority under this Agreement shall transfer to and be vested in the SPV.'
+        +(slots?' The Applicant has confirmed <strong>'+escHtml(slots)+' slot(s)</strong> of committed capital.':'');
+    },
+    spvNote: '⚠ Post-SPV Transfer Clause: Upon successful establishment of the Special Purpose Vehicle (SPV), all contractual rights, obligations, representations, warranties, and governance authority set forth herein shall automatically transfer to and be vested in the SPV as the successor entity. FinCoupling shall cease to be the principal contracting party upon such transfer.',
+    sigSectionTitle: 'IN WITNESS WHEREOF, the Parties have executed this Agreement as of the date first written above.',
+    sigDrawHint: 'Draw signature here',
+    sigClear: 'Clear',
+    sigNameLabel: 'Name',
+    sigTitleLabel: 'Title / Position',
+    sigDateLabel: 'Date',
+    sigAlertCanvas: 'Both parties must draw their signatures before preserving via Trust-Lock.',
+    sigAlertFieldsA: 'Please complete the Provider signature fields (name + date).',
+    sigAlertFieldsB: 'Please complete the Applicant signature fields (name + date).',
+    tlText: function(hash){ return '🔒 Preserved on Trust-Lock · Ref: '+hash; },
+    articles: [
+      {
+        num: 'Article 1',
+        title: 'Purpose and Our Role',
+        body: '<ol><li>These regulations aim to establish the incorporation, qualification, equity structuring, and governance of a Special Purpose Vehicle (SPV) for entering the global Small Cap Private Placement Program (hereinafter referred to as the "Program").</li><li>We exclusively perform all structured administrative tasks, including SPV establishment, legal compliance setup, and asset entrustment, precisely matching the program execution timeline (Window) of the international trading desk.</li></ol>'
+      },
+      {
+        num: 'Article 2',
+        title: 'Granting of Eligibility and Advance Deposit',
+        body: '<ol><li>Investors wishing to register for this Program and undergo pre-compliance screening (KYC) must make an advance deposit of <strong>USD 10,000 as an eligibility guarantee fee</strong> to us along with the submission of a Letter of Intent (LOI).</li><li>This advance deposit will be utilized for eligibility verification and pre-compliance resource costs, and the authority to participate in the program will be finalized (Lock-in) only for qualified investors.</li></ol>'
+      },
+      {
+        num: 'Article 3',
+        title: 'Participation Unit and Slot Setting',
+        body: '<ol><li>The minimum capital input unit for entering the program is limited to <strong>USD 50,000 per slot</strong>.</li><li>All investors can commit capital only in multiples of the slot unit, and the capital inflow path and proof must pass our AML (Anti-Money Laundering) guidelines.</li></ol>'
+      },
+      {
+        num: 'Article 4',
+        title: 'Operational Timeline and Window Opening',
+        body: '<ol><li>Due to the nature of the international financial market, the exact program launch date shall remain confidential in principle and will be determined flexibly based on the quota allocation of the trading room.</li><li>In principle, the launch window of this Program is determined <strong>once every 3 months (once per quarter)</strong>. We will continuously maintain an operational system for SPV establishment and capital placement readiness aligned with the respective launch window.</li></ol>'
+      },
+      {
+        num: 'Article 5',
+        title: 'SPV Executive Participation Requirements and Governance',
+        body: '<ol><li>The qualification requirements to participate as an Executive Board Member of the established SPV to secure corporate management rights and internal voting rights are as follows:<ul><li><strong>[Principle] A person who has secured committed capital of at least 5 slots (total USD 250,000) or more.</strong></li></ul></li><li>This requirement shall be equally recognized if the number of direct investment slots of the investor themselves or the total sum of slots secured and attracted from subordinate investors by the person is 5 slots or more.</li><li>Small-scale investors with fewer than 5 slots who do not meet the requirements shall be restricted from participating as executive board members and shall hold the status of indirect investors possessing only dividend rights proportional to their owned slots.</li></ol>'
+      }
+    ]
+  },
+
+  ko: {
+    panelTitle: '📊 Small Cap SPV 계약서',
+    backBtn: '← 계약서 목록으로',
+    applicantLabel: '신청자 성명',
+    applicantOrgLabel: '소속 기관 / 회사',
+    dateLabel: '계약 일자',
+    slotsLabel: '구좌 수',
+    btnPdf: '📄 PDF 저장 / 인쇄',
+    btnTrust: '🔒 Trust-Lock 보존',
+    emptyMsg: '← 왼쪽 패널에 정보를 입력하면 계약서가 생성됩니다.',
+    providerRole: '서비스 제공자',
+    applicantRole: '신청자',
+    contractNo: '계약서 번호',
+    docBadge: '기밀',
+    docTitle: 'Small Cap 프로그램 및 SPV 운용에 관한 표준 규정',
+    docSub: 'Small Cap Private Placement Program — SPV 위탁 계약',
+    intro: function(app, org, date, slots){
+      return '본 계약은 <strong>'+date+'</strong>에 <strong>FinCoupling</strong>(이하 "제공자")과 <strong>'+escHtml(app)+(org?' / '+escHtml(org):'')+' </strong>(이하 "신청자") 간에 체결됩니다. SPV 설립 이후, 본 계약의 모든 권리 및 의무는 SPV에 귀속됩니다.'
+        +(slots?' 신청자는 <strong>'+escHtml(slots)+'구좌</strong>의 확약 자본을 확인하였습니다.':'');
+    },
+    spvNote: '⚠ SPV 이전 조항: 특수목적법인(SPV)이 성공적으로 설립된 이후, 본 계약에 명시된 모든 계약상 권리, 의무, 진술, 보증 및 거버넌스 권한은 자동으로 SPV에 이전되어 귀속됩니다. 이전 시점부터 FinCoupling은 주된 계약 당사자 지위를 상실합니다.',
+    sigSectionTitle: '이상, 양 당사자는 위에 기재된 날짜에 본 규정을 체결하였음을 증명하기 위하여 아래에 서명합니다.',
+    sigDrawHint: '여기에 서명하세요',
+    sigClear: '지우기',
+    sigNameLabel: '성명',
+    sigTitleLabel: '직책',
+    sigDateLabel: '서명일',
+    sigAlertCanvas: 'Trust-Lock 보존 전에 양 당사자 모두 서명을 완료해야 합니다.',
+    sigAlertFieldsA: '제공자의 성명과 서명일을 입력해 주세요.',
+    sigAlertFieldsB: '신청자의 성명과 서명일을 입력해 주세요.',
+    tlText: function(hash){ return '🔒 Trust-Lock 보존 완료 · Ref: '+hash; },
+    articles: [
+      {
+        num: '제1조',
+        title: '목적 및 당사의 역할',
+        body: '<ol><li>본 규정은 글로벌 Small Cap Private Placement Program(이하 \'프로그램\') 진입을 위한 특수목적법인(SPV)의 설립, 자격 부여, 지분 구조화 및 거버넌스 확립을 목적으로 한다.</li><li>당사는 국제 트레이딩 데스크의 프로그램 집행 일시(Window)에 정확히 매칭하여 SPV 설립, 법률 컴플라이언스 셋업, 자산 위탁 등 일체의 구조화 행정 업무를 전담 수행한다.</li></ol>'
+      },
+      {
+        num: '제2조',
+        title: '참여 자격 부여 및 선입금',
+        body: '<ol><li>본 프로그램 등록 및 사전 컴플라이언스 스크리닝(KYC) 진행을 희망하는 투자자는 참여 의향서(LOI) 제출과 함께 자격 부여 보증금 <strong>미화 10,000달러(USD 10,000)</strong>를 당사에 선입금하여야 한다.</li><li>본 선입금은 자격 검증 및 프리 컴플라이언스 리소스 비용으로 활용되며, 자격이 부여된 투자자에 한해 프로그램 참여 권한이 최종 락인(Lock-in)된다.</li></ol>'
+      },
+      {
+        num: '제3조',
+        title: '참여 단위 및 구좌 설정',
+        body: '<ol><li>프로그램 진입을 위한 자본 투입 최소 단위는 <strong>1구좌당 미화 50,000달러(USD 50,000)</strong>로 제한한다.</li><li>모든 투자자는 구좌 단위의 배수로만 자본을 확약할 수 있으며, 자금의 유입 경로 및 소명은 당사의 AML(자금세탁방지) 가이드라인을 통과해야 한다.</li></ol>'
+      },
+      {
+        num: '제4조',
+        title: '운용 타임라인 및 윈도우 개설',
+        body: '<ol><li>국제 금융 시장의 특성상 정확한 프로그램 개시 일시는 비공개를 원칙으로 하며, 트레이딩 룸의 쿼터 배정에 따라 유동적으로 결정된다.</li><li>본 프로그램의 출발 시점은 <strong>매 3개월에 1회(분기별 1회)</strong> 정해지는 것을 원칙으로 한다. 당사는 해당 출발 시점에 맞추어 SPV 설립 및 자본 안착 준비 체계를 상시 가동한다.</li></ol>'
+      },
+      {
+        num: '제5조',
+        title: 'SPV 임원 참여 요건 및 거버넌스',
+        body: '<ol><li>설립되는 SPV의 등기 임원(Executive Board Member)으로 참여하여 법인 경영권 및 내부 의결권을 확보하기 위한 자격 요건은 다음과 같다.<ul><li><strong>[원칙] 최소 5구좌(총 미화 250,000달러) 이상의 확약 자본을 확보한 자.</strong></li></ul></li><li>본 요건은 투자자 본인의 직접 투자 구좌 수 또는 본인이 직접 유치 및 확보한 하위 투자자의 총 구좌 수 합산이 5구좌 이상인 경우에도 동일하게 인정한다.</li><li>요건을 충족하지 못한 5구좌 미만의 소액 투자자는 등기 임원 참여가 제한되며, 소유 구좌 비례에 따른 배당 권리만 보유하는 간접 투자자 지위를 가진다.</li></ol>'
+      }
+    ]
+  },
+
+  ja: {
+    panelTitle: '📊 Small Cap SPV 規定契約書',
+    backBtn: '← 契約書一覧へ',
+    applicantLabel: '申請者氏名',
+    applicantOrgLabel: '所属機関 / 会社',
+    dateLabel: '契約日',
+    slotsLabel: '口数',
+    btnPdf: '📄 PDF保存 / 印刷',
+    btnTrust: '🔒 Trust-Lockで保存',
+    emptyMsg: '← 左パネルに情報を入力すると契約書が生成されます。',
+    providerRole: 'サービス提供者',
+    applicantRole: '申請者',
+    contractNo: '契約書番号',
+    docBadge: '機密',
+    docTitle: 'Small CapプログラムおよびSPV運用に関する標準規定',
+    docSub: 'Small Cap Private Placement Program — SPV委託契約',
+    intro: function(app, org, date, slots){
+      return '本契約は、<strong>'+date+'</strong>に<strong>FinCoupling</strong>（以下「提供者」）と<strong>'+escHtml(app)+(org?' / '+escHtml(org):'')+' </strong>（以下「申請者」）との間で締結されます。SPV設立後、本契約のすべての権利及び義務はSPVに帰属します。'
+        +(slots?' 申請者は<strong>'+escHtml(slots)+'口</strong>の確約資本を確認しました。':'');
+    },
+    spvNote: '⚠ SPV移管条項：特殊目的会社（SPV）が正式に設立された後、本規定に定めるすべての契約上の権利、義務、表明、保証およびガバナンス権限は、自動的にSPVへ移管・帰属します。当該移管時点をもって、FinCouplingは主たる契約当事者としての地位を失います。',
+    sigSectionTitle: '以上を証するため、両当事者は上記に記載された日付において本規定を締結した。',
+    sigDrawHint: 'ここに署名してください',
+    sigClear: 'クリア',
+    sigNameLabel: '氏名',
+    sigTitleLabel: '役職',
+    sigDateLabel: '署名日',
+    sigAlertCanvas: 'Trust-Lockで保存する前に、両当事者が署名を完了する必要があります。',
+    sigAlertFieldsA: '提供者の氏名と署名日を入力してください。',
+    sigAlertFieldsB: '申請者の氏名と署名日を入力してください。',
+    tlText: function(hash){ return '🔒 Trust-Lock保存済み · Ref: '+hash; },
+    articles: [
+      {
+        num: '第1条',
+        title: '目的および当社の役割',
+        body: '<ol><li>本規定は、グローバルSmall Cap Private Placement Program（以下「プログラム」）への参入のための特殊目的会社（SPV）の設立、資格付与、持分構造化およびガバナンスの確立を目的とする。</li><li>当社は、国際トレーディングデスクのプログラム執行日時（Window）に正確にマッチングさせて、SPV設立、法律コンプライアンスセットアップ、資産委託など一切の構造化行政業務を専任して遂行する。</li></ol>'
+      },
+      {
+        num: '第2条',
+        title: '参加資格の付与および事前入金',
+        body: '<ol><li>本プログラムへの登録および事前コンプライアンススクリーニング（KYC）の進行を希望する投資家は、参加意向表明書（LOI）の提出とともに、資格付与保証金として<strong>10,000米ドル（USD 10,000）</strong>を当社に事前入金しなければならない。</li><li>本事前入金は、資格検証および事前コンプライアンスのリソース費用として活用され、資格が付与された投資家に限り、プログラム参加権限が最終的にロックイン（Lock-in）される。</li></ol>'
+      },
+      {
+        num: '第3条',
+        title: '参加単位および口数の設定',
+        body: '<ol><li>プログラム参入のための最低資本投入単位は、<strong>1口あたり50,000米ドル（USD 50,000）</strong>に制限する。</li><li>すべての投資家は口数単位の倍数でのみ資本を確約することができ、資金の流入経路および証明は当社のAML（マネーロンダリング防止）ガイドラインを通過しなければならない。</li></ol>'
+      },
+      {
+        num: '第4条',
+        title: '運用タイムラインおよびウィンドウの開設',
+        body: '<ol><li>国際金融市場の特性上、正確なプログラム開始日時は非公開を原則とし、トレーディングルームのクォータ（割り当て）配分に応じて流動的に決定される。</li><li>本プログラムの出発時点は、<strong>3ヶ月に1回（四半期に1回）</strong>定められることを原則とする。当社は、当該出発時点に合わせてSPV設立および資本安着の準備体系を常時稼働する。</li></ol>'
+      },
+      {
+        num: '第5条',
+        title: 'SPV役員参加要件およびガバナンス',
+        body: '<ol><li>設立されるSPVの登記役員（Executive Board Member）として参加し、法人経営権および内部議決権を確保するための資格要件は以下の通りとする。<ul><li><strong>【原則】最低5口（総額250,000米ドル）以上の確約資本を確保した者。</strong></li></ul></li><li>本要件は、投資家本人の直接投資口数、または本人が直接誘致および確保した下位投資家の総口数の合算が5口以上である場合にも同様に認める。</li><li>要件を満たしていない5口未満の少額投資家は、登記役員への参加が制限され、所有口数比例に応じた配当権利のみを保有する間接投資家の地位を保持する。</li></ol>'
+      }
+    ]
+  },
+
+  zh: {
+    panelTitle: '📊 Small Cap SPV 协议',
+    backBtn: '← 返回合同列表',
+    applicantLabel: '申请人姓名',
+    applicantOrgLabel: '所属机构 / 公司',
+    dateLabel: '协议日期',
+    slotsLabel: '份额数量',
+    btnPdf: '📄 保存PDF / 打印',
+    btnTrust: '🔒 Trust-Lock存证',
+    emptyMsg: '← 请在左侧面板填写信息以生成协议。',
+    providerRole: '服务提供方',
+    applicantRole: '申请人',
+    contractNo: '协议编号',
+    docBadge: '机密',
+    docTitle: '关于Small Cap项目及SPV运营的标准规定',
+    docSub: 'Small Cap私募项目 — SPV委托协议',
+    intro: function(app, org, date, slots){
+      return '本协议于<strong>'+date+'</strong>由<strong>FinCoupling</strong>（以下简称"提供方"）与<strong>'+escHtml(app)+(org?' / '+escHtml(org):'')+' </strong>（以下简称"申请人"）签订。SPV设立后，本协议项下所有权利与义务归属SPV。'
+        +(slots?' 申请人确认承诺资本为<strong>'+escHtml(slots)+'个份额</strong>。':'');
+    },
+    spvNote: '⚠ SPV移转条款：特殊目的公司（SPV）正式成立后，本规定所载明的所有合同权利、义务、陈述、保证及公司治理权限，将自动移转至并归属于SPV。自移转时起，FinCoupling不再作为主要合同方。',
+    sigSectionTitle: '以此为证，双方当事人已于上述日期签署本规定。',
+    sigDrawHint: '在此签名',
+    sigClear: '清除',
+    sigNameLabel: '姓名',
+    sigTitleLabel: '职务',
+    sigDateLabel: '签署日期',
+    sigAlertCanvas: '通过Trust-Lock存证前，双方均须完成签名。',
+    sigAlertFieldsA: '请填写提供方的姓名和签署日期。',
+    sigAlertFieldsB: '请填写申请人的姓名和签署日期。',
+    tlText: function(hash){ return '🔒 Trust-Lock存证完成 · Ref: '+hash; },
+    articles: [
+      {
+        num: '第一条',
+        title: '目的及我方职责',
+        body: '<ol><li>本规定旨在确立用于进入全球Small Cap私募项目（以下简称"项目"）的特殊目的公司（SPV）的设立、资格赋予、股权结构化及公司治理。</li><li>我方专责执行包括SPV设立、法律合规设置、资产托付等在内的所有结构化行政业务，并确保与国际交易台的项目执行时间节点（Window）精准匹配。</li></ol>'
+      },
+      {
+        num: '第二条',
+        title: '参与资格赋予及预付款',
+        body: '<ol><li>凡希望注册本项目并进行事前合规审查（KYC）的投资者，须在提交意向书（LOI）的同时，向我方预付<strong>10,000美元（USD 10,000）的资格赋予保证金</strong>。</li><li>该预付款将用于资格验证及事前合规资源成本，项目参与权限仅对获得资格的投资者进行最终锁定（Lock-in）。</li></ol>'
+      },
+      {
+        num: '第三条',
+        title: '参与单位及份额设置',
+        body: '<ol><li>进入项目的最低资本投入单位限制为<strong>每份额50,000美元（USD 50,000）</strong>。</li><li>所有投资者仅能以份额单位的倍数承诺资本，且资金的流入渠道及证明须通过我方的反洗钱（AML）指南。</li></ol>'
+      },
+      {
+        num: '第四条',
+        title: '运营时间线及窗口开启',
+        body: '<ol><li>鉴于国际金融市场的特性，项目的具体启动时间原则上予以保密，并将根据交易室的额度分配灵活决定。</li><li>本项目的启动时间原则上定为<strong>每3个月一次（每季度1次）</strong>。我方将常态化启动针对该启动时间节点的SPV设立及资本入驻准备体系。</li></ol>'
+      },
+      {
+        num: '第五条',
+        title: 'SPV高级管理人员参与条件及公司治理',
+        body: '<ol><li>作为所设立SPV的法人登记高级管理人员（Executive Board Member）参与并确保公司经营权及内部表决权的资格条件如下：<ul><li><strong>【原则】至少确保5个份额（总计250,000美元）以上承诺资本的人员。</strong></li></ul></li><li>若投资者本人的直接投资份额数，或其直接吸引并确保的下属投资者的总份额数合计达到5个份额以上，该条件同样予以认定。</li><li>未满足条件且不足5个份额的小额投资者，将被限制作为登记高管参与，仅具有根据所持份额比例享有分红权利的间接投资者地位。</li></ol>'
+      }
+    ]
+  },
+
+  th: {
+    panelTitle: '📊 สัญญา Small Cap SPV',
+    backBtn: '← กลับไปยังรายการสัญญา',
+    applicantLabel: 'ชื่อผู้สมัคร',
+    applicantOrgLabel: 'องค์กร / บริษัท',
+    dateLabel: 'วันที่ทำสัญญา',
+    slotsLabel: 'จำนวนโควตา',
+    btnPdf: '📄 บันทึก PDF / พิมพ์',
+    btnTrust: '🔒 บันทึกผ่าน Trust-Lock',
+    emptyMsg: '← กรุณากรอกข้อมูลในแผงด้านซ้ายเพื่อสร้างสัญญา',
+    providerRole: 'ผู้ให้บริการ',
+    applicantRole: 'ผู้สมัคร',
+    contractNo: 'เลขที่สัญญา',
+    docBadge: 'ลับเฉพาะ',
+    docTitle: 'ข้อบังคับมาตรฐานเกี่ยวกับโปรแกรม Small Cap และการดำเนินงานของ SPV',
+    docSub: 'Small Cap Private Placement Program — สัญญามอบหมาย SPV',
+    intro: function(app, org, date, slots){
+      return 'สัญญาฉบับนี้จัดทำขึ้น ณ วันที่ <strong>'+date+'</strong> ระหว่าง <strong>FinCoupling</strong> (ต่อไปนี้เรียกว่า "ผู้ให้บริการ") และ <strong>'+escHtml(app)+(org?' / '+escHtml(org):'')+' </strong> (ต่อไปนี้เรียกว่า "ผู้สมัคร") หลังจากการจัดตั้ง SPV สิทธิ์และหน้าที่ทั้งหมดภายใต้สัญญานี้จะโอนและตกเป็นของ SPV'
+        +(slots?' ผู้สมัครยืนยันเงินทุนผูกพัน <strong>'+escHtml(slots)+' โควตา</strong>':'');
+    },
+    spvNote: '⚠ ข้อกำหนดการโอน SPV: หลังจากที่นิติบุคคลเฉพาะกิจ (SPV) จัดตั้งเสร็จสมบูรณ์ สิทธิ์ตามสัญญา ภาระหน้าที่ การรับรอง การรับประกัน และอำนาจการกำกับดูแลทั้งหมดที่ระบุไว้ในที่นี้จะโอนไปยัง SPV โดยอัตโนมัติ นับจากวันที่โอน FinCoupling จะสิ้นสุดการเป็นคู่สัญญาหลัก',
+    sigSectionTitle: 'เพื่อเป็นพยานหลักฐาน คู่สัญญาทั้งสองฝ่ายได้ลงนามในสัญญาฉบับนี้ ณ วันที่ระบุข้างต้น',
+    sigDrawHint: 'วาดลายเซ็นที่นี่',
+    sigClear: 'ล้าง',
+    sigNameLabel: 'ชื่อ',
+    sigTitleLabel: 'ตำแหน่ง',
+    sigDateLabel: 'วันที่ลงนาม',
+    sigAlertCanvas: 'คู่สัญญาทั้งสองฝ่ายต้องลงนามก่อนบันทึกผ่าน Trust-Lock',
+    sigAlertFieldsA: 'กรุณากรอกชื่อและวันที่ลงนามของผู้ให้บริการ',
+    sigAlertFieldsB: 'กรุณากรอกชื่อและวันที่ลงนามของผู้สมัคร',
+    tlText: function(hash){ return '🔒 บันทึกบน Trust-Lock แล้ว · Ref: '+hash; },
+    articles: [
+      {
+        num: 'มาตรา 1',
+        title: 'วัตถุประสงค์และบทบาทของเรา',
+        body: '<ol><li>ข้อบังคับนี้มีวัตถุประสงค์เพื่อจัดตั้ง การให้คุณสมบัติ การจัดโครงสร้างทุน และการกำกับดูแลของนิติบุคคลเฉพาะกิจ (SPV) เพื่อเข้าร่วมในโปรแกรม Small Cap Private Placement Program ระดับโลก (ต่อไปนี้จะเรียกว่า "โปรแกรม")</li><li>เราจะดำเนินการด้านการบริหารจัดการโครงสร้างทั้งหมดแต่เพียงผู้เดียว รวมถึงการจัดตั้ง SPV การตั้งค่าการปฏิบัติตามกฎหมาย และการฝากสินทรัพย์ โดยจับคู่กับช่วงเวลาการดำเนินงาน (Window) ของโต๊ะซื้อขายต่างประเทศอย่างแม่นยำ</li></ol>'
+      },
+      {
+        num: 'มาตรา 2',
+        title: 'การให้สิทธิ์เข้าร่วมและการวางเงินมัดจำล่วงหน้า',
+        body: '<ol><li>นักลงทุนที่ประสงค์จะลงทะเบียนในโปรแกรมนี้และรับการคัดกรองการปฏิบัติตามกฎเกณฑ์ล่วงหน้า (KYC) จะต้องวางเงินมัดจำล่วงหน้าเป็น<strong>เงินประกันคุณสมบัติจำนวน 10,000 ดอลลาร์สหรัฐ (USD 10,000)</strong> แก่เรา พร้อมกับการยื่นหนังสือแสดงเจตจำนง (LOI)</li><li>เงินมัดจำล่วงหน้านี้จะนำไปใช้สำหรับค่าใช้จ่ายในการตรวจสอบคุณสมบัติและทรัพยากรการปฏิบัติตามกฎเกณฑ์ล่วงหน้า และสิทธิ์ในการเข้าร่วมโปรแกรมจะถูกล็อกอิน (Lock-in) ขั้นสุดท้ายสำหรับนักลงทุนที่ผ่านคุณสมบัติเท่านั้น</li></ol>'
+      },
+      {
+        num: 'มาตรา 3',
+        title: 'หน่วยการเข้าร่วมและการตั้งค่าโควตา',
+        body: '<ol><li>หน่วยเงินทุนขั้นต่ำสำหรับการเข้าร่วมโปรแกรมถูกจำกัดไว้ที่<strong>50,000 ดอลลาร์สหรัฐ ต่อ 1 โควตา (USD 50,000)</strong></li><li>นักลงทุนทุกคนสามารถผูกพันเงินทุนได้ในจำนวนที่เป็นทวีคูณของหน่วยโควตาเท่านั้น และเส้นทางการไหลเข้าของเงินทุนรวมถึงหลักฐานจะต้องผ่านหลักเกณฑ์การป้องกันและปราบปรามการฟอกเงิน (AML) ของเรา</li></ol>'
+      },
+      {
+        num: 'มาตรา 4',
+        title: 'กำหนดเวลาการดำเนินงานและการเปิดหน้าต่างโควตา',
+        body: '<ol><li>เนื่องจากลักษณะของตลาดการเงินระหว่างประเทศ วันที่เริ่มต้นโปรแกรมที่แน่นอนจะถูกเก็บเป็นความลับ และจะถูกกำหนดอย่างยืดหยุ่นตามการจัดสรรโควตาของห้องซื้อขาย</li><li>โดยหลักการแล้ว จุดเริ่มต้นของโปรแกรมนี้จะถูกกำหนด<strong>ทุกๆ 3 เดือนต่อครั้ง (ไตรมาสละ 1 ครั้ง)</strong> เราจะเตรียมระบบสำหรับการจัดตั้ง SPV และความพร้อมในการจัดวางเงินทุนให้สอดคล้องกับจุดเริ่มต้นดังกล่าวอยู่เสมอ</li></ol>'
+      },
+      {
+        num: 'มาตรา 5',
+        title: 'ข้อกำหนดการเข้าร่วมเป็นกรรมการ SPV และการกำกับดูแล',
+        body: '<ol><li>ข้อกำหนดคุณสมบัติในการเข้าร่วมเป็นกรรมการบริหาร (Executive Board Member) ของ SPV ที่จัดตั้งขึ้น มีดังนี้:<ul><li><strong>[หลักการ] ผู้ที่รักษาเงินทุนผูกพันอย่างน้อย 5 โควตา (รวม 250,000 ดอลลาร์สหรัฐ) ขึ้นไป</strong></li></ul></li><li>ข้อกำหนดนี้จะได้รับการยอมรับอย่างเท่าเทียมกัน หากจำนวนโควตากรณีลงทุนโดยตรงของนักลงทุนเองหรือจำนวนโควตารวมทั้งหมดที่ดึงดูดและจัดหามาจากนักลงทุนภายใต้สายงานของตนมีจำนวนตั้งแต่ 5 โควตาขึ้นไป</li><li>นักลงทุนรายย่อยที่มีโควตาน้อยกว่า 5 โควตาซึ่งไม่ตรงตามข้อกำหนด จะถูกจำกัดสิทธิ์ในการเข้าร่วมเป็นกรรมการบริหาร และจะมีสถานะเป็นนักลงทุนทางอ้อมที่มีสิทธิ์ได้รับเงินปันผลตามสัดส่วนโควตาที่ถือครองเท่านั้น</li></ol>'
+      }
+    ]
+  }
+};
+
+// ── Signature state ──────────────────────────────────────────────────────
+var sigState = { aName:'', aTitle:'', aDate:'', bName:'', bTitle:'', bDate:'', aImg:'', bImg:'' };
+
+// ── Render ───────────────────────────────────────────────────────────────
+function contractNum(){
+  var today = new Date(); var y = today.getFullYear();
+  var m = String(today.getMonth()+1).padStart(2,'0');
+  var d = String(today.getDate()).padStart(2,'0');
+  return 'FC-SC-'+y+m+d+'-0001';
+}
+
+function render(){
+  var app = v('applicantName');
+  var org = v('applicantOrg');
+  var date = fmtDate(v('contDate'));
+  var slots = v('slotCount');
+  var t = I18N[lang];
+
+  if(!app){
+    document.getElementById('contractDoc').innerHTML =
+      '<div class="doc-wrap"><p style="text-align:center;color:#bbb;padding:3rem 0;" id="emptyMsg">'+t.emptyMsg+'</p></div>';
+    document.getElementById('sigSection').style.display = 'none';
+    return;
+  }
+
+  var articlesHtml = t.articles.map(function(a){
+    return '<div class="doc-article"><div class="doc-article-title">'+a.num+'. '+a.title+'</div>'+a.body+'</div>';
+  }).join('');
+
+  var html = '<div class="doc-wrap">'
+    +'<div class="doc-meta">'+t.contractNo+': '+contractNum()+'</div>'
+    +'<div style="text-align:center;margin-bottom:0.8rem"><span class="doc-badge">'+t.docBadge+'</span></div>'
+    +'<div class="doc-title">'+t.docTitle+'</div>'
+    +'<div class="doc-subtitle">'+t.docSub+'</div>'
+    +'<div class="doc-ornament">——— ⚖ ———</div>'
+    +'<div class="parties-box">'
+      +'<div><div class="party-role">'+t.providerRole+'</div><div class="party-name">FinCoupling</div><div class="party-detail">bookcoupling.netlify.app</div></div>'
+      +'<div><div class="party-role">'+t.applicantRole+'</div><div class="party-name">'+escHtml(app)+'</div>'+(org?'<div class="party-detail">'+escHtml(org)+'</div>':'')+'</div>'
+    +'</div>'
+    +'<div class="doc-intro">'+t.intro(app, org, date, slots)+'</div>'
+    +'<div class="doc-ornament" style="margin-bottom:1.5rem">——— ⚖ ———</div>'
+    +articlesHtml
+    +'<div class="spv-note">'+t.spvNote+'</div>'
+    +'</div>';
+
+  document.getElementById('contractDoc').innerHTML = html;
+  appendSigSection();
+}
+
+function appendSigSection(){
+  var app = v('applicantName');
+  var t = I18N[lang];
+  var sec = document.getElementById('sigSection');
+  if(!app){ sec.style.display='none'; return; }
+  sec.style.display = 'block';
+  sec.innerHTML =
+    '<div class="sig-section-title">'+t.sigSectionTitle+'</div>'
+    +'<div class="sig-grid2">'
+    // Provider
+    +'<div class="sig-pad-wrap">'
+      +'<div class="sig-pad-label">'+t.providerRole+'</div>'
+      +'<div class="sig-pad-name">FinCoupling</div>'
+      +'<canvas id="sigCanvasA" class="sig-canvas" width="320" height="110"></canvas>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+        +'<span class="sig-canvas-label">'+t.sigDrawHint+'</span>'
+        +'<button class="sig-clear" onclick="clearCanvas(\'A\')">'+t.sigClear+'</button>'
+      +'</div>'
+      +'<div class="sig-fields">'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigNameLabel+'</span><input class="sig-field-input" id="sigAName" placeholder="'+t.sigNameLabel+'" value="'+escHtml(sigState.aName)+'" oninput="sigState.aName=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigTitleLabel+'</span><input class="sig-field-input" id="sigATitle" placeholder="'+t.sigTitleLabel+'" value="'+escHtml(sigState.aTitle)+'" oninput="sigState.aTitle=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigDateLabel+'</span><input class="sig-field-input" id="sigADate" type="date" value="'+escHtml(sigState.aDate)+'" oninput="sigState.aDate=this.value"></div>'
+      +'</div>'
+    +'</div>'
+    // Applicant
+    +'<div class="sig-pad-wrap">'
+      +'<div class="sig-pad-label">'+t.applicantRole+'</div>'
+      +'<div class="sig-pad-name">'+escHtml(app)+'</div>'
+      +'<canvas id="sigCanvasB" class="sig-canvas" width="320" height="110"></canvas>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+        +'<span class="sig-canvas-label">'+t.sigDrawHint+'</span>'
+        +'<button class="sig-clear" onclick="clearCanvas(\'B\')">'+t.sigClear+'</button>'
+      +'</div>'
+      +'<div class="sig-fields">'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigNameLabel+'</span><input class="sig-field-input" id="sigBName" placeholder="'+t.sigNameLabel+'" value="'+escHtml(sigState.bName)+'" oninput="sigState.bName=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigTitleLabel+'</span><input class="sig-field-input" id="sigBTitle" placeholder="'+t.sigTitleLabel+'" value="'+escHtml(sigState.bTitle)+'" oninput="sigState.bTitle=this.value"></div>'
+        +'<div class="sig-field-row"><span class="sig-field-label">'+t.sigDateLabel+'</span><input class="sig-field-input" id="sigBDate" type="date" value="'+escHtml(sigState.bDate)+'" oninput="sigState.bDate=this.value"></div>'
+      +'</div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="sig-tl-seal" id="tlSeal"></div>';
+
+  initCanvas('A');
+  initCanvas('B');
+
+  var tlb = document.getElementById('trustBadge');
+  if(tlb && tlb.style.display !== 'none'){
+    var seal = document.getElementById('tlSeal');
+    if(seal){ seal.style.display='block'; seal.textContent=tlb.textContent; }
+  }
+}
+
+function initCanvas(side){
+  var canvas = document.getElementById('sigCanvas'+side);
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#1a1a2e'; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  var saved = sigState[side.toLowerCase()+'Img'];
+  if(saved){ var img = new Image(); img.onload = function(){ ctx.drawImage(img,0,0); }; img.src = saved; }
+  var drawing = false, lx, ly;
+  function pos(e){
+    var r = canvas.getBoundingClientRect();
+    var sx = canvas.width/r.width, sy = canvas.height/r.height;
+    var src = e.touches ? e.touches[0] : e;
+    return {x:(src.clientX-r.left)*sx, y:(src.clientY-r.top)*sy};
+  }
+  function start(e){ e.preventDefault(); drawing=true; var p=pos(e); lx=p.x; ly=p.y; }
+  function move(e){ if(!drawing) return; e.preventDefault(); var p=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.stroke(); lx=p.x; ly=p.y; }
+  function end(){ if(!drawing) return; drawing=false; sigState[side.toLowerCase()+'Img']=canvas.toDataURL(); }
+  canvas.addEventListener('mousedown',start);
+  canvas.addEventListener('mousemove',move);
+  canvas.addEventListener('mouseup',end);
+  canvas.addEventListener('mouseleave',end);
+  canvas.addEventListener('touchstart',start,{passive:false});
+  canvas.addEventListener('touchmove',move,{passive:false});
+  canvas.addEventListener('touchend',end);
+}
+
+function clearCanvas(side){
+  var canvas = document.getElementById('sigCanvas'+side);
+  if(!canvas) return;
+  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+  sigState[side.toLowerCase()+'Img']='';
+}
+
+function applyUI(){
+  var t = I18N[lang];
+  ['lb-en','lb-ko','lb-ja','lb-zh','lb-th'].forEach(function(id){
+    document.getElementById(id).classList.toggle('active', id==='lb-'+lang);
+  });
+  document.getElementById('backBtn').textContent = t.backBtn;
+  document.getElementById('ui-panelTitle').textContent = t.panelTitle;
+  document.getElementById('ui-applicantLabel').textContent = t.applicantLabel;
+  document.getElementById('ui-applicantOrgLabel').textContent = t.applicantOrgLabel;
+  document.getElementById('ui-dateLabel').textContent = t.dateLabel;
+  document.getElementById('ui-slotsLabel').textContent = t.slotsLabel;
+  document.getElementById('ui-btnPdf').textContent = t.btnPdf;
+  document.getElementById('ui-btnTrust').textContent = t.btnTrust;
+}
+
+function setLang(l){
+  lang = l;
+  localStorage.setItem('sc-lang', l);
+  document.documentElement.lang = l;
+  if(typeof window.syncNavLang === 'function') window.syncNavLang(l);
+  applyUI();
+  render();
+}
+
+function savePDF(){ window.print(); }
+
+function uploadTrustLock(){
+  var t = I18N[lang];
+  if(!v('applicantName')){ alert(t.emptyMsg); return; }
+  if(!sigState.aImg || !sigState.bImg){ alert(t.sigAlertCanvas); return; }
+  if(!sigState.aName.trim() || !sigState.aDate){ alert(t.sigAlertFieldsA); return; }
+  if(!sigState.bName.trim() || !sigState.bDate){ alert(t.sigAlertFieldsB); return; }
+  var hash = 'TL-'+Date.now().toString(36).toUpperCase()+'-'+contractNum().slice(-6);
+  var badge = document.getElementById('trustBadge');
+  badge.textContent = t.tlText(hash);
+  badge.style.display = 'block';
+  var seal = document.getElementById('tlSeal');
+  if(seal){ seal.style.display='block'; seal.textContent=t.tlText(hash); }
+  setTimeout(function(){ window.open('https://fincoupling.netlify.app/#/trust-lock','_blank'); }, 600);
+}
+
+// Init
+document.getElementById('contDate').value = new Date().toISOString().slice(0,10);
+setLang(lang);
+</script>
+<script src="assets/js/nav.js?v=3"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/footer-inject.js"></script>
+</body>
+</html>

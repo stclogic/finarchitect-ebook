@@ -1,0 +1,489 @@
+<!-- 임대차계약서 온라인 작성 및 인쇄/PDF 다운로드 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>임대차계약서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+.form-page-wrap {
+  max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem 5rem;
+  display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;
+}
+.ctrl-panel {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 18px; padding: 1.5rem; position: sticky; top: 80px;
+}
+.ctrl-panel h2 { font-size: 1rem; font-weight: 800; color: var(--dark); margin-bottom: 1.2rem; }
+.ctrl-section { margin-bottom: 1rem; }
+.ctrl-section label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text2); margin-bottom: 0.3rem; }
+.ctrl-section input[type="text"],
+.ctrl-section input[type="number"],
+.ctrl-section select {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 0.85rem; color: var(--dark); background: var(--cream);
+}
+.ctrl-file-btn {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 9px 14px; background: var(--cream);
+  border: 1px dashed var(--border); border-radius: 8px;
+  cursor: pointer; font-size: 0.82rem; color: var(--text2);
+}
+.ctrl-file-btn input { display: none; }
+.ctrl-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.print-btn {
+  width: 100%; padding: 13px; background: #065F46; color: #fff;
+  border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: opacity .15s;
+}
+.print-btn:hover { opacity: 0.88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: 0.6rem;
+  background: none; border: 1px solid var(--border);
+  border-radius: 10px; font-size: 0.82rem; color: var(--text2); cursor: pointer;
+}
+.tip-box {
+  background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 10px;
+  padding: 0.8rem 1rem; font-size: 0.77rem; color: #14532D; line-height: 1.65; margin-top: 0.8rem;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.82rem; color: var(--text2); text-decoration: none;
+  padding: 7px 14px; border: 1px solid var(--border); border-radius: 8px;
+  margin-bottom: 1rem; transition: border-color .15s;
+}
+.doc-wrap {
+  background: #D1FAE5; border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+.a4-page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18); border-radius: 2px;
+  padding: 16mm 15mm 20mm;
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 10pt; color: #111; line-height: 1.7;
+}
+.contract-header { text-align: center; margin-bottom: 8mm; padding-bottom: 5mm; border-bottom: 2.5px solid #065F46; }
+.contract-logo-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5mm; }
+.contract-logo { max-height: 32px; max-width: 130px; object-fit: contain; }
+.contract-logo-placeholder {
+  font-size: 7pt; color: #9CA3AF; border: 1px dashed #D1D5DB;
+  border-radius: 4px; padding: 4px 10px; cursor: pointer; display: inline-block;
+}
+.contract-doc-no { font-size: 7.5pt; color: #6B7280; text-align: right; }
+.contract-title { font-size: 18pt; font-weight: 900; color: #065F46; letter-spacing: 0.15em; margin-bottom: 1.5mm; }
+.contract-subtitle { font-size: 8pt; color: #6B7280; }
+.property-box {
+  border: 2px solid #065F46; border-radius: 6px; padding: 5mm 6mm; margin-bottom: 8mm;
+}
+.property-box-title {
+  font-size: 9pt; font-weight: 900; color: #065F46; margin-bottom: 3mm;
+  letter-spacing: 0.05em;
+}
+.prop-table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+.prop-table td { padding: 2.5mm 3mm; border: 1px solid #D1D5DB; }
+.prop-table td:first-child {
+  background: #F0FDF4; font-weight: 700; color: #065F46; width: 22%; white-space: nowrap;
+}
+.parties-table { width: 100%; border-collapse: collapse; margin-bottom: 7mm; font-size: 9pt; }
+.parties-table th { background: #065F46; color: #fff; padding: 3.5mm 5mm; font-size: 8pt; font-weight: 700; width: 25%; }
+.parties-table td { border: 1px solid #D1D5DB; padding: 3mm 5mm; vertical-align: top; }
+.parties-table tr:nth-child(even) td { background: #F9FAFB; }
+.clause { margin-bottom: 6mm; }
+.clause-title {
+  font-size: 10.5pt; font-weight: 900; color: #065F46; margin-bottom: 2.5mm;
+  display: flex; align-items: baseline; gap: 6px;
+  padding-bottom: 1.5mm; border-bottom: 1px solid #D1FAE5;
+}
+.clause-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #065F46; color: #fff; font-size: 8pt; font-weight: 700; flex-shrink: 0;
+}
+.clause-body { font-size: 9.5pt; line-height: 1.85; color: #1F2937; }
+.amount-highlight {
+  display: inline; background: #F0FDF4; border: 1px solid #86EFAC;
+  border-radius: 3px; padding: 0 4px; font-weight: 700; color: #065F46;
+}
+.sig-section { margin-top: 10mm; padding-top: 5mm; border-top: 2px solid #065F46; }
+.sig-date { text-align: center; font-size: 9.5pt; margin-bottom: 7mm; }
+.sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+.sig-party { border: 1px solid #D1D5DB; border-radius: 4px; padding: 4mm; }
+.sig-party-title { font-size: 9pt; font-weight: 700; color: #065F46; text-align: center; margin-bottom: 3.5mm; padding-bottom: 2mm; border-bottom: 1px solid #D1FAE5; }
+.sig-field { display: flex; align-items: center; gap: 3mm; margin-bottom: 2.5mm; font-size: 8.5pt; }
+.sig-field-label { color: #6B7280; width: 16mm; flex-shrink: 0; }
+.sig-field-value { flex: 1; border-bottom: 1px solid #D1D5DB; min-height: 6mm; padding: 0 2mm; }
+.sig-stamp {
+  float: right; margin-top: -10mm;
+  width: 16mm; height: 16mm; border-radius: 50%;
+  border: 2px solid #EF4444; display: flex; align-items: center; justify-content: center;
+  font-size: 6.5pt; color: #EF4444; font-weight: 700; text-align: center; opacity: 0.5;
+}
+.witness-section { margin-top: 5mm; padding-top: 4mm; border-top: 1px dashed #D1D5DB; }
+.witness-title { font-size: 8pt; font-weight: 700; color: #374151; margin-bottom: 3mm; }
+
+[contenteditable="true"] {
+  outline: none; border-radius: 3px; min-width: 10px; cursor: text;
+  transition: background .15s, box-shadow .15s;
+}
+[contenteditable="true"]:hover { background: rgba(6,95,70,0.08); box-shadow: 0 0 0 1.5px rgba(6,95,70,0.25); }
+[contenteditable="true"]:focus { background: rgba(6,95,70,0.12); box-shadow: 0 0 0 2px rgba(6,95,70,0.4); }
+
+@media print {
+  body { background: #fff !important; }
+  .ctrl-panel, .doc-wrap > *:not(.a4-page), .back-link,
+  nav, footer, .site-nav, .site-footer { display: none !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-wrap { background: none !important; padding: 0 !important; }
+  .a4-page { width: 100% !important; min-height: unset !important; box-shadow: none !important; padding: 14mm 12mm !important; }
+  [contenteditable="true"] { background: transparent !important; box-shadow: none !important; }
+  .contract-logo-placeholder { display: none !important; }
+  @page { size: A4; margin: 0; }
+}
+@media (max-width: 900px) {
+  .form-page-wrap { grid-template-columns: 1fr; }
+  .ctrl-panel { position: static; }
+  .a4-page { width: 100%; min-height: unset; font-size: 8pt; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <div class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>⚙ 계약서 설정</h2>
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="ctrl-file-btn">🏢 로고 선택<input type="file" accept="image/*" onchange="uploadLogo(this)"></label>
+    </div>
+    <div class="ctrl-section">
+      <label>계약 유형</label>
+      <select onchange="setType(this.value)">
+        <option value="monthly">월세 계약</option>
+        <option value="jeonse">전세 계약</option>
+        <option value="commercial">상가 임대</option>
+      </select>
+    </div>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem; font-weight:700; color:var(--text2); margin-bottom:0.7rem;">빠른 입력</div>
+    <div class="ctrl-section">
+      <label>임대인(집주인)명</label>
+      <input type="text" placeholder="홍임대" oninput="syncField('.f-lessor', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>임차인(세입자)명</label>
+      <input type="text" placeholder="김임차" oninput="syncField('.f-lessee', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>소재지</label>
+      <input type="text" placeholder="서울시 마포구 상암동 123" oninput="syncField('.f-address', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>보증금 (원)</label>
+      <input type="text" placeholder="100,000,000" oninput="syncField('.f-deposit', this.value)">
+    </div>
+    <div class="ctrl-section" id="rentWrap">
+      <label>월세 (원)</label>
+      <input type="text" placeholder="1,000,000" oninput="syncField('.f-rent', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>임대 기간</label>
+      <input type="text" placeholder="2026.08.01 ~ 2028.07.31" oninput="syncField('.f-period', this.value)">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="if(confirm('초기화?'))location.reload()">↺ 초기화</button>
+    <div class="tip-box">
+      💡 이 계약서는 <strong>주택임대차보호법</strong>에 따른 표준 양식입니다. 계약 체결 후 <strong>확정일자</strong> 및 <strong>전입신고</strong>를 반드시 진행하세요.
+    </div>
+  </div>
+
+  <div class="doc-wrap">
+    <div style="text-align:center; font-size:0.78rem; color:#6B7280; margin-bottom:0.5rem;">✏ 문서를 직접 클릭하여 편집하세요</div>
+
+    <div class="a4-page" id="contractDoc">
+      <div class="contract-header">
+        <div class="contract-logo-row">
+          <div>
+            <div class="contract-logo-placeholder" id="logoPlaceholder" onclick="document.getElementById('logoInputDoc').click()">+ 로고 추가</div>
+            <img id="logoImg" class="contract-logo" src="" alt="" style="display:none;">
+            <input type="file" id="logoInputDoc" accept="image/*" style="display:none" onchange="uploadLogo(this)">
+          </div>
+          <div class="contract-doc-no">
+            문서번호: <span contenteditable="true">LEASE-2026-001</span><br>
+            작성일: <span contenteditable="true" id="docDate">2026. 07. 16.</span>
+          </div>
+        </div>
+        <div class="contract-title" id="contractTitle">주택 임대차 계약서</div>
+        <div class="contract-subtitle">RESIDENTIAL LEASE AGREEMENT · 주택임대차보호법에 의거한 표준 계약서</div>
+      </div>
+
+      <!-- 부동산 표시 -->
+      <div class="property-box">
+        <div class="property-box-title">【 임대 목적물의 표시 】</div>
+        <table class="prop-table">
+          <tr>
+            <td>소 재 지</td>
+            <td colspan="3"><span contenteditable="true" class="f-address">서울특별시 마포구 상암동 123-45, 아파트 101동 1001호</span></td>
+          </tr>
+          <tr>
+            <td>건물 종류</td>
+            <td><span contenteditable="true">아파트</span></td>
+            <td style="font-weight:700;color:#065F46;width:18%">전용 면적</td>
+            <td><span contenteditable="true">84.92㎡ (약 25.7평)</span></td>
+          </tr>
+          <tr>
+            <td>구 조</td>
+            <td><span contenteditable="true">철근콘크리트</span></td>
+            <td style="font-weight:700;color:#065F46;">층 / 호</td>
+            <td><span contenteditable="true">10층 / 1001호</span></td>
+          </tr>
+          <tr>
+            <td>등기부 지번</td>
+            <td colspan="3"><span contenteditable="true">마포구 상암동 123 아파트 제10층 제1001호 (전용 84.92㎡)</span></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 당사자 -->
+      <table class="parties-table">
+        <tr>
+          <th>임대인 (갑)</th>
+          <td>
+            <div>성명: <span contenteditable="true" class="f-lessor">홍임대</span> &nbsp;&nbsp; 생년월일: <span contenteditable="true">1965. 03. 15.</span></div>
+            <div>주민번호 앞자리: <span contenteditable="true">650315-1</span>●●●●●●</div>
+            <div>주소: <span contenteditable="true">서울특별시 강남구 도곡동 789</span></div>
+            <div>연락처: <span contenteditable="true">010-1234-5678</span></div>
+          </td>
+        </tr>
+        <tr>
+          <th>임차인 (을)</th>
+          <td>
+            <div>성명: <span contenteditable="true" class="f-lessee">김임차</span> &nbsp;&nbsp; 생년월일: <span contenteditable="true">1992. 07. 20.</span></div>
+            <div>주민번호 앞자리: <span contenteditable="true">920720-1</span>●●●●●●</div>
+            <div>주소: <span contenteditable="true">서울특별시 서대문구 현재 거주지</span></div>
+            <div>연락처: <span contenteditable="true">010-9876-5432</span></div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- 제1조: 보증금 및 임료 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">1</span>보증금 및 임료</div>
+        <div class="clause-body">
+          ① 갑과 을은 위 목적물에 대하여 다음과 같이 임대차 계약을 체결한다.<br>
+          <div style="margin:3mm 0 3mm 8mm; padding:3mm 5mm; background:#F0FDF4; border-radius:4px;">
+            보증금: <span class="amount-highlight f-deposit" contenteditable="true">금 100,000,000원 (금일억원정)</span><br>
+            월  세: <span class="amount-highlight f-rent" contenteditable="true">금 1,000,000원 (금일백만원정)</span><br>
+            <span id="jeonseAmtRow">전세 보증금: 해당 없음 (월세 계약)</span>
+          </div>
+          ② 보증금은 계약 체결 시 계약금으로 <span contenteditable="true">금 10,000,000원 (금일천만원정)</span>을 지급하고,<br>
+          잔금 <span contenteditable="true">금 90,000,000원 (금구천만원정)</span>은 입주일(<span contenteditable="true">2026년 8월 1일</span>)에 지급한다.<br>
+          ③ 월세는 매월 <span contenteditable="true">1</span>일에 갑의 계좌(<span contenteditable="true">국민은행 123-456-789012</span>)로 지급한다.
+        </div>
+      </div>
+
+      <!-- 제2조: 임대 기간 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">2</span>임대 기간</div>
+        <div class="clause-body">
+          ① 임대 기간은 <span contenteditable="true" class="f-period">2026년 8월 1일부터 2028년 7월 31일까지 (24개월)</span>로 한다.<br>
+          ② 주택임대차보호법 제6조에 따라 갱신 요구권 행사가 가능하며, 만기 6개월 전부터 1개월 전까지 계약 갱신을 청구할 수 있다.<br>
+          ③ 계약 갱신 시 임료 증액은 주택임대차보호법 제7조에 따라 5%를 초과할 수 없다.
+        </div>
+      </div>
+
+      <!-- 제3조: 목적물 인도 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">3</span>목적물 인도 및 용도</div>
+        <div class="clause-body">
+          ① 갑은 을에게 임대 목적물을 <span contenteditable="true">2026년 8월 1일</span>까지 현 상태로 인도한다.<br>
+          ② 을은 임대 목적물을 주거 목적으로만 사용하여야 하며, 갑의 서면 동의 없이 구조 변경, 전대(전세 재임대), 권리양도 등을 하여서는 아니 된다.<br>
+          ③ 입주 시 하자 발견 시 <span contenteditable="true">7</span>일 이내 갑에게 서면 통보하고, 미통보 시 임차인이 인지하고 인도받은 것으로 본다.
+        </div>
+      </div>
+
+      <!-- 제4조: 수선 및 유지 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">4</span>수선 및 유지 관리</div>
+        <div class="clause-body">
+          ① 갑은 임대 목적물의 파손·훼손에 대하여 민법 제623조에 따른 수선 의무를 부담한다. 단, <span contenteditable="true">50만원 미만</span>의 소액 수선은 을이 부담한다.<br>
+          ② 을의 고의·과실 또는 관리 소홀로 인한 파손은 을이 원상 복구하거나 수선 비용을 부담한다.<br>
+          ③ 을은 임차 기간 만료 시 임대 목적물을 원상으로 복구하여 반환하여야 한다. 단, 통상적인 마모·노후화는 제외한다.
+        </div>
+      </div>
+
+      <!-- 제5조: 전대 및 양도 금지 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">5</span>전대 및 권리 양도 금지</div>
+        <div class="clause-body">
+          을은 갑의 서면 동의 없이 임대 목적물을 제3자에게 전대하거나 임차권을 양도하지 아니한다. 이를 위반한 경우 갑은 이 계약을 즉시 해지할 수 있으며, 이로 인한 손해를 배상하여야 한다.
+        </div>
+      </div>
+
+      <!-- 제6조: 보증금 반환 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">6</span>보증금 반환 및 연체 이자</div>
+        <div class="clause-body">
+          ① 갑은 임대 기간 만료 또는 계약 해지 시 목적물 인도 완료와 동시에 보증금 전액을 을에게 반환하여야 한다.<br>
+          ② 월세를 <span contenteditable="true">2</span>개월 이상 연체한 경우 갑은 이 계약을 해지하고 즉시 명도를 청구할 수 있다.<br>
+          ③ 보증금 반환이 지연되는 경우 연체 기간에 대하여 연 <span contenteditable="true">12</span>%의 이자를 지급한다.<br>
+          ④ 을은 주택임대차보호법에 따른 우선변제권 및 대항력을 확보하기 위하여 입주 후 즉시 전입신고 및 확정일자를 받을 것을 권고한다.
+        </div>
+      </div>
+
+      <!-- 제7조: 임대인의 방문 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">7</span>임대인의 방문 및 점검</div>
+        <div class="clause-body">
+          갑은 임대 목적물을 점검·수리할 필요가 있는 경우 <span contenteditable="true">48</span>시간 이전에 을에게 통보한 후 방문할 수 있다. 긴급 수리 등 불가피한 경우에는 즉시 방문 가능하나, 을의 주거 평온을 최대한 존중한다.
+        </div>
+      </div>
+
+      <!-- 제8조: 계약 해지 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">8</span>계약 해지 및 위약금</div>
+        <div class="clause-body">
+          ① 을이 중도 해지할 경우: 계약금을 위약금으로 갑에게 지급하고, 잔금 반환 없이 계약을 해지한다.<br>
+          ② 갑이 중도 해지할 경우: 계약금의 2배를 위약금으로 을에게 지급하고 계약을 해지한다.<br>
+          ③ 다만, 쌍방 합의에 의한 해지, 천재지변, 법령에 의한 불가피한 경우는 위약금 규정을 적용하지 아니한다.
+        </div>
+      </div>
+
+      <!-- 제9조: 공과금 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">9</span>공과금 및 관리비</div>
+        <div class="clause-body">
+          임대 기간 중 발생하는 전기료, 수도료, 가스료, 통신료 등 개인 사용에 따른 공과금 및 아파트 관리비는 을이 부담한다. 재산세 등 목적물에 부과되는 세금은 갑이 부담한다.
+        </div>
+      </div>
+
+      <!-- 제10조: 임대인 변경 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">10</span>임대인 변경 및 매매</div>
+        <div class="clause-body">
+          ① 갑이 임대 기간 중 임대 목적물을 매매하거나 담보 제공하는 경우 을에게 사전에 서면 통보하여야 한다.<br>
+          ② 새로운 소유자는 본 임대차 계약을 승계하며, 을의 보증금 반환 의무를 부담한다.<br>
+          ③ 을이 주택임대차보호법에 따른 대항력을 갖춘 경우, 임대인 변경으로부터 보호된다.
+        </div>
+      </div>
+
+      <!-- 제11조: 특약 사항 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">11</span>특약 사항</div>
+        <div class="clause-body" contenteditable="true" style="min-height:20mm; border:1px dashed #D1FAE5; border-radius:4px; padding:3mm;">
+(특약 사항을 직접 입력하세요)
+예) 인테리어 공사 가능 범위, 반려동물 허용 여부, 주차 공간 지정, 에어컨·가전제품 포함 여부 등
+        </div>
+      </div>
+
+      <!-- 제12조: 분쟁 해결 -->
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">12</span>분쟁 해결</div>
+        <div class="clause-body">
+          이 계약과 관련한 분쟁은 주택임대차보호법, 민법 및 관련 법령에 따라 처리하며, 소송이 필요한 경우 임대 목적물 소재지를 관할하는 법원을 제1심 관할 법원으로 한다.
+        </div>
+      </div>
+
+      <!-- 서명 -->
+      <div class="sig-section">
+        <div class="sig-date">
+          위 계약 내용을 확인하고 계약 당사자가 서명·날인한다.<br>
+          <strong><span contenteditable="true">2026</span>년 <span contenteditable="true">07</span>월 <span contenteditable="true">16</span>일</strong>
+        </div>
+        <div class="sig-grid">
+          <div class="sig-party">
+            <div class="sig-party-title">임대인 (갑)</div>
+            <div style="position:relative;">
+              <div class="sig-field"><span class="sig-field-label">성 명</span><span class="sig-field-value f-lessor" contenteditable="true">홍임대</span></div>
+              <div class="sig-field"><span class="sig-field-label">주민번호</span><span class="sig-field-value" contenteditable="true">650315-1●●●●●●</span></div>
+              <div class="sig-field"><span class="sig-field-label">연락처</span><span class="sig-field-value" contenteditable="true">010-1234-5678</span></div>
+              <div class="sig-field"><span class="sig-field-label">주 소</span><span class="sig-field-value" contenteditable="true">서울 강남구 도곡동 789</span></div>
+              <div class="sig-field"><span class="sig-field-label">서 명</span><span class="sig-field-value" style="min-height:10mm;"></span></div>
+              <div class="sig-stamp">인</div>
+            </div>
+          </div>
+          <div class="sig-party">
+            <div class="sig-party-title">임차인 (을)</div>
+            <div style="position:relative;">
+              <div class="sig-field"><span class="sig-field-label">성 명</span><span class="sig-field-value f-lessee" contenteditable="true">김임차</span></div>
+              <div class="sig-field"><span class="sig-field-label">주민번호</span><span class="sig-field-value" contenteditable="true">920720-1●●●●●●</span></div>
+              <div class="sig-field"><span class="sig-field-label">연락처</span><span class="sig-field-value" contenteditable="true">010-9876-5432</span></div>
+              <div class="sig-field"><span class="sig-field-label">주 소</span><span class="sig-field-value" contenteditable="true">서울 서대문구 현재 거주지</span></div>
+              <div class="sig-field"><span class="sig-field-label">서 명</span><span class="sig-field-value" style="min-height:10mm;"></span></div>
+              <div class="sig-stamp">인</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 중개인 -->
+        <div class="witness-section">
+          <div class="witness-title">[ 개업공인중개사 (해당 시 작성) ]</div>
+          <div class="sig-grid">
+            <div>
+              <div class="sig-field"><span class="sig-field-label">사무소명</span><span class="sig-field-value" contenteditable="true">&nbsp;</span></div>
+              <div class="sig-field"><span class="sig-field-label">대표자</span><span class="sig-field-value" contenteditable="true">&nbsp;</span></div>
+            </div>
+            <div>
+              <div class="sig-field"><span class="sig-field-label">등록번호</span><span class="sig-field-value" contenteditable="true">&nbsp;</span></div>
+              <div class="sig-field"><span class="sig-field-label">서 명</span><span class="sig-field-value" style="min-height:10mm;"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="../assets/js/nav.js?v=3" defer></script>
+<script src="../assets/js/auth.js" defer></script>
+<script src="../assets/js/footer-inject.js" defer></script>
+
+<script>
+function syncField(sel, val) {
+  document.querySelectorAll(sel).forEach(function(el) { el.textContent = val; });
+}
+function uploadLogo(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('logoImg').src = e.target.result;
+    document.getElementById('logoImg').style.display = 'block';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+function setType(val) {
+  var title = document.getElementById('contractTitle');
+  var rentWrap = document.getElementById('rentWrap');
+  var jeonseRow = document.getElementById('jeonseAmtRow');
+  if (val === 'jeonse') {
+    title.textContent = '전세 임대차 계약서';
+    rentWrap.style.display = 'none';
+    jeonseRow.textContent = '월세: 해당 없음 (전세 계약)';
+  } else if (val === 'commercial') {
+    title.textContent = '상가 임대차 계약서';
+    rentWrap.style.display = '';
+    jeonseRow.textContent = '(상가임대차보호법 적용 여부 확인 필요)';
+  } else {
+    title.textContent = '주택 임대차 계약서';
+    rentWrap.style.display = '';
+    jeonseRow.textContent = '전세 보증금: 해당 없음 (월세 계약)';
+  }
+}
+(function() {
+  var d = new Date();
+  var str = d.getFullYear() + '. ' + String(d.getMonth()+1).padStart(2,'0') + '. ' + String(d.getDate()).padStart(2,'0') + '.';
+  var el = document.getElementById('docDate');
+  if (el) el.textContent = str;
+})();
+</script>
+</body>
+</html>

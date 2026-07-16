@@ -1,0 +1,680 @@
+<!-- 이력서 온라인 작성 및 인쇄/PDF 다운로드 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이력서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+/* ── 공통 레이아웃 ── */
+.form-page-wrap {
+  max-width: 1280px; margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+/* ── 좌측 컨트롤 패널 ── */
+.ctrl-panel {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 18px; padding: 1.5rem;
+  position: sticky; top: 80px;
+}
+.ctrl-panel h2 {
+  font-size: 1rem; font-weight: 800; color: var(--dark);
+  margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.ctrl-section { margin-bottom: 1.4rem; }
+.ctrl-section label {
+  display: block; font-size: 0.78rem; font-weight: 700;
+  color: var(--text2); margin-bottom: 0.3rem;
+}
+.ctrl-section input[type="text"],
+.ctrl-section input[type="color"] {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 0.85rem; color: var(--dark);
+  background: var(--cream);
+}
+.ctrl-section input[type="color"] { height: 38px; padding: 3px 6px; cursor: pointer; }
+.ctrl-file-btn {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 9px 14px; background: var(--cream);
+  border: 1px dashed var(--border); border-radius: 8px;
+  cursor: pointer; font-size: 0.82rem; color: var(--text2);
+  transition: border-color .15s;
+}
+.ctrl-file-btn:hover { border-color: var(--primary); color: var(--primary); }
+.ctrl-file-btn input { display: none; }
+.ctrl-divider { height: 1px; background: var(--border); margin: 1.2rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: #1E2B4A; color: #fff;
+  border: none; border-radius: 12px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: opacity .15s; display: flex; align-items: center;
+  justify-content: center; gap: 0.5rem;
+}
+.print-btn:hover { opacity: 0.88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: 0.6rem;
+  background: none; border: 1px solid var(--border);
+  border-radius: 10px; font-size: 0.82rem; color: var(--text2);
+  cursor: pointer; transition: border-color .15s;
+}
+.reset-btn:hover { border-color: #EF4444; color: #EF4444; }
+.tip-box {
+  background: #FFFBEB; border: 1px solid #FCD34D;
+  border-radius: 10px; padding: 0.8rem 1rem;
+  font-size: 0.77rem; color: #78350F; line-height: 1.65;
+  margin-top: 0.8rem;
+}
+
+/* ── A4 문서 컨테이너 ── */
+.doc-wrap {
+  background: #E5E7EB;
+  border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center; gap: 2rem;
+}
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  border-radius: 2px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── 이력서 레이아웃 ── */
+.cv-sidebar {
+  width: 68mm; min-height: 297mm;
+  background: var(--cv-primary, #1E2B4A);
+  flex-shrink: 0;
+  display: flex; flex-direction: column;
+  padding: 0 0 2rem;
+}
+.cv-main {
+  flex: 1; padding: 10mm 10mm 10mm 8mm;
+  display: flex; flex-direction: column;
+}
+
+/* ── 사이드바 상단 헤더 ── */
+.cv-photo-wrap {
+  background: rgba(255,255,255,0.08);
+  padding: 10mm 6mm 8mm;
+  display: flex; flex-direction: column; align-items: center;
+}
+.cv-photo {
+  width: 28mm; height: 28mm; border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.3);
+  object-fit: cover;
+  background: rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; cursor: pointer; position: relative;
+}
+.cv-photo img { width: 100%; height: 100%; object-fit: cover; }
+.cv-photo-hint {
+  font-size: 7pt; color: rgba(255,255,255,0.4);
+  margin-top: 5px; text-align: center;
+}
+.cv-logo-wrap {
+  padding: 5mm 6mm 3mm;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.cv-logo {
+  max-height: 20px; max-width: 90%; object-fit: contain; display: block;
+}
+.cv-logo-placeholder {
+  font-size: 7.5pt; color: rgba(255,255,255,0.28);
+  cursor: pointer;
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 4px; padding: 4px 8px; display: inline-block;
+}
+
+/* ── 사이드바 섹션 ── */
+.cv-sb-section { padding: 5mm 6mm 3mm; }
+.cv-sb-title {
+  font-size: 7pt; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--cv-accent, #F59E0B);
+  text-transform: uppercase; margin-bottom: 5px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.cv-sb-row {
+  display: flex; align-items: flex-start; gap: 5px;
+  margin-bottom: 4px;
+}
+.cv-sb-icon { font-size: 8pt; margin-top: 1px; flex-shrink: 0; }
+.cv-sb-text {
+  font-size: 8pt; color: rgba(255,255,255,0.8);
+  line-height: 1.5; word-break: break-all;
+}
+.cv-skill-bar-wrap { margin-bottom: 5px; }
+.cv-skill-name { font-size: 7.5pt; color: rgba(255,255,255,0.85); margin-bottom: 2px; }
+.cv-skill-bar {
+  height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px;
+}
+.cv-skill-fill {
+  height: 100%; border-radius: 2px;
+  background: var(--cv-accent, #F59E0B);
+}
+.cv-tag {
+  display: inline-block; background: rgba(255,255,255,0.12);
+  border-radius: 4px; padding: 2px 7px;
+  font-size: 7pt; color: rgba(255,255,255,0.8); margin: 2px 2px 2px 0;
+}
+
+/* ── 메인 섹션 ── */
+.cv-name-row { margin-bottom: 8mm; }
+.cv-name {
+  font-size: 20pt; font-weight: 900;
+  color: var(--cv-primary, #1E2B4A); line-height: 1.1;
+  margin-bottom: 2mm;
+}
+.cv-jobtitle {
+  font-size: 10pt; font-weight: 600;
+  color: var(--cv-accent, #F59E0B);
+  letter-spacing: 0.05em;
+}
+.cv-section { margin-bottom: 7mm; }
+.cv-section-title {
+  font-size: 9pt; font-weight: 900;
+  color: var(--cv-primary, #1E2B4A);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding-bottom: 2mm; margin-bottom: 3mm;
+  border-bottom: 2px solid var(--cv-accent, #F59E0B);
+  display: flex; align-items: center; gap: 0.4em;
+}
+.cv-entry { margin-bottom: 4mm; }
+.cv-entry-header {
+  display: flex; justify-content: space-between;
+  align-items: baseline; margin-bottom: 1mm;
+}
+.cv-entry-title { font-size: 9pt; font-weight: 800; color: #1F2937; }
+.cv-entry-period {
+  font-size: 7.5pt; color: #6B7280;
+  white-space: nowrap; flex-shrink: 0; margin-left: 4px;
+}
+.cv-entry-sub { font-size: 8pt; color: #4B5563; margin-bottom: 1mm; }
+.cv-entry-desc { font-size: 8pt; color: #6B7280; line-height: 1.6; }
+.cv-entry-desc ul { margin: 0; padding-left: 12px; }
+.cv-entry-desc li { margin-bottom: 1px; }
+.cv-summary {
+  font-size: 8.5pt; color: #4B5563; line-height: 1.75;
+  background: #F9FAFB; border-left: 3px solid var(--cv-accent, #F59E0B);
+  padding: 3mm 4mm; border-radius: 0 4px 4px 0; margin-bottom: 6mm;
+}
+
+/* ── 편집 가능 필드 스타일 ── */
+[contenteditable="true"] {
+  outline: none;
+  border-radius: 3px;
+  min-width: 20px;
+  display: inline-block;
+  cursor: text;
+  transition: background .15s, box-shadow .15s;
+}
+[contenteditable="true"]:hover {
+  background: rgba(245,158,11,0.12);
+  box-shadow: 0 0 0 2px rgba(245,158,11,0.2);
+}
+[contenteditable="true"]:focus {
+  background: rgba(245,158,11,0.15);
+  box-shadow: 0 0 0 2px rgba(245,158,11,0.45);
+}
+.cv-main [contenteditable="true"]:hover {
+  background: rgba(30,43,74,0.06);
+  box-shadow: 0 0 0 2px rgba(30,43,74,0.12);
+}
+.cv-main [contenteditable="true"]:focus {
+  background: rgba(30,43,74,0.08);
+  box-shadow: 0 0 0 2px rgba(30,43,74,0.25);
+}
+.block-edit {
+  display: block; width: 100%; min-height: 1em;
+}
+.edit-hint {
+  font-size: 0; /* 화면에서도 숨김 */
+}
+
+/* ── 동적 행 추가 버튼 ── */
+.add-row-btn {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 7.5pt; color: rgba(255,255,255,0.4);
+  cursor: pointer; margin-top: 4px; padding: 3px 6px;
+  border: 1px dashed rgba(255,255,255,0.2); border-radius: 4px;
+  background: none; transition: all .15s;
+}
+.add-row-btn:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.4); }
+.add-row-btn-main {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 7.5pt; color: #9CA3AF;
+  cursor: pointer; margin-top: 3mm; padding: 3px 8px;
+  border: 1px dashed #D1D5DB; border-radius: 4px;
+  background: none; transition: all .15s;
+}
+.add-row-btn-main:hover { color: #4B5563; border-color: #9CA3AF; }
+.del-btn {
+  font-size: 7pt; color: rgba(255,255,255,0.3);
+  cursor: pointer; margin-left: 4px;
+  background: none; border: none; padding: 0;
+  vertical-align: middle;
+}
+.del-btn:hover { color: #EF4444; }
+.del-btn-main {
+  font-size: 7pt; color: #D1D5DB;
+  cursor: pointer; margin-left: 4px;
+  background: none; border: none; padding: 0;
+  vertical-align: middle; float: right;
+}
+.del-btn-main:hover { color: #EF4444; }
+
+/* ── 페이지 헤더 ── */
+.page-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+}
+.page-header h1 { font-size: 1.4rem; font-weight: 900; color: var(--dark); }
+.page-header p { font-size: 0.83rem; color: var(--text2); margin-top: 0.25rem; }
+.back-link {
+  font-size: 0.82rem; color: var(--text2); text-decoration: none;
+  display: flex; align-items: center; gap: 0.3rem;
+  padding: 7px 14px; border: 1px solid var(--border); border-radius: 8px;
+  transition: border-color .15s;
+}
+.back-link:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ── 스킬 레벨 ── */
+.skill-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.skill-level-btns { display: flex; gap: 2px; }
+.slvl { width: 12px; height: 5px; border-radius: 2px; background: rgba(255,255,255,0.15); cursor: pointer; border: none; padding: 0; }
+.slvl.on { background: var(--cv-accent, #F59E0B); }
+
+/* ── 인쇄 전용 CSS ── */
+@media print {
+  body { background: #fff !important; }
+  .ctrl-panel, .doc-wrap > *:not(.a4-page), .page-header, script,
+  .add-row-btn, .add-row-btn-main, .del-btn, .del-btn-main,
+  .cv-photo-hint, .cv-logo-placeholder,
+  #navBar, nav, footer, .site-nav, .site-footer { display: none !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; margin: 0 !important; }
+  .doc-wrap { background: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .a4-page {
+    width: 100% !important; min-height: unset !important;
+    box-shadow: none !important; border-radius: 0 !important;
+    page-break-after: always;
+  }
+  [contenteditable="true"] {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  @page { size: A4; margin: 0; }
+}
+
+@media (max-width: 900px) {
+  .form-page-wrap { grid-template-columns: 1fr; }
+  .ctrl-panel { position: static; }
+  .a4-page { width: 100%; transform: scale(0.75); transform-origin: top left; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+
+  <!-- ── 좌측 컨트롤 패널 ── -->
+  <div class="ctrl-panel" id="ctrlPanel">
+    <h2>⚙ 이력서 설정</h2>
+
+    <div class="ctrl-section">
+      <label>메인 컬러</label>
+      <input type="color" id="colorPrimary" value="#1E2B4A" oninput="applyColor('primary', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>포인트 컬러</label>
+      <input type="color" id="colorAccent" value="#F59E0B" oninput="applyColor('accent', this.value)">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="ctrl-section">
+      <label>증명사진 업로드</label>
+      <label class="ctrl-file-btn">
+        📷 사진 선택
+        <input type="file" accept="image/*" onchange="uploadPhoto(this)">
+      </label>
+    </div>
+    <div class="ctrl-section">
+      <label>회사/학교 로고 (좌측 하단)</label>
+      <label class="ctrl-file-btn">
+        🏢 로고 선택
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+      </label>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="if(confirm('초기화하시겠습니까?'))location.reload()">↺ 초기화</button>
+
+    <div class="tip-box">
+      💡 <strong>PDF 저장 방법</strong><br>
+      인쇄 버튼 클릭 → 프린터를 <strong>"PDF로 저장"</strong> 선택 → 저장<br><br>
+      📝 각 항목을 <strong>직접 클릭</strong>해서 편집할 수 있습니다.
+    </div>
+  </div>
+
+  <!-- ── A4 문서 영역 ── -->
+  <div class="doc-wrap">
+    <div style="text-align:center; font-size:0.78rem; color:#9CA3AF; margin-bottom:0.5rem;">
+      ✏ 문서를 직접 클릭하여 내용을 편집하세요
+    </div>
+
+    <div class="a4-page" id="resumeDoc">
+
+      <!-- 사이드바 -->
+      <div class="cv-sidebar">
+
+        <!-- 사진 -->
+        <div class="cv-photo-wrap">
+          <div class="cv-photo" id="photoArea" onclick="document.getElementById('photoInput').click()">
+            <img id="photoImg" src="" alt="" style="display:none;">
+            <span id="photoPlaceholder" style="font-size:22pt;">👤</span>
+          </div>
+          <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="uploadPhoto(this)">
+          <div class="cv-photo-hint">클릭하여 사진 추가</div>
+        </div>
+
+        <!-- 로고 -->
+        <div class="cv-logo-wrap">
+          <div class="cv-logo-placeholder" id="logoPlaceholder" onclick="document.getElementById('logoInput').click()">+ 로고 추가</div>
+          <img id="logoImg" class="cv-logo" src="" alt="" style="display:none;">
+          <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="uploadLogo(this)">
+        </div>
+
+        <!-- 연락처 -->
+        <div class="cv-sb-section">
+          <div class="cv-sb-title">연락처</div>
+          <div id="contactList">
+            <div class="cv-sb-row">
+              <span class="cv-sb-icon">📱</span>
+              <span class="cv-sb-text" contenteditable="true">010-0000-0000</span>
+            </div>
+            <div class="cv-sb-row">
+              <span class="cv-sb-icon">✉</span>
+              <span class="cv-sb-text" contenteditable="true">your@email.com</span>
+            </div>
+            <div class="cv-sb-row">
+              <span class="cv-sb-icon">🏠</span>
+              <span class="cv-sb-text" contenteditable="true">서울시 강남구</span>
+            </div>
+            <div class="cv-sb-row">
+              <span class="cv-sb-icon">🔗</span>
+              <span class="cv-sb-text" contenteditable="true">linkedin.com/in/yourname</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 핵심 역량 -->
+        <div class="cv-sb-section">
+          <div class="cv-sb-title">핵심 역량</div>
+          <div id="skillList">
+            <div class="cv-skill-bar-wrap skill-row">
+              <div style="flex:1">
+                <div class="cv-skill-name" contenteditable="true">프로젝트 관리</div>
+                <div class="cv-skill-bar"><div class="cv-skill-fill" style="width:90%"></div></div>
+              </div>
+              <button class="del-btn" onclick="this.parentNode.remove()">✕</button>
+            </div>
+            <div class="cv-skill-bar-wrap skill-row">
+              <div style="flex:1">
+                <div class="cv-skill-name" contenteditable="true">데이터 분석</div>
+                <div class="cv-skill-bar"><div class="cv-skill-fill" style="width:80%"></div></div>
+              </div>
+              <button class="del-btn" onclick="this.parentNode.remove()">✕</button>
+            </div>
+            <div class="cv-skill-bar-wrap skill-row">
+              <div style="flex:1">
+                <div class="cv-skill-name" contenteditable="true">팀 리더십</div>
+                <div class="cv-skill-bar"><div class="cv-skill-fill" style="width:85%"></div></div>
+              </div>
+              <button class="del-btn" onclick="this.parentNode.remove()">✕</button>
+            </div>
+            <div class="cv-skill-bar-wrap skill-row">
+              <div style="flex:1">
+                <div class="cv-skill-name" contenteditable="true">커뮤니케이션</div>
+                <div class="cv-skill-bar"><div class="cv-skill-fill" style="width:75%"></div></div>
+              </div>
+              <button class="del-btn" onclick="this.parentNode.remove()">✕</button>
+            </div>
+          </div>
+          <button class="add-row-btn" onclick="addSkill()">+ 역량 추가</button>
+        </div>
+
+        <!-- 언어 -->
+        <div class="cv-sb-section">
+          <div class="cv-sb-title">언어</div>
+          <div id="langList">
+            <div class="cv-sb-row">
+              <span class="cv-sb-text" contenteditable="true">한국어</span>
+              <span class="cv-tag">원어민</span>
+              <button class="del-btn" onclick="this.parentNode.remove()">✕</button>
+            </div>
+            <div class="cv-sb-row">
+              <span class="cv-sb-text" contenteditable="true">영어</span>
+              <span class="cv-tag" contenteditable="true">비즈니스</span>
+              <button class="del-btn" onclick="this.parentNode.remove()">✕</button>
+            </div>
+          </div>
+          <button class="add-row-btn" onclick="addLang()">+ 언어 추가</button>
+        </div>
+
+        <!-- 자격증 -->
+        <div class="cv-sb-section">
+          <div class="cv-sb-title">자격증</div>
+          <div id="certList">
+            <div class="cv-sb-row">
+              <span class="cv-sb-icon">🏅</span>
+              <span class="cv-sb-text" contenteditable="true">정보처리기사 (2022)</span>
+              <button class="del-btn" onclick="this.parentNode.remove()">✕</button>
+            </div>
+            <div class="cv-sb-row">
+              <span class="cv-sb-icon">🏅</span>
+              <span class="cv-sb-text" contenteditable="true">TOEIC 900 (2023)</span>
+              <button class="del-btn" onclick="this.parentNode.remove()">✕</button>
+            </div>
+          </div>
+          <button class="add-row-btn" onclick="addCert()">+ 자격증 추가</button>
+        </div>
+
+        <!-- 생년월일 -->
+        <div class="cv-sb-section">
+          <div class="cv-sb-title">기본 정보</div>
+          <div class="cv-sb-row">
+            <span class="cv-sb-icon">🎂</span>
+            <span class="cv-sb-text" contenteditable="true">1990. 01. 01</span>
+          </div>
+          <div class="cv-sb-row">
+            <span class="cv-sb-icon">🪪</span>
+            <span class="cv-sb-text" contenteditable="true">병역필 (육군 만기전역)</span>
+          </div>
+        </div>
+
+      </div><!-- /sidebar -->
+
+      <!-- 메인 -->
+      <div class="cv-main">
+
+        <!-- 이름 / 직책 -->
+        <div class="cv-name-row">
+          <div class="cv-name block-edit" contenteditable="true">홍 길 동</div>
+          <div class="cv-jobtitle block-edit" contenteditable="true">Senior Product Manager</div>
+        </div>
+
+        <!-- 자기소개 -->
+        <div class="cv-section">
+          <div class="cv-section-title">✦ 자기소개</div>
+          <div class="cv-summary block-edit" contenteditable="true">10년간 B2B SaaS 제품 기획 및 개발을 이끌어 온 PM입니다. 데이터 기반 의사결정과 크로스펑셔널 팀 협업에 강점이 있으며, 고객 중심 사고를 바탕으로 실질적인 비즈니스 성과를 만들어 왔습니다. 팀원들의 성장을 지원하는 서번트 리더십을 지향합니다.</div>
+        </div>
+
+        <!-- 경력사항 -->
+        <div class="cv-section">
+          <div class="cv-section-title">💼 경력사항</div>
+          <div id="expList">
+            <div class="cv-entry" data-entry="exp">
+              <button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button>
+              <div class="cv-entry-header">
+                <span class="cv-entry-title" contenteditable="true">ABC Tech · 수석 PM</span>
+                <span class="cv-entry-period" contenteditable="true">2020.03 — 현재</span>
+              </div>
+              <div class="cv-entry-sub" contenteditable="true">서울 · 정규직</div>
+              <div class="cv-entry-desc block-edit" contenteditable="true">• B2B CRM 제품 로드맵 수립 및 3개 신기능 출시 (MAU +42%)
+• 개발·디자인·마케팅 12인 팀 리드, 분기 OKR 달성율 94%
+• 국내외 주요 고객사 100곳 대상 QBR 주도, NPS 72점 달성</div>
+            </div>
+            <div class="cv-entry" data-entry="exp">
+              <button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button>
+              <div class="cv-entry-header">
+                <span class="cv-entry-title" contenteditable="true">XYZ 스타트업 · PM</span>
+                <span class="cv-entry-period" contenteditable="true">2017.06 — 2020.02</span>
+              </div>
+              <div class="cv-entry-sub" contenteditable="true">서울 · 정규직</div>
+              <div class="cv-entry-desc block-edit" contenteditable="true">• 커머스 플랫폼 MVP 기획·출시, 시리즈 A 투자 유치($3M) 기여
+• 고객 인터뷰 200건 수행, Pain Point 기반 제품 개선 사이클 운영</div>
+            </div>
+          </div>
+          <button class="add-row-btn-main" onclick="addExp()">+ 경력 추가</button>
+        </div>
+
+        <!-- 학력사항 -->
+        <div class="cv-section">
+          <div class="cv-section-title">🎓 학력사항</div>
+          <div id="eduList">
+            <div class="cv-entry" data-entry="edu">
+              <button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button>
+              <div class="cv-entry-header">
+                <span class="cv-entry-title" contenteditable="true">한국대학교 · 경영학과</span>
+                <span class="cv-entry-period" contenteditable="true">2009.03 — 2013.02</span>
+              </div>
+              <div class="cv-entry-sub" contenteditable="true">학사 졸업 · 학점 3.85 / 4.5</div>
+            </div>
+          </div>
+          <button class="add-row-btn-main" onclick="addEdu()">+ 학력 추가</button>
+        </div>
+
+        <!-- 수상/활동 -->
+        <div class="cv-section">
+          <div class="cv-section-title">🏆 수상 및 활동</div>
+          <div id="awardList">
+            <div class="cv-entry">
+              <button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button>
+              <div class="cv-entry-header">
+                <span class="cv-entry-title" contenteditable="true">2023 대한민국 PM 어워드 — 최우수상</span>
+                <span class="cv-entry-period" contenteditable="true">2023.11</span>
+              </div>
+              <div class="cv-entry-desc" contenteditable="true">전국 PM 500인 대상 제품 혁신 사례 발표, 대상 수상</div>
+            </div>
+          </div>
+          <button class="add-row-btn-main" onclick="addAward()">+ 항목 추가</button>
+        </div>
+
+      </div><!-- /cv-main -->
+
+    </div><!-- /a4-page -->
+  </div><!-- /doc-wrap -->
+
+</div><!-- /form-page-wrap -->
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="../assets/js/nav.js?v=3" defer></script>
+<script src="../assets/js/auth.js" defer></script>
+<script src="../assets/js/footer-inject.js" defer></script>
+
+<script>
+// ── 컬러 테마 적용 ──────────────────────────────────────────────
+function applyColor(type, val) {
+  var root = document.getElementById('resumeDoc');
+  if (type === 'primary') {
+    root.style.setProperty('--cv-primary', val);
+    document.querySelectorAll('.cv-sidebar').forEach(function(el) { el.style.background = val; });
+  } else {
+    root.style.setProperty('--cv-accent', val);
+    document.querySelectorAll('.cv-skill-fill, .cv-section-title').forEach(function(el) {
+      if (el.classList.contains('cv-skill-fill')) el.style.background = val;
+      else el.style.borderBottomColor = val;
+    });
+    document.querySelectorAll('.cv-jobtitle').forEach(function(el) { el.style.color = val; });
+    document.querySelectorAll('.cv-summary').forEach(function(el) { el.style.borderLeftColor = val; });
+  }
+}
+
+// ── 사진 업로드 ──────────────────────────────────────────────────
+function uploadPhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('photoImg');
+    img.src = e.target.result; img.style.display = 'block';
+    document.getElementById('photoPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ── 로고 업로드 ──────────────────────────────────────────────────
+function uploadLogo(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('logoImg');
+    img.src = e.target.result; img.style.display = 'block';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ── 동적 행 추가 ────────────────────────────────────────────────
+function addSkill() {
+  var div = document.createElement('div');
+  div.className = 'cv-skill-bar-wrap skill-row';
+  div.innerHTML = '<div style="flex:1"><div class="cv-skill-name" contenteditable="true">스킬명</div><div class="cv-skill-bar"><div class="cv-skill-fill" style="width:70%"></div></div></div><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
+  document.getElementById('skillList').appendChild(div);
+}
+function addLang() {
+  var div = document.createElement('div');
+  div.className = 'cv-sb-row';
+  div.innerHTML = '<span class="cv-sb-text" contenteditable="true">언어명</span><span class="cv-tag" contenteditable="true">수준</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
+  document.getElementById('langList').appendChild(div);
+}
+function addCert() {
+  var div = document.createElement('div');
+  div.className = 'cv-sb-row';
+  div.innerHTML = '<span class="cv-sb-icon">🏅</span><span class="cv-sb-text" contenteditable="true">자격증명 (취득연도)</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
+  document.getElementById('certList').appendChild(div);
+}
+function addExp() {
+  var div = document.createElement('div');
+  div.className = 'cv-entry';
+  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">회사명 · 직책</span><span class="cv-entry-period" contenteditable="true">YYYY.MM — YYYY.MM</span></div><div class="cv-entry-sub" contenteditable="true">지역 · 고용형태</div><div class="cv-entry-desc block-edit" contenteditable="true">• 주요 업무 내용을 입력하세요</div>';
+  document.getElementById('expList').appendChild(div);
+}
+function addEdu() {
+  var div = document.createElement('div');
+  div.className = 'cv-entry';
+  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">학교명 · 학과</span><span class="cv-entry-period" contenteditable="true">YYYY.MM — YYYY.MM</span></div><div class="cv-entry-sub" contenteditable="true">학사/석사/박사 졸업 · 학점 0.00/4.5</div>';
+  document.getElementById('eduList').appendChild(div);
+}
+function addAward() {
+  var div = document.createElement('div');
+  div.className = 'cv-entry';
+  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">수상명 / 활동명</span><span class="cv-entry-period" contenteditable="true">YYYY.MM</span></div><div class="cv-entry-desc" contenteditable="true">내용을 입력하세요</div>';
+  document.getElementById('awardList').appendChild(div);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!-- 차용증 온라인 작성 및 인쇄/PDF 다운로드 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>차용증 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+.form-page-wrap {
+  max-width: 1180px; margin: 0 auto; padding: 2rem 1.5rem 5rem;
+  display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;
+}
+.ctrl-panel {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 18px; padding: 1.5rem; position: sticky; top: 80px;
+}
+.ctrl-panel h2 { font-size: 1rem; font-weight: 800; color: var(--dark); margin-bottom: 1.2rem; }
+.ctrl-section { margin-bottom: 1rem; }
+.ctrl-section label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text2); margin-bottom: 0.3rem; }
+.ctrl-section input, .ctrl-section select {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 0.85rem; color: var(--dark); background: var(--cream);
+}
+.ctrl-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.print-btn {
+  width: 100%; padding: 13px; background: #7C3AED; color: #fff;
+  border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+}
+.print-btn:hover { opacity: 0.88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: 0.6rem;
+  background: none; border: 1px solid var(--border);
+  border-radius: 10px; font-size: 0.82rem; color: var(--text2); cursor: pointer;
+}
+.tip-box {
+  background: #F5F3FF; border: 1px solid #C4B5FD; border-radius: 10px;
+  padding: 0.8rem 1rem; font-size: 0.77rem; color: #4C1D95; line-height: 1.65; margin-top: 0.8rem;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.82rem; color: var(--text2); text-decoration: none;
+  padding: 7px 14px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem;
+}
+.doc-wrap {
+  background: #EDE9FE; border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+.a4-page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18); border-radius: 2px;
+  padding: 20mm 18mm 24mm;
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 10.5pt; color: #111; line-height: 1.8;
+}
+
+/* 상단 장식 */
+.iou-top-bar {
+  height: 5mm; background: linear-gradient(90deg, #7C3AED, #A855F7, #7C3AED);
+  border-radius: 2px 2px 0 0; margin: -20mm -18mm 12mm;
+}
+
+/* 헤더 */
+.iou-header { text-align: center; margin-bottom: 10mm; }
+.iou-logo-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6mm; }
+.iou-logo { max-height: 30px; max-width: 120px; object-fit: contain; }
+.iou-logo-placeholder {
+  font-size: 7pt; color: #9CA3AF; border: 1px dashed #D1D5DB;
+  border-radius: 4px; padding: 4px 10px; cursor: pointer; display: inline-block;
+}
+.iou-doc-no { font-size: 7.5pt; color: #6B7280; text-align: right; }
+.iou-title {
+  font-size: 24pt; font-weight: 900; color: #7C3AED;
+  letter-spacing: 0.3em; margin-bottom: 2mm;
+}
+.iou-subtitle { font-size: 8pt; color: #9CA3AF; letter-spacing: 0.05em; }
+
+/* 차용 금액 강조 박스 */
+.amount-box {
+  border: 2.5px solid #7C3AED; border-radius: 8px;
+  padding: 7mm 8mm; margin-bottom: 8mm; text-align: center;
+}
+.amount-label { font-size: 9pt; color: #6B7280; margin-bottom: 2mm; }
+.amount-figure {
+  font-size: 20pt; font-weight: 900; color: #7C3AED;
+  letter-spacing: 0.05em; margin-bottom: 1mm;
+}
+.amount-korean { font-size: 10pt; color: #374151; }
+
+/* 당사자 박스 */
+.parties-box {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5mm;
+  margin-bottom: 8mm;
+}
+.party-card {
+  border: 1px solid #D1D5DB; border-radius: 5px; padding: 4mm 5mm;
+}
+.party-card-title {
+  font-size: 8pt; font-weight: 700; color: #7C3AED;
+  text-align: center; margin-bottom: 3mm; padding-bottom: 1.5mm;
+  border-bottom: 1px solid #EDE9FE;
+}
+.party-row { font-size: 9pt; margin-bottom: 1.5mm; display: flex; gap: 3mm; }
+.party-label { color: #6B7280; width: 18mm; flex-shrink: 0; }
+.party-value { flex: 1; border-bottom: 1px solid #E5E7EB; }
+
+/* 조항 */
+.iou-clause { margin-bottom: 6mm; font-size: 10pt; line-height: 1.85; }
+.iou-clause-title {
+  font-size: 10pt; font-weight: 900; color: #7C3AED;
+  margin-bottom: 2mm; display: flex; align-items: center; gap: 0.4em;
+}
+.iou-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #7C3AED; color: #fff; font-size: 7.5pt; font-weight: 700; flex-shrink: 0;
+}
+.iou-body { color: #1F2937; font-size: 9.5pt; }
+
+/* 확인란 */
+.confirm-box {
+  background: #F5F3FF; border: 1.5px solid #C4B5FD;
+  border-radius: 6px; padding: 5mm 6mm; margin: 6mm 0;
+  font-size: 9pt; line-height: 1.75;
+}
+
+/* 서명란 */
+.iou-sig { margin-top: 10mm; padding-top: 6mm; border-top: 2px solid #7C3AED; }
+.iou-sig-date { text-align: center; font-size: 10pt; margin-bottom: 7mm; color: #374151; }
+.iou-sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+.iou-sig-party { border: 1px solid #D1D5DB; border-radius: 4px; padding: 4mm; position: relative; }
+.iou-sig-party-title {
+  font-size: 9pt; font-weight: 700; color: #7C3AED; text-align: center;
+  margin-bottom: 3mm; padding-bottom: 2mm; border-bottom: 1px solid #EDE9FE;
+}
+.sig-field { display: flex; align-items: center; gap: 3mm; margin-bottom: 2.5mm; font-size: 8.5pt; }
+.sig-field-label { color: #6B7280; width: 16mm; flex-shrink: 0; }
+.sig-field-value { flex: 1; border-bottom: 1px solid #D1D5DB; min-height: 6mm; padding: 0 2mm; }
+.sig-stamp {
+  float: right; margin-top: -9mm;
+  width: 15mm; height: 15mm; border-radius: 50%;
+  border: 2px solid #EF4444; display: flex; align-items: center; justify-content: center;
+  font-size: 6pt; color: #EF4444; font-weight: 700; opacity: 0.45;
+}
+
+/* 하단 장식 */
+.iou-bottom-bar {
+  height: 3mm; background: linear-gradient(90deg, #7C3AED, #A855F7, #7C3AED);
+  border-radius: 0 0 2px 2px; margin: 14mm -18mm -24mm;
+  opacity: 0.4;
+}
+
+[contenteditable="true"] {
+  outline: none; border-radius: 3px; min-width: 10px; cursor: text;
+  transition: background .15s, box-shadow .15s;
+}
+[contenteditable="true"]:hover { background: rgba(124,58,237,0.08); box-shadow: 0 0 0 1.5px rgba(124,58,237,0.25); }
+[contenteditable="true"]:focus { background: rgba(124,58,237,0.12); box-shadow: 0 0 0 2px rgba(124,58,237,0.4); }
+
+@media print {
+  body { background: #fff !important; }
+  .ctrl-panel, .doc-wrap > *:not(.a4-page), .back-link,
+  nav, footer, .site-nav, .site-footer { display: none !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-wrap { background: none !important; padding: 0 !important; }
+  .a4-page { width: 100% !important; min-height: unset !important; box-shadow: none !important; padding: 18mm 14mm !important; }
+  [contenteditable="true"] { background: transparent !important; box-shadow: none !important; }
+  .iou-logo-placeholder { display: none !important; }
+  @page { size: A4; margin: 0; }
+}
+@media (max-width: 900px) {
+  .form-page-wrap { grid-template-columns: 1fr; }
+  .ctrl-panel { position: static; }
+  .a4-page { width: 100%; font-size: 8.5pt; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <div class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>⚙ 차용증 설정</h2>
+    <div class="ctrl-section">
+      <label>로고 업로드 (선택)</label>
+      <label style="display:flex;align-items:center;gap:.5rem;padding:9px 14px;background:var(--cream);border:1px dashed var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;color:var(--text2);">
+        🏢 로고 선택<input type="file" accept="image/*" style="display:none" onchange="uploadLogo(this)">
+      </label>
+    </div>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:.7rem;">빠른 입력</div>
+    <div class="ctrl-section">
+      <label>차용 금액 (숫자)</label>
+      <input type="text" placeholder="10,000,000" oninput="updateAmount(this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>차용인 (빌린 사람)</label>
+      <input type="text" placeholder="홍길동" oninput="syncField('.f-borrower', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>대여인 (빌려준 사람)</label>
+      <input type="text" placeholder="김대여" oninput="syncField('.f-lender', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>이자율 (%/년)</label>
+      <input type="text" placeholder="연 5%" oninput="syncField('.f-rate', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>변제 기일</label>
+      <input type="text" placeholder="2027년 07월 15일" oninput="syncField('.f-duedate', this.value)">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="if(confirm('초기화?'))location.reload()">↺ 초기화</button>
+    <div class="tip-box">
+      ⚠ <strong>법적 효력 강화 방법</strong><br>
+      ① 공증사무소에서 <strong>공증</strong> 받기<br>
+      ② 이자 약정 시 <strong>이자제한법</strong> 상한(연 20%) 준수<br>
+      ③ 금융거래는 반드시 <strong>계좌이체</strong>로 증거 남기기<br>
+      ④ 작성 후 <strong>각 1부씩</strong> 보관
+    </div>
+  </div>
+
+  <div class="doc-wrap">
+    <div style="text-align:center;font-size:0.78rem;color:#7C3AED;margin-bottom:.5rem;">✏ 문서를 직접 클릭하여 편집하세요</div>
+
+    <div class="a4-page" id="iouDoc">
+      <div class="iou-top-bar"></div>
+
+      <!-- 헤더 -->
+      <div class="iou-header">
+        <div class="iou-logo-row">
+          <div>
+            <div class="iou-logo-placeholder" id="logoPlaceholder" onclick="document.getElementById('logoInputDoc').click()">+ 로고 추가</div>
+            <img id="logoImg" class="iou-logo" src="" alt="" style="display:none;">
+            <input type="file" id="logoInputDoc" accept="image/*" style="display:none" onchange="uploadLogo(this)">
+          </div>
+          <div class="iou-doc-no">
+            문서번호: <span contenteditable="true">IOU-2026-001</span><br>
+            작성일: <span contenteditable="true" id="docDate">2026. 07. 16.</span>
+          </div>
+        </div>
+        <div class="iou-title">차 용 증</div>
+        <div class="iou-subtitle">LOAN CERTIFICATE · PROMISSORY NOTE</div>
+      </div>
+
+      <!-- 차용 금액 강조 -->
+      <div class="amount-box">
+        <div class="amount-label">차 용 금 액</div>
+        <div class="amount-figure" id="amountFigure">금 10,000,000원</div>
+        <div class="amount-korean" id="amountKorean">(금일천만원정)</div>
+      </div>
+
+      <!-- 당사자 -->
+      <div class="parties-box">
+        <div class="party-card">
+          <div class="party-card-title">차용인 (을) — 빌린 사람</div>
+          <div class="party-row"><span class="party-label">성 명</span><span class="party-value f-borrower" contenteditable="true">홍길동</span></div>
+          <div class="party-row"><span class="party-label">생년월일</span><span class="party-value" contenteditable="true">1990. 01. 01.</span></div>
+          <div class="party-row"><span class="party-label">주민번호</span><span class="party-value" contenteditable="true">900101-1●●●●●●</span></div>
+          <div class="party-row"><span class="party-label">주 소</span><span class="party-value" contenteditable="true">서울시 강남구 역삼동 123</span></div>
+          <div class="party-row"><span class="party-label">연락처</span><span class="party-value" contenteditable="true">010-0000-0000</span></div>
+        </div>
+        <div class="party-card">
+          <div class="party-card-title">대여인 (갑) — 빌려준 사람</div>
+          <div class="party-row"><span class="party-label">성 명</span><span class="party-value f-lender" contenteditable="true">김대여</span></div>
+          <div class="party-row"><span class="party-label">생년월일</span><span class="party-value" contenteditable="true">1965. 05. 15.</span></div>
+          <div class="party-row"><span class="party-label">주민번호</span><span class="party-value" contenteditable="true">650515-1●●●●●●</span></div>
+          <div class="party-row"><span class="party-label">주 소</span><span class="party-value" contenteditable="true">서울시 서초구 서초동 456</span></div>
+          <div class="party-row"><span class="party-label">연락처</span><span class="party-value" contenteditable="true">010-1234-5678</span></div>
+        </div>
+      </div>
+
+      <!-- 확인란 -->
+      <div class="confirm-box">
+        차용인(<span class="f-borrower" contenteditable="true">홍길동</span>, 이하 "을")은 대여인(<span class="f-lender" contenteditable="true">김대여</span>, 이하 "갑")으로부터 <span contenteditable="true" id="confDate">2026년 7월 16일</span>에 아래 금액을 정히 차용하였음을 확인하고, 다음 조건에 따라 성실히 변제할 것을 확약한다.
+      </div>
+
+      <!-- 조항 -->
+      <div class="iou-clause">
+        <div class="iou-clause-title"><span class="iou-num">1</span>차용 원금</div>
+        <div class="iou-body">
+          차용 원금: <strong><span contenteditable="true" id="clauseAmount">금 10,000,000원 (금일천만원정)</span></strong><br>
+          수령 방법: <span contenteditable="true">갑의 계좌이체 (국민은행 123-456-789012 김대여) 또는 현금</span><br>
+          수령 확인일: <span contenteditable="true">2026년 7월 16일</span>
+        </div>
+      </div>
+
+      <div class="iou-clause">
+        <div class="iou-clause-title"><span class="iou-num">2</span>이자</div>
+        <div class="iou-body">
+          ① 이자율: 연 <span contenteditable="true" class="f-rate">5</span>% (이자제한법 제2조에 따른 최고이자율 연 20% 이하)<br>
+          ② 이자 지급 방법: 매월 <span contenteditable="true">25</span>일에 갑의 지정 계좌(<span contenteditable="true">국민은행 123-456-789012</span>)로 지급<br>
+          ③ 이자 계산 시작일: <span contenteditable="true">2026년 7월 16일</span>부터 원금 전액 상환일까지<br>
+          ④ 무이자 약정 시: 별도 서면 합의에 의하며, 이자 관련 조항은 적용하지 아니한다.
+        </div>
+      </div>
+
+      <div class="iou-clause">
+        <div class="iou-clause-title"><span class="iou-num">3</span>변제 기일 및 방법</div>
+        <div class="iou-body">
+          ① 변제 기일: <strong><span contenteditable="true" class="f-duedate">2027년 7월 15일</span></strong>까지 원금 전액을 일시 상환한다.<br>
+          ② 변제 방법: 갑이 지정하는 계좌(<span contenteditable="true">국민은행 123-456-789012 김대여</span>)로 이체한다.<br>
+          ③ 분할 상환 시: 별도 <strong>상환 일정표</strong>를 첨부하고, 이 차용증과 동일한 효력을 갖는다.<br>
+          ④ 중도 상환: 을은 언제든지 중도 상환할 수 있으며, 중도 상환 시 이미 지급한 이자는 반환하지 아니한다.
+        </div>
+      </div>
+
+      <div class="iou-clause">
+        <div class="iou-clause-title"><span class="iou-num">4</span>기한 이익 상실</div>
+        <div class="iou-body">
+          을이 다음 각 호의 어느 하나에 해당하는 경우, 갑의 최고 없이 당연히 기한 이익을 상실하고 즉시 원금 및 이자 전액을 변제하여야 한다.<br>
+          &nbsp; ① 이자를 <span contenteditable="true">2</span>회 이상 연속 연체한 경우<br>
+          &nbsp; ② 강제집행, 가압류, 가처분 등의 결정을 받은 경우<br>
+          &nbsp; ③ 파산, 회생 신청을 한 경우 또는 그 결정을 받은 경우<br>
+          &nbsp; ④ 이 차용증상의 의무를 현저히 위반한 경우
+        </div>
+      </div>
+
+      <div class="iou-clause">
+        <div class="iou-clause-title"><span class="iou-num">5</span>연체 이자</div>
+        <div class="iou-body">
+          을이 원금 또는 이자를 변제 기일까지 지급하지 아니한 경우, 연체된 금액에 대하여 연체 기간 동안 연 <span contenteditable="true">20</span>%(이자제한법 상한)의 연체 이자를 지급한다.
+        </div>
+      </div>
+
+      <div class="iou-clause">
+        <div class="iou-clause-title"><span class="iou-num">6</span>담보 및 연대보증</div>
+        <div class="iou-body">
+          담보 제공 여부: <span contenteditable="true">해당 없음 (신용 대여) / 또는 아래 담보 내용 기재</span><br>
+          담보 내용: <span contenteditable="true">&nbsp;</span><br>
+          연대보증인: <span contenteditable="true">해당 없음 / 또는 성명·주민번호·주소 기재</span>
+        </div>
+      </div>
+
+      <div class="iou-clause">
+        <div class="iou-clause-title"><span class="iou-num">7</span>분쟁 해결</div>
+        <div class="iou-body">
+          이 차용증과 관련한 분쟁은 대한민국 법률에 따르며, 소송 시 갑의 주소지를 관할하는 법원을 제1심 관할 법원으로 한다. 갑은 을의 변제 불이행 시 이 차용증에 기하여 강제집행 절차를 밟을 수 있다.
+        </div>
+      </div>
+
+      <!-- 서명 -->
+      <div class="iou-sig">
+        <div class="iou-sig-date">
+          위 내용을 상호 확인하고 이 차용증을 2부 작성하여 각 1부씩 보관한다.<br>
+          <strong><span contenteditable="true">2026</span>년 <span contenteditable="true">07</span>월 <span contenteditable="true">16</span>일</strong>
+        </div>
+        <div class="iou-sig-grid">
+          <div class="iou-sig-party">
+            <div class="iou-sig-party-title">차용인 (을) — 빌린 사람</div>
+            <div class="sig-field"><span class="sig-field-label">성 명</span><span class="sig-field-value f-borrower" contenteditable="true">홍길동</span></div>
+            <div class="sig-field"><span class="sig-field-label">주민번호</span><span class="sig-field-value" contenteditable="true">900101-1●●●●●●</span></div>
+            <div class="sig-field"><span class="sig-field-label">주 소</span><span class="sig-field-value" contenteditable="true">서울시 강남구 역삼동 123</span></div>
+            <div class="sig-field"><span class="sig-field-label">서 명</span><span class="sig-field-value" style="min-height:11mm;"></span></div>
+            <div class="sig-stamp">인</div>
+          </div>
+          <div class="iou-sig-party">
+            <div class="iou-sig-party-title">대여인 (갑) — 빌려준 사람</div>
+            <div class="sig-field"><span class="sig-field-label">성 명</span><span class="sig-field-value f-lender" contenteditable="true">김대여</span></div>
+            <div class="sig-field"><span class="sig-field-label">주민번호</span><span class="sig-field-value" contenteditable="true">650515-1●●●●●●</span></div>
+            <div class="sig-field"><span class="sig-field-label">주 소</span><span class="sig-field-value" contenteditable="true">서울시 서초구 서초동 456</span></div>
+            <div class="sig-field"><span class="sig-field-label">서 명</span><span class="sig-field-value" style="min-height:11mm;"></span></div>
+            <div class="sig-stamp">인</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="iou-bottom-bar"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="../assets/js/nav.js?v=3" defer></script>
+<script src="../assets/js/auth.js" defer></script>
+<script src="../assets/js/footer-inject.js" defer></script>
+
+<script>
+var KOREAN_UNITS = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+var KOREAN_TEN = ['', '십', '백', '천'];
+var KOREAN_MAN = ['', '만', '억', '조'];
+function toKorean(num) {
+  if (isNaN(num) || num === 0) return '금영원정';
+  var result = '';
+  var groups = [];
+  while (num > 0) { groups.push(num % 10000); num = Math.floor(num / 10000); }
+  for (var g = groups.length - 1; g >= 0; g--) {
+    var group = groups[g];
+    if (group === 0) continue;
+    var part = '';
+    var thousands = Math.floor(group / 1000); var rem = group % 1000;
+    var hundreds = Math.floor(rem / 100); rem = rem % 100;
+    var tens = Math.floor(rem / 10); var ones = rem % 10;
+    if (thousands > 0) part += (thousands === 1 ? '' : KOREAN_UNITS[thousands]) + '천';
+    if (hundreds > 0) part += (hundreds === 1 ? '' : KOREAN_UNITS[hundreds]) + '백';
+    if (tens > 0) part += (tens === 1 ? '' : KOREAN_UNITS[tens]) + '십';
+    if (ones > 0) part += KOREAN_UNITS[ones];
+    result += part + KOREAN_MAN[g];
+  }
+  return '금' + result + '원정';
+}
+function updateAmount(val) {
+  var clean = val.replace(/[^0-9]/g, '');
+  var num = parseInt(clean) || 0;
+  var formatted = num.toLocaleString('ko-KR');
+  var korean = toKorean(num);
+  document.getElementById('amountFigure').textContent = '금 ' + formatted + '원';
+  document.getElementById('amountKorean').textContent = '(' + korean + ')';
+  document.getElementById('clauseAmount').textContent = '금 ' + formatted + '원 (' + korean + ')';
+}
+function syncField(sel, val) {
+  document.querySelectorAll(sel).forEach(function(el) { el.textContent = val; });
+}
+function uploadLogo(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('logoImg').src = e.target.result;
+    document.getElementById('logoImg').style.display = 'block';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+(function() {
+  var d = new Date();
+  var str = d.getFullYear() + '. ' + String(d.getMonth()+1).padStart(2,'0') + '. ' + String(d.getDate()).padStart(2,'0') + '.';
+  var el = document.getElementById('docDate');
+  if (el) el.textContent = str;
+  var confDate = d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
+  var el2 = document.getElementById('confDate');
+  if (el2) el2.textContent = confDate;
+})();
+</script>
+</body>
+</html>

@@ -1,487 +1,423 @@
+<!-- 서식 라이브러리 허브 페이지 — 온라인 작성·인쇄·PDF 지원 서식 카탈로그 -->
 <!DOCTYPE html>
-<!-- 서식 라이브러리 페이지 — 다국어(KO/EN/JA) 완전 지원 -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>서식 라이브러리 — Book Coupling</title>
+<title>서식 라이브러리 — 온라인 작성 · PDF 출력 | Book Coupling</title>
+<meta name="description" content="이력서, 근로계약서, 임대차계약서, 차용증 등 인기 서식을 온라인에서 직접 작성하고 PDF로 출력하세요. 전문가 수준의 디자인, 법적으로 완비된 내용.">
+<meta name="keywords" content="이력서 양식, 근로계약서 양식, 임대차계약서 양식, 차용증 양식, 서식 다운로드, PDF 출력, 온라인 서식">
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
 <link rel="stylesheet" href="assets/css/site.css">
+<style>
+/* ── Hero ── */
+.flib-hero {
+  background: linear-gradient(135deg, #0A0F1E 0%, #1A1040 55%, #0F1F3D 100%);
+  padding: 4.5rem 2rem 3rem; text-align: center; position: relative; overflow: hidden;
+}
+.flib-hero::before {
+  content: '';  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(99,91,255,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, rgba(245,158,11,0.14) 0%, transparent 50%);
+}
+.flib-hero-inner { position: relative; max-width: 720px; margin: 0 auto; }
+.flib-hero-badge {
+  display: inline-block; background: rgba(245,158,11,0.18);
+  border: 1px solid rgba(245,158,11,0.4); color: #FCD34D;
+  font-size: 0.72rem; font-weight: 700; padding: 4px 14px;
+  border-radius: 999px; letter-spacing: .08em; margin-bottom: 1rem;
+}
+.flib-hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 900;
+  color: #fff; line-height: 1.2; margin-bottom: 0.8rem;
+}
+.flib-hero h1 em { color: #F59E0B; font-style: normal; }
+.flib-hero p {
+  font-size: 0.95rem; color: rgba(255,255,255,0.55);
+  line-height: 1.7; margin-bottom: 1.5rem;
+}
+.flib-search-row {
+  display: flex; gap: 0.6rem; max-width: 480px; margin: 0 auto 1.2rem;
+}
+.flib-search-input {
+  flex: 1; padding: 12px 16px; border-radius: 12px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08); color: #fff; font-size: 0.9rem;
+  outline: none; transition: border-color .15s;
+}
+.flib-search-input::placeholder { color: rgba(255,255,255,0.35); }
+.flib-search-input:focus { border-color: rgba(245,158,11,0.5); }
+.flib-search-btn {
+  padding: 12px 20px; background: #F59E0B; color: #fff;
+  border: none; border-radius: 12px; font-weight: 700; font-size: 0.9rem;
+  cursor: pointer; transition: opacity .15s; white-space: nowrap;
+}
+.flib-search-btn:hover { opacity: 0.88; }
+.flib-chips { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+.flib-chip {
+  padding: 5px 14px; background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6);
+  border-radius: 999px; font-size: 0.75rem; cursor: pointer;
+  transition: all .15s;
+}
+.flib-chip:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.4); color: #FCD34D; }
+
+/* ── Stats bar ── */
+.flib-stats {
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 0.9rem 2rem;
+  display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+}
+.flib-stat { text-align: center; }
+.flib-stat-val { font-size: 1.2rem; font-weight: 900; color: var(--dark); }
+.flib-stat-label { font-size: 0.72rem; color: var(--text2); }
+
+/* ── Body ── */
+.flib-body { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+/* ── Category tabs ── */
+.cat-tabs {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+}
+.cat-tab {
+  padding: 7px 18px; border-radius: 999px;
+  border: 1.5px solid var(--border); background: none;
+  font-size: 0.82rem; font-weight: 700; color: var(--text2);
+  cursor: pointer; transition: all .15s;
+}
+.cat-tab:hover { border-color: var(--primary); color: var(--primary); }
+.cat-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* ── Section header ── */
+.section-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+.section-header-title { font-size: 0.72rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .07em; }
+.section-header-line { flex: 1; height: 1px; background: var(--border); }
+.section-header-count { font-size: 0.72rem; color: var(--text2); }
+
+/* ── Form cards grid ── */
+.forms-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem;
+  margin-bottom: 3rem;
+}
+
+/* ── Form card ── */
+.form-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  transition: all .2s; text-decoration: none; display: block;
+  position: relative;
+}
+.form-card:hover { border-color: var(--primary); box-shadow: 0 6px 28px rgba(99,102,241,.12); transform: translateY(-2px); }
+.form-card-accent { height: 4px; }
+.form-card-body { padding: 1.3rem 1.3rem 0.9rem; }
+.form-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.7rem; }
+.form-card-icon { font-size: 1.7rem; }
+.form-card-badge {
+  font-size: 0.65rem; font-weight: 700; padding: 2px 8px;
+  border-radius: 999px; letter-spacing: .04em;
+}
+.badge-free { background: #D1FAE5; color: #065F46; }
+.badge-pop { background: #FEF3C7; color: #92400E; }
+.badge-new { background: #EDE9FE; color: #5B21B6; }
+.badge-pro { background: #FEE2E2; color: #991B1B; }
+.form-card-title { font-size: 0.98rem; font-weight: 800; color: var(--dark); margin-bottom: 0.3rem; }
+.form-card-desc { font-size: 0.77rem; color: var(--text2); line-height: 1.55; margin-bottom: 0.9rem; }
+.form-card-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+.meta-tag {
+  font-size: 0.66rem; font-weight: 600; padding: 2px 7px;
+  background: var(--cream); color: var(--text2); border-radius: 6px;
+}
+.form-card-footer {
+  display: flex; gap: 0.5rem; padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+.btn-open {
+  flex: 1; padding: 9px 0; border-radius: 9px;
+  font-size: 0.8rem; font-weight: 700; cursor: pointer;
+  border: none; transition: opacity .15s; text-align: center;
+  text-decoration: none; display: flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+.btn-open:hover { opacity: 0.88; }
+.btn-preview-sm {
+  padding: 9px 12px; border-radius: 9px;
+  font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--border); background: none;
+  color: var(--text2); transition: all .15s; text-decoration: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-preview-sm:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ── Featured banner ── */
+.featured-banner {
+  background: linear-gradient(135deg, #0A0F1E, #1A1040);
+  border-radius: 18px; padding: 2rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+  border: 1px solid rgba(245,158,11,0.2);
+}
+.featured-banner-left { display: flex; align-items: center; gap: 1.2rem; }
+.featured-banner-icon { font-size: 2.5rem; }
+.featured-banner-text h3 { font-size: 1.05rem; font-weight: 900; color: #fff; margin-bottom: 0.3rem; }
+.featured-banner-text p { font-size: 0.83rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.featured-banner-btn {
+  padding: 12px 26px; background: #F59E0B; color: #fff;
+  border-radius: 12px; font-weight: 700; font-size: 0.9rem;
+  text-decoration: none; transition: opacity .15s; white-space: nowrap;
+}
+.featured-banner-btn:hover { opacity: 0.88; }
+
+/* ── Upcoming ── */
+.upcoming-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.8rem; }
+.upcoming-card {
+  border: 1.5px dashed var(--border); border-radius: 12px; padding: 1rem;
+  opacity: 0.55; text-align: center;
+}
+.upcoming-card .icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+.upcoming-card .name { font-size: 0.82rem; font-weight: 700; color: var(--text2); margin-bottom: 0.2rem; }
+.upcoming-card .eta { font-size: 0.7rem; color: var(--text2); }
+
+/* ── No print ── */
+@media print { body { display: none; } }
+</style>
 </head>
 <body>
+<script src="assets/js/nav-inject.js"></script>
 
-<!-- NAV -->
-<nav class="site-nav">
-  <a href="landing.html" class="nav-logo">
-    <div class="nav-logo-icon">
-      <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhj2XsZ8RhA_FkwuSwt0prD9inmhNsnoxZqptaUDhEu2Vilgo0ayS2zp15IrB5j8jXCwbKHv4PL9j6cWocl2s_AwJQPuKdSEz1VIDW8XFhWVRaA0-Fj-GyoJUPL3oY3NNW26OrhL1b2RXITTd1c4GK2QnscBLa6GqA8sSyxE1zYKgWxj3ZZSKhGRSojQh_5" alt="bookcoupling logo" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+<!-- ── Hero ── -->
+<div class="flib-hero">
+  <div class="flib-hero-inner">
+    <div class="flib-hero-badge">✦ 서식 라이브러리 — 온라인 작성 · PDF 출력</div>
+    <h1>작성하고, 바로 <em>출력</em>하세요</h1>
+    <p>이력서부터 법률 계약서까지 — 온라인에서 직접 입력하고<br>단 한 번의 클릭으로 PDF를 만드는 전문가 서식 모음</p>
+    <div class="flib-search-row">
+      <input type="text" class="flib-search-input" id="searchInput" placeholder="서식 검색... (예: 이력서, 근로계약서)" oninput="filterForms(this.value)">
+      <button class="flib-search-btn" onclick="filterForms(document.getElementById('searchInput').value)">검색</button>
     </div>
-    bookcoupling
-  </a>
-  <div class="nav-links">
-    <a href="landing.html" class="nav-link" data-i18n="nav.home">홈</a>
-    <a href="library.html" class="nav-link" data-i18n="nav.library">라이브러리</a>
-    <a href="forms.html" class="nav-link active" data-i18n="nav.forms">서식</a>
-    <a href="consulting.html" class="nav-link" data-i18n="nav.consulting">컨설팅</a>
-    <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">요금제</a>
-  </div>
-  <div class="nav-actions">
-    <div class="lang-switcher">
-      <button class="ls-btn" data-lang="ko">KO</button>
-      <button class="ls-btn" data-lang="en">EN</button>
-      <button class="ls-btn" data-lang="ja">JA</button>
+    <div class="flib-chips">
+      <button class="flib-chip" onclick="setChip('이력서')">이력서</button>
+      <button class="flib-chip" onclick="setChip('근로계약서')">근로계약서</button>
+      <button class="flib-chip" onclick="setChip('임대차')">임대차계약서</button>
+      <button class="flib-chip" onclick="setChip('차용증')">차용증</button>
+      <button class="flib-chip" onclick="setChip('사직서')">사직서</button>
+      <button class="flib-chip" onclick="setChip('위임장')">위임장</button>
     </div>
-    <button class="btn-login" onclick="openAuthModal('login')" data-i18n="nav.login">로그인</button>
-    <a href="#" class="btn-start" data-i18n="nav.start">시작하기</a>
-  </div>
-</nav>
-
-<!-- FORMS HEADER -->
-<div class="forms-header">
-  <div class="bg-img-layer" style="background-image:url('https://blogger.googleusercontent.com/img/a/AVvXsEhSbRuGBnP4eMQFA9cgAj920iHi2fgiJaLAEOKVi9PsTFzNAMH-B4VCHI6WRYAXdOVp8wA63KP_xTLgXLX37Oyl8P8kaw70IyXEU-0-2AUlGN4Bc6ZG5WPL1W1PwbPXSkKtm_aOLOeLXsHyYeGfUvrRQdwO6X9OUrnWoq2sK68g6RImDffBNAaqyVH_nNh8');background-position:center center;filter:brightness(1.2);opacity:.48;"></div>
-  <div style="max-width:1100px; margin:0 auto;">
-    <h1 style="font-size:1.6rem; font-weight:800;" data-i18n="forms.header.title">서식 라이브러리</h1>
-    <p style="font-size:0.875rem; color:var(--text2); margin-top:4px;" data-i18n="forms.header.sub">250개 이상의 법률·금융·세무 서식 템플릿</p>
-    <div class="forms-search-wrap">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" data-i18n="forms.search.placeholder">
-      <button class="ai-btn" id="aiBtnLabel">✦ AI</button>
-    </div>
-    <div class="quick-chips" id="quickChips"></div>
   </div>
 </div>
 
-<!-- CATEGORY TABS -->
-<div class="cat-tabs" id="catTabs"></div>
-
-<!-- BODY -->
-<div class="forms-body">
-  <!-- FEATURED SET -->
-  <div class="featured-set" id="featuredSet"></div>
-
-  <!-- GRID HEADER -->
-  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
-    <div class="section-label" id="gridLabel"></div>
-    <button class="filter-btn" id="filterBtn">▼</button>
-  </div>
-
-  <div class="forms-grid" id="formsGrid"></div>
+<!-- ── Stats ── -->
+<div class="flib-stats">
+  <div class="flib-stat"><div class="flib-stat-val">28</div><div class="flib-stat-label">현재 서식 수</div></div>
+  <div class="flib-stat"><div class="flib-stat-val">4종</div><div class="flib-stat-label">온라인 작성 지원</div></div>
+  <div class="flib-stat"><div class="flib-stat-val">100%</div><div class="flib-stat-label">무료 사용</div></div>
+  <div class="flib-stat"><div class="flib-stat-val">PDF</div><div class="flib-stat-label">즉시 출력 가능</div></div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modalBox">
-    <div class="modal-head">
-      <div class="modal-icon" id="modalIcon">📦</div>
-      <div class="modal-head-text">
-        <h2 id="modalTitle"></h2>
-        <p id="modalCount"></p>
+<!-- ── Body ── -->
+<div class="flib-body">
+
+  <!-- 카테고리 탭 -->
+  <div class="cat-tabs">
+    <button class="cat-tab active" data-cat="all" onclick="setCat(this)">⊛ 전체</button>
+    <button class="cat-tab" data-cat="job" onclick="setCat(this)">💼 취업·인사</button>
+    <button class="cat-tab" data-cat="legal" onclick="setCat(this)">⚖ 법률·계약</button>
+    <button class="cat-tab" data-cat="realty" onclick="setCat(this)">🏠 부동산</button>
+    <button class="cat-tab" data-cat="biz" onclick="setCat(this)">📊 금융·비즈니스</button>
+    <button class="cat-tab" data-cat="admin" onclick="setCat(this)">📋 행정·관리</button>
+  </div>
+
+  <!-- 추천 배너 -->
+  <div class="featured-banner" id="featuredBanner">
+    <div class="featured-banner-left">
+      <div class="featured-banner-icon">📄</div>
+      <div class="featured-banner-text">
+        <h3>이력서 — 이번 달 가장 많이 작성된 서식</h3>
+        <p>A4 두 컬럼 디자인 · 사진·로고 업로드 · 항목 추가/삭제 · 색상 커스텀 · 원클릭 PDF 출력</p>
       </div>
-      <button class="modal-close" onclick="closeModalDirect()">✕</button>
     </div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="modal-foot">
-      <button class="btn-modal-detail" id="modalDetailBtn"></button>
-      <button class="btn-modal-download" id="modalDlBtn"></button>
-    </div>
+    <a href="forms/form-resume.html" class="featured-banner-btn">바로 작성하기 →</a>
   </div>
-</div>
+
+  <!-- 온라인 작성 가능 (LIVE) -->
+  <div id="liveSection">
+    <div class="section-header">
+      <span class="section-header-title">✅ 온라인 작성 · PDF 출력 지원</span>
+      <span class="section-header-line"></span>
+      <span class="section-header-count" id="liveCount">4종</span>
+    </div>
+    <div class="forms-grid" id="liveGrid"></div>
+  </div>
+
+  <!-- 준비 중 서식 -->
+  <div id="upcomingSection">
+    <div class="section-header">
+      <span class="section-header-title">🔜 준비 중 — 곧 온라인 작성 지원 예정</span>
+      <span class="section-header-line"></span>
+    </div>
+    <div class="upcoming-grid" id="upcomingGrid"></div>
+  </div>
+
+</div><!-- /flib-body -->
+
+<script src="assets/js/nav-inject.js" defer></script>
+<script src="assets/js/nav.js?v=3" defer></script>
+<script src="assets/js/auth.js" defer></script>
+<script src="assets/js/footer-inject.js" defer></script>
 
 <script>
-// ── 다국어 UI 문자열 ──────────────────────────────────────────────
-const FORMS_I18N = {
-  ko: {
-    'search.placeholder': '어떤 서식이 필요하세요?',
-    'ai.btn': '✦ AI 추천',
-    'filter.btn': '▼ 필터',
-    'grid.label': '전체 서식 세트',
-    'grid.count.suffix': '개',
-    'card.count.suffix': '종 포함',
-    'btn.preview': '미리보기',
-    'btn.download': '⬇ 다운로드',
-    'modal.count.suffix': '종 포함',
-    'modal.detail': '상세 보기',
-    'modal.dlAll': '⬇ 전체 다운로드',
-    'badge.featured': '✦ FEATURED',
-    'chip.startup': '스타트업 창업',
-    'chip.realty': '부동산 투자',
-    'chip.labor': '근로 계약',
-    'chip.tax': '세금 신고',
-    'chip.corp': '법인 설립',
-  },
-  en: {
-    'search.placeholder': 'What forms do you need?',
-    'ai.btn': '✦ AI Suggest',
-    'filter.btn': '▼ Filter',
-    'grid.label': 'All Form Sets',
-    'grid.count.suffix': ' sets',
-    'card.count.suffix': ' files',
-    'btn.preview': 'Preview',
-    'btn.download': '⬇ Download',
-    'modal.count.suffix': ' files included',
-    'modal.detail': 'Details',
-    'modal.dlAll': '⬇ Download All',
-    'badge.featured': '✦ FEATURED',
-    'chip.startup': 'Startup',
-    'chip.realty': 'Real Estate',
-    'chip.labor': 'Employment',
-    'chip.tax': 'Tax Filing',
-    'chip.corp': 'Incorporation',
-  },
-  ja: {
-    'search.placeholder': '必要な書式は何ですか？',
-    'ai.btn': '✦ AI おすすめ',
-    'filter.btn': '▼ フィルター',
-    'grid.label': '全書式セット',
-    'grid.count.suffix': 'セット',
-    'card.count.suffix': '種類収録',
-    'btn.preview': 'プレビュー',
-    'btn.download': '⬇ ダウンロード',
-    'modal.count.suffix': '種類収録',
-    'modal.detail': '詳細を見る',
-    'modal.dlAll': '⬇ 全てダウンロード',
-    'badge.featured': '✦ FEATURED',
-    'chip.startup': 'スタートアップ',
-    'chip.realty': '不動産投資',
-    'chip.labor': '雇用契約',
-    'chip.tax': '確定申告',
-    'chip.corp': '法人設立',
-  }
-};
-
-// ── 카테고리 정의 (ID 기반 필터, 언어 독립) ──────────────────────
-const CATS = [
-  { id: 'all',     ko: '⊛ 전체',    en: '⊛ All',              ja: '⊛ すべて' },
-  { id: 'legal',   ko: '⚖ 법률·계약', en: '⚖ Legal & Contracts', ja: '⚖ 法律·契約' },
-  { id: 'finance', ko: '↗ 금융·투자', en: '↗ Finance & Invest',  ja: '↗ 金融·投資' },
-  { id: 'realty',  ko: '🏢 부동산',   en: '🏢 Real Estate',      ja: '🏢 不動産' },
-  { id: 'hr',      ko: '👥 인사·노무', en: '👥 HR & Labor',        ja: '👥 人事·労務' },
-  { id: 'tax',     ko: '📊 세무·회계', en: '📊 Tax & Accounting',  ja: '📊 税務·会計' },
-  { id: 'corp',    ko: '○ 법인·행정', en: '○ Corporate',          ja: '○ 法人·行政' },
-];
-
-// ── 서식 세트 데이터 (다국어) ─────────────────────────────────────
-const FORM_SETS = [
+// ── 서식 데이터 ────────────────────────────────────────────────
+var LIVE_FORMS = [
   {
-    id: 'startup',
-    catId: 'corp',
-    cat:   { ko: '법인·행정', en: 'Corporate',              ja: '法人·行政' },
-    title: { ko: '스타트업 필수 서식 세트', en: 'Startup Essential Forms', ja: 'スタートアップ必須書式セット' },
-    desc:  { ko: '창업부터 운영까지 필요한 핵심 서식 모음', en: 'Essential forms from founding to daily operations', ja: '創業から運営まで必要な核心書式集' },
-    count: 15,
-    vol:   { ko: 'Vol.1 6장', en: 'Vol.1 Ch.6', ja: 'Vol.1 第6章' },
-    premium: true,
-    color: '#22C55E', iconBg: '#DCFCE7', catColor: '#15803D',
-    files: [
-      { name: { ko: '이사회 의사록',        en: 'Board Meeting Minutes',        ja: '取締役会議事録' },        format: 'HWP',  locked: true },
-      { name: { ko: '주주총회 의사록',       en: 'Shareholders Meeting Minutes',  ja: '株主総会議事録' },        format: 'HWP',  locked: false },
-      { name: { ko: '사업계획서 양식',       en: 'Business Plan Template',        ja: '事業計画書様式' },        format: 'DOCX', locked: false, path: 'forms-docs/05_사업계획서.docx' },
-      { name: { ko: '투자자 보고 양식',      en: 'Investor Report Form',          ja: '投資家報告様式' },        format: 'PDF',  locked: true },
-      { name: { ko: '법인 인감 사용 대장',   en: 'Corporate Seal Registry',       ja: '法人印鑑使用台帳' },      format: 'HWP',  locked: true },
-      { name: { ko: '직원 스톡옵션 부여 안내서', en: 'Employee Stock Option Guide', ja: '従業員ストックオプション案内書' }, format: 'PDF', locked: true },
-      { name: { ko: '창업 지원금 신청서',    en: 'Startup Grant Application',     ja: '創業助成金申請書' },      format: 'HWP',  locked: false },
-      { name: { ko: '정관 표준 양식',        en: 'Articles of Incorporation',     ja: '定款標準様式' },          format: 'DOCX', locked: true },
-    ]
+    id: 'resume',
+    cat: 'job',
+    icon: '👤',
+    accent: '#1E2B4A',
+    badge: 'badge-pop',
+    badgeText: '🔥 인기 1위',
+    title: '이력서',
+    desc: '두 컬럼 디자인, 사진·로고 업로드, 컬러 커스텀, 경력·학력 항목 추가/삭제',
+    tags: ['A4', '사진첨부', '로고', '컬러설정', 'PDF출력'],
+    href: 'forms/form-resume.html',
+    keywords: '이력서 이력 취업 취업서류 자기소개'
+  },
+  {
+    id: 'employment',
+    cat: 'legal',
+    icon: '📋',
+    accent: '#1E2B4A',
+    badge: 'badge-pop',
+    badgeText: '📋 법률완비',
+    title: '근로계약서',
+    desc: '정규직 표준 근로계약서. 근로기준법 기반 13개 조항, 비밀유지·경업금지·IP 포함',
+    tags: ['정규직', '표준형', '13개조항', '근로기준법', 'PDF출력'],
+    href: 'forms/form-employment-contract.html',
+    keywords: '근로계약서 표준근로계약 고용계약 직원계약 노동계약'
   },
   {
     id: 'lease',
-    catId: 'realty',
-    cat:   { ko: '부동산', en: 'Real Estate',               ja: '不動産' },
-    title: { ko: '임대차 계약서 세트', en: 'Lease Agreement Set', ja: '賃貸借契約書セット' },
-    desc:  { ko: '상가·주택·오피스 임대차 계약서 완전 패키지', en: 'Complete lease package for commercial, residential & office', ja: '商業・住宅・オフィス賃貸借契約書完全パッケージ' },
-    count: 7,
-    vol:   { ko: 'Vol.1 5장', en: 'Vol.1 Ch.5', ja: 'Vol.1 第5章' },
-    premium: true,
-    color: '#F59E0B', iconBg: '#FEF3C7', catColor: '#92400E',
-    files: [
-      { name: { ko: '표준 임대차계약서',         en: 'Standard Lease Agreement',      ja: '標準賃貸借契約書' },   format: 'DOCX', locked: false, path: 'forms-docs/02_임대차계약서.docx' },
-      { name: { ko: '상가 임대차 계약서',         en: 'Commercial Lease Agreement',    ja: '商業賃貸借契約書' },   format: 'DOCX', locked: true },
-      { name: { ko: '오피스 임대차 계약서',       en: 'Office Lease Agreement',        ja: 'オフィス賃貸借契約書' }, format: 'DOCX', locked: true },
-      { name: { ko: '전세 계약서',               en: 'Jeonse (Key Money) Contract',   ja: '전세契約書' },         format: 'DOCX', locked: true },
-      { name: { ko: '임대차 갱신 요구권 행사서',  en: 'Lease Renewal Request',         ja: '賃貸借更新要求書' },   format: 'PDF',  locked: true },
-      { name: { ko: '보증금 반환 청구서',         en: 'Deposit Refund Claim',          ja: '保証金返還請求書' },   format: 'PDF',  locked: true },
-      { name: { ko: '권리금 계약서',              en: 'Goodwill Transfer Agreement',   ja: '権利金契約書' },       format: 'DOCX', locked: true },
-    ]
+    cat: 'realty',
+    icon: '🏠',
+    accent: '#065F46',
+    badge: 'badge-pop',
+    badgeText: '🏠 실거래형',
+    title: '임대차계약서',
+    desc: '주택·전세·상가 선택 가능. 주택임대차보호법 기반 12개 조항, 특약 직접 입력',
+    tags: ['주택임대', '전세', '상가', '12개조항', '확정일자'],
+    href: 'forms/form-lease.html',
+    keywords: '임대차계약서 전세계약서 임대계약 부동산계약 월세계약'
   },
   {
-    id: 'invest',
-    catId: 'finance',
-    cat:   { ko: '금융·투자', en: 'Finance & Investment',    ja: '金融·投資' },
-    title: { ko: '투자 분석 서식 세트', en: 'Investment Analysis Forms', ja: '投資分析書式セット' },
-    desc:  { ko: '투자 검토·분석·계약에 필요한 필수 서식', en: 'Essential forms for investment review, analysis & contracts', ja: '投資検討·分析·契約に必要な書式集' },
-    count: 12,
-    vol:   { ko: 'Vol.1 4장', en: 'Vol.1 Ch.4', ja: 'Vol.1 第4章' },
-    premium: true,
-    color: '#22C55E', iconBg: '#DCFCE7', catColor: '#15803D',
-    files: [
-      { name: { ko: '비밀유지계약서 (NDA)', en: 'Non-Disclosure Agreement (NDA)', ja: '秘密保持契約書 (NDA)' },  format: 'DOCX', locked: false, path: 'forms-docs/04_비밀유지계약서_NDA.docx' },
-      { name: { ko: '사업계획서 양식',     en: 'Business Plan Template',         ja: '事業計画書様式' },          format: 'DOCX', locked: false, path: 'forms-docs/05_사업계획서.docx' },
-      { name: { ko: '주주간계약서',        en: 'Shareholders Agreement',         ja: '株主間契約書' },             format: 'DOCX', locked: true,  path: 'forms-docs/06_주주간계약서.docx' },
-      { name: { ko: '투자유치 텀시트',     en: 'Investment Term Sheet',          ja: '投資誘致タームシート' },     format: 'DOCX', locked: true,  path: 'forms-docs/07_투자유치_텀시트.docx' },
-      { name: { ko: '스톡옵션 계약서',     en: 'Stock Option Agreement',         ja: 'ストックオプション契約書' }, format: 'DOCX', locked: true },
-      { name: { ko: '근로계약서 (정규직)', en: 'Employment Contract (Full-time)', ja: '雇用契約書（正規職）' },   format: 'DOCX', locked: false, path: 'forms-docs/01_근로계약서_정규직.docx' },
-      { name: { ko: '동업계약서',          en: 'Partnership Agreement',          ja: '共同事業契約書' },           format: 'DOCX', locked: true },
-      { name: { ko: '이사회 의사록',       en: 'Board Meeting Minutes',          ja: '取締役会議事録' },           format: 'HWP',  locked: true },
-    ]
-  },
-  {
-    id: 'labor',
-    catId: 'hr',
-    cat:   { ko: '인사·노무', en: 'HR & Labor',               ja: '人事·労務' },
-    title: { ko: '근로계약서 기본 세트', en: 'Employment Contract Basic Set', ja: '雇用契約書基本セット' },
-    desc:  { ko: '정규직·계약직·파트타임 근로계약서 모음', en: 'Full-time, contract & part-time employment forms', ja: '正規職·契約職·パートタイム雇用契約書集' },
-    count: 5,
-    vol:   { ko: 'Vol.1 2장', en: 'Vol.1 Ch.2', ja: 'Vol.1 第2章' },
-    premium: false,
-    color: '#EC4899', iconBg: '#FCE7F3', catColor: '#9D174D',
-    files: [
-      { name: { ko: '근로계약서 (정규직)',  en: 'Employment Contract (Full-time)', ja: '雇用契約書（正規職）' },   format: 'DOCX', locked: false, path: 'forms-docs/01_근로계약서_정규직.docx' },
-      { name: { ko: '비밀유지계약서 (NDA)', en: 'Non-Disclosure Agreement (NDA)', ja: '秘密保持契約書 (NDA)' },  format: 'DOCX', locked: false, path: 'forms-docs/04_비밀유지계약서_NDA.docx' },
-      { name: { ko: '근로계약서 (계약직)',  en: 'Employment Contract (Contract)', ja: '雇用契約書（契約職）' },   format: 'DOCX', locked: true },
-      { name: { ko: '근로계약서 (파트타임)', en: 'Employment Contract (Part-time)', ja: '雇用契約書（パートタイム）' }, format: 'DOCX', locked: true },
-      { name: { ko: '퇴직금 정산서',       en: 'Severance Pay Settlement',       ja: '退職金精算書' },             format: 'DOCX', locked: true },
-    ]
-  },
-  {
-    id: 'tax',
-    catId: 'tax',
-    cat:   { ko: '세무·회계', en: 'Tax & Accounting',          ja: '税務·会計' },
-    title: { ko: '세금 신고 서식 세트', en: 'Tax Filing Form Set', ja: '税務申告書式セット' },
-    desc:  { ko: '종합소득세·부가세·법인세 신고 서식 완전판', en: 'Complete forms for income tax, VAT & corporate tax', ja: '総合所得税·付加価値税·法人税申告書式完全版' },
-    count: 11,
-    vol:   { ko: 'Vol.1 3장', en: 'Vol.1 Ch.3', ja: 'Vol.1 第3章' },
-    premium: true,
-    color: '#A855F7', iconBg: '#F3E8FF', catColor: '#6B21A8',
-    files: [
-      { name: { ko: '사업계획서 양식',    en: 'Business Plan Template',         ja: '事業計画書様式' },       format: 'DOCX', locked: false, path: 'forms-docs/05_사업계획서.docx' },
-      { name: { ko: '근로계약서 (정규직)', en: 'Employment Contract (Full-time)', ja: '雇用契約書（正規職）' }, format: 'DOCX', locked: false, path: 'forms-docs/01_근로계약서_정규직.docx' },
-      { name: { ko: '비밀유지계약서 (NDA)', en: 'Non-Disclosure Agreement (NDA)', ja: '秘密保持契約書 (NDA)' }, format: 'DOCX', locked: false, path: 'forms-docs/04_비밀유지계약서_NDA.docx' },
-      { name: { ko: '스톡옵션 계약서',    en: 'Stock Option Agreement',         ja: 'ストックオプション契約書' }, format: 'DOCX', locked: true },
-      { name: { ko: '이사회 의사록',      en: 'Board Meeting Minutes',          ja: '取締役会議事録' },       format: 'HWP',  locked: true },
-      { name: { ko: '주주총회 의사록',    en: 'Shareholders Meeting Minutes',   ja: '株主総会議事録' },       format: 'HWP',  locked: true },
-      { name: { ko: '투자자 보고 양식',   en: 'Investor Report Form',           ja: '投資家報告様式' },       format: 'PDF',  locked: true },
-    ]
-  },
-  {
-    id: 'legal',
-    catId: 'legal',
-    cat:   { ko: '법률·계약', en: 'Legal & Contracts',          ja: '法律·契約' },
-    title: { ko: '법률 계약서 기본 세트', en: 'Essential Legal Contract Set', ja: '法律契約書基本セット' },
-    desc:  { ko: '일상적 거래에 필요한 기본 계약서 모음', en: 'Core contracts for everyday business transactions', ja: '日常取引に必要な基本契約書集' },
-    count: 8,
-    vol:   { ko: 'Vol.1 2장', en: 'Vol.1 Ch.2', ja: 'Vol.1 第2章' },
-    premium: false,
-    color: '#3B82F6', iconBg: '#EFF6FF', catColor: '#1D4ED8',
-    files: [
-      { name: { ko: '근로계약서 (정규직)', en: 'Employment Contract (Full-time)', ja: '雇用契約書（正規職）' },  format: 'DOCX', locked: false, path: 'forms-docs/01_근로계약서_정규직.docx' },
-      { name: { ko: '표준 임대차계약서',  en: 'Standard Lease Agreement',        ja: '標準賃貸借契約書' },       format: 'DOCX', locked: false, path: 'forms-docs/02_임대차계약서.docx' },
-      { name: { ko: '차용증',            en: 'Loan Certificate',                 ja: '借用証' },                 format: 'DOCX', locked: false, path: 'forms-docs/03_차용증.docx' },
-      { name: { ko: '비밀유지계약서 (NDA)', en: 'Non-Disclosure Agreement (NDA)', ja: '秘密保持契約書 (NDA)' }, format: 'DOCX', locked: false, path: 'forms-docs/04_비밀유지계약서_NDA.docx' },
-      { name: { ko: '주주간계약서',      en: 'Shareholders Agreement',           ja: '株主間契約書' },           format: 'DOCX', locked: true,  path: 'forms-docs/06_주주간계약서.docx' },
-      { name: { ko: '투자유치 텀시트',   en: 'Investment Term Sheet',            ja: '投資誘致タームシート' },   format: 'DOCX', locked: true,  path: 'forms-docs/07_투자유치_텀시트.docx' },
-      { name: { ko: '동업계약서',        en: 'Partnership Agreement',            ja: '共同事業契約書' },         format: 'DOCX', locked: true },
-      { name: { ko: '스톡옵션 계약서',   en: 'Stock Option Agreement',           ja: 'ストックオプション契約書' }, format: 'DOCX', locked: true },
-    ]
-  },
+    id: 'iou',
+    cat: 'legal',
+    icon: '💰',
+    accent: '#7C3AED',
+    badge: 'badge-free',
+    badgeText: '✓ 무료',
+    title: '차용증',
+    desc: '차용 금액 한글 자동 변환, 이자·연체이자·기한이익상실 조항 포함, 담보·보증인 기재',
+    tags: ['한글금액자동변환', '이자설정', '7개조항', '이자제한법', 'PDF출력'],
+    href: 'forms/form-iou.html',
+    keywords: '차용증 금전차용증 돈빌릴때 대여금 차용'
+  }
 ];
 
-const FMT_CLASS = { DOCX: 'fmt-docx', PDF: 'fmt-pdf', HWP: 'fmt-hwp' };
-let currentCatId = 'all';
-let openModalId = null;
+var UPCOMING_FORMS = [
+  { icon: '✍', name: '자기소개서', cat: 'job', eta: '준비 중' },
+  { icon: '📄', name: '사직서', cat: 'job', eta: '준비 중' },
+  { icon: '🪪', name: '재직증명서', cat: 'job', eta: '준비 중' },
+  { icon: '📑', name: '경력증명서', cat: 'job', eta: '준비 중' },
+  { icon: '🤝', name: '동업계약서', cat: 'legal', eta: '준비 중' },
+  { icon: '🔏', name: '비밀유지계약(NDA)', cat: 'legal', eta: '준비 중' },
+  { icon: '📃', name: '위임장', cat: 'legal', eta: '준비 중' },
+  { icon: '🤜', name: '합의서', cat: 'legal', eta: '준비 중' },
+  { icon: '📝', name: '각서', cat: 'legal', eta: '준비 중' },
+  { icon: '🏗', name: '공사도급계약서', cat: 'realty', eta: '준비 중' },
+  { icon: '🔑', name: '권리금계약서', cat: 'realty', eta: '준비 중' },
+  { icon: '💼', name: '동업계약서', cat: 'biz', eta: '준비 중' },
+  { icon: '📊', name: '사업계획서', cat: 'biz', eta: '준비 중' },
+  { icon: '🧾', name: '견적서', cat: 'biz', eta: '준비 중' },
+  { icon: '📥', name: '거래명세서', cat: 'biz', eta: '준비 중' },
+  { icon: '🏦', name: '주주간계약서', cat: 'biz', eta: '준비 중' },
+  { icon: '📋', name: '인수인계서', cat: 'admin', eta: '준비 중' },
+  { icon: '📖', name: '회의록', cat: 'admin', eta: '준비 중' },
+  { icon: '✅', name: '품의서', cat: 'admin', eta: '준비 중' },
+  { icon: '🗒', name: '업무일지', cat: 'admin', eta: '준비 중' },
+  { icon: '📬', name: '내용증명', cat: 'legal', eta: '준비 중' },
+  { icon: '🏛', name: '이사회 의사록', cat: 'biz', eta: '준비 중' },
+  { icon: '👨‍👩‍👦', name: '표준정관', cat: 'biz', eta: '준비 중' },
+  { icon: '🤲', name: '기부약정서', cat: 'legal', eta: '준비 중' },
+];
 
-function getLang() {
-  return (typeof getSiteLang === 'function' ? getSiteLang() : null)
-      || localStorage.getItem('site-lang') || 'ko';
+var currentCat = 'all';
+var currentSearch = '';
+
+function setCat(btn) {
+  document.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  currentCat = btn.dataset.cat;
+  render();
 }
 
-function t(key) {
-  const lang = getLang();
-  return (FORMS_I18N[lang] || FORMS_I18N.ko)[key] || FORMS_I18N.ko[key] || key;
+function setChip(keyword) {
+  document.getElementById('searchInput').value = keyword;
+  filterForms(keyword);
 }
 
-function tx(obj) {
-  const lang = getLang();
-  return obj[lang] || obj.ko;
+function filterForms(val) {
+  currentSearch = val.toLowerCase().trim();
+  render();
 }
 
-// ── 카테고리 탭 렌더 ─────────────────────────────────────────────
-function renderCatTabs() {
-  const lang = getLang();
-  document.getElementById('catTabs').innerHTML = CATS.map(c => `
-    <button class="cat-tab${currentCatId === c.id ? ' active' : ''}" data-catid="${c.id}">${c[lang] || c.ko}</button>
-  `).join('');
-  document.querySelectorAll('.cat-tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentCatId = btn.dataset.catid;
-      renderCatTabs();
-      renderGrid();
-      renderFeatured();
-      updateGridLabel();
-    });
-  });
+function matchesCat(form) {
+  return currentCat === 'all' || form.cat === currentCat;
 }
 
-// ── 퀵칩 렌더 ────────────────────────────────────────────────────
-function renderChips() {
-  const chips = ['startup','realty','labor','tax','corp'];
-  document.getElementById('quickChips').innerHTML = chips.map(k => `
-    <button class="quick-chip">${t('chip.' + k)}</button>
-  `).join('');
-  document.querySelectorAll('.quick-chip').forEach((chip, i) => {
-    chip.addEventListener('click', () => {
-      document.getElementById('searchInput').value = chip.textContent;
-    });
-  });
+function matchesSearch(form) {
+  if (!currentSearch) return true;
+  var kw = (form.title + ' ' + form.desc + ' ' + (form.keywords || '')).toLowerCase();
+  return kw.includes(currentSearch);
 }
 
-// ── Featured 세트 렌더 (startup 고정) ────────────────────────────
-function renderFeatured() {
-  const s = FORM_SETS.find(x => x.id === 'startup');
-  document.getElementById('featuredSet').innerHTML = `
-    <div class="featured-set-icon">📦</div>
-    <div class="featured-set-info">
-      <div class="featured-set-badges">
-        <span class="badge-featured">${t('badge.featured')}</span>
-        <span class="badge-cat">${tx(s.cat)}</span>
-        <span class="badge-premium">PREMIUM</span>
-      </div>
-      <div class="featured-set-title">${tx(s.title)}</div>
-      <div class="featured-set-sub">${tx(s.desc)} · ${s.count}${t('card.count.suffix')}</div>
-    </div>
-    <div class="featured-set-actions">
-      <button class="btn-preview" onclick="openModal('startup')">${t('btn.preview')}</button>
-      <button class="btn-download">⬇ ${t('btn.download').replace('⬇ ','')}</button>
-    </div>
-  `;
-}
+function render() {
+  var liveFiltered = LIVE_FORMS.filter(function(f) { return matchesCat(f) && matchesSearch(f); });
+  var upFiltered = UPCOMING_FORMS.filter(function(f) { return matchesCat(f) && matchesSearch(f); });
 
-// ── 그리드 레이블 ─────────────────────────────────────────────────
-function updateGridLabel() {
-  const sets = currentCatId === 'all' ? FORM_SETS : FORM_SETS.filter(s => s.catId === currentCatId);
-  const label = t('grid.label');
-  const suffix = t('grid.count.suffix');
-  const lang = getLang();
-  // 일본어: "6セット", 영어: "6 sets", 한국어: "6개"
-  const countStr = lang === 'en' ? `${sets.length}${suffix}` : `${sets.length}${suffix}`;
-  document.getElementById('gridLabel').innerHTML = `${label} <span class="count">${countStr}</span>`;
-  document.getElementById('filterBtn').textContent = t('filter.btn');
-}
-
-// ── 그리드 렌더 ──────────────────────────────────────────────────
-function renderGrid() {
-  const sets = currentCatId === 'all' ? FORM_SETS : FORM_SETS.filter(s => s.catId === currentCatId);
-  document.getElementById('formsGrid').innerHTML = sets.map(s => `
-    <div class="form-card" onclick="openModal('${s.id}')">
-      <div class="form-card-top-bar" style="background:${s.color}"></div>
-      <div style="display:flex; align-items:flex-start; justify-content:space-between;">
-        <div class="form-card-icon" style="background:${s.iconBg}">📦</div>
-        <span class="${s.premium ? 'form-card-premium' : 'form-card-free'}">${s.premium ? 'PREMIUM' : 'FREE'}</span>
-      </div>
-      <span class="form-card-cat-tag" style="background:${s.iconBg}; color:${s.catColor}">${tx(s.cat)}</span>
-      <div class="form-card-title">${tx(s.title)}</div>
-      <div class="form-card-desc">${tx(s.desc)}</div>
-      <div class="form-card-footer">
-        <span>${s.count}${t('card.count.suffix')}</span>
-        <span class="vol-link">${tx(s.vol)}</span>
-      </div>
-      <div class="form-card-actions">
-        <button class="btn-card-preview" onclick="event.stopPropagation(); openModal('${s.id}')">${t('btn.preview')}</button>
-        <button class="btn-card-download" style="background:${s.color}" onclick="event.stopPropagation()">${t('btn.download')}</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ── 모달 ─────────────────────────────────────────────────────────
-function openModal(id) {
-  const s = FORM_SETS.find(f => f.id === id);
-  if (!s) return;
-  openModalId = id;
-  document.getElementById('modalTitle').textContent = tx(s.title);
-  document.getElementById('modalCount').textContent = `${s.count}${t('modal.count.suffix')}`;
-  document.getElementById('modalIcon').style.background = s.iconBg;
-  document.getElementById('modalDetailBtn').textContent = t('modal.detail');
-  document.getElementById('modalDlBtn').textContent = t('modal.dlAll');
-  document.getElementById('modalBody').innerHTML = s.files.map((f, i) => {
-    const canDl = !f.locked && f.path;
-    const dlAttr = canDl ? `style="cursor:pointer" onclick="downloadForm('${f.path}','${tx(f.name).replace(/'/g,'\\\'')}')"` : '';
-    return `
-    <div class="file-item ${i % 3 === 2 ? 'highlighted' : ''} ${canDl ? 'file-item-dl' : ''}" ${dlAttr}>
-      <div class="file-check">${canDl ? '✓' : ''}</div>
-      <div class="file-doc-icon">📄</div>
-      <div class="file-name">${tx(f.name)}</div>
-      ${f.locked ? '<span class="file-lock">🔒</span>' : (canDl ? '<span class="file-dl-hint">⬇</span>' : '')}
-      <span class="file-format ${FMT_CLASS[f.format] || ''}">${f.format}</span>
-    </div>`;
+  document.getElementById('liveCount').textContent = liveFiltered.length + '종';
+  document.getElementById('liveGrid').innerHTML = liveFiltered.map(function(f) {
+    return '<a href="' + f.href + '" class="form-card">' +
+      '<div class="form-card-accent" style="background:' + f.accent + '"></div>' +
+      '<div class="form-card-body">' +
+        '<div class="form-card-top">' +
+          '<span class="form-card-icon">' + f.icon + '</span>' +
+          '<span class="form-card-badge ' + f.badge + '">' + f.badgeText + '</span>' +
+        '</div>' +
+        '<div class="form-card-title">' + f.title + '</div>' +
+        '<div class="form-card-desc">' + f.desc + '</div>' +
+        '<div class="form-card-meta">' + f.tags.map(function(t) { return '<span class="meta-tag">' + t + '</span>'; }).join('') + '</div>' +
+      '</div>' +
+      '<div class="form-card-footer">' +
+        '<a href="' + f.href + '" class="btn-open" style="background:' + f.accent + '">✏ 온라인 작성하기</a>' +
+      '</div>' +
+    '</a>';
   }).join('');
-  document.getElementById('modalOverlay').classList.add('open');
+
+  document.getElementById('upcomingGrid').innerHTML = upFiltered.map(function(f) {
+    return '<div class="upcoming-card">' +
+      '<div class="icon">' + f.icon + '</div>' +
+      '<div class="name">' + f.name + '</div>' +
+      '<div class="eta">' + f.eta + '</div>' +
+    '</div>';
+  }).join('');
+
+  // 섹션 표시/숨김
+  document.getElementById('liveSection').style.display = liveFiltered.length ? '' : 'none';
+  document.getElementById('upcomingSection').style.display = upFiltered.length ? '' : 'none';
+  document.getElementById('featuredBanner').style.display = (currentSearch || currentCat !== 'all') ? 'none' : '';
 }
 
-function downloadForm(path, name) {
-  const a = document.createElement('a');
-  a.href = path;
-  a.download = name + '.docx';
-  a.click();
-}
-
-function closeModal(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
-}
-function closeModalDirect() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  openModalId = null;
-}
-
-// ── 검색창 placeholder 갱신 ──────────────────────────────────────
-function updateSearch() {
-  document.getElementById('searchInput').placeholder = t('search.placeholder');
-  document.getElementById('aiBtnLabel').textContent = t('ai.btn');
-}
-
-// ── 전체 렌더 ────────────────────────────────────────────────────
-function renderAll() {
-  renderCatTabs();
-  renderChips();
-  renderFeatured();
-  updateGridLabel();
-  renderGrid();
-  updateSearch();
-  // 모달이 열려 있으면 모달 텍스트도 갱신
-  if (openModalId) openModal(openModalId);
-}
-
-renderAll();
-</script>
-<footer class="site-footer">
-  <div class="footer-row1">
-    <div class="footer-logo">
-      <div class="footer-logo-icon"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR" alt="bookcoupling logo" style="width:100%;height:100%;object-fit:cover;border-radius:6px;"></div>
-      bookcoupling <span style="font-weight:400;opacity:0.6;font-size:0.8em;">provided by ziggle link</span>
-    </div>
-    <span class="footer-sep">&nbsp;|&nbsp;</span>
-    <div class="footer-copy" data-i18n="footer.copy">© 2025 Book Coupling. All rights reserved.</div>
-  </div>
-  <div class="footer-biz">Ziggle Link &nbsp;|&nbsp; Business Registration Number: 579-38-01513 &nbsp;|&nbsp; E-commerce Registration Number: No. 2025-Chungnam Cheonan-2233 &nbsp;|&nbsp; Service: Book Coupling</div>
-  <div class="footer-links">
-    <a href="terms.html" data-i18n="footer.terms">이용약관</a>
-    <a href="privacy.html" data-i18n="footer.privacy">개인정보처리방침</a>
-    <a href="about.html" data-i18n="footer.about">소개서</a>
-  </div>
-</footer>
-
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/nav.js?v=3"></script>
-<script src="assets/js/auth.js"></script>
-<script src="assets/js/payment.js"></script>
-<script>
-// i18n.js 로드 후 applyLang 를 가로채서 forms 재렌더 연결
-(function() {
-  const _orig = window.applyLang;
-  window.applyLang = function(lang) {
-    if (_orig) _orig(lang);
-    renderAll();
-  };
-})();
+render();
 </script>
 </body>
 </html>

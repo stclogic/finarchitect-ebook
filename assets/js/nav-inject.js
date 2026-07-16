@@ -5,6 +5,12 @@
 
   var LOGO_IMG = 'https://blogger.googleusercontent.com/img/a/AVvXsEhTRH1ue_k8m5K50HkxS1r7OTUPQ3kGFa3jjvYtTeXcexrNd_LKV8SyVVXRj0rLiVSjiUAMjXidi92y_JngIIBNLqEyzpuGw_OcWhakb4djvEB2jDrPk2nrjyKmnBSly0-Uq8YqwmvNdlgnS0MgDVYmSSGLrO-VKndzuodO27f31bj1emME5YhWjv8Wx7i7';
 
+  // 현재 경로 깊이에 맞는 루트 상대 prefix 계산
+  // 예: /insights/2026-07-16.html → depth=2 → prefix='../'
+  var pathParts = window.location.pathname.split('/').filter(Boolean);
+  var depth = pathParts.length > 1 ? pathParts.length - 1 : 0;
+  var ROOT = depth > 0 ? Array(depth).fill('..').join('/') + '/' : '';
+
   var LINKS = [
     { href: 'landing.html',    i18n: 'nav.home',       ko: '홈',        en: 'Home',      ja: 'ホーム' },
     { href: 'library.html',    i18n: 'nav.library',    ko: '라이브러리', en: 'Library',   ja: 'ライブラリ' },
@@ -26,14 +32,14 @@
   function buildLinks(l) {
     return LINKS.map(function (link) {
       var active = (link.href === activeHref) ? ' active' : '';
-      return '<a href="' + link.href + '" class="nav-link' + active + '" data-i18n="' + link.i18n + '">' + linkLabel(link, l) + '</a>';
+      return '<a href="' + ROOT + link.href + '" class="nav-link' + active + '" data-i18n="' + link.i18n + '">' + linkLabel(link, l) + '</a>';
     }).join('');
   }
 
   var navEl = document.createElement('nav');
   navEl.className = 'site-nav';
   navEl.innerHTML =
-    '<a href="landing.html" class="nav-logo">' +
+    '<a href="' + ROOT + 'landing.html" class="nav-logo">' +
       '<div class="nav-logo-icon"><img src="' + LOGO_IMG + '" alt="bookcoupling logo"></div>' +
       '<span class="nav-logo-text">bookcoupling</span>' +
     '</a>' +
@@ -45,7 +51,7 @@
         '<button class="ls-btn" data-lang="ja">JA</button>' +
       '</div>' +
       '<button class="btn-login" onclick="typeof openAuthModal!==\'undefined\'&&openAuthModal(\'login\')" data-i18n="nav.login">로그인</button>' +
-      '<a href="pricing.html" class="btn-start" data-i18n="nav.start">시작하기</a>' +
+      '<a href="' + ROOT + 'pricing.html" class="btn-start" data-i18n="nav.start">시작하기</a>' +
     '</div>';
 
   var existing = document.querySelector('nav.topbar') || document.querySelector('nav');
@@ -67,7 +73,7 @@
     var linksEl = navEl.querySelector('.nav-links');
     if (!linksEl) return;
     LINKS.forEach(function (link) {
-      var a = linksEl.querySelector('a[href="' + link.href + '"]');
+      var a = linksEl.querySelector('a[href="' + ROOT + link.href + '"]');
       if (a) a.textContent = linkLabel(link, l);
     });
   }

@@ -229,33 +229,330 @@
   </div>
 </section>
 
-<section class="section reviews-section">
+<section class="section reviews-section" id="reviewsSection">
   <div class="container">
-    <div class="section-tag" data-i18n="reviews.tag">REVIEWS</div>
-    <h2 class="section-title" data-i18n="reviews.title">12,847명이 선택했습니다</h2>
-    <div class="reviews-rating"><span class="stars">★★★★★</span><span class="score"> 4.9 / 5.0</span></div>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text" data-i18n="review1.text">"법인 설립부터 투자 계약까지 필요한 서식이 다 있어요. 변호사 비용을 크게 줄였습니다."</div>
-        <div class="review-author">Kim Jaewon</div>
-        <div class="review-role" data-i18n="review1.role">스타트업 창업자</div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text" data-i18n="review2.text">"임대차 계약서 세트 하나로 모든 계약 상황을 커버할 수 있어요. AI 자동완성이 특히 편리합니다."</div>
-        <div class="review-author">Lee Sujin</div>
-        <div class="review-role" data-i18n="review2.role">부동산 투자자</div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text" data-i18n="review3.text">"고객들에게 항상 추천합니다. 세무 신고 서식이 최신 법령에 맞게 업데이트되어 신뢰할 수 있습니다."</div>
-        <div class="review-author">Park Minjun</div>
-        <div class="review-role" data-i18n="review3.role">세무사</div>
-      </div>
+    <div class="section-tag">CLIENT REVIEWS</div>
+    <h2 class="section-title">금융 컨설팅 분야별 <span class="gold">실제 후기</span></h2>
+    <div class="reviews-meta-row">
+      <div class="reviews-rating-big"><span class="stars-big">★★★★★</span><span class="score-big">4.9</span><span class="score-sub">/ 5.0 · 누적 리뷰 3,284건</span></div>
     </div>
+
+    <!-- 카테고리 필터 -->
+    <div class="rv-cats" id="rvCats">
+      <button class="rv-cat active" data-cat="all">전체</button>
+      <button class="rv-cat" data-cat="spc">SPC 설립</button>
+      <button class="rv-cat" data-cat="hnwi">고액자산가 관리</button>
+      <button class="rv-cat" data-cat="corp">법인 설립·구조화</button>
+      <button class="rv-cat" data-cat="overseas">해외투자·해외법인</button>
+      <button class="rv-cat" data-cat="pf">부동산 PF</button>
+      <button class="rv-cat" data-cat="ma">M&amp;A·지분계약</button>
+      <button class="rv-cat" data-cat="tax">절세·세무전략</button>
+    </div>
+
+    <!-- 캐러셀 -->
+    <div class="rv-wrap" id="rvWrap">
+      <button class="rv-arrow rv-prev" id="rvPrev" onclick="rvScroll(-1)">‹</button>
+      <div class="rv-track" id="rvTrack"></div>
+      <button class="rv-arrow rv-next" id="rvNext" onclick="rvScroll(1)">›</button>
+    </div>
+    <div class="rv-dots" id="rvDots"></div>
   </div>
 </section>
+
+<style>
+/* ── Reviews 재설계 ── */
+.reviews-section { background: linear-gradient(180deg, #0A0F1E 0%, #111827 100%); padding: 80px 0; }
+.reviews-section .section-tag { color: #F59E0B; }
+.reviews-section .section-title { color: #fff; }
+.reviews-meta-row { display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; }
+.stars-big { color: #F59E0B; font-size: 1.4rem; letter-spacing: 2px; }
+.score-big { color: #fff; font-size: 2rem; font-weight: 900; margin: 0 0.5rem; }
+.score-sub { color: rgba(255,255,255,0.45); font-size: 0.85rem; }
+
+/* 카테고리 필터 */
+.rv-cats { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.rv-cat {
+  padding: 6px 16px; border-radius: 999px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  background: transparent; color: rgba(255,255,255,0.5);
+  font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all .15s;
+}
+.rv-cat:hover { border-color: #F59E0B; color: #FCD34D; }
+.rv-cat.active { background: #F59E0B; border-color: #F59E0B; color: #000; }
+
+/* 캐러셀 */
+.rv-wrap { position: relative; max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+.rv-track {
+  display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; padding: 8px 4px 20px;
+}
+.rv-track::-webkit-scrollbar { display: none; }
+
+/* 리뷰 카드 */
+.rv-card {
+  flex: 0 0 320px; scroll-snap-align: start;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 1.4rem 1.5rem 1.2rem;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  position: relative; overflow: hidden;
+}
+.rv-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); border-color: rgba(245,158,11,0.35); }
+.rv-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.rv-card[data-cat="spc"]::before    { background: linear-gradient(90deg,#6366F1,#818CF8); }
+.rv-card[data-cat="hnwi"]::before   { background: linear-gradient(90deg,#F59E0B,#FBBF24); }
+.rv-card[data-cat="corp"]::before   { background: linear-gradient(90deg,#10B981,#34D399); }
+.rv-card[data-cat="overseas"]::before { background: linear-gradient(90deg,#3B82F6,#60A5FA); }
+.rv-card[data-cat="pf"]::before     { background: linear-gradient(90deg,#EF4444,#F87171); }
+.rv-card[data-cat="ma"]::before     { background: linear-gradient(90deg,#8B5CF6,#A78BFA); }
+.rv-card[data-cat="tax"]::before    { background: linear-gradient(90deg,#14B8A6,#2DD4BF); }
+
+.rv-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.rv-badge {
+  font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 999px;
+  letter-spacing: .05em; text-transform: uppercase;
+}
+.rv-badge.spc    { background: rgba(99,102,241,0.2); color: #818CF8; }
+.rv-badge.hnwi   { background: rgba(245,158,11,0.2); color: #FBBF24; }
+.rv-badge.corp   { background: rgba(16,185,129,0.2); color: #34D399; }
+.rv-badge.overseas { background: rgba(59,130,246,0.2); color: #60A5FA; }
+.rv-badge.pf     { background: rgba(239,68,68,0.2);  color: #F87171; }
+.rv-badge.ma     { background: rgba(139,92,246,0.2); color: #A78BFA; }
+.rv-badge.tax    { background: rgba(20,184,166,0.2); color: #2DD4BF; }
+
+.rv-stars { color: #F59E0B; font-size: 0.85rem; letter-spacing: 2px; }
+.rv-quote { color: rgba(255,255,255,0.75); font-size: 0.875rem; line-height: 1.7; margin-bottom: 1.2rem; font-style: italic; }
+.rv-author-row { display: flex; align-items: center; gap: 0.75rem; }
+.rv-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.rv-avatar.spc    { background: #6366F1; }
+.rv-avatar.hnwi   { background: #B45309; }
+.rv-avatar.corp   { background: #065F46; }
+.rv-avatar.overseas { background: #1D4ED8; }
+.rv-avatar.pf     { background: #991B1B; }
+.rv-avatar.ma     { background: #6D28D9; }
+.rv-avatar.tax    { background: #0F766E; }
+
+.rv-name { color: #fff; font-size: 0.82rem; font-weight: 700; }
+.rv-role { color: rgba(255,255,255,0.4); font-size: 0.72rem; margin-top: 1px; }
+.rv-flag { font-size: 0.9rem; margin-left: auto; }
+
+/* 화살표 */
+.rv-arrow {
+  position: absolute; top: 50%; transform: translateY(-60%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7); font-size: 1.4rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; z-index: 5; line-height: 1;
+}
+.rv-arrow:hover { background: #F59E0B; border-color: #F59E0B; color: #000; }
+.rv-prev { left: 0; }
+.rv-next { right: 0; }
+
+/* 닷 인디케이터 */
+.rv-dots { display: flex; justify-content: center; gap: 6px; margin-top: 1.5rem; }
+.rv-dot { width: 6px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.2); transition: all .2s; cursor: pointer; }
+.rv-dot.active { background: #F59E0B; width: 22px; }
+
+@media (max-width: 768px) {
+  .rv-card { flex: 0 0 280px; }
+  .rv-wrap { padding: 0 36px; }
+}
+</style>
+
+<script>
+(function() {
+var REVIEWS = [
+  // SPC 설립
+  { cat:'spc', stars:5, flag:'🇰🇷',
+    quote:'"SPC 설립 구조를 처음 시도했는데, 서식 라이브러리 덕분에 법무법인 없이 초안을 완성했습니다. 컨설팅 연결까지 완벽했어요."',
+    name:'김재현', role:'부동산 개발사 대표', initials:'김' },
+  { cat:'spc', stars:5, flag:'🇰🇷',
+    quote:'"PF SPC 설립 시 필요한 정관·주주간계약·대출약정 서식이 한 곳에 있어서 구조화 시간을 절반으로 줄였습니다."',
+    name:'이준호', role:'프로젝트금융 팀장', initials:'이' },
+  { cat:'spc', stars:5, flag:'🇯🇵',
+    quote:'"日本のSPCスキームを韓国で組成する際、英韓両対応の書式が揃っていて非常に助かりました。専門家水準です。"',
+    name:'Tanaka Ryosuke', role:'일본계 부동산 투자사 CFO', initials:'T' },
+  { cat:'spc', stars:5, flag:'🇺🇸',
+    quote:'"We structured a Korean SPC for a cross-border real estate deal. The document templates were legally sound and saved us weeks of drafting time with local counsel."',
+    name:'Michael Chen', role:'U.S. PE Fund Partner', initials:'M' },
+  { cat:'spc', stars:5, flag:'🇰🇷',
+    quote:'"물류센터 SPC 구조 설계에 활용했습니다. 투자자 IR 자료부터 SPC 정관까지 일관된 서식을 쓸 수 있어 투자자 신뢰도가 높아졌어요."',
+    name:'박성민', role:'리츠 운용사 팀장', initials:'박' },
+
+  // 고액자산가 자산관리
+  { cat:'hnwi', stars:5, flag:'🇰🇷',
+    quote:'"50억대 자산 포트폴리오 재편 시 이 플랫폼의 법인 구조 분석 서식을 활용했습니다. 절세 효과가 연간 2억 이상입니다."',
+    name:'최영훈', role:'고액자산가 (자산 50억+)', initials:'최' },
+  { cat:'hnwi', stars:5, flag:'🇰🇷',
+    quote:'"가족법인 설립부터 주주간 계약, 증여 구조까지 한 플랫폼에서 해결했습니다. PB보다 더 실용적인 조언이 담겨 있어요."',
+    name:'정수연', role:'자산관리 고객 (법인 2개 운영)', initials:'정' },
+  { cat:'hnwi', stars:5, flag:'🇸🇬',
+    quote:'"Managing HNW client assets across Singapore and Korea. The cross-border structure templates and asset management agreements are exceptionally well-drafted."',
+    name:'James Lim', role:'Singapore Family Office CIO', initials:'J' },
+  { cat:'hnwi', stars:5, flag:'🇦🇪',
+    quote:'"Our UAE-based HNWI clients investing in Korean real estate found the investment structure documentation invaluable. Clear, professional, internationally aligned."',
+    name:'Rashed Al Maktoum', role:'UAE Investment Office Director', initials:'R' },
+  { cat:'hnwi', stars:5, flag:'🇰🇷',
+    quote:'"100억대 부동산 자산 법인화 과정에서 필요한 서식이 모두 있었습니다. 세무사와 함께 검토하면서 사용하기에 최적이에요."',
+    name:'강민석', role:'자산가 3세대 (법인 보유)', initials:'강' },
+  { cat:'hnwi', stars:5, flag:'🇰🇷',
+    quote:'"해외금융계좌 신고, 역외자산 구조화 관련 서식까지 있어서 놀랐습니다. 고액자산가에게 꼭 필요한 플랫폼입니다."',
+    name:'윤재원', role:'PB 센터 팀장', initials:'윤' },
+
+  // 법인 설립·구조화
+  { cat:'corp', stars:5, flag:'🇰🇷',
+    quote:'"스타트업 법인 설립 시 정관·주주총회 의사록·이사회 의사록을 모두 이 서식으로 작성했어요. 법무사 비용이 70% 절감됐습니다."',
+    name:'김나영', role:'스타트업 창업자', initials:'김' },
+  { cat:'corp', stars:5, flag:'🇰🇷',
+    quote:'"합자회사와 유한회사 구조를 비교 분석하는 데 플랫폼의 구조화 서식이 큰 도움이 됐습니다. 현업 변호사도 추천하더군요."',
+    name:'박재훈', role:'기업법 전문 변호사', initials:'박' },
+  { cat:'corp', stars:5, flag:'🇨🇳',
+    quote:'"为在韩设立法人提供了完整的文件模板，包括公司章程、股东协议等。专业程度堪比顶级律所。"',
+    name:'Wang Jianfei', role:'중국계 투자법인 대표', initials:'W' },
+  { cat:'corp', stars:5, flag:'🇺🇸',
+    quote:'"Setting up a Korean subsidiary for our U.S. tech company. The incorporation documents were comprehensive and the SPC structure templates helped us navigate complex regulations."',
+    name:'Sarah Johnson', role:'U.S. Tech Corp General Counsel', initials:'S' },
+
+  // 해외투자·해외법인
+  { cat:'overseas', stars:5, flag:'🇰🇷',
+    quote:'"싱가포르 홀딩 법인을 통한 한국 투자 구조에 필요한 서식들을 찾아 헤맸는데, 여기서 원스톱으로 해결했습니다."',
+    name:'오상철', role:'해외 투자 전문 세무사', initials:'오' },
+  { cat:'overseas', stars:5, flag:'🇸🇬',
+    quote:'"Our Singapore holding company needed Korean-compliant investment agreements. This platform provided exactly what we needed — bilingual, legally thorough, and beautifully formatted."',
+    name:'David Tan', role:'Singapore Holding Co. CEO', initials:'D' },
+  { cat:'overseas', stars:5, flag:'🇦🇪',
+    quote:'"Structuring Korean real estate investments from Dubai was complex. The cross-border investment templates and NDA structures here are world-class."',
+    name:'Ahmed Al Rashidi', role:'Dubai Family Office MD', initials:'A' },
+  { cat:'overseas', stars:5, flag:'🇯🇵',
+    quote:'"韓国への投資ストラクチャリングに際し、英語・日本語・韓国語対応の書式群が非常に役立ちました。"',
+    name:'Yamamoto Kenji', role:'일본계 자산운용사 한국법인장', initials:'Y' },
+
+  // 부동산 PF
+  { cat:'pf', stars:5, flag:'🇰🇷',
+    quote:'"1,000억 규모 부동산 PF 딜에서 대출약정서, 자금관리약정, 연대보증 서식을 활용했습니다. 법적 완성도가 매우 높습니다."',
+    name:'송인호', role:'부동산 금융 본부장', initials:'송' },
+  { cat:'pf', stars:5, flag:'🇰🇷',
+    quote:'"물류센터 PF 구조화 시 SPC 정관부터 시공사 도급계약 서식까지 한 번에 활용했어요. 딜 클로징 기간이 2주 단축됐습니다."',
+    name:'황성진', role:'증권사 IB 부장', initials:'황' },
+  { cat:'pf', stars:5, flag:'🇰🇷',
+    quote:'"오피스 빌딩 PF에서 우선주 발행 관련 서식과 주주간 계약서가 매우 유용했습니다. 법무법인 초안보다 실용적이었어요."',
+    name:'신현아', role:'자산운용사 리츠팀 매니저', initials:'신' },
+
+  // M&A·지분계약
+  { cat:'ma', stars:5, flag:'🇰🇷',
+    quote:'"중소기업 M&A 시 주식양수도계약(SPA), 진술보장, 에스크로 조항까지 서식이 완비되어 있었습니다. 딜 어드바이저에게 적극 추천합니다."',
+    name:'임재현', role:'M&A 어드바이저리 대표', initials:'임' },
+  { cat:'ma', stars:5, flag:'🇺🇸',
+    quote:'"Cross-border M&A between a U.S. fund and Korean target. The Korean-English bilingual SPA and shareholder agreement templates were invaluable for both legal teams."',
+    name:'Robert Kim', role:'U.S. PE Fund Korea Desk MD', initials:'R' },
+  { cat:'ma', stars:5, flag:'🇰🇷',
+    quote:'"지분 매각 시 주주간계약 해지, 우선매수권 포기 등 복잡한 서식을 여기서 해결했습니다. 변호사 검토 비용을 크게 줄였어요."',
+    name:'조민준', role:'스타트업 공동창업자·매각 경험', initials:'조' },
+
+  // 절세·세무전략
+  { cat:'tax', stars:5, flag:'🇰🇷',
+    quote:'"가족법인을 활용한 절세 구조를 설계할 때, 법인 정관부터 가족 간 주식 증여 관련 서식까지 한 플랫폼에서 해결했습니다."',
+    name:'이혜진', role:'세무법인 파트너 세무사', initials:'이' },
+  { cat:'tax', stars:5, flag:'🇰🇷',
+    quote:'"고액 부동산 매도 시 절세 전략 수립에 이 플랫폼의 구조화 서식이 큰 도움이 됐습니다. 양도세를 합법적으로 1억 이상 절감했어요."',
+    name:'한상우', role:'부동산 자산가·다주택자', initials:'한' },
+  { cat:'tax', stars:5, flag:'🇰🇷',
+    quote:'"외국납부세액공제, 해외금융계좌 신고 서식 등 국제세무 관련 서식까지 갖춰진 플랫폼은 여기밖에 없습니다."',
+    name:'문지원', role:'국제세무 전문 회계사', initials:'문' }
+];
+
+var currentCat = 'all';
+var filtered = [];
+
+function getFiltered() {
+  return currentCat === 'all' ? REVIEWS : REVIEWS.filter(function(r){ return r.cat === currentCat; });
+}
+
+function catLabel(cat) {
+  var map = { spc:'SPC 설립', hnwi:'고액자산가', corp:'법인구조화', overseas:'해외투자', pf:'부동산 PF', ma:'M&A', tax:'절세전략' };
+  return map[cat] || cat;
+}
+
+function renderReviews() {
+  filtered = getFiltered();
+  var track = document.getElementById('rvTrack');
+  track.innerHTML = filtered.map(function(r) {
+    return '<div class="rv-card" data-cat="' + r.cat + '">' +
+      '<div class="rv-card-top">' +
+        '<span class="rv-badge ' + r.cat + '">' + catLabel(r.cat) + '</span>' +
+        '<span class="rv-stars">' + '★'.repeat(r.stars) + '</span>' +
+      '</div>' +
+      '<div class="rv-quote">' + r.quote + '</div>' +
+      '<div class="rv-author-row">' +
+        '<div class="rv-avatar ' + r.cat + '">' + r.initials + '</div>' +
+        '<div><div class="rv-name">' + r.name + '</div><div class="rv-role">' + r.role + '</div></div>' +
+        '<span class="rv-flag">' + r.flag + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  renderDots();
+}
+
+function renderDots() {
+  var dotsEl = document.getElementById('rvDots');
+  var count = Math.ceil(filtered.length / 3);
+  dotsEl.innerHTML = '';
+  for (var i = 0; i < count; i++) {
+    var d = document.createElement('div');
+    d.className = 'rv-dot' + (i === 0 ? ' active' : '');
+    d.dataset.idx = i;
+    d.addEventListener('click', function(){ scrollToGroup(+this.dataset.idx); });
+    dotsEl.appendChild(d);
+  }
+  updateArrows();
+}
+
+function scrollToGroup(idx) {
+  var track = document.getElementById('rvTrack');
+  var cardWidth = 320 + 16;
+  track.scrollTo({ left: idx * cardWidth * 3, behavior: 'smooth' });
+}
+
+function updateDots() {
+  var track = document.getElementById('rvTrack');
+  var cardWidth = 320 + 16;
+  var idx = Math.round(track.scrollLeft / (cardWidth * 3));
+  document.querySelectorAll('.rv-dot').forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+  updateArrows();
+}
+
+function updateArrows() {
+  var track = document.getElementById('rvTrack');
+  document.getElementById('rvPrev').style.opacity = track.scrollLeft <= 0 ? '0.3' : '1';
+  document.getElementById('rvNext').style.opacity = (track.scrollLeft + track.clientWidth >= track.scrollWidth - 4) ? '0.3' : '1';
+}
+
+window.rvScroll = function(dir) {
+  var track = document.getElementById('rvTrack');
+  track.scrollBy({ left: dir * (320 + 16) * 3, behavior: 'smooth' });
+};
+
+document.getElementById('rvTrack').addEventListener('scroll', updateDots);
+
+document.querySelectorAll('.rv-cat').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.rv-cat').forEach(function(b){ b.classList.remove('active'); });
+    this.classList.add('active');
+    currentCat = this.dataset.cat;
+    var track = document.getElementById('rvTrack');
+    track.scrollTo({ left: 0, behavior: 'instant' });
+    renderReviews();
+  });
+});
+
+renderReviews();
+})();
+</script>
 
 <section class="section cta-section">
   <div class="bg-img-layer" style="background-image:url('https://blogger.googleusercontent.com/img/a/AVvXsEgpriTHshe0RklXVjeET9cDnxD5LfL2za5eUkWVAA_ASyAhzyYVSITHMPxgqn24ZiIIMjTUGyd6efMwqPs5xpq0YaW7L-9Yuwdjr7odouknHuMe8szpYy49fsSTVGIY5OgeM45YtKdl6e8C_rLfdMYqUuQUFZhTMqvX8d-ysbQlqV7hNgcu8AgIdQInNGNc');background-position:center center;filter:brightness(1.3);opacity:.62;"></div>

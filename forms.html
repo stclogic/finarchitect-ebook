@@ -130,25 +130,18 @@
   background: var(--cream); color: var(--text2); border-radius: 6px;
 }
 .form-card-footer {
-  display: flex; gap: 0.5rem; padding-top: 0.8rem;
-  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 0.65rem 1.3rem 1rem;
 }
 .btn-open {
-  flex: 1; padding: 9px 0; border-radius: 9px;
-  font-size: 0.8rem; font-weight: 700; cursor: pointer;
-  border: none; transition: opacity .15s; text-align: center;
-  text-decoration: none; display: flex; align-items: center; justify-content: center;
-  color: #fff;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 13px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: .02em;
+  text-decoration: none; transition: all .18s;
+  border: 1.5px solid currentColor; background: transparent;
 }
-.btn-open:hover { opacity: 0.88; }
-.btn-preview-sm {
-  padding: 9px 12px; border-radius: 9px;
-  font-size: 0.78rem; font-weight: 600; cursor: pointer;
-  border: 1.5px solid var(--border); background: none;
-  color: var(--text2); transition: all .15s; text-decoration: none;
-  display: flex; align-items: center; justify-content: center;
-}
-.btn-preview-sm:hover { border-color: var(--primary); color: var(--primary); }
+.btn-open:hover { filter: brightness(1.1); transform: translateX(2px); }
+.btn-open::after { content: '→'; font-size: 0.8rem; }
 
 /* ── Featured banner ── */
 .featured-banner {
@@ -417,7 +410,7 @@ function render() {
 
   document.getElementById('liveCount').textContent = liveFiltered.length + '종';
   document.getElementById('liveGrid').innerHTML = liveFiltered.map(function(f) {
-    return '<a href="' + f.href + '" class="form-card">' +
+    return '<div class="form-card" onclick="location.href=\'' + f.href + '\'">' +
       '<div class="form-card-accent" style="background:' + f.accent + '"></div>' +
       '<div class="form-card-body">' +
         '<div class="form-card-top">' +
@@ -429,9 +422,9 @@ function render() {
         '<div class="form-card-meta">' + f.tags.map(function(t) { return '<span class="meta-tag">' + t + '</span>'; }).join('') + '</div>' +
       '</div>' +
       '<div class="form-card-footer">' +
-        '<a href="' + f.href + '" class="btn-open" style="background:' + f.accent + '">✏ 온라인 작성하기</a>' +
+        '<a href="' + f.href + '" class="btn-open" style="color:' + f.accent + '; border-color:' + f.accent + '" onclick="event.stopPropagation()">✏ 작성하기</a>' +
       '</div>' +
-    '</a>';
+    '</div>';
   }).join('');
 
   document.getElementById('upcomingGrid').innerHTML = upFiltered.map(function(f) {

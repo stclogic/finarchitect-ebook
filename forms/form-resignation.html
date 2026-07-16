@@ -1,0 +1,463 @@
+<!-- 사직서 온라인 작성 및 인쇄/PDF 다운로드 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사직서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── 공통 레이아웃 ── */
+.form-page-wrap {
+  max-width: 1320px; margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+/* ── 좌측 컨트롤 패널 ── */
+.ctrl-panel {
+  background: #fff;
+  border: 1px solid #E0E7FF;
+  border-radius: 18px; padding: 1.5rem;
+  position: sticky; top: 80px;
+  box-shadow: 0 4px 24px rgba(99,102,241,.08);
+}
+.ctrl-panel h2 {
+  font-size: 1rem; font-weight: 800; color: #1e1b4b;
+  margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.ctrl-back-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.78rem; color: #6366F1; text-decoration: none;
+  margin-bottom: 1rem; font-weight: 600;
+}
+.ctrl-back-link:hover { text-decoration: underline; }
+.ctrl-section { margin-bottom: 1.2rem; }
+.ctrl-section label {
+  display: block; font-size: 0.77rem; font-weight: 700;
+  color: #6366F1; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: .03em;
+}
+.ctrl-section input[type="text"] {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid #C7D2FE; border-radius: 8px;
+  font-size: 0.85rem; color: #1e1b4b;
+  background: #EEF2FF; box-sizing: border-box;
+  transition: border-color .15s;
+}
+.ctrl-section input[type="text"]:focus { outline: none; border-color: #6366F1; background: #fff; }
+.ctrl-file-btn {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 9px 14px; background: #EEF2FF;
+  border: 1px dashed #A5B4FC; border-radius: 8px;
+  cursor: pointer; font-size: 0.82rem; color: #6366F1;
+  transition: border-color .15s; width: 100%; box-sizing: border-box;
+}
+.ctrl-file-btn:hover { border-color: #3730A3; color: #3730A3; }
+.ctrl-file-btn input { display: none; }
+.ctrl-divider { height: 1px; background: #E0E7FF; margin: 1.2rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg,#3730A3,#6366F1);
+  color: #fff; border: none; border-radius: 12px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: opacity .15s; display: flex; align-items: center;
+  justify-content: center; gap: 0.5rem;
+}
+.print-btn:hover { opacity: 0.88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: 0.6rem;
+  background: none; border: 1px solid #C7D2FE;
+  border-radius: 10px; font-size: 0.82rem; color: #6366F1;
+  cursor: pointer; transition: border-color .15s;
+}
+.reset-btn:hover { border-color: #EF4444; color: #EF4444; }
+.tip-box {
+  background: #EEF2FF; border: 1px solid #A5B4FC;
+  border-radius: 10px; padding: 0.8rem 1rem;
+  font-size: 0.75rem; color: #3730A3; line-height: 1.7;
+  margin-top: 0.8rem;
+}
+
+/* ── A4 문서 컨테이너 ── */
+.doc-wrap {
+  background: #E0E7FF;
+  border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* ── A4 페이지 ── */
+.a4-page {
+  width: 210mm;
+  background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  border-radius: 3px;
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 10pt;
+  color: #1a1a2e;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── 상단 인디고 액센트 바 ── */
+.rs-top-bar {
+  height: 6mm;
+  background: linear-gradient(90deg, #3730A3, #6366F1);
+}
+
+/* ── 본문 패딩 래퍼 ── */
+.rs-body {
+  padding: 22mm 20mm 18mm;
+}
+
+/* ── 수신자 블록 ── */
+.rs-recipient {
+  font-size: 9.5pt; color: #444; margin-bottom: 4mm;
+}
+.rs-recipient-company {
+  font-size: 10.5pt; font-weight: 700; color: #1e1b4b;
+}
+
+/* ── 날짜 우측 ── */
+.rs-header-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 10mm;
+}
+.rs-date-block { font-size: 9pt; color: #555; text-align: right; }
+
+/* ── 제목 ── */
+.rs-title {
+  text-align: center;
+  font-size: 22pt; font-weight: 700;
+  color: #3730A3;
+  letter-spacing: 0.4em;
+  margin: 8mm 0 10mm;
+  line-height: 1.2;
+}
+
+/* ── 전문 ── */
+.rs-intro {
+  font-size: 10pt; line-height: 2.0; color: #2a2a3e;
+  text-align: justify; margin-bottom: 8mm;
+  padding: 0 4mm;
+}
+.rs-intro[contenteditable]:hover { background: #FAFAFF; border-radius: 4px; }
+.rs-intro[contenteditable]:focus { outline: none; background: #F8F8FF; box-shadow: inset 0 0 0 2px #C7D2FE; border-radius: 6px; }
+
+/* ── 정보 테이블 ── */
+.rs-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 8mm;
+  font-size: 9.5pt;
+}
+.rs-info-table th {
+  background: #EEF2FF;
+  color: #3730A3; font-weight: 700;
+  border: 1px solid #C7D2FE;
+  padding: 3mm 4mm;
+  width: 30%;
+  text-align: left;
+  white-space: nowrap;
+}
+.rs-info-table td {
+  border: 1px solid #C7D2FE;
+  padding: 3mm 4mm;
+  color: #1a1a2e;
+}
+.rs-info-table td[contenteditable]:hover { background: #FAFAFF; }
+.rs-info-table td[contenteditable]:focus { outline: none; background: #F0F4FF; }
+
+/* ── 사직 사유 상세 ── */
+.rs-reason-label {
+  font-size: 9.5pt; font-weight: 700; color: #3730A3;
+  margin-bottom: 2mm;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.rs-reason-box {
+  border: 1px solid #C7D2FE; border-radius: 8px;
+  padding: 4mm 5mm;
+  min-height: 20mm;
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 9.5pt; line-height: 1.9; color: #1a1a2e;
+  margin-bottom: 8mm;
+}
+.rs-reason-box:empty::before {
+  content: '사직 사유를 상세히 기재해 주세요.';
+  color: #A5B4FC;
+}
+.rs-reason-box:hover { background: #FAFAFF; }
+.rs-reason-box:focus { outline: none; background: #F8F8FF; box-shadow: inset 0 0 0 2px #C7D2FE; border-radius: 8px; }
+
+/* ── 결문 ── */
+.rs-closing {
+  text-align: center; font-size: 10pt; color: #2a2a3e;
+  margin-bottom: 10mm; line-height: 2.0;
+}
+
+/* ── 서명란 ── */
+.rs-sign-section {
+  text-align: center; margin-bottom: 8mm;
+}
+.rs-sign-date {
+  font-size: 11pt; font-weight: 600; color: #1e1b4b; margin-bottom: 6mm;
+}
+.rs-sign-row {
+  display: flex; justify-content: center; gap: 12mm; align-items: flex-end;
+}
+.rs-sign-item { text-align: center; }
+.rs-sign-item-label { font-size: 8.5pt; color: #888; margin-bottom: 2mm; }
+.rs-sign-item-field {
+  border-bottom: 1.5px solid #3730A3;
+  min-width: 50mm; display: inline-block;
+  padding: 0 4mm 2px; font-size: 10pt;
+  color: #1a1a2e;
+}
+.rs-sign-item-field:focus { outline: none; border-color: #6366F1; }
+.rs-sign-seal {
+  width: 18mm; height: 18mm;
+  border: 1.5px dashed #6366F1;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 7.5pt; color: #A5B4FC;
+  margin: 0 auto;
+}
+
+/* ── 수신처 ── */
+.rs-addressee {
+  border-top: 1px solid #E0E7FF;
+  padding-top: 6mm;
+  font-size: 10pt; color: #333;
+  text-align: left;
+}
+.rs-addressee strong { color: #3730A3; }
+
+/* ── 로고 ── */
+.rs-logo {
+  width: 40px; height: 40px; object-fit: contain;
+  border-radius: 6px; display: none;
+}
+.rs-logo.visible { display: inline-block; vertical-align: middle; margin-right: 6px; }
+
+/* ── 인쇄 CSS ── */
+@media print {
+  .ctrl-panel, nav, footer { display: none !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-wrap { background: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .a4-page { width: 100% !important; box-shadow: none !important; border-radius: 0 !important; }
+  @page { size: A4; margin: 0; }
+}
+@media (max-width: 900px) {
+  .form-page-wrap { grid-template-columns: 1fr; }
+  .ctrl-panel { position: static; }
+  .a4-page { width: 100%; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<main class="form-page-wrap">
+  <!-- ── 좌측 컨트롤 패널 ── -->
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="ctrl-back-link">← 서식 목록</a>
+    <h2>📄 사직서 작성</h2>
+
+    <div class="ctrl-section">
+      <label>회사명</label>
+      <input type="text" id="ctrl-company" placeholder="예: (주)스타트업" oninput="syncField('company',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>대표자명</label>
+      <input type="text" id="ctrl-ceo" placeholder="예: 김대표" oninput="syncField('ceo',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>소속부서</label>
+      <input type="text" id="ctrl-dept" placeholder="예: 개발팀" oninput="syncField('dept',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>직위·직책</label>
+      <input type="text" id="ctrl-position" placeholder="예: 과장" oninput="syncField('position',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>성명</label>
+      <input type="text" id="ctrl-name" placeholder="홍길동" oninput="syncField('name',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>사직 예정일</label>
+      <input type="text" id="ctrl-resign-date" placeholder="예: 2025년 3월 31일" oninput="syncField('resigndate',this.value)">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="ctrl-file-btn">
+        <span>🖼 로고 이미지 선택</span>
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+      </label>
+    </div>
+
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
+
+    <div class="tip-box">
+      💡 표 안 항목을 클릭하면 직접 편집할 수 있습니다.<br>
+      사직 사유란을 충분히 작성해 주세요.
+    </div>
+  </aside>
+
+  <!-- ── 우측 문서 영역 ── -->
+  <div class="doc-wrap">
+    <div class="a4-page">
+
+      <!-- 상단 인디고 바 -->
+      <div class="rs-top-bar"></div>
+
+      <div class="rs-body">
+
+        <!-- 헤더 행: 수신자 + 날짜 -->
+        <div class="rs-header-row">
+          <div class="rs-recipient">
+            <img class="rs-logo" id="doc-logo" src="" alt="로고">
+            수&nbsp;신<br>
+            <span class="rs-recipient-company">
+              <span id="doc-company" contenteditable="true" data-field="company">회사명</span>
+              &nbsp;<span id="doc-ceo" contenteditable="true" data-field="ceo">대표자명</span> 귀중
+            </span>
+          </div>
+          <div class="rs-date-block">
+            <span id="doc-date"></span>
+          </div>
+        </div>
+
+        <!-- 제목 -->
+        <div class="rs-title">사&nbsp;&nbsp;&nbsp;&nbsp;직&nbsp;&nbsp;&nbsp;&nbsp;서</div>
+
+        <!-- 전문 -->
+        <div class="rs-intro" contenteditable="true">
+          본인은 아래와 같은 사유로 부득이하게 사직하고자 하오니 허락하여 주시기 바랍니다.
+        </div>
+
+        <!-- 정보 테이블 -->
+        <table class="rs-info-table">
+          <tr>
+            <th>소 속 부 서</th>
+            <td id="doc-dept" contenteditable="true" data-field="dept">부서명</td>
+            <th>직 위 · 직 책</th>
+            <td id="doc-position" contenteditable="true" data-field="position">직위</td>
+          </tr>
+          <tr>
+            <th>성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명</th>
+            <td id="doc-name" contenteditable="true" data-field="name">홍길동</td>
+            <th>입 &nbsp; 사 &nbsp; 일</th>
+            <td contenteditable="true">____년 __월 __일</td>
+          </tr>
+          <tr>
+            <th>사직 예정일</th>
+            <td id="doc-resigndate" contenteditable="true" data-field="resigndate">____년 __월 __일</td>
+            <th>사 직 사 유</th>
+            <td contenteditable="true">일신상의 사유</td>
+          </tr>
+        </table>
+
+        <!-- 사직 사유 상세 -->
+        <div class="rs-reason-label">📝 사직 사유 상세</div>
+        <div class="rs-reason-box" contenteditable="true"></div>
+
+        <!-- 결문 -->
+        <div class="rs-closing">
+          위와 같이 사직원을 제출합니다.
+        </div>
+
+        <!-- 서명란 -->
+        <div class="rs-sign-section">
+          <div class="rs-sign-date" id="sign-date"></div>
+          <div class="rs-sign-row">
+            <div class="rs-sign-item">
+              <div class="rs-sign-item-label">소속</div>
+              <div class="rs-sign-item-field" contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div class="rs-sign-item">
+              <div class="rs-sign-item-label">직위</div>
+              <div class="rs-sign-item-field" contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div class="rs-sign-item">
+              <div class="rs-sign-item-label">성명</div>
+              <div class="rs-sign-item-field" contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div class="rs-sign-item">
+              <div class="rs-sign-item-label">서명</div>
+              <div class="rs-sign-seal">(인)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 수신처 -->
+        <div class="rs-addressee">
+          수신: <strong><span id="addr-company" contenteditable="true">회사명</span> 대표이사 귀중</strong>
+        </div>
+
+      </div><!-- /.rs-body -->
+    </div><!-- /.a4-page -->
+  </div><!-- /.doc-wrap -->
+</main>
+
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+<script>
+// 오늘 날짜 자동 입력
+(function() {
+  const today = new Date();
+  const ymd = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('doc-date').textContent = ymd;
+  document.getElementById('sign-date').textContent = ymd;
+})();
+
+// 컨트롤 패널 → 문서 동기화
+const fieldDefaults = {
+  company: '회사명', ceo: '대표자명', dept: '부서명',
+  position: '직위', name: '홍길동', resigndate: '____년 __월 __일'
+};
+function syncField(field, val) {
+  const els = document.querySelectorAll(`[data-field="${field}"]`);
+  els.forEach(el => { el.textContent = val || fieldDefaults[field]; });
+  if (field === 'company') {
+    document.getElementById('addr-company').textContent = val || '회사명';
+  }
+}
+
+// 로고 업로드
+function uploadLogo(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('doc-logo');
+    img.src = e.target.result;
+    img.classList.add('visible');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// 초기화
+function resetForm() {
+  if (!confirm('모든 내용을 초기화할까요?')) return;
+  ['ctrl-company','ctrl-ceo','ctrl-dept','ctrl-position','ctrl-name','ctrl-resign-date']
+    .forEach(id => document.getElementById(id).value = '');
+  Object.keys(fieldDefaults).forEach(f => syncField(f, ''));
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    if (el.closest('.rs-info-table') || el.classList.contains('rs-reason-box')) {
+      if (!el.getAttribute('data-field')) el.textContent = '';
+    }
+  });
+}
+</script>
+</body>
+</html>

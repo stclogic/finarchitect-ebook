@@ -1,0 +1,438 @@
+<!-- 자기소개서 온라인 작성 및 인쇄/PDF 다운로드 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자기소개서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── 공통 레이아웃 ── */
+.form-page-wrap {
+  max-width: 1320px; margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+/* ── 좌측 컨트롤 패널 ── */
+.ctrl-panel {
+  background: #fff;
+  border: 1px solid #E0E7FF;
+  border-radius: 18px; padding: 1.5rem;
+  position: sticky; top: 80px;
+  box-shadow: 0 4px 24px rgba(99,102,241,.08);
+}
+.ctrl-panel h2 {
+  font-size: 1rem; font-weight: 800; color: #1e1b4b;
+  margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.ctrl-back-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.78rem; color: #6366F1; text-decoration: none;
+  margin-bottom: 1rem; font-weight: 600;
+}
+.ctrl-back-link:hover { text-decoration: underline; }
+.ctrl-section { margin-bottom: 1.2rem; }
+.ctrl-section label {
+  display: block; font-size: 0.77rem; font-weight: 700;
+  color: #6366F1; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: .03em;
+}
+.ctrl-section input[type="text"] {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid #C7D2FE; border-radius: 8px;
+  font-size: 0.85rem; color: #1e1b4b;
+  background: #EEF2FF; box-sizing: border-box;
+  transition: border-color .15s;
+}
+.ctrl-section input[type="text"]:focus { outline: none; border-color: #6366F1; background: #fff; }
+.ctrl-file-btn {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 9px 14px; background: #EEF2FF;
+  border: 1px dashed #A5B4FC; border-radius: 8px;
+  cursor: pointer; font-size: 0.82rem; color: #6366F1;
+  transition: border-color .15s; width: 100%; box-sizing: border-box;
+}
+.ctrl-file-btn:hover { border-color: #3730A3; color: #3730A3; }
+.ctrl-file-btn input { display: none; }
+.ctrl-divider { height: 1px; background: #E0E7FF; margin: 1.2rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg,#3730A3,#6366F1);
+  color: #fff; border: none; border-radius: 12px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: opacity .15s; display: flex; align-items: center;
+  justify-content: center; gap: 0.5rem;
+}
+.print-btn:hover { opacity: 0.88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: 0.6rem;
+  background: none; border: 1px solid #C7D2FE;
+  border-radius: 10px; font-size: 0.82rem; color: #6366F1;
+  cursor: pointer; transition: border-color .15s;
+}
+.reset-btn:hover { border-color: #EF4444; color: #EF4444; }
+.tip-box {
+  background: #EEF2FF; border: 1px solid #A5B4FC;
+  border-radius: 10px; padding: 0.8rem 1rem;
+  font-size: 0.75rem; color: #3730A3; line-height: 1.7;
+  margin-top: 0.8rem;
+}
+
+/* ── A4 문서 컨테이너 ── */
+.doc-wrap {
+  background: #E0E7FF;
+  border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* ── A4 페이지 ── */
+.a4-page {
+  width: 210mm;
+  background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  border-radius: 3px;
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 10pt;
+  color: #1a1a2e;
+  padding: 15mm 14mm;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ── 헤더 그라디언트 배너 ── */
+.cl-header {
+  background: linear-gradient(135deg, #3730A3 0%, #6366F1 100%);
+  color: #fff;
+  border-radius: 10px;
+  padding: 14mm 12mm 10mm;
+  margin-bottom: 8mm;
+  position: relative;
+  overflow: hidden;
+}
+.cl-header::before {
+  content: '';
+  position: absolute; right: -30px; top: -30px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,.08);
+  border-radius: 50%;
+}
+.cl-header::after {
+  content: '';
+  position: absolute; right: 40px; bottom: -20px;
+  width: 80px; height: 80px;
+  background: rgba(255,255,255,.06);
+  border-radius: 50%;
+}
+.cl-header-logo {
+  width: 48px; height: 48px; border-radius: 8px;
+  object-fit: contain; background: rgba(255,255,255,.15);
+  border: 2px solid rgba(255,255,255,.3);
+  display: none; margin-bottom: 8px;
+}
+.cl-header-logo.visible { display: block; }
+.cl-doc-title {
+  font-size: 20pt; font-weight: 700; letter-spacing: .05em;
+  margin-bottom: 6px;
+}
+.cl-header-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  font-size: 9.5pt; opacity: .92; margin-top: 8px;
+}
+.cl-header-meta span { display: flex; align-items: center; gap: 4px; }
+.cl-header-field {
+  display: inline-block; min-width: 80px;
+  border-bottom: 1px solid rgba(255,255,255,.5);
+  padding-bottom: 1px;
+}
+
+/* ── 섹션 카드 ── */
+.cl-section-card {
+  border: 1px solid #E0E7FF;
+  border-radius: 10px;
+  margin-bottom: 6mm;
+  overflow: hidden;
+}
+.cl-section-header {
+  background: linear-gradient(90deg, #EEF2FF 0%, #F5F3FF 100%);
+  padding: 4mm 5mm;
+  display: flex; align-items: center; gap: 0.7rem;
+  border-bottom: 1px solid #E0E7FF;
+}
+.cl-badge {
+  width: 26px; height: 26px;
+  background: linear-gradient(135deg, #3730A3, #6366F1);
+  color: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8.5pt; font-weight: 700; flex-shrink: 0;
+}
+.cl-section-title {
+  font-size: 10.5pt; font-weight: 700; color: #3730A3; flex: 1;
+}
+.cl-char-count {
+  font-size: 8pt; color: #6366F1; background: #EEF2FF;
+  padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+}
+.cl-section-body {
+  padding: 5mm;
+}
+.cl-textarea {
+  min-height: 35mm; width: 100%; box-sizing: border-box;
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 9.5pt; line-height: 1.85; color: #1a1a2e;
+  outline: none; border: none;
+  resize: none; display: block;
+}
+.cl-textarea:empty::before {
+  content: attr(data-placeholder);
+  color: #A5B4FC; pointer-events: none;
+}
+.cl-textarea:hover { background: #FAFAFF; }
+.cl-textarea:focus {
+  background: #F8F8FF;
+  box-shadow: inset 0 0 0 2px #C7D2FE;
+  border-radius: 6px;
+}
+.cl-hint {
+  font-size: 7.5pt; color: #A5B4FC; margin-top: 3px;
+  font-style: italic;
+}
+
+/* ── 푸터 서명란 ── */
+.cl-footer {
+  margin-top: 6mm;
+  border-top: 2px solid #3730A3;
+  padding-top: 5mm;
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.cl-footer-left { font-size: 8.5pt; color: #555; }
+.cl-footer-right {
+  text-align: center;
+}
+.cl-sign-area {
+  border: 1px solid #C7D2FE; border-radius: 6px;
+  width: 60mm; padding: 6mm 4mm 2mm;
+  text-align: right;
+  font-size: 9pt;
+}
+.cl-sign-label { font-size: 7.5pt; color: #888; margin-bottom: 4px; }
+.cl-sign-line {
+  border-bottom: 1px solid #3730A3;
+  min-width: 40px; display: inline-block;
+  padding-bottom: 1px; margin-left: 8px;
+}
+
+/* ── 인쇄 CSS ── */
+@media print {
+  .ctrl-panel, nav, footer, .doc-wrap > *:not(.a4-page) { display: none !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-wrap { background: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .a4-page {
+    width: 100% !important; box-shadow: none !important;
+    border-radius: 0 !important; margin: 0 !important; padding: 0 !important;
+  }
+  .cl-header { border-radius: 0 !important; }
+  .cl-textarea:focus { box-shadow: none !important; background: transparent !important; }
+  @page { size: A4; margin: 0; }
+}
+@media (max-width: 900px) {
+  .form-page-wrap { grid-template-columns: 1fr; }
+  .ctrl-panel { position: static; }
+  .a4-page { width: 100%; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<main class="form-page-wrap">
+  <!-- ── 좌측 컨트롤 패널 ── -->
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="ctrl-back-link">← 서식 목록</a>
+    <h2>✏️ 자기소개서 작성</h2>
+
+    <div class="ctrl-section">
+      <label>회사명</label>
+      <input type="text" id="ctrl-company" placeholder="예: 삼성전자" oninput="syncField('company', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>지원직무</label>
+      <input type="text" id="ctrl-job" placeholder="예: 소프트웨어 엔지니어" oninput="syncField('job', this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>이름</label>
+      <input type="text" id="ctrl-name" placeholder="홍길동" oninput="syncField('name', this.value)">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="ctrl-file-btn">
+        <span>🖼 로고 이미지 선택</span>
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+      </label>
+    </div>
+
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
+
+    <div class="tip-box">
+      💡 각 항목 클릭 후 직접 입력하세요.<br>
+      권장 분량: 항목당 500자 내외<br>
+      PDF 저장: 인쇄 → "PDF로 저장"
+    </div>
+  </aside>
+
+  <!-- ── 우측 문서 영역 ── -->
+  <div class="doc-wrap">
+    <div class="a4-page">
+
+      <!-- 헤더 배너 -->
+      <div class="cl-header">
+        <img class="cl-header-logo" id="doc-logo" src="" alt="로고">
+        <div class="cl-doc-title">자  기  소  개  서</div>
+        <div class="cl-header-meta">
+          <span>🏢 지원회사: <span class="cl-header-field" id="doc-company" contenteditable="true" data-field="company">회사명</span></span>
+          <span>💼 지원직무: <span class="cl-header-field" id="doc-job" contenteditable="true" data-field="job">지원직무</span></span>
+          <span>👤 성명: <span class="cl-header-field" id="doc-name" contenteditable="true" data-field="name">이름</span></span>
+          <span>📅 <span id="doc-date"></span></span>
+        </div>
+      </div>
+
+      <!-- 섹션 1: 성장과정 -->
+      <div class="cl-section-card">
+        <div class="cl-section-header">
+          <div class="cl-badge">1</div>
+          <div class="cl-section-title">성장과정</div>
+          <div class="cl-char-count" id="cnt-1">0 / 500자</div>
+        </div>
+        <div class="cl-section-body">
+          <div class="cl-textarea" contenteditable="true"
+            data-placeholder="어떤 환경에서 성장하였고, 그 과정에서 어떤 가치관과 역량을 형성하게 되었는지 구체적으로 기술해 주세요."
+            data-cnt="cnt-1"></div>
+          <div class="cl-hint">성장 배경·경험 중심으로 500자 내외 권장</div>
+        </div>
+      </div>
+
+      <!-- 섹션 2: 성격의 장단점 -->
+      <div class="cl-section-card">
+        <div class="cl-section-header">
+          <div class="cl-badge">2</div>
+          <div class="cl-section-title">성격의 장·단점</div>
+          <div class="cl-char-count" id="cnt-2">0 / 500자</div>
+        </div>
+        <div class="cl-section-body">
+          <div class="cl-textarea" contenteditable="true"
+            data-placeholder="본인의 성격 중 강점과 보완해야 할 점을 솔직하고 구체적으로 기술해 주세요. 단점은 극복 노력과 함께 서술하면 좋습니다."
+            data-cnt="cnt-2"></div>
+          <div class="cl-hint">구체적 사례와 함께 500자 내외 권장</div>
+        </div>
+      </div>
+
+      <!-- 섹션 3: 지원동기 -->
+      <div class="cl-section-card">
+        <div class="cl-section-header">
+          <div class="cl-badge">3</div>
+          <div class="cl-section-title">지원동기</div>
+          <div class="cl-char-count" id="cnt-3">0 / 500자</div>
+        </div>
+        <div class="cl-section-body">
+          <div class="cl-textarea" contenteditable="true"
+            data-placeholder="해당 기업과 직무에 지원하게 된 구체적인 이유를 기술해 주세요. 기업 연구 내용과 본인의 역량 연결점을 명확히 제시해 주세요."
+            data-cnt="cnt-3"></div>
+          <div class="cl-hint">기업·직무 연구 기반으로 500자 내외 권장</div>
+        </div>
+      </div>
+
+      <!-- 섹션 4: 입사 후 포부 -->
+      <div class="cl-section-card">
+        <div class="cl-section-header">
+          <div class="cl-badge">4</div>
+          <div class="cl-section-title">입사 후 포부</div>
+          <div class="cl-char-count" id="cnt-4">0 / 500자</div>
+        </div>
+        <div class="cl-section-body">
+          <div class="cl-textarea" contenteditable="true"
+            data-placeholder="입사 후 단기·장기적으로 이루고 싶은 목표와 기여 방향을 구체적으로 기술해 주세요."
+            data-cnt="cnt-4"></div>
+          <div class="cl-hint">구체적 목표·기여 계획 500자 내외 권장</div>
+        </div>
+      </div>
+
+      <!-- 푸터 서명란 -->
+      <div class="cl-footer">
+        <div class="cl-footer-left">
+          작성일: <span id="footer-date" contenteditable="true"></span>
+        </div>
+        <div class="cl-sign-area">
+          <div class="cl-sign-label">위 내용은 사실과 다름이 없습니다.</div>
+          성명: <span class="cl-sign-line" contenteditable="true" style="min-width:60px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span style="margin-left:6px;font-size:8.5pt;color:#6366F1">(서명)</span>
+        </div>
+      </div>
+
+    </div><!-- /.a4-page -->
+  </div><!-- /.doc-wrap -->
+</main>
+
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+<script>
+// 오늘 날짜 자동 입력
+(function() {
+  const today = new Date();
+  const ymd = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('doc-date').textContent = ymd;
+  document.getElementById('footer-date').textContent = ymd;
+})();
+
+// 컨트롤 패널 → 문서 동기화
+function syncField(field, val) {
+  const el = document.querySelector(`[data-field="${field}"]`);
+  if (el) el.textContent = val || (field === 'company' ? '회사명' : field === 'job' ? '지원직무' : '이름');
+}
+
+// 로고 업로드
+function uploadLogo(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('doc-logo');
+    img.src = e.target.result;
+    img.classList.add('visible');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// 글자 수 실시간 카운트
+document.querySelectorAll('.cl-textarea').forEach(el => {
+  const cntId = el.getAttribute('data-cnt');
+  if (!cntId) return;
+  const cntEl = document.getElementById(cntId);
+  el.addEventListener('input', () => {
+    const len = el.innerText.replace(/\n/g,'').length;
+    cntEl.textContent = `${len} / 500자`;
+    cntEl.style.color = len > 500 ? '#EF4444' : '#6366F1';
+  });
+});
+
+// 초기화
+function resetForm() {
+  if (!confirm('모든 내용을 초기화할까요?')) return;
+  ['ctrl-company','ctrl-job','ctrl-name'].forEach(id => document.getElementById(id).value = '');
+  ['company','job','name'].forEach(f => syncField(f, ''));
+  document.querySelectorAll('.cl-textarea').forEach(el => { el.textContent = ''; });
+  document.querySelectorAll('.cl-char-count').forEach(el => el.textContent = '0 / 500자');
+  const img = document.getElementById('doc-logo');
+  img.src = ''; img.classList.remove('visible');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!-- 권리금계약서 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>권리금계약서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.form-page-wrap {
+  max-width:1200px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #e2e8f0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 4px 24px rgba(15,118,110,.1);
+}
+.ctrl-panel h2 { font-size:.97rem; font-weight:800; color:#0F766E; margin-bottom:1.2rem; }
+.ctrl-section { margin-bottom:.9rem; }
+.ctrl-section label { display:block; font-size:.77rem; font-weight:700; color:#64748b; margin-bottom:.28rem; }
+.ctrl-section input, .ctrl-section select {
+  width:100%; padding:8px 10px; border:1px solid #e2e8f0; border-radius:8px;
+  font-size:.85rem; color:#0F766E; background:#f8fafc; box-sizing:border-box;
+}
+.ctrl-divider { height:1px; background:#e2e8f0; margin:1rem 0; }
+.print-btn {
+  width:100%; padding:13px;
+  background:linear-gradient(135deg,#0F766E,#14B8A6); color:#fff;
+  border:none; border-radius:12px; font-size:.95rem; font-weight:700; cursor:pointer; transition:opacity .2s;
+}
+.print-btn:hover { opacity:.88; }
+.reset-btn {
+  width:100%; padding:9px; margin-top:.6rem;
+  background:none; border:1px solid #e2e8f0; border-radius:10px; font-size:.82rem; color:#64748b; cursor:pointer;
+}
+.tip-box {
+  background:#CCFBF1; border:1px solid #5EEAD4; border-radius:10px;
+  padding:.8rem 1rem; font-size:.76rem; color:#0F766E; line-height:1.65; margin-top:.8rem;
+}
+.back-link {
+  display:inline-flex; align-items:center; gap:.3rem;
+  font-size:.82rem; color:#64748b; text-decoration:none;
+  padding:7px 14px; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:1rem; transition:background .2s;
+}
+.back-link:hover { background:#CCFBF1; }
+.doc-wrap { background:#CCFBF1; border-radius:14px; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; }
+.doc-page {
+  width:210mm; min-height:297mm; background:#fff;
+  box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:0; overflow:hidden; font-family:'Noto Serif KR','Malgun Gothic',serif; font-size:10pt; color:#222; position:relative;
+}
+.doc-header-bar {
+  height:14mm; background:linear-gradient(90deg,#0F766E 0%,#14B8A6 100%);
+  display:flex; align-items:center; padding:0 10mm; gap:12px;
+}
+.doc-header-bar .icon { font-size:20px; color:#fff; }
+.doc-header-bar .doc-num { color:rgba(255,255,255,.7); font-size:8pt; margin-left:auto; }
+.doc-body { padding:8mm 12mm 10mm; }
+.logo-area { display:flex; align-items:center; gap:10px; margin-bottom:4mm; }
+.logo-img { width:36px; height:36px; object-fit:contain; border-radius:6px; display:none; }
+.logo-placeholder {
+  width:36px; height:36px; border:1.5px dashed #94a3b8; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:9px; text-align:center; line-height:1.2; cursor:pointer;
+}
+.doc-title { text-align:center; margin:4mm 0 2mm; }
+.doc-title h1 { font-size:20pt; font-weight:700; letter-spacing:6px; color:#0F766E; margin:0; }
+.doc-title .en { font-size:8.5pt; color:#14B8A6; letter-spacing:2px; margin-top:1mm; }
+.doc-title .subtitle { font-size:8pt; color:#666; margin-top:1mm; }
+.doc-divider { height:2px; background:linear-gradient(90deg,#0F766E,#14B8A6); margin:3mm 0; border-radius:1px; }
+.doc-divider-thin { height:1px; background:#CCFBF1; margin:2mm 0; }
+
+.property-box {
+  border:1.5px solid #14B8A6; border-radius:8px; padding:4mm 5mm; margin:3mm 0; background:#f0fdfc;
+}
+.property-box .pb-title {
+  font-size:8pt; font-weight:700; color:#0F766E; background:#CCFBF1;
+  padding:1.5mm 3mm; border-radius:4px; margin-bottom:3mm; display:inline-block;
+}
+.pb-row { display:flex; align-items:baseline; gap:6px; margin:1.5mm 0; font-size:9pt; }
+.pb-label { color:#0F766E; font-weight:700; white-space:nowrap; min-width:70px; font-size:8.5pt; }
+.pb-val { flex:1; border-bottom:1px solid #14B8A6; min-height:5mm; padding-bottom:.5mm; }
+
+.party-table { width:100%; border-collapse:collapse; margin:3mm 0; font-size:8.5pt; }
+.party-table th { background:#0F766E; color:#fff; padding:2mm 3mm; text-align:center; font-weight:700; }
+.party-table td { border:1px solid #99F6E4; padding:2mm 3mm; vertical-align:middle; }
+.party-table tr:nth-child(even) td { background:#f0fdfc; }
+.party-label { background:#CCFBF1 !important; font-weight:700; color:#0F766E; text-align:center; }
+
+.article-section { margin:3mm 0; }
+.article-num {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:18px; height:18px; background:#0F766E; color:#fff;
+  border-radius:50%; font-size:7.5pt; font-weight:700; margin-right:4px; flex-shrink:0;
+}
+.article-title { font-size:9.5pt; font-weight:700; color:#0F766E; display:flex; align-items:center; margin:2.5mm 0 1mm; }
+.article-body { font-size:8.5pt; line-height:1.7; color:#333; padding-left:22px; }
+
+.data-table { width:100%; border-collapse:collapse; margin:2mm 0; font-size:8pt; }
+.data-table th { background:#0F766E; color:#fff; padding:1.5mm 2mm; text-align:center; }
+.data-table td { border:1px solid #99F6E4; padding:1.5mm 2mm; text-align:center; }
+.data-table tr:nth-child(even) td { background:#f0fdfc; }
+
+.section-badge {
+  display:inline-block; background:#0F766E; color:#fff; font-size:7.5pt; font-weight:700;
+  padding:1mm 3mm; border-radius:4px; margin:2mm 0 1mm;
+}
+.amount-box { border:1px solid #99F6E4; border-radius:4px; padding:2mm; background:#f9fafb; font-size:8.5pt; margin:1.5mm 0; }
+.amount-box .ab-label { font-size:7.5pt; color:#0F766E; font-weight:700; }
+
+.goodwill-type-row { display:flex; gap:4mm; margin:2mm 0; }
+.goodwill-type-box {
+  flex:1; border:1.5px solid #CCFBF1; border-radius:6px; padding:2.5mm 3mm;
+  background:#f0fdfc; text-align:center; font-size:8pt;
+}
+.goodwill-type-box .gt-label { font-size:7pt; color:#0F766E; font-weight:700; margin-bottom:1mm; }
+.goodwill-type-box .gt-val { font-size:9pt; font-weight:600; color:#333; }
+.goodwill-type-box .gt-val[contenteditable] { border-bottom:1px solid #14B8A6; display:block; min-height:5mm; }
+
+.stamp-row { display:flex; justify-content:space-around; margin:6mm 0 3mm; gap:1rem; }
+.stamp-block { text-align:center; flex:1; }
+.stamp-block .s-title { font-size:8.5pt; font-weight:700; color:#0F766E; margin-bottom:2mm; }
+.stamp-block .s-info { font-size:8pt; line-height:1.8; color:#444; }
+.stamp-box { width:28mm; height:20mm; border:1px solid #99F6E4; border-radius:4px; margin:2mm auto 0; display:flex; align-items:center; justify-content:center; color:#ccc; font-size:7pt; }
+
+.law-box {
+  background:#f0fdfc; border:1px solid #5EEAD4; border-radius:6px;
+  padding:2mm 3mm; font-size:7.5pt; color:#0F766E; line-height:1.6; margin:2mm 0;
+}
+
+[contenteditable]:hover { outline:2px solid #14B8A6; border-radius:3px; }
+[contenteditable]:focus { outline:3px solid #0F766E; border-radius:3px; background:#f0fff8; }
+
+@media print {
+  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .doc-page { width:210mm; box-shadow:none; min-height:auto; }
+  @page { size:A4; margin:0; }
+  body { background:#fff !important; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>🏪 권리금계약서</h2>
+    <div class="ctrl-section">
+      <label>회사 로고 업로드</label>
+      <input type="file" accept="image/*" id="logoUpload" style="font-size:.78rem;">
+    </div>
+    <div class="ctrl-section">
+      <label>작성일</label>
+      <input type="date" id="docDate">
+    </div>
+    <div class="ctrl-section">
+      <label>문서 번호</label>
+      <input type="text" id="docNum" placeholder="예: GW-2025-001">
+    </div>
+    <div class="ctrl-section">
+      <label>총 권리금액 (숫자)</label>
+      <input type="number" id="totalAmt" placeholder="예: 30000000">
+    </div>
+    <div class="ctrl-section">
+      <label>시설 권리금 (숫자)</label>
+      <input type="number" id="facilityAmt" placeholder="예: 10000000">
+    </div>
+    <div class="ctrl-section">
+      <label>영업 권리금 (숫자)</label>
+      <input type="number" id="bizAmt" placeholder="예: 15000000">
+    </div>
+    <div class="ctrl-section">
+      <label>바닥 권리금 (숫자)</label>
+      <input type="number" id="floorAmt" placeholder="예: 5000000">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
+    <div class="tip-box">
+      💡 <strong>작성 Tip</strong><br>
+      상가임대차보호법 제10조의4에 따라 임대인은 권리금 회수를 방해할 수 없습니다. 임대인 동의란도 반드시 받으세요.
+    </div>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="doc-page" id="docPage">
+      <div class="doc-header-bar">
+        <span class="icon">🏪</span>
+        <span style="color:#fff;font-size:9pt;font-weight:700;">GOODWILL TRANSFER AGREEMENT</span>
+        <span class="doc-num" id="dispDocNum">No. GW-2025-001</span>
+      </div>
+
+      <div class="doc-body">
+        <div class="logo-area">
+          <div class="logo-placeholder" id="logoHolder" onclick="document.getElementById('logoUpload').click()">로고<br>업로드</div>
+          <img class="logo-img" id="logoImg" src="" alt="logo">
+          <div style="flex:1; text-align:right; font-size:7.5pt; color:#888;"><span id="dispDate"></span></div>
+        </div>
+
+        <div class="doc-title">
+          <h1>권&nbsp;&nbsp;리&nbsp;&nbsp;금&nbsp;&nbsp;계&nbsp;&nbsp;약&nbsp;&nbsp;서</h1>
+          <div class="en">GOODWILL TRANSFER AGREEMENT</div>
+          <div class="subtitle">상가임대차보호법 제10조의3·4에 의거하여 아래와 같이 체결한다.</div>
+        </div>
+        <div class="doc-divider"></div>
+
+        <!-- 점포 기본 정보 -->
+        <div class="property-box">
+          <div class="pb-title">▌ 점포 기본 사항</div>
+          <div class="pb-row"><span class="pb-label">소 재 지</span><span class="pb-val" contenteditable="true"></span></div>
+          <div class="pb-row"><span class="pb-label">건물/호수</span><span class="pb-val" contenteditable="true" style="max-width:60mm;"></span><span class="pb-label" style="margin-left:4mm;">업  종</span><span class="pb-val" contenteditable="true" style="max-width:50mm;"></span></div>
+          <div class="pb-row"><span class="pb-label">면  적</span><span class="pb-val" contenteditable="true" style="max-width:50mm;"></span><span class="pb-label" style="margin-left:4mm;">임대차 기간</span><span class="pb-val" contenteditable="true" style="max-width:70mm;"></span></div>
+        </div>
+
+        <!-- 당사자 표 -->
+        <div class="section-badge">▌ 계약 당사자</div>
+        <table class="party-table">
+          <thead>
+            <tr>
+              <th style="width:22%;">구분</th>
+              <th>양도인 (甲) — 현 임차인</th>
+              <th>양수인 (乙) — 신규 임차인</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="party-label">성명/법인명</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td class="party-label">생년월일/사번</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td class="party-label">주소</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td class="party-label">연락처</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+          </tbody>
+        </table>
+
+        <div class="doc-divider-thin"></div>
+
+        <!-- 제1조 권리금 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">1</span>권리금</div>
+          <div class="article-body">
+            양도인과 양수인은 본 점포의 권리금을 아래와 같이 합의한다.
+            <div class="amount-box" style="margin-top:2mm;">
+              <div class="ab-label">총 권리금액</div>
+              <div contenteditable="true" id="dispTotalAmt" style="font-size:11pt; font-weight:700; color:#0F766E;">금 ___________________원 (₩ )</div>
+              <div contenteditable="true" id="dispTotalAmtKor" style="font-weight:600; margin-top:1mm;">금 ___________________________원정</div>
+            </div>
+            <div class="goodwill-type-row" style="margin-top:2mm;">
+              <div class="goodwill-type-box">
+                <div class="gt-label">시설 권리금</div>
+                <div class="gt-val" id="dispFacilityAmt" contenteditable="true">₩ —</div>
+              </div>
+              <div class="goodwill-type-box">
+                <div class="gt-label">영업 권리금</div>
+                <div class="gt-val" id="dispBizAmt" contenteditable="true">₩ —</div>
+              </div>
+              <div class="goodwill-type-box">
+                <div class="gt-label">바닥 권리금</div>
+                <div class="gt-val" id="dispFloorAmt" contenteditable="true">₩ —</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 제2조 지급 일정 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">2</span>계약금 및 잔금 지급 일정</div>
+          <div class="article-body">
+            <table class="data-table">
+              <thead><tr><th>구분</th><th>금액</th><th>지급일</th><th>지급방법</th></tr></thead>
+              <tbody>
+                <tr><td contenteditable="true">계약금</td><td contenteditable="true"></td><td contenteditable="true">계약 체결일</td><td contenteditable="true">계좌이체</td></tr>
+                <tr><td contenteditable="true">중도금</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">계좌이체</td></tr>
+                <tr><td contenteditable="true">잔 금</td><td contenteditable="true"></td><td contenteditable="true">인수인계일</td><td contenteditable="true">계좌이체</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 제3조 임대인 동의 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">3</span>임대인 동의</div>
+          <div class="article-body">
+            <div class="law-box">
+              「상가건물 임대차보호법」 제10조의4: 임대인은 임차인이 주선한 신규 임차인이 되려는 자로부터 권리금을 지급받는 것을 방해하여서는 아니 된다.
+            </div>
+            <div contenteditable="true">임대인은 신규 임차인(을)과의 임대차계약 체결을 거절하지 않으며, 을의 권리금 수수를 방해하지 않는다. 임대인이 정당한 사유 없이 계약 체결을 거부할 경우 갑은 임대인에게 손해배상을 청구할 수 있다.</div>
+          </div>
+        </div>
+
+        <!-- 제4조 인수 범위 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">4</span>인수 범위 — 시설물 목록</div>
+          <div class="article-body">
+            <table class="data-table">
+              <thead><tr><th>항목명</th><th>수량</th><th>상태</th><th>금액(원)</th><th>비고</th></tr></thead>
+              <tbody>
+                <tr><td contenteditable="true">인테리어 시설</td><td contenteditable="true">일식</td><td contenteditable="true">양호</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                <tr><td contenteditable="true">냉난방기</td><td contenteditable="true"></td><td contenteditable="true">양호</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                <tr><td contenteditable="true">주방기기</td><td contenteditable="true">일식</td><td contenteditable="true">양호</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                <tr><td contenteditable="true">비품/집기</td><td contenteditable="true">일식</td><td contenteditable="true">양호</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                <tr><td contenteditable="true">간판/사인물</td><td contenteditable="true">일식</td><td contenteditable="true">양호</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 제5~10조 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">5</span>명도 및 인수인계 일자</div>
+          <div class="article-body" contenteditable="true">갑은 잔금 수령 후 __일 이내에 본 점포를 을에게 명도하고, 인수인계서를 작성한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">6</span>영업 비밀 이전</div>
+          <div class="article-body" contenteditable="true">갑은 기존 거래처 정보, 레시피, 영업 노하우 등을 성실히 을에게 이전한다. 이전 기간은 인수인계일로부터 __일로 한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">7</span>영업 방해 금지</div>
+          <div class="article-body" contenteditable="true">갑은 본 계약일로부터 __년간 본 점포 반경 __km 이내에서 동종 업종을 영위하지 않는다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">8</span>임대인의 계약 갱신 거절 시 손실 처리</div>
+          <div class="article-body" contenteditable="true">임대인이 정당한 사유 없이 을과의 임대차계약 갱신을 거절하여 을이 손해를 입은 경우, 임대인은 「상가건물 임대차보호법」에 따라 손해를 배상한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">9</span>계약 해지 및 위약금</div>
+          <div class="article-body" contenteditable="true">갑이 계약을 위반하여 계약이 해지되는 경우 계약금의 2배를 을에게 반환한다. 을이 계약을 위반하는 경우 계약금을 포기한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">10</span>분쟁 해결</div>
+          <div class="article-body" contenteditable="true">본 계약에 관한 분쟁은 점포 소재지를 관할하는 법원을 제1심 법원으로 한다.</div>
+        </div>
+
+        <div class="doc-divider"></div>
+
+        <div style="text-align:center; font-size:9pt; color:#0F766E; font-weight:700; margin:3mm 0 2mm;">
+          위 계약 내용을 확인하고 각자 서명·날인한다.
+        </div>
+        <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
+
+        <div class="stamp-row">
+          <div class="stamp-block">
+            <div class="s-title">양도인 (甲) — 현 임차인</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:<br>연락처:</div>
+            <div class="stamp-box">인</div>
+          </div>
+          <div class="stamp-block">
+            <div class="s-title">양수인 (乙) — 신규 임차인</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:<br>연락처:</div>
+            <div class="stamp-box">인</div>
+          </div>
+        </div>
+
+        <!-- 임대인 동의 서명 -->
+        <div style="border:1.5px dashed #14B8A6; border-radius:8px; padding:3mm 4mm; margin-top:3mm;">
+          <div style="font-size:8.5pt; font-weight:700; color:#0F766E; margin-bottom:2mm;">▌ 임대인 동의 서명란</div>
+          <div style="font-size:8pt; color:#555; margin-bottom:2mm;">본인(임대인)은 위 권리금계약의 내용을 확인하고 신규 임차인(을)과의 임대차계약 체결에 동의합니다.</div>
+          <div class="stamp-row" style="margin:2mm 0;">
+            <div class="stamp-block">
+              <div class="s-title">임대인</div>
+              <div class="s-info" contenteditable="true">성명:<br>주소:<br>연락처:</div>
+              <div class="stamp-box">인</div>
+            </div>
+            <div style="flex:2;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const today = new Date();
+  const ymd = today.toISOString().split('T')[0];
+  document.getElementById('docDate').value = ymd;
+  const formatted = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+})();
+
+document.getElementById('docDate').addEventListener('change', function() {
+  const d = new Date(this.value);
+  const formatted = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+});
+
+document.getElementById('docNum').addEventListener('input', function() {
+  document.getElementById('dispDocNum').textContent = 'No. ' + this.value;
+});
+
+function numberToKorean(n) {
+  if (!n || isNaN(n)) return '';
+  const units = ['','만','억','조'];
+  const digits = ['','일','이','삼','사','오','육','칠','팔','구'];
+  const places = ['','십','백','천'];
+  let result = ''; let unitIdx = 0;
+  while (n > 0) {
+    const chunk = n % 10000;
+    if (chunk > 0) {
+      let chunkStr = ''; let tmp = chunk;
+      for (let p = 0; tmp > 0; p++, tmp = Math.floor(tmp/10)) {
+        const d = tmp % 10;
+        if (d > 0) chunkStr = digits[d] + places[p] + chunkStr;
+      }
+      result = chunkStr + units[unitIdx] + result;
+    }
+    n = Math.floor(n / 10000); unitIdx++;
+  }
+  return result;
+}
+
+document.getElementById('totalAmt').addEventListener('input', function() {
+  const n = parseInt(this.value, 10);
+  if (!isNaN(n)) {
+    document.getElementById('dispTotalAmt').textContent = `금 ${n.toLocaleString('ko-KR')} 원 (₩ ${n.toLocaleString('ko-KR')})`;
+    document.getElementById('dispTotalAmtKor').textContent = `금 ${numberToKorean(n)} 원정`;
+  }
+});
+
+['facilityAmt','bizAmt','floorAmt'].forEach(id => {
+  const dispId = id === 'facilityAmt' ? 'dispFacilityAmt' : id === 'bizAmt' ? 'dispBizAmt' : 'dispFloorAmt';
+  document.getElementById(id).addEventListener('input', function() {
+    const n = parseInt(this.value, 10);
+    document.getElementById(dispId).textContent = isNaN(n) ? '₩ —' : `₩ ${n.toLocaleString('ko-KR')}`;
+  });
+});
+
+document.getElementById('logoUpload').addEventListener('change', function(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    document.getElementById('logoImg').src = ev.target.result;
+    document.getElementById('logoImg').style.display = 'block';
+    document.getElementById('logoHolder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+function resetDoc() {
+  if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;
+  document.querySelectorAll('[contenteditable]').forEach(el => el.textContent = '');
+}
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

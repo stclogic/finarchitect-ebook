@@ -1,0 +1,367 @@
+<!-- 업무일지 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>업무일지 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+.form-page-wrap {
+  max-width:1300px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+.ctrl-panel h2 { font-size:.95rem; font-weight:800; color:#1E293B; margin-bottom:1.2rem; display:flex; align-items:center; gap:.4rem; }
+.ctrl-section { margin-bottom:1.2rem; }
+.ctrl-section label { display:block; font-size:.76rem; font-weight:700; color:#64748B; margin-bottom:.3rem; text-transform:uppercase; letter-spacing:.04em; }
+.ctrl-section input[type="text"], .ctrl-section input[type="date"] {
+  width:100%; padding:8px 10px; border:1px solid #E2E8F0; border-radius:8px; font-size:.84rem; color:#1E293B; background:#F8FAFC; box-sizing:border-box;
+}
+.ctrl-file-btn { display:flex; align-items:center; gap:.5rem; padding:9px 14px; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:8px; cursor:pointer; font-size:.82rem; color:#64748B; transition:border-color .15s; }
+.ctrl-file-btn:hover { border-color:#1E293B; color:#1E293B; }
+.ctrl-file-btn input { display:none; }
+.ctrl-divider { height:1px; background:#F1F5F9; margin:1rem 0; }
+.print-btn { width:100%; padding:12px; background:#1E293B; color:#fff; border:none; border-radius:12px; font-size:.92rem; font-weight:700; cursor:pointer; transition:opacity .15s; display:flex; align-items:center; justify-content:center; gap:.5rem; }
+.print-btn:hover { opacity:.85; }
+.back-link { display:block; text-align:center; margin-top:.8rem; font-size:.8rem; color:#64748B; text-decoration:none; }
+.back-link:hover { color:#1E293B; }
+.tip-box { background:#FAF5FF; border:1px solid #DDD6FE; border-radius:10px; padding:.75rem 1rem; font-size:.75rem; color:#4C1D95; line-height:1.6; margin-top:.8rem; }
+.logo-preview { max-width:100%; max-height:60px; object-fit:contain; margin-top:.5rem; border-radius:6px; }
+
+/* 문서 컨테이너 */
+.doc-wrap { background:#E2E8F0; border-radius:14px; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; }
+.a4 {
+  width:210mm; background:#fff; box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:14mm 14mm 12mm; box-sizing:border-box;
+  font-family:'Noto Serif KR','Malgun Gothic',serif; font-size:10pt; color:#1E293B; line-height:1.7;
+}
+
+/* 문서 헤더 */
+.doc-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:4mm; padding-bottom:4mm; border-bottom:2.5px solid #1E293B;
+}
+.doc-logo { max-height:40px; max-width:120px; object-fit:contain; }
+.doc-logo-placeholder { width:100px; height:36px; background:#F1F5F9; border:1px dashed #CBD5E1; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:7.5pt; color:#94A3B8; cursor:pointer; }
+.doc-title-block { text-align:center; }
+.doc-title { font-size:18pt; font-weight:900; color:#1E293B; letter-spacing:.3em; }
+.doc-subtitle { font-size:7.5pt; color:#64748B; letter-spacing:.25em; margin-top:.5mm; }
+.doc-date-big { font-size:11pt; font-weight:700; color:#1E293B; text-align:right; line-height:1.4; }
+.doc-date-big span { display:block; font-size:8pt; color:#64748B; font-weight:400; }
+
+/* 요약 스트립 */
+.summary-strip {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+  border:1.5px solid #CBD5E1; border-radius:6px; overflow:hidden; margin-bottom:4mm;
+}
+.strip-cell { padding:2mm 3mm; }
+.strip-cell:not(:last-child) { border-right:1px solid #E2E8F0; }
+.strip-label { font-size:7.5pt; font-weight:700; color:#64748B; margin-bottom:.5mm; text-transform:uppercase; letter-spacing:.04em; }
+.strip-value { font-size:9.5pt; font-weight:700; color:#1E293B; }
+.strip-value[contenteditable] { outline:none; }
+.strip-value[contenteditable]:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+.strip-value[contenteditable]:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+.time-strip { display:flex; gap:2mm; align-items:center; font-size:8.5pt; }
+
+/* 섹션 헤더 */
+.sec-head { display:flex; align-items:center; gap:2mm; background:#1E293B; color:#fff; padding:2mm 4mm; border-radius:4px; font-size:9pt; font-weight:700; letter-spacing:.05em; margin:4mm 0 2mm; }
+.sec-num { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; background:#475569; border-radius:50%; font-size:7pt; font-weight:700; flex-shrink:0; }
+
+/* 목표 행 */
+.goal-list { list-style:none; padding:0; margin:0; border:1px solid #E2E8F0; border-radius:6px; overflow:hidden; margin-bottom:3mm; }
+.goal-item { display:flex; align-items:center; gap:2mm; padding:2mm 3mm; border-bottom:1px solid #F1F5F9; }
+.goal-item:last-child { border-bottom:none; }
+.goal-num { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:#334155; color:#fff; border-radius:50%; font-size:8pt; font-weight:700; flex-shrink:0; }
+.goal-text { flex:1; font-size:9pt; outline:none; }
+.goal-text:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+.goal-text:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+
+/* 업무 수행 내역 테이블 */
+.work-table { width:100%; border-collapse:collapse; font-size:8.5pt; margin-bottom:2mm; }
+.work-table th { background:#334155; color:#fff; padding:2mm 2.5mm; border:1px solid #475569; text-align:center; font-size:8pt; }
+.work-table td { border:1px solid #E2E8F0; padding:2mm 2.5mm; vertical-align:middle; }
+.work-table tr:nth-child(even) td { background:#F8FAFC; }
+.work-table td:first-child { text-align:center; color:#475569; font-size:8pt; }
+.cat-select { border:none; background:transparent; font-size:8pt; color:#1E293B; cursor:pointer; width:100%; outline:none; }
+.cat-select:focus { background:#F8FAFC; }
+.pct-input { border:none; background:transparent; text-align:center; width:100%; font-size:8.5pt; font-weight:700; color:#1E293B; outline:none; }
+.pct-bar-wrap { background:#F1F5F9; border-radius:3px; height:4px; margin-top:1mm; overflow:hidden; }
+.pct-bar { height:100%; background:#475569; border-radius:3px; transition:width .3s; }
+
+/* 내용 블록 */
+.content-block { border:1px solid #E2E8F0; border-radius:6px; min-height:14mm; padding:3mm; font-size:9pt; color:#1E293B; line-height:1.75; margin-bottom:3mm; outline:none; }
+.content-block:hover { box-shadow:0 0 0 2px #94A3B8; }
+.content-block:focus { box-shadow:0 0 0 2px #475569; }
+
+/* 내일 계획 */
+.plan-list { list-style:none; padding:0; margin:0 0 3mm; border:1px solid #E2E8F0; border-radius:6px; overflow:hidden; }
+.plan-item { display:flex; align-items:center; gap:2mm; padding:2mm 3mm; border-bottom:1px solid #F1F5F9; }
+.plan-item:last-child { border-bottom:none; }
+.plan-priority { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:4px; font-size:7.5pt; font-weight:700; flex-shrink:0; }
+.p1 { background:#EF4444; color:#fff; }
+.p2 { background:#F59E0B; color:#fff; }
+.p3 { background:#3B82F6; color:#fff; }
+.plan-text { flex:1; font-size:9pt; outline:none; }
+.plan-text:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+.plan-text:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+
+/* 서명란 */
+.sig-row { display:flex; justify-content:flex-end; gap:3mm; margin-top:5mm; padding-top:3mm; border-top:1px solid #E2E8F0; }
+.sig-box { text-align:center; border:1px solid #CBD5E1; border-radius:6px; padding:2mm 4mm; min-width:28mm; }
+.sig-title { background:#1E293B; color:#fff; font-size:8pt; font-weight:700; padding:1.5mm; border-radius:3px; margin-bottom:2mm; }
+.sig-name { font-size:9pt; font-weight:700; min-height:6mm; border-bottom:1px solid #E2E8F0; margin-bottom:1mm; }
+.sig-space { height:12mm; border:1px dashed #E2E8F0; border-radius:4px; margin:1mm 0; }
+
+/* contenteditable 기본 */
+[contenteditable] { outline:none; }
+[contenteditable]:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+[contenteditable]:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+
+.add-row-btn { padding:4px 12px; background:#F1F5F9; border:1px solid #CBD5E1; border-radius:6px; font-size:7.5pt; color:#475569; cursor:pointer; transition:all .15s; margin-bottom:3mm; }
+.add-row-btn:hover { background:#1E293B; color:#fff; border-color:#1E293B; }
+
+@media print {
+  .ctrl-panel { display:none !important; }
+  nav, footer { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .a4 { box-shadow:none; width:100%; }
+  @page { size:A4; margin:0; }
+  .add-row-btn { display:none; }
+  .cat-select { -webkit-appearance:none; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <h2>⚙️ 문서 설정</h2>
+    <div class="ctrl-section">
+      <label>작성 날짜</label>
+      <input type="date" id="workDate" oninput="updateDate(this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>출근 시간</label>
+      <input type="text" id="timeIn" placeholder="09:00" oninput="document.getElementById('timeInOut').textContent=this.value">
+    </div>
+    <div class="ctrl-section">
+      <label>퇴근 시간</label>
+      <input type="text" id="timeOut2" placeholder="18:00" oninput="document.getElementById('timeOutOut').textContent=this.value">
+    </div>
+    <div class="ctrl-divider"></div>
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="ctrl-file-btn">
+        <span>📎</span><span>이미지 선택</span>
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+      </label>
+      <img id="logoPreview" class="logo-preview" style="display:none">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <div class="tip-box">💡 업무 분류 셀을 클릭하면 드롭다운이 나타납니다. 완료율을 입력하면 진행 바가 자동으로 표시됩니다.</div>
+  </aside>
+
+  <main class="doc-wrap">
+    <div class="a4" id="docA4">
+
+      <!-- 문서 헤더 -->
+      <div class="doc-header">
+        <div>
+          <div class="doc-logo-placeholder" id="logoPlaceholder" onclick="document.querySelector('.ctrl-file-btn input').click()">로고 삽입</div>
+          <img id="docLogo" class="doc-logo" style="display:none" alt="로고">
+        </div>
+        <div class="doc-title-block">
+          <div class="doc-title">업  무  일  지</div>
+          <div class="doc-subtitle">DAILY WORK LOG</div>
+        </div>
+        <div class="doc-date-big">
+          <span>날짜</span>
+          <span id="dateDisplay"></span>
+          <span id="dayDisplay" style="font-size:8.5pt;color:#64748B;font-weight:400"></span>
+        </div>
+      </div>
+
+      <!-- 요약 스트립 -->
+      <div class="summary-strip">
+        <div class="strip-cell">
+          <div class="strip-label">소속</div>
+          <div class="strip-value" contenteditable="true"></div>
+        </div>
+        <div class="strip-cell">
+          <div class="strip-label">직위</div>
+          <div class="strip-value" contenteditable="true"></div>
+        </div>
+        <div class="strip-cell">
+          <div class="strip-label">성명</div>
+          <div class="strip-value" contenteditable="true"></div>
+        </div>
+        <div class="strip-cell">
+          <div class="strip-label">근무시간</div>
+          <div class="time-strip">
+            <span id="timeInOut">09:00</span>
+            <span style="color:#94A3B8">~</span>
+            <span id="timeOutOut">18:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 금일 목표 -->
+      <div class="sec-head"><span class="sec-num">1</span> 금일 목표</div>
+      <ul class="goal-list" id="goalList">
+        <li class="goal-item"><span class="goal-num">1</span><span class="goal-text" contenteditable="true">오늘의 주요 목표를 입력하세요</span></li>
+        <li class="goal-item"><span class="goal-num">2</span><span class="goal-text" contenteditable="true"></span></li>
+        <li class="goal-item"><span class="goal-num">3</span><span class="goal-text" contenteditable="true"></span></li>
+      </ul>
+
+      <!-- 업무 수행 내역 -->
+      <div class="sec-head"><span class="sec-num">2</span> 업무 수행 내역</div>
+      <table class="work-table">
+        <thead>
+          <tr>
+            <th style="width:12%">시간</th>
+            <th style="width:16%">업무 분류</th>
+            <th style="width:38%">업무 내용</th>
+            <th style="width:14%">완료율</th>
+            <th style="width:20%">특이사항</th>
+          </tr>
+        </thead>
+        <tbody id="workBody"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addWorkRow()">+ 행 추가</button>
+
+      <!-- 완료 업무 요약 -->
+      <div class="sec-head"><span class="sec-num">3</span> 완료 업무 요약</div>
+      <div class="content-block" contenteditable="true" style="min-height:12mm">오늘 완료한 주요 업무 및 성과를 요약하세요.</div>
+
+      <!-- 미완료 업무 -->
+      <div class="sec-head"><span class="sec-num">4</span> 미완료 업무 및 사유</div>
+      <div class="content-block" contenteditable="true" style="min-height:10mm">미완료 업무 내용과 사유, 조치 계획을 기재하세요.</div>
+
+      <!-- 내일 계획 -->
+      <div class="sec-head"><span class="sec-num">5</span> 내일 계획</div>
+      <ul class="plan-list">
+        <li class="plan-item">
+          <span class="plan-priority p1">P1</span>
+          <span class="plan-text" contenteditable="true">내일 최우선 업무를 입력하세요</span>
+        </li>
+        <li class="plan-item">
+          <span class="plan-priority p2">P2</span>
+          <span class="plan-text" contenteditable="true"></span>
+        </li>
+        <li class="plan-item">
+          <span class="plan-priority p3">P3</span>
+          <span class="plan-text" contenteditable="true"></span>
+        </li>
+      </ul>
+
+      <!-- 건의사항 -->
+      <div class="sec-head"><span class="sec-num">6</span> 건의사항 / 메모</div>
+      <div class="content-block" contenteditable="true" style="min-height:10mm">팀장에게 보고할 사항, 필요한 지원, 기타 메모를 입력하세요.</div>
+
+      <!-- 서명란 -->
+      <div class="sig-row">
+        <div class="sig-box">
+          <div class="sig-title">작 성 자</div>
+          <div class="sig-name" contenteditable="true" style="text-align:center"></div>
+          <div class="sig-space"></div>
+          <div style="font-size:7.5pt;color:#64748B">서명 / 인</div>
+        </div>
+        <div class="sig-box">
+          <div class="sig-title">확 인 자</div>
+          <div class="sig-name" contenteditable="true" style="text-align:center"></div>
+          <div class="sig-space"></div>
+          <div style="font-size:7.5pt;color:#64748B">확인일: <span contenteditable="true" style="min-width:20mm;display:inline-block"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const DAYS = ['일','월','화','수','목','금','토'];
+const CATS = ['기획','개발','관리','영업','회의','보고','기타'];
+
+function updateDate(val) {
+  if (!val) return;
+  const d = new Date(val);
+  const ymd = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+  const day = DAYS[d.getDay()];
+  document.getElementById('dateDisplay').textContent = ymd;
+  document.getElementById('dayDisplay').textContent = `(${day}요일)`;
+}
+
+(function(){
+  const today = new Date();
+  const ymd = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  document.getElementById('workDate').value = ymd;
+  document.getElementById('timeIn').value = '09:00';
+  document.getElementById('timeOut2').value = '18:00';
+  updateDate(ymd);
+})();
+
+function uploadLogo(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const src = e.target.result;
+    document.getElementById('docLogo').src = src;
+    document.getElementById('docLogo').style.display = '';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+    document.getElementById('logoPreview').src = src;
+    document.getElementById('logoPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function addWorkRow(time='', cat='기타', content='', pct='', note='') {
+  const tbody = document.getElementById('workBody');
+  const tr = document.createElement('tr');
+  const catOpts = CATS.map(c => `<option${c===cat?' selected':''}>${c}</option>`).join('');
+  const pctVal = parseInt(pct)||0;
+  tr.innerHTML = `
+    <td contenteditable="true">${time}</td>
+    <td>
+      <select class="cat-select">${catOpts}</select>
+    </td>
+    <td contenteditable="true">${content}</td>
+    <td>
+      <input class="pct-input" type="text" value="${pct}" placeholder="0" oninput="updateBar(this)">
+      <div class="pct-bar-wrap"><div class="pct-bar" style="width:${pctVal}%"></div></div>
+    </td>
+    <td contenteditable="true">${note}</td>`;
+  tbody.appendChild(tr);
+}
+
+function updateBar(input) {
+  const v = Math.min(100, Math.max(0, parseInt(input.value)||0));
+  const bar = input.closest('td').querySelector('.pct-bar');
+  if (bar) bar.style.width = v + '%';
+}
+
+// 초기 데이터
+[
+  ['09:00~10:00','회의','주간 팀 미팅: 프로젝트 진행 상황 공유 및 이슈 논의','100',''],
+  ['10:00~12:00','기획','Q3 사업 계획서 초안 작성 (목표 KPI 설정 중심)','80','팀장 검토 필요'],
+  ['13:00~14:30','개발','신규 기능 요구사항 문서 검토 및 개발팀 협의','100',''],
+  ['14:30~16:00','관리','월별 예산 집행 현황 업데이트 및 재무팀 전달','100',''],
+  ['16:00~17:30','보고','임원 보고자료 작성 (PPT 10장)','60','내일 완료 예정'],
+  ['17:30~18:00','기타','메일 회신 및 다음 날 업무 준비','100',''],
+  ['','기타','','',''],
+  ['','기타','','',''],
+].forEach(r => addWorkRow(r[0],r[1],r[2],r[3],r[4]));
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

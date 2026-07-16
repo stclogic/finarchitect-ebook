@@ -1,0 +1,626 @@
+<!-- 견적서 온라인 작성 및 인쇄/PDF 다운로드 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>견적서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --amber:#B45309; --amber-light:#F59E0B; --amber-bg:#FFFBEB;
+  --amber-mid:#FEF3C7; --amber-dark:#78350F;
+}
+body { background: var(--amber-bg); }
+.form-page-wrap {
+  max-width: 1300px; margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+/* ── 컨트롤 패널 ── */
+.ctrl-panel {
+  background: #fff;
+  border: 1px solid #F3D5A0;
+  border-radius: 18px;
+  padding: 1.5rem;
+  position: sticky; top: 80px;
+  box-shadow: 0 4px 20px rgba(180,83,9,.08);
+}
+.ctrl-panel h2 {
+  font-size: 1rem; font-weight: 800;
+  color: var(--amber-dark);
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.ctrl-section { margin-bottom: 1.2rem; }
+.ctrl-section label {
+  display: block; font-size: .78rem; font-weight: 700;
+  color: #92400E; margin-bottom: .3rem;
+}
+.ctrl-section input[type="text"],
+.ctrl-section input[type="color"] {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid #F3D5A0; border-radius: 8px;
+  font-size: .85rem; background: var(--amber-bg);
+  color: var(--amber-dark);
+}
+.ctrl-section input[type="color"] { height: 38px; padding: 3px 6px; cursor: pointer; }
+.ctrl-file-btn {
+  display: flex; align-items: center; gap: .5rem;
+  padding: 9px 14px; background: var(--amber-bg);
+  border: 1px dashed #F59E0B; border-radius: 8px;
+  cursor: pointer; font-size: .82rem; color: #92400E;
+  transition: border-color .15s;
+}
+.ctrl-file-btn:hover { border-color: var(--amber); }
+.ctrl-file-btn input { display: none; }
+.ctrl-divider { height: 1px; background: #F3D5A0; margin: 1.1rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: var(--amber); color: #fff;
+  border: none; border-radius: 12px;
+  font-size: .95rem; font-weight: 700; cursor: pointer;
+  transition: background .15s;
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+}
+.print-btn:hover { background: var(--amber-dark); }
+.add-row-btn {
+  padding: 7px 16px; background: var(--amber-mid);
+  border: 1px solid var(--amber-light); border-radius: 8px;
+  font-size: .82rem; font-weight: 600; color: var(--amber);
+  cursor: pointer; margin-top: .5rem; transition: background .15s;
+}
+.add-row-btn:hover { background: #FDE68A; }
+.back-link {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .82rem; color: #92400E; text-decoration: none;
+  margin-bottom: 1rem; padding: 6px 12px;
+  background: var(--amber-mid); border-radius: 8px;
+  transition: background .15s;
+}
+.back-link:hover { background: #FDE68A; }
+/* ── A4 문서 영역 ── */
+.doc-bg {
+  background: var(--amber-mid);
+  border-radius: 18px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  padding: 14mm 14mm;
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 10pt;
+  color: #1a1a1a;
+  position: relative;
+}
+/* ── 문서 헤더 ── */
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8mm;
+  padding-bottom: 5mm;
+  border-bottom: 3px solid var(--amber);
+}
+.logo-area {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 6px;
+}
+.logo-placeholder {
+  width: 48px; height: 48px;
+  border: 2px dashed var(--amber-light);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 9pt; color: #aaa;
+  overflow: hidden; flex-shrink: 0;
+}
+.logo-placeholder img { width: 100%; height: 100%; object-fit: contain; }
+.company-info { font-size: 9pt; line-height: 1.7; }
+.company-name-doc {
+  font-size: 13pt; font-weight: 700;
+  color: var(--amber-dark);
+}
+.company-info [contenteditable] { display: inline; }
+.doc-title-block { text-align: right; }
+.doc-title {
+  font-size: 24pt; font-weight: 700;
+  color: var(--amber);
+  letter-spacing: .15em;
+  line-height: 1;
+}
+.doc-meta { font-size: 9pt; margin-top: 6px; color: #555; line-height: 1.9; }
+.doc-meta span { font-weight: 600; color: var(--amber-dark); }
+/* ── 정보 박스 ── */
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4mm;
+  margin-bottom: 5mm;
+}
+.info-box {
+  border: 1px solid #E5C07B;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.info-box-title {
+  background: var(--amber);
+  color: #fff;
+  font-size: 9pt; font-weight: 700;
+  padding: 4px 10px;
+  letter-spacing: .05em;
+}
+.info-box-body { padding: 6px 10px; }
+.info-field {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 9pt;
+  line-height: 1.9;
+}
+.info-label {
+  font-weight: 600;
+  color: #92400E;
+  min-width: 60px;
+  flex-shrink: 0;
+  font-size: 8.5pt;
+}
+.info-val {
+  flex: 1;
+  border-bottom: 1px solid #F3D5A0;
+  min-width: 0;
+  padding: 0 2px;
+  outline: none;
+}
+.info-val:hover, .info-val:focus {
+  border-bottom-color: var(--amber);
+  background: #FFFBEB;
+  border-radius: 3px 3px 0 0;
+}
+/* ── 테이블 ── */
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 4mm 0;
+  font-size: 9pt;
+}
+.items-table th {
+  background: var(--amber);
+  color: #fff;
+  padding: 5px 6px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 8.5pt;
+  border: 1px solid #C2860A;
+}
+.items-table td {
+  padding: 5px 6px;
+  border: 1px solid #E5C07B;
+  text-align: center;
+  vertical-align: middle;
+}
+.items-table tr:nth-child(even) td { background: #FFFDF5; }
+.items-table td[contenteditable]:hover,
+.items-table td[contenteditable]:focus {
+  background: #FFFBEB;
+  outline: 2px solid var(--amber-light);
+  outline-offset: -2px;
+}
+.items-table td.td-name { text-align: left; min-width: 80px; }
+.items-table td.td-num { width: 40px; }
+.items-table td.td-amount { font-weight: 600; color: var(--amber-dark); }
+/* ── 합계 박스 ── */
+.totals-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4mm;
+}
+.totals-box {
+  width: 200px;
+  border: 2px solid var(--amber);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 12px;
+  font-size: 9pt;
+  border-bottom: 1px solid #E5C07B;
+}
+.totals-row:last-child { border-bottom: none; }
+.totals-row.grand {
+  background: var(--amber);
+  color: #fff;
+  font-weight: 700;
+  font-size: 10.5pt;
+}
+.totals-row .tl { color: #92400E; font-weight: 600; font-size: 8.5pt; }
+.totals-row.grand .tl { color: #fff; }
+.amount-in-words {
+  margin-top: 3mm;
+  text-align: right;
+  font-size: 9pt;
+  color: var(--amber-dark);
+}
+.amount-in-words span { font-weight: 700; }
+/* ── 특기사항 / 계좌 ── */
+.section-label {
+  font-size: 9pt; font-weight: 700;
+  color: var(--amber-dark);
+  margin: 5mm 0 2mm;
+  border-left: 3px solid var(--amber);
+  padding-left: 6px;
+}
+.notes-area {
+  border: 1px solid #E5C07B;
+  border-radius: 6px;
+  padding: 6px 10px;
+  min-height: 20mm;
+  font-size: 9pt;
+  line-height: 1.8;
+  outline: none;
+}
+.notes-area:hover, .notes-area:focus {
+  border-color: var(--amber);
+  background: #FFFBEB;
+  box-shadow: 0 0 0 2px rgba(245,158,11,.15);
+}
+.bank-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 4mm;
+  margin-top: 2mm;
+}
+.bank-item { font-size: 9pt; }
+.bank-item .bl { font-size: 8.5pt; color: #92400E; font-weight: 600; display: block; }
+.bank-val {
+  border-bottom: 1px solid #E5C07B;
+  display: block;
+  padding: 2px 2px;
+  outline: none;
+  min-width: 60px;
+}
+.bank-val:hover, .bank-val:focus {
+  border-bottom-color: var(--amber);
+  background: #FFFBEB;
+}
+/* ── 푸터 서명 ── */
+.doc-footer {
+  margin-top: 8mm;
+  border-top: 1.5px solid var(--amber);
+  padding-top: 5mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.footer-text { font-size: 10pt; color: #333; }
+.footer-sig { text-align: right; font-size: 9pt; line-height: 2; }
+.sig-box {
+  display: inline-block;
+  border: 1px solid #E5C07B;
+  border-radius: 6px;
+  padding: 6px 20px;
+  text-align: center;
+  min-width: 80px;
+  position: relative;
+}
+.sig-label { font-size: 8pt; color: #888; display: block; margin-bottom: 4px; }
+.sig-name { font-size: 10pt; font-weight: 700; outline: none; }
+.stamp-circle {
+  width: 40px; height: 40px;
+  border: 2px solid var(--amber);
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 8pt; color: var(--amber);
+  margin-left: 8px; vertical-align: middle;
+  letter-spacing: .05em; font-weight: 700;
+}
+/* ── 인쇄 ── */
+@media print {
+  body { background: #fff; }
+  .ctrl-panel, nav, footer, .back-link, .add-row-btn, .doc-bg { display: block !important; background: none !important; padding: 0 !important; border: none !important; box-shadow: none !important; }
+  .ctrl-panel { display: none !important; }
+  nav, footer { display: none !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { padding: 0 !important; }
+  .a4-page { box-shadow: none !important; margin: 0 !important; width: 100% !important; }
+  .add-row-btn { display: none !important; }
+  .logo-placeholder { border: none !important; }
+}
+@page { size: A4; margin: 0; }
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <!-- ── 좌측 컨트롤 패널 ── -->
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>🧾 견적서 설정</h2>
+
+    <div class="ctrl-section">
+      <label>회사 로고 업로드</label>
+      <label class="ctrl-file-btn">
+        📎 로고 선택 (PNG/JPG)
+        <input type="file" accept="image/*" id="logoUpload">
+      </label>
+    </div>
+
+    <div class="ctrl-section">
+      <label>견적서 번호</label>
+      <input type="text" id="ctrlQuoteNo" placeholder="Q-2024-001">
+    </div>
+
+    <div class="ctrl-section">
+      <label>견적 일자</label>
+      <input type="text" id="ctrlDate">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="ctrl-section">
+      <label>부가세 포함/제외</label>
+      <select id="vatToggle" style="width:100%;padding:8px;border:1px solid #F3D5A0;border-radius:8px;background:var(--amber-bg);font-size:.85rem">
+        <option value="1">부가세 포함 (10%)</option>
+        <option value="0">부가세 제외</option>
+      </select>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+  </aside>
+
+  <!-- ── A4 문서 ── -->
+  <div class="doc-bg">
+    <div class="a4-page" id="a4doc">
+
+      <!-- 헤더 -->
+      <div class="doc-header">
+        <div>
+          <div class="logo-area">
+            <div class="logo-placeholder" id="logoBox" onclick="document.getElementById('logoUpload').click()">
+              LOGO
+            </div>
+            <div>
+              <div class="company-name-doc" contenteditable="true">회사명을 입력하세요</div>
+            </div>
+          </div>
+          <div class="company-info">
+            <div class="info-field"><span class="info-label">사업자번호</span><span class="info-val" contenteditable="true">000-00-00000</span></div>
+            <div class="info-field"><span class="info-label">주 &nbsp;&nbsp;&nbsp; 소</span><span class="info-val" contenteditable="true">주소를 입력하세요</span></div>
+            <div class="info-field"><span class="info-label">전 &nbsp;&nbsp;&nbsp; 화</span><span class="info-val" contenteditable="true">02-0000-0000</span></div>
+            <div class="info-field"><span class="info-label">이메일</span><span class="info-val" contenteditable="true">email@company.com</span></div>
+          </div>
+        </div>
+        <div class="doc-title-block">
+          <div class="doc-title">견 &nbsp; 적 &nbsp; 서</div>
+          <div class="doc-meta">
+            견적번호: <span id="dispQuoteNo" contenteditable="true">Q-2024-001</span><br>
+            견적일자: <span id="dispDate" contenteditable="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 수신 / 견적 조건 -->
+      <div class="info-row">
+        <div class="info-box">
+          <div class="info-box-title">📋 수신처 정보</div>
+          <div class="info-box-body">
+            <div class="info-field"><span class="info-label">수 &nbsp;&nbsp;&nbsp; 신</span><span class="info-val" contenteditable="true">거래처명</span></div>
+            <div class="info-field"><span class="info-label">담 당 자</span><span class="info-val" contenteditable="true">담당자명</span></div>
+            <div class="info-field"><span class="info-label">연락처</span><span class="info-val" contenteditable="true">010-0000-0000</span></div>
+            <div class="info-field"><span class="info-label">이메일</span><span class="info-val" contenteditable="true">contact@client.com</span></div>
+          </div>
+        </div>
+        <div class="info-box">
+          <div class="info-box-title">📌 견적 조건</div>
+          <div class="info-box-body">
+            <div class="info-field"><span class="info-label">유효기간</span><span class="info-val" contenteditable="true">견적일로부터 30일</span></div>
+            <div class="info-field"><span class="info-label">납품조건</span><span class="info-val" contenteditable="true">계약 후 14일 이내</span></div>
+            <div class="info-field"><span class="info-label">결제조건</span><span class="info-val" contenteditable="true">계산서 발행 후 30일</span></div>
+            <div class="info-field"><span class="info-label">납품장소</span><span class="info-val" contenteditable="true">수신처 지정 장소</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 품목 테이블 -->
+      <table class="items-table" id="itemsTable">
+        <thead>
+          <tr>
+            <th style="width:30px">No</th>
+            <th class="td-name">품목명</th>
+            <th style="width:60px">규격</th>
+            <th style="width:40px">수량</th>
+            <th style="width:70px">단가</th>
+            <th style="width:80px">공급가액</th>
+            <th style="width:60px">비고</th>
+          </tr>
+        </thead>
+        <tbody id="itemsBody">
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRow()">+ 항목 추가</button>
+
+      <!-- 합계 -->
+      <div class="totals-section">
+        <div class="totals-box">
+          <div class="totals-row">
+            <span class="tl">공급가액 합계</span>
+            <span id="subtotal">0</span>
+          </div>
+          <div class="totals-row" id="vatRow">
+            <span class="tl">부가세 (10%)</span>
+            <span id="vatAmount">0</span>
+          </div>
+          <div class="totals-row grand">
+            <span class="tl">합계금액</span>
+            <span id="grandTotal">0</span>
+          </div>
+        </div>
+      </div>
+      <div class="amount-in-words">
+        합계금액 (한글): <span id="amountWords">영 원정</span>
+      </div>
+
+      <!-- 특기사항 -->
+      <div class="section-label">특기사항</div>
+      <div class="notes-area" contenteditable="true">특기사항 및 계약 조건을 기재하세요.</div>
+
+      <!-- 입금계좌 -->
+      <div class="section-label">입금 계좌</div>
+      <div class="bank-grid">
+        <div class="bank-item"><span class="bl">은행명</span><span class="bank-val" contenteditable="true">○○은행</span></div>
+        <div class="bank-item"><span class="bl">계좌번호</span><span class="bank-val" contenteditable="true">000-000-000000</span></div>
+        <div class="bank-item"><span class="bl">예금주</span><span class="bank-val" contenteditable="true">회사명</span></div>
+      </div>
+
+      <!-- 푸터 -->
+      <div class="doc-footer">
+        <div class="footer-text">위와 같이 견적을 제출합니다.</div>
+        <div class="footer-sig">
+          <span id="footerDate"></span><br>
+          <div class="sig-box">
+            <span class="sig-label">대표이사</span>
+            <span class="sig-name" contenteditable="true">홍길동</span>
+            <span class="stamp-circle">인</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- .a4-page -->
+  </div><!-- .doc-bg -->
+</div><!-- .form-page-wrap -->
+
+<script>
+// 기본 5행 생성
+const defaultItems = [
+  ['용역 서비스', '식', 1, 500000, ''],
+  ['소프트웨어 라이선스', 'EA', 2, 300000, ''],
+  ['컨설팅 비용', '시간', 10, 150000, ''],
+  ['유지보수', '월', 3, 200000, ''],
+  ['기타 비용', '식', 1, 100000, ''],
+];
+
+function addRow(data) {
+  const tbody = document.getElementById('itemsBody');
+  const rowIdx = tbody.rows.length + 1;
+  const d = data || ['', '', 1, 0, ''];
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="td-num">${rowIdx}</td>
+    <td class="td-name" contenteditable="true">${d[0]}</td>
+    <td contenteditable="true">${d[1]}</td>
+    <td contenteditable="true" class="qty" data-role="qty">${d[2]}</td>
+    <td contenteditable="true" class="price" data-role="price">${fmtNum(d[3])}</td>
+    <td class="td-amount supply" data-role="supply">${fmtNum(d[2]*d[3])}</td>
+    <td contenteditable="true">${d[4]}</td>
+  `;
+  tbody.appendChild(tr);
+  attachCalc(tr);
+  recalcTotals();
+}
+
+function fmtNum(n) { return Math.round(n).toLocaleString('ko-KR'); }
+function parseNum(s) { return parseInt(s.replace(/[^0-9]/g,'')) || 0; }
+
+function attachCalc(tr) {
+  tr.querySelectorAll('[contenteditable]').forEach(el => {
+    el.addEventListener('input', () => {
+      const row = el.closest('tr');
+      const qty = parseNum(row.querySelector('[data-role=qty]').textContent);
+      const price = parseNum(row.querySelector('[data-role=price]').textContent);
+      row.querySelector('[data-role=supply]').textContent = fmtNum(qty * price);
+      recalcTotals();
+    });
+  });
+}
+
+function recalcTotals() {
+  let sub = 0;
+  document.querySelectorAll('[data-role=supply]').forEach(el => {
+    sub += parseNum(el.textContent);
+  });
+  const useVat = document.getElementById('vatToggle').value === '1';
+  const vat = useVat ? Math.round(sub * 0.1) : 0;
+  const grand = sub + vat;
+  document.getElementById('subtotal').textContent = fmtNum(sub);
+  document.getElementById('vatAmount').textContent = fmtNum(vat);
+  document.getElementById('grandTotal').textContent = fmtNum(grand);
+  document.getElementById('amountWords').textContent = numToKorean(grand) + ' 원정';
+}
+
+// 한글 금액 변환
+function numToKorean(n) {
+  if (n === 0) return '영';
+  const units = ['', '만', '억', '조'];
+  const digits = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+  const pos = ['', '십', '백', '천'];
+  let result = '';
+  let unitIdx = 0;
+  while (n > 0) {
+    const chunk = n % 10000;
+    if (chunk > 0) {
+      let chunkStr = '';
+      let tmp = chunk;
+      for (let i = 0; i < 4; i++) {
+        const d = tmp % 10;
+        if (d > 0) chunkStr = (d === 1 && i > 0 ? '' : digits[d]) + pos[i] + chunkStr;
+        tmp = Math.floor(tmp / 10);
+      }
+      result = chunkStr + units[unitIdx] + result;
+    }
+    unitIdx++;
+    n = Math.floor(n / 10000);
+  }
+  return result;
+}
+
+// 초기화
+document.addEventListener('DOMContentLoaded', () => {
+  const today = new Date();
+  const ds = today.getFullYear() + '년 ' + (today.getMonth()+1) + '월 ' + today.getDate() + '일';
+  document.getElementById('ctrlDate').value = ds;
+  document.getElementById('dispDate').textContent = ds;
+  document.getElementById('footerDate').textContent = ds;
+  defaultItems.forEach(d => addRow(d));
+});
+
+// 컨트롤 연동
+document.getElementById('ctrlQuoteNo').addEventListener('input', function() {
+  document.getElementById('dispQuoteNo').textContent = this.value;
+});
+document.getElementById('ctrlDate').addEventListener('input', function() {
+  document.getElementById('dispDate').textContent = this.value;
+  document.getElementById('footerDate').textContent = this.value;
+});
+document.getElementById('vatToggle').addEventListener('change', recalcTotals);
+
+// 로고 업로드
+document.getElementById('logoUpload').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const box = document.getElementById('logoBox');
+    box.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain">`;
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

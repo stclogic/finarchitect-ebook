@@ -1,0 +1,410 @@
+<!-- 비밀유지계약서(NDA) 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>비밀유지계약서(NDA) — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Layout ── */
+.form-page-wrap {
+  max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 5rem;
+  display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;
+}
+/* ── Control panel ── */
+.ctrl-panel {
+  background: #fff; border: 1px solid #e2e8f0;
+  border-radius: 18px; padding: 1.5rem; position: sticky; top: 80px;
+  box-shadow: 0 4px 24px rgba(30,43,74,.08);
+}
+.ctrl-panel h2 { font-size: .97rem; font-weight: 800; color: #1E2B4A; margin-bottom: 1.2rem; }
+.ctrl-section { margin-bottom: .9rem; }
+.ctrl-section label { display: block; font-size: .77rem; font-weight: 700; color: #64748b; margin-bottom: .28rem; }
+.ctrl-section input, .ctrl-section select {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid #e2e8f0; border-radius: 8px;
+  font-size: .85rem; color: #1E2B4A; background: #f8fafc; box-sizing: border-box;
+}
+.ctrl-divider { height: 1px; background: #e2e8f0; margin: 1rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg,#1E2B4A,#3B82F6); color: #fff;
+  border: none; border-radius: 12px; font-size: .95rem; font-weight: 700; cursor: pointer;
+  transition: opacity .2s;
+}
+.print-btn:hover { opacity: .88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: .6rem;
+  background: none; border: 1px solid #e2e8f0;
+  border-radius: 10px; font-size: .82rem; color: #64748b; cursor: pointer;
+}
+.tip-box {
+  background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px;
+  padding: .8rem 1rem; font-size: .76rem; color: #1E40AF; line-height: 1.65; margin-top: .8rem;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .82rem; color: #64748b; text-decoration: none;
+  padding: 7px 14px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem;
+  transition: background .2s;
+}
+.back-link:hover { background: #EFF6FF; }
+/* ── Doc area ── */
+.doc-wrap {
+  background: #DBEAFE; border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+/* ── A4 page ── */
+.doc-page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  padding: 0; overflow: hidden; font-family: 'Noto Serif KR','Malgun Gothic',serif; font-size: 10pt; color: #222;
+  position: relative;
+}
+/* Top gradient bar */
+.doc-header-bar {
+  height: 12mm;
+  background: linear-gradient(90deg, #1E2B4A 0%, #3B82F6 100%);
+  display: flex; align-items: center; padding: 0 10mm; gap: 12px;
+}
+.doc-header-bar .shield-icon { font-size: 18px; color: #fff; }
+.doc-header-bar .doc-num { color: rgba(255,255,255,.7); font-size: 8pt; margin-left: auto; }
+.doc-body { padding: 8mm 12mm 10mm; }
+/* Logo area */
+.logo-area { display: flex; align-items: center; gap: 10px; margin-bottom: 4mm; }
+.logo-img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; display: none; }
+.logo-placeholder { width: 36px; height: 36px; border: 1.5px dashed #94a3b8; border-radius: 6px; display: flex; align-items:center; justify-content:center; color:#94a3b8; font-size:9px; text-align:center; line-height:1.2; cursor:pointer; }
+/* Titles */
+.doc-title-block { text-align: center; margin: 3mm 0 5mm; }
+.doc-title-ko { font-size: 17pt; font-weight: 700; color: #1E2B4A; letter-spacing: 4px; display: block; }
+.doc-title-en { font-size: 8.5pt; color: #64748b; letter-spacing: 3px; margin-top: 1mm; display: block; }
+.title-divider { width: 60mm; height: 2px; background: linear-gradient(90deg,#1E2B4A,#3B82F6); margin: 2mm auto; }
+/* Party table */
+.party-table { width: 100%; border-collapse: collapse; margin-bottom: 5mm; font-size: 9pt; }
+.party-table th {
+  background: #1E2B4A; color: #fff; padding: 3mm 4mm;
+  text-align: left; font-weight: 700; font-size: 9pt; width: 22%;
+}
+.party-table td {
+  border: 1px solid #cbd5e1; padding: 2.5mm 3mm;
+  vertical-align: top;
+}
+.party-table tr:nth-child(even) td { background: #f8fafc; }
+.party-label { display: inline-block; background: #1E2B4A; color: #fff; font-size: 7pt; padding: 1px 6px; border-radius: 9px; margin-right: 4px; }
+/* Clause */
+.clause { margin-bottom: 4mm; page-break-inside: avoid; }
+.clause-header { display: flex; align-items: center; gap: 7px; margin-bottom: 1.5mm; }
+.clause-badge {
+  min-width: 20px; height: 20px; border-radius: 50%;
+  background: #1E2B4A; color: #fff; font-size: 8.5pt; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.clause-title { font-size: 9.5pt; font-weight: 700; color: #1E2B4A; }
+.clause-body { font-size: 9.5pt; color: #374151; line-height: 1.75; padding-left: 27px; }
+.clause-sub { font-size: 9pt; color: #4b5563; line-height: 1.7; margin-top: 1mm; }
+/* Signature */
+.sig-section { margin-top: 6mm; }
+.sig-date { text-align: center; font-size: 10pt; color: #1E2B4A; margin-bottom: 4mm; }
+.sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.sig-card {
+  border: 1.5px solid #1E2B4A; border-radius: 8px; padding: 4mm;
+  position: relative;
+}
+.sig-card-title { font-size: 8.5pt; font-weight: 700; color: #1E2B4A; margin-bottom: 2mm; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 1.5mm; }
+.sig-row { display: flex; align-items: flex-start; gap: 4px; font-size: 8.5pt; margin-bottom: 1.5mm; }
+.sig-label { color: #64748b; min-width: 30px; flex-shrink: 0; }
+.sig-val { flex: 1; border-bottom: 1px solid #cbd5e1; min-height: 14px; padding-bottom: 1px; outline: none; }
+.stamp-circle {
+  width: 28mm; height: 28mm; border: 1.5px dashed #dc2626; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #dc2626; font-size: 9pt; font-weight: 700;
+  position: absolute; right: 4mm; top: 50%; transform: translateY(-50%);
+}
+/* contenteditable */
+[contenteditable="true"] { outline: none; }
+[contenteditable="true"]:hover { background: rgba(59,130,246,.06); border-radius: 3px; }
+[contenteditable="true"]:focus { background: #EFF6FF; border-radius: 3px; box-shadow: 0 0 0 2px #3B82F6; }
+/* Upload area */
+.logo-upload-label { cursor: pointer; }
+/* ── Print ── */
+@media print {
+  .ctrl-panel, nav, footer, .back-link, .doc-wrap > *:not(.doc-page) { display: none !important; }
+  .form-page-wrap { display: block; padding: 0; }
+  .doc-wrap { background: none; padding: 0; }
+  .doc-page { width: 100%; box-shadow: none; margin: 0; }
+  @page { size: A4; margin: 0; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <!-- Control Panel -->
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>🛡 비밀유지계약서</h2>
+
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="logo-upload-label">
+        <input type="file" accept="image/*" id="logoInput" style="display:none">
+        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">
+          클릭하여 로고 선택
+        </div>
+      </label>
+    </div>
+
+    <div class="ctrl-section">
+      <label>문서번호</label>
+      <input type="text" id="docNum" placeholder="NDA-2026-001">
+    </div>
+
+    <div class="ctrl-section">
+      <label>비밀유지 기간 (년)</label>
+      <input type="number" id="ndaPeriod" value="3" min="1" max="10">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="location.reload()">초기화</button>
+
+    <div class="tip-box">
+      💡 파란색 텍스트를 클릭하면 직접 편집할 수 있습니다. 서명란에 당사자 정보를 입력 후 인쇄하세요.
+    </div>
+  </aside>
+
+  <!-- Document -->
+  <div class="doc-wrap">
+    <div class="doc-page">
+      <!-- Header bar -->
+      <div class="doc-header-bar">
+        <span class="shield-icon">🛡</span>
+        <span style="color:#fff;font-size:9pt;font-weight:700;letter-spacing:1px;">CONFIDENTIAL</span>
+        <span class="doc-num" id="docNumDisplay">NDA-2026-001</span>
+      </div>
+
+      <div class="doc-body">
+        <!-- Logo + title -->
+        <div class="logo-area">
+          <label class="logo-upload-label" for="logoInput">
+            <div class="logo-placeholder" id="logoPlaceholder">로고</div>
+            <img id="logoImg" class="logo-img" alt="로고">
+          </label>
+        </div>
+
+        <div class="doc-title-block">
+          <span class="doc-title-ko">비 밀 유 지 계 약 서</span>
+          <div class="title-divider"></div>
+          <span class="doc-title-en">NON-DISCLOSURE AGREEMENT</span>
+        </div>
+
+        <!-- Party table -->
+        <table class="party-table">
+          <tr>
+            <th><span class="party-label">甲</span> 정보제공자</th>
+            <td>
+              회 사 명: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+              대 표 자: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </td>
+          </tr>
+          <tr>
+            <th></th>
+            <td>
+              사업자번호: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+              주&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </td>
+          </tr>
+          <tr>
+            <th><span class="party-label">乙</span> 정보수령자</th>
+            <td>
+              회 사 명: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+              대 표 자: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </td>
+          </tr>
+          <tr>
+            <th></th>
+            <td>
+              사업자번호: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+              주&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </td>
+          </tr>
+        </table>
+
+        <p style="font-size:9.5pt;color:#374151;line-height:1.75;margin-bottom:4mm;">
+          갑과 을(이하 "당사자"라 한다)은 상호 간의 사업 협의 및 협력(이하 "목적"이라 한다)을 위하여 교환되는 비밀정보의 보호를 위해 다음과 같이 비밀유지계약을 체결한다.
+        </p>
+
+        <!-- Clauses -->
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">1</div>
+            <div class="clause-title">정의 (비밀정보의 범위)</div>
+          </div>
+          <div class="clause-body">
+            본 계약에서 "비밀정보"란 당사자 일방이 상대방에게 구두, 서면, 전자적 방법 등으로 제공하는 일체의 정보로서, 영업비밀, 기술정보, 재무정보, 고객정보, 사업계획, 연구개발 자료, 소프트웨어 및 이에 준하는 모든 정보를 포함한다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">2</div>
+            <div class="clause-title">비밀유지 의무</div>
+          </div>
+          <div class="clause-body">
+            수령 당사자는 제공 당사자의 사전 서면 동의 없이 비밀정보를 제3자에게 공개, 누설, 제공하거나 목적 이외의 용도로 사용하여서는 아니 된다. 비밀정보에 대한 접근은 업무상 필요한 최소한의 인원으로 제한하여야 한다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">3</div>
+            <div class="clause-title">비밀유지 예외</div>
+          </div>
+          <div class="clause-body">
+            다음 각 호에 해당하는 정보는 비밀정보에서 제외된다: ① 수령 시점에 이미 공지된 정보, ② 수령 이후 수령자의 귀책 없이 공지된 정보, ③ 수령자가 비밀유지 의무 없이 제3자로부터 합법적으로 취득한 정보, ④ 법원·수사기관의 명령에 의하여 공개가 강제되는 정보 (단, 즉시 통보 의무 있음).
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">4</div>
+            <div class="clause-title">비밀정보의 반환 및 파기</div>
+          </div>
+          <div class="clause-body">
+            본 계약이 종료되거나 제공 당사자의 요청이 있는 경우, 수령 당사자는 지체 없이 비밀정보가 담긴 자료(사본 포함)를 반환하거나 완전히 파기하고, 그 결과를 서면으로 확인하여야 한다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">5</div>
+            <div class="clause-title">비밀유지 기간</div>
+          </div>
+          <div class="clause-body">
+            비밀유지 의무는 본 계약 체결일로부터 <span id="periodDisplay" contenteditable="true">3</span>년간 유효하며, 계약 종료 후에도 동 기간 동안 유지된다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">6</div>
+            <div class="clause-title">지식재산권</div>
+          </div>
+          <div class="clause-body">
+            본 계약에 따른 비밀정보의 제공은 어떠한 지식재산권의 양도 또는 라이선스를 의미하지 아니하며, 비밀정보에 관한 모든 권리는 제공 당사자에게 귀속된다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">7</div>
+            <div class="clause-title">손해배상</div>
+          </div>
+          <div class="clause-body">
+            비밀유지 의무를 위반한 당사자는 상대방에게 이로 인한 모든 손해를 배상하여야 한다. 이 경우 실손해 외에 위약벌로서 금 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>원을 지급하기로 한다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">8</div>
+            <div class="clause-title">계약 기간 및 해지</div>
+          </div>
+          <div class="clause-body">
+            본 계약은 체결일로부터 효력이 발생하며, 어느 일방이 서면으로 30일 전 통보 시 해지할 수 있다. 단, 이미 공개된 비밀정보에 대한 보호 의무는 해지 후에도 제5조 기간 동안 존속한다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">9</div>
+            <div class="clause-title">일반 조항</div>
+          </div>
+          <div class="clause-body">
+            본 계약은 비밀정보의 보호에 관한 당사자 간 완전한 합의를 구성하며, 이에 관한 종전의 구두·서면 합의를 대체한다. 본 계약의 수정은 당사자 쌍방의 서면 합의에 의하여야만 효력이 있다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">10</div>
+            <div class="clause-title">준거법 및 분쟁 해결</div>
+          </div>
+          <div class="clause-body">
+            본 계약은 대한민국 법률에 따라 해석·적용된다. 본 계약과 관련된 분쟁은 먼저 협의로 해결하되, 협의가 이루어지지 않을 경우 <span contenteditable="true">서울중앙지방법원</span>을 전속 관할법원으로 한다.
+          </div>
+        </div>
+
+        <!-- Signature -->
+        <div class="sig-section">
+          <div class="sig-date">
+            <span id="sigDate" contenteditable="true"></span>
+          </div>
+          <div class="sig-grid">
+            <div class="sig-card">
+              <div class="sig-card-title">甲 (정보제공자)</div>
+              <div class="sig-row"><span class="sig-label">회사명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-label">대표자</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-label">주&nbsp;&nbsp;&nbsp;&nbsp;소</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-label">서&nbsp;&nbsp;&nbsp;&nbsp;명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="stamp-circle">인</div>
+            </div>
+            <div class="sig-card">
+              <div class="sig-card-title">乙 (정보수령자)</div>
+              <div class="sig-row"><span class="sig-label">회사명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-label">대표자</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-label">주&nbsp;&nbsp;&nbsp;&nbsp;소</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-label">서&nbsp;&nbsp;&nbsp;&nbsp;명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="stamp-circle">인</div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /doc-body -->
+    </div><!-- /doc-page -->
+  </div><!-- /doc-wrap -->
+</div><!-- /form-page-wrap -->
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="nav.js?v=3" defer></script>
+<script src="auth.js" defer></script>
+<script src="footer-inject.js" defer></script>
+<script>
+// 오늘 날짜 자동 입력
+(function(){
+  const d = new Date();
+  const str = d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
+  document.getElementById('sigDate').textContent = str;
+})();
+
+// 문서번호 동기화
+document.getElementById('docNum').addEventListener('input', function(){
+  document.getElementById('docNumDisplay').textContent = this.value;
+});
+
+// 비밀유지 기간 동기화
+document.getElementById('ndaPeriod').addEventListener('input', function(){
+  document.getElementById('periodDisplay').textContent = this.value;
+});
+
+// 로고 업로드
+document.getElementById('logoInput').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = document.getElementById('logoImg');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+</body>
+</html>

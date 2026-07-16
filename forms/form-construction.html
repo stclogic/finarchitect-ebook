@@ -1,0 +1,467 @@
+<!-- 공사도급계약서 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공사도급계약서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.form-page-wrap {
+  max-width:1200px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #e2e8f0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 4px 24px rgba(6,95,70,.1);
+}
+.ctrl-panel h2 { font-size:.97rem; font-weight:800; color:#065F46; margin-bottom:1.2rem; }
+.ctrl-section { margin-bottom:.9rem; }
+.ctrl-section label { display:block; font-size:.77rem; font-weight:700; color:#64748b; margin-bottom:.28rem; }
+.ctrl-section input, .ctrl-section select {
+  width:100%; padding:8px 10px; border:1px solid #e2e8f0; border-radius:8px;
+  font-size:.85rem; color:#065F46; background:#f8fafc; box-sizing:border-box;
+}
+.ctrl-divider { height:1px; background:#e2e8f0; margin:1rem 0; }
+.print-btn {
+  width:100%; padding:13px;
+  background:linear-gradient(135deg,#065F46,#10B981); color:#fff;
+  border:none; border-radius:12px; font-size:.95rem; font-weight:700; cursor:pointer; transition:opacity .2s;
+}
+.print-btn:hover { opacity:.88; }
+.reset-btn {
+  width:100%; padding:9px; margin-top:.6rem;
+  background:none; border:1px solid #e2e8f0; border-radius:10px; font-size:.82rem; color:#64748b; cursor:pointer;
+}
+.tip-box {
+  background:#D1FAE5; border:1px solid #6EE7B7; border-radius:10px;
+  padding:.8rem 1rem; font-size:.76rem; color:#065F46; line-height:1.65; margin-top:.8rem;
+}
+.back-link {
+  display:inline-flex; align-items:center; gap:.3rem;
+  font-size:.82rem; color:#64748b; text-decoration:none;
+  padding:7px 14px; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:1rem; transition:background .2s;
+}
+.back-link:hover { background:#D1FAE5; }
+.doc-wrap { background:#D1FAE5; border-radius:14px; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; }
+.doc-page {
+  width:210mm; min-height:297mm; background:#fff;
+  box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:0; overflow:hidden; font-family:'Noto Serif KR','Malgun Gothic',serif; font-size:10pt; color:#222; position:relative;
+}
+.doc-header-bar {
+  height:14mm; background:linear-gradient(90deg,#065F46 0%,#10B981 100%);
+  display:flex; align-items:center; padding:0 10mm; gap:12px;
+}
+.doc-header-bar .icon { font-size:22px; color:#fff; }
+.doc-header-bar .doc-num { color:rgba(255,255,255,.7); font-size:8pt; margin-left:auto; }
+.doc-body { padding:8mm 12mm 10mm; }
+.logo-area { display:flex; align-items:center; gap:10px; margin-bottom:4mm; }
+.logo-img { width:36px; height:36px; object-fit:contain; border-radius:6px; display:none; }
+.logo-placeholder {
+  width:36px; height:36px; border:1.5px dashed #94a3b8; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:9px; text-align:center; line-height:1.2; cursor:pointer;
+}
+.doc-title { text-align:center; margin:4mm 0 2mm; }
+.doc-title h1 { font-size:20pt; font-weight:700; letter-spacing:6px; color:#065F46; margin:0; }
+.doc-title .en { font-size:8.5pt; color:#10B981; letter-spacing:3px; margin-top:1mm; }
+.doc-title .subtitle { font-size:8pt; color:#666; margin-top:1mm; }
+.doc-divider { height:2px; background:linear-gradient(90deg,#065F46,#10B981); margin:3mm 0; border-radius:1px; }
+.doc-divider-thin { height:1px; background:#D1FAE5; margin:2mm 0; }
+
+.property-box {
+  border:1.5px solid #10B981; border-radius:8px; padding:4mm 5mm; margin:3mm 0;
+  background:#f0fdf4;
+}
+.property-box .pb-title {
+  font-size:8pt; font-weight:700; color:#065F46; background:#D1FAE5;
+  padding:1.5mm 3mm; border-radius:4px; margin-bottom:3mm; display:inline-block;
+}
+.pb-row { display:flex; align-items:baseline; gap:6px; margin:1.5mm 0; font-size:9pt; }
+.pb-label { color:#065F46; font-weight:700; white-space:nowrap; min-width:70px; font-size:8.5pt; }
+.pb-val { flex:1; border-bottom:1px solid #10B981; min-height:5mm; padding-bottom:0.5mm; }
+
+.party-table { width:100%; border-collapse:collapse; margin:3mm 0; font-size:8.5pt; }
+.party-table th { background:#065F46; color:#fff; padding:2mm 3mm; text-align:center; font-weight:700; }
+.party-table td { border:1px solid #A7F3D0; padding:2mm 3mm; vertical-align:middle; }
+.party-table tr:nth-child(even) td { background:#f0fdf4; }
+.party-label { background:#D1FAE5 !important; font-weight:700; color:#065F46; text-align:center; }
+
+.article-section { margin:3mm 0; }
+.article-num {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:18px; height:18px; background:#065F46; color:#fff;
+  border-radius:50%; font-size:7.5pt; font-weight:700; margin-right:4px; flex-shrink:0;
+}
+.article-title { font-size:9.5pt; font-weight:700; color:#065F46; display:flex; align-items:center; margin:2.5mm 0 1mm; }
+.article-body { font-size:8.5pt; line-height:1.7; color:#333; padding-left:22px; }
+
+.data-table { width:100%; border-collapse:collapse; margin:2mm 0; font-size:8pt; }
+.data-table th { background:#065F46; color:#fff; padding:1.5mm 2mm; text-align:center; }
+.data-table td { border:1px solid #A7F3D0; padding:1.5mm 2mm; text-align:center; }
+.data-table tr:nth-child(even) td { background:#f0fdf4; }
+
+.payment-table { width:100%; border-collapse:collapse; margin:2mm 0; font-size:8.5pt; }
+.payment-table th { background:#10B981; color:#fff; padding:1.5mm 2mm; text-align:center; }
+.payment-table td { border:1px solid #A7F3D0; padding:1.5mm 2mm; }
+
+.stamp-row { display:flex; justify-content:space-around; margin:6mm 0 3mm; gap:1rem; }
+.stamp-block { text-align:center; flex:1; }
+.stamp-block .s-title { font-size:8.5pt; font-weight:700; color:#065F46; margin-bottom:2mm; }
+.stamp-block .s-info { font-size:8pt; line-height:1.8; color:#444; }
+.stamp-box { width:28mm; height:20mm; border:1px solid #A7F3D0; border-radius:4px; margin:2mm auto 0; display:flex; align-items:center; justify-content:center; color:#ccc; font-size:7pt; }
+
+[contenteditable]:hover { outline:2px solid #10B981; border-radius:3px; }
+[contenteditable]:focus { outline:3px solid #065F46; border-radius:3px; background:#f0fff8; }
+
+.section-badge {
+  display:inline-block; background:#065F46; color:#fff; font-size:7.5pt; font-weight:700;
+  padding:1mm 3mm; border-radius:4px; margin:2mm 0 1mm;
+}
+.amount-row { display:flex; gap:4mm; margin:1.5mm 0; }
+.amount-box { flex:1; border:1px solid #A7F3D0; border-radius:4px; padding:2mm; background:#f9fafb; font-size:8.5pt; }
+.amount-box .ab-label { font-size:7.5pt; color:#065F46; font-weight:700; }
+
+@media print {
+  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .doc-page { width:210mm; box-shadow:none; min-height:auto; }
+  @page { size:A4; margin:0; }
+  body { background:#fff !important; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <!-- 좌측 컨트롤 패널 -->
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>🏗️ 공사도급계약서</h2>
+
+    <div class="ctrl-section">
+      <label>회사 로고 업로드</label>
+      <input type="file" accept="image/*" id="logoUpload" style="font-size:.78rem;">
+    </div>
+    <div class="ctrl-section">
+      <label>작성일</label>
+      <input type="date" id="docDate">
+    </div>
+    <div class="ctrl-section">
+      <label>문서 번호</label>
+      <input type="text" id="docNum" placeholder="예: CON-2025-001">
+    </div>
+    <div class="ctrl-section">
+      <label>총 공사금액 (숫자)</label>
+      <input type="number" id="totalAmt" placeholder="예: 50000000">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="ctrl-section">
+      <label>하자보수 보증기간</label>
+      <select id="warrantyPeriod">
+        <option value="2년">2년</option>
+        <option value="5년">5년</option>
+        <option value="직접입력">직접입력</option>
+      </select>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
+
+    <div class="tip-box">
+      💡 <strong>작성 Tip</strong><br>
+      각 항목을 클릭하면 직접 편집할 수 있습니다. 공사 범위와 금액을 정확히 기재하고 당사자 쌍방이 서명·날인하세요.
+    </div>
+  </aside>
+
+  <!-- 우측 문서 영역 -->
+  <div class="doc-wrap">
+    <div class="doc-page" id="docPage">
+      <!-- 헤더 바 -->
+      <div class="doc-header-bar">
+        <span class="icon">🏗️</span>
+        <span style="color:#fff;font-size:9pt;font-weight:700;">CONSTRUCTION CONTRACT</span>
+        <span class="doc-num" id="dispDocNum">No. CON-2025-001</span>
+      </div>
+
+      <div class="doc-body">
+        <!-- 로고 + 제목 -->
+        <div class="logo-area">
+          <div class="logo-placeholder" id="logoHolder" onclick="document.getElementById('logoUpload').click()">
+            로고<br>업로드
+          </div>
+          <img class="logo-img" id="logoImg" src="" alt="logo">
+          <div style="flex:1; text-align:right; font-size:7.5pt; color:#888;">
+            <span id="dispDate"></span>
+          </div>
+        </div>
+
+        <div class="doc-title">
+          <h1>공&nbsp;&nbsp;사&nbsp;&nbsp;도&nbsp;&nbsp;급&nbsp;&nbsp;계&nbsp;&nbsp;약&nbsp;&nbsp;서</h1>
+          <div class="en">CONSTRUCTION CONTRACT</div>
+          <div class="subtitle">본 계약은 도급인과 수급인 간에 아래와 같이 체결한다.</div>
+        </div>
+        <div class="doc-divider"></div>
+
+        <!-- 공사 기본 정보 -->
+        <div class="property-box">
+          <div class="pb-title">▌ 공사 기본 사항</div>
+          <div class="pb-row"><span class="pb-label">공 사 명</span><span class="pb-val" contenteditable="true"></span></div>
+          <div class="pb-row"><span class="pb-label">공사 장소</span><span class="pb-val" contenteditable="true"></span></div>
+          <div class="pb-row"><span class="pb-label">착 공 일</span><span class="pb-val" contenteditable="true" style="max-width:80mm;"></span><span class="pb-label" style="margin-left:4mm;">준공 예정일</span><span class="pb-val" contenteditable="true" style="max-width:80mm;"></span></div>
+        </div>
+
+        <!-- 당사자 표 -->
+        <div class="section-badge">▌ 계약 당사자</div>
+        <table class="party-table">
+          <thead>
+            <tr>
+              <th style="width:22%;">구분</th>
+              <th>도급인 (甲)</th>
+              <th>수급인 (乙)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="party-label">상호/성명</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td class="party-label">대표자</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td class="party-label">사업자번호</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td class="party-label">면허번호</td><td contenteditable="true">해당없음</td><td contenteditable="true"></td></tr>
+            <tr><td class="party-label">주소</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td class="party-label">연락처</td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+          </tbody>
+        </table>
+
+        <div class="doc-divider-thin"></div>
+
+        <!-- 제1조 도급금액 -->
+        <div class="article-section">
+          <div class="article-title">
+            <span class="article-num">1</span>도급 금액
+          </div>
+          <div class="article-body">
+            총 공사금액은 아래와 같으며, 부가가치세를 포함한다.
+            <div class="amount-row" style="margin-top:2mm;">
+              <div class="amount-box">
+                <div class="ab-label">총 공사금액 (숫자)</div>
+                <div contenteditable="true" id="dispTotalAmt" style="font-size:11pt; font-weight:700; color:#065F46;">금 &#9;&#9;&#9;원 (₩ )</div>
+              </div>
+            </div>
+            <div class="amount-box" style="margin-top:2mm;">
+              <div class="ab-label">한글 금액</div>
+              <div contenteditable="true" id="dispTotalAmtKor" style="font-weight:600;">금 &#9;&#9;&#9;&#9;&#9;&#9;원정</div>
+            </div>
+            <table class="payment-table" style="margin-top:3mm;">
+              <thead><tr><th>구분</th><th>금액</th><th>지급일</th><th>지급 방법</th></tr></thead>
+              <tbody>
+                <tr><td contenteditable="true">계약금</td><td contenteditable="true"></td><td contenteditable="true">계약 체결일</td><td contenteditable="true">현금/계좌이체</td></tr>
+                <tr><td contenteditable="true">중도금</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">현금/계좌이체</td></tr>
+                <tr><td contenteditable="true">잔 금</td><td contenteditable="true"></td><td contenteditable="true">준공 검사 후</td><td contenteditable="true">현금/계좌이체</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 제2조 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">2</span>공사 범위</div>
+          <div class="article-body" contenteditable="true">
+            수급인은 도급인으로부터 위임받은 공사 내역서(별첨)에 따라 공사를 성실히 수행한다. 공사 범위의 변경이 필요한 경우 제4조(설계변경)에 따른다.<br>
+            □ 공사 내역서 첨부 확인 &nbsp;&nbsp; □ 설계 도면 첨부 확인 &nbsp;&nbsp; □ 시방서 첨부 확인
+          </div>
+        </div>
+
+        <!-- 제3조 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">3</span>공사 기간</div>
+          <div class="article-body" contenteditable="true">
+            착공일로부터 준공예정일까지로 하며, 천재지변 등 불가항력적 사유로 공기 연장이 필요한 경우 갑의 서면 승인을 받아야 한다. 정당한 사유 없이 공기가 지연될 경우 지체상금으로 1일당 총 공사금액의 0.1%(천분의 일)를 도급인에게 지급한다.
+          </div>
+        </div>
+
+        <!-- 공정표 -->
+        <div class="section-badge">▌ 공사 공정표</div>
+        <table class="data-table">
+          <thead><tr><th>공정 명칭</th><th>시작일</th><th>완료일</th><th>담당</th><th>비율(%)</th></tr></thead>
+          <tbody>
+            <tr><td contenteditable="true">기초 공사</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td contenteditable="true">골조 공사</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td contenteditable="true">마감 공사</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td contenteditable="true">설비 공사</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            <tr><td contenteditable="true">전기 공사</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+          </tbody>
+        </table>
+
+        <!-- 제4~12조 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">4</span>설계 변경</div>
+          <div class="article-body" contenteditable="true">설계 변경은 갑의 서면 요청 또는 현장 여건에 따라 협의 후 진행하며, 변경 금액은 별도 계약서를 체결하여 정산한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">5</span>하자 담보 책임</div>
+          <div class="article-body">
+            준공일로부터 <span id="dispWarranty" style="font-weight:700; color:#065F46;">2년</span> 동안 수급인은 공사 목적물의 하자에 대하여 무상 보수 책임을 진다. 구조적 결함의 경우 「건설산업기본법」에서 정한 기간을 따른다.
+          </div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">6</span>기성 검사 및 준공 검사</div>
+          <div class="article-body" contenteditable="true">수급인은 공정 단계별 기성 검사를 신청하고, 갑은 7일 이내에 검사를 완료한다. 준공 후 14일 이내에 준공 검사를 완료하며, 합격 후 잔금을 지급한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">7</span>재료 및 노무</div>
+          <div class="article-body" contenteditable="true">수급인은 관계 법령이 정한 품질 기준에 적합한 재료를 사용하고 숙련된 기능인을 투입한다. 재료 변경 시 사전에 갑의 승인을 받아야 한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">8</span>안전 관리</div>
+          <div class="article-body" contenteditable="true">수급인은 「산업안전보건법」을 준수하고 안전 관리 계획을 수립·이행한다. 공사 중 발생한 사고는 수급인의 책임으로 처리하며, 갑에게 즉시 통보한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">9</span>보험</div>
+          <div class="article-body" contenteditable="true">수급인은 착공 전 건설공사보험 및 산업재해보상보험에 가입하고 증권 사본을 갑에게 제출한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">10</span>계약 해지</div>
+          <div class="article-body" contenteditable="true">갑 또는 을은 상대방이 본 계약을 위반하고 14일 이상 시정하지 아니할 경우 계약을 해지할 수 있다. 해지 시 기성고를 정산하고 이미 완료된 공사에 대한 비용을 지급한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">11</span>분쟁 해결</div>
+          <div class="article-body" contenteditable="true">본 계약에 관한 분쟁은 건설분쟁조정위원회의 조정을 거치거나, 공사 현장 소재지를 관할하는 법원을 제1심 법원으로 한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">12</span>기타</div>
+          <div class="article-body" contenteditable="true">본 계약서에 명시되지 않은 사항은 「건설산업기본법」, 「건설기술진흥법」 및 관련 법령을 따르며, 상호 협의하여 결정한다. 환경 관리에 관한 사항은 관계 법령을 준수한다.</div>
+        </div>
+
+        <div class="doc-divider"></div>
+
+        <!-- 서명란 -->
+        <div style="text-align:center; font-size:9pt; color:#065F46; font-weight:700; margin:3mm 0 2mm;">
+          위 계약 내용을 확인하고 각자 서명·날인한다.
+        </div>
+        <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
+
+        <div class="stamp-row">
+          <div class="stamp-block">
+            <div class="s-title">도급인 (甲)</div>
+            <div class="s-info" contenteditable="true">상호:<br>대표자:<br>주소:</div>
+            <div class="stamp-box">인</div>
+          </div>
+          <div class="stamp-block">
+            <div class="s-title">수급인 (乙)</div>
+            <div class="s-info" contenteditable="true">상호:<br>대표자:<br>주소:</div>
+            <div class="stamp-box">인</div>
+          </div>
+          <div class="stamp-block">
+            <div class="s-title">현장 감독관</div>
+            <div class="s-info" contenteditable="true">성명:<br>소속:<br>연락처:</div>
+            <div class="stamp-box">인</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 오늘 날짜 자동 입력
+(function() {
+  const today = new Date();
+  const ymd = today.toISOString().split('T')[0];
+  document.getElementById('docDate').value = ymd;
+  const formatted = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+})();
+
+document.getElementById('docDate').addEventListener('change', function() {
+  const d = new Date(this.value);
+  const formatted = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+});
+
+document.getElementById('docNum').addEventListener('input', function() {
+  document.getElementById('dispDocNum').textContent = 'No. ' + this.value;
+});
+
+document.getElementById('totalAmt').addEventListener('input', function() {
+  const n = parseInt(this.value.replace(/,/g, ''), 10);
+  if (!isNaN(n)) {
+    document.getElementById('dispTotalAmt').textContent = `금 ${n.toLocaleString('ko-KR')} 원 (₩ ${n.toLocaleString('ko-KR')})`;
+    document.getElementById('dispTotalAmtKor').textContent = `금 ${numberToKorean(n)} 원정`;
+  }
+});
+
+document.getElementById('warrantyPeriod').addEventListener('change', function() {
+  document.getElementById('dispWarranty').textContent = this.value;
+});
+
+// 로고 업로드
+document.getElementById('logoUpload').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const img = document.getElementById('logoImg');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.getElementById('logoHolder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+function numberToKorean(n) {
+  const units = ['', '만', '억', '조'];
+  const digits = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+  const places = ['', '십', '백', '천'];
+  if (n === 0) return '영';
+  let result = '';
+  let unitIdx = 0;
+  while (n > 0) {
+    const chunk = n % 10000;
+    if (chunk > 0) {
+      let chunkStr = '';
+      let tmp = chunk;
+      for (let p = 0; tmp > 0; p++, tmp = Math.floor(tmp/10)) {
+        const d = tmp % 10;
+        if (d > 0) chunkStr = digits[d] + places[p] + chunkStr;
+      }
+      result = chunkStr + units[unitIdx] + result;
+    }
+    n = Math.floor(n / 10000);
+    unitIdx++;
+  }
+  return result;
+}
+
+function resetDoc() {
+  if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;
+  document.querySelectorAll('[contenteditable]').forEach(el => el.textContent = '');
+  document.getElementById('docNum').value = '';
+  document.getElementById('totalAmt').value = '';
+  document.getElementById('dispDocNum').textContent = 'No. CON-2025-001';
+  document.getElementById('dispTotalAmt').textContent = '금 ___________________원 (₩ )';
+  document.getElementById('dispTotalAmtKor').textContent = '금 ___________________________원정';
+}
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

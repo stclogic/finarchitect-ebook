@@ -1,0 +1,471 @@
+<!-- 재직증명서 온라인 작성 및 인쇄/PDF 다운로드 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>재직증명서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── 공통 레이아웃 ── */
+.form-page-wrap {
+  max-width: 1320px; margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+/* ── 좌측 컨트롤 패널 ── */
+.ctrl-panel {
+  background: #fff;
+  border: 1px solid #E0E7FF;
+  border-radius: 18px; padding: 1.5rem;
+  position: sticky; top: 80px;
+  box-shadow: 0 4px 24px rgba(99,102,241,.08);
+}
+.ctrl-panel h2 {
+  font-size: 1rem; font-weight: 800; color: #1e1b4b;
+  margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.ctrl-back-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.78rem; color: #6366F1; text-decoration: none;
+  margin-bottom: 1rem; font-weight: 600;
+}
+.ctrl-back-link:hover { text-decoration: underline; }
+.ctrl-section { margin-bottom: 1.2rem; }
+.ctrl-section label {
+  display: block; font-size: 0.77rem; font-weight: 700;
+  color: #6366F1; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: .03em;
+}
+.ctrl-section input[type="text"] {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid #C7D2FE; border-radius: 8px;
+  font-size: 0.85rem; color: #1e1b4b;
+  background: #EEF2FF; box-sizing: border-box;
+  transition: border-color .15s;
+}
+.ctrl-section input[type="text"]:focus { outline: none; border-color: #6366F1; background: #fff; }
+.ctrl-file-btn {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 9px 14px; background: #EEF2FF;
+  border: 1px dashed #A5B4FC; border-radius: 8px;
+  cursor: pointer; font-size: 0.82rem; color: #6366F1;
+  transition: border-color .15s; width: 100%; box-sizing: border-box;
+}
+.ctrl-file-btn:hover { border-color: #3730A3; color: #3730A3; }
+.ctrl-file-btn input { display: none; }
+.ctrl-divider { height: 1px; background: #E0E7FF; margin: 1.2rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg,#3730A3,#6366F1);
+  color: #fff; border: none; border-radius: 12px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: opacity .15s; display: flex; align-items: center;
+  justify-content: center; gap: 0.5rem;
+}
+.print-btn:hover { opacity: 0.88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: 0.6rem;
+  background: none; border: 1px solid #C7D2FE;
+  border-radius: 10px; font-size: 0.82rem; color: #6366F1;
+  cursor: pointer; transition: border-color .15s;
+}
+.reset-btn:hover { border-color: #EF4444; color: #EF4444; }
+.tip-box {
+  background: #EEF2FF; border: 1px solid #A5B4FC;
+  border-radius: 10px; padding: 0.8rem 1rem;
+  font-size: 0.75rem; color: #3730A3; line-height: 1.7;
+  margin-top: 0.8rem;
+}
+
+/* ── A4 문서 컨테이너 ── */
+.doc-wrap {
+  background: #E0E7FF;
+  border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* ── A4 페이지 ── */
+.a4-page {
+  width: 210mm;
+  background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  border-radius: 3px;
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 10pt;
+  color: #1a1a2e;
+  padding: 20mm 18mm;
+  box-sizing: border-box;
+  position: relative;
+  /* 이중 테두리 */
+  border: 2px solid #3730A3;
+  outline: 4px solid #fff;
+  outline-offset: -6px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18), inset 0 0 0 7px #fff, inset 0 0 0 8px #6366F1;
+}
+
+/* ── 워터마크 ── */
+.ec-watermark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%) rotate(-30deg);
+  font-size: 60pt; font-weight: 900;
+  color: rgba(99,102,241,.04);
+  letter-spacing: .2em;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+/* ── 헤더 행 ── */
+.ec-header-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 6mm; position: relative; z-index: 1;
+}
+.ec-logo-area {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+}
+.ec-logo-img {
+  width: 52px; height: 52px; object-fit: contain;
+  border-radius: 8px; display: none;
+  border: 1px solid #E0E7FF;
+}
+.ec-logo-img.visible { display: block; }
+.ec-logo-placeholder {
+  width: 52px; height: 52px;
+  background: #EEF2FF; border: 1px dashed #A5B4FC;
+  border-radius: 8px; display: flex; align-items: center;
+  justify-content: center; font-size: 7pt; color: #A5B4FC; text-align: center;
+  line-height: 1.3;
+}
+.ec-doc-meta { text-align: right; font-size: 8.5pt; color: #555; line-height: 1.8; }
+.ec-doc-meta strong { color: #3730A3; }
+
+/* ── 제목 ── */
+.ec-title-block {
+  text-align: center; margin: 4mm 0 2mm; position: relative; z-index: 1;
+}
+.ec-title {
+  font-size: 20pt; font-weight: 700;
+  color: #3730A3; letter-spacing: 0.3em;
+  line-height: 1.3; display: block;
+}
+.ec-subtitle {
+  font-size: 9pt; color: #6366F1; letter-spacing: .08em;
+  margin-top: 2mm; display: block;
+}
+.ec-title-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3730A3, #6366F1, transparent);
+  margin: 4mm 0 6mm;
+}
+
+/* ── 메인 정보 테이블 ── */
+.ec-cert-table {
+  width: 100%; border-collapse: collapse;
+  margin-bottom: 6mm; font-size: 9.5pt;
+  position: relative; z-index: 1;
+}
+.ec-cert-table th {
+  background: #EEF2FF; color: #3730A3; font-weight: 700;
+  border: 1.5px solid #C7D2FE;
+  padding: 3.5mm 4mm; width: 26%;
+  text-align: center; white-space: nowrap;
+}
+.ec-cert-table td {
+  border: 1.5px solid #C7D2FE;
+  padding: 3.5mm 4mm; color: #1a1a2e;
+}
+.ec-cert-table td[contenteditable]:hover { background: #FAFAFF; }
+.ec-cert-table td[contenteditable]:focus { outline: none; background: #F0F4FF; }
+
+/* ── 증명 문구 ── */
+.ec-cert-text {
+  text-align: center; margin: 6mm 0 3mm;
+  position: relative; z-index: 1;
+}
+.ec-cert-text p {
+  font-size: 10.5pt; line-height: 2.0; color: #1a1a2e;
+}
+.ec-cert-text .en {
+  font-size: 8.5pt; color: #555; margin-top: 2mm;
+  font-style: italic;
+}
+
+/* ── 용도 ── */
+.ec-purpose {
+  border: 1px solid #C7D2FE; border-radius: 8px;
+  padding: 3mm 5mm; margin-bottom: 6mm;
+  display: flex; align-items: center; gap: 1rem;
+  background: #EEF2FF; font-size: 9.5pt;
+  position: relative; z-index: 1;
+}
+.ec-purpose-label { font-weight: 700; color: #3730A3; white-space: nowrap; }
+.ec-purpose-field { flex: 1; color: #1a1a2e; }
+.ec-purpose-field:focus { outline: none; }
+
+/* ── 발급일 + 회사 + 직인 ── */
+.ec-issue-section {
+  text-align: center; margin-bottom: 6mm;
+  position: relative; z-index: 1;
+}
+.ec-issue-date {
+  font-size: 11pt; font-weight: 600; color: #1e1b4b; margin-bottom: 4mm;
+}
+.ec-company-block { font-size: 9.5pt; line-height: 1.9; color: #333; }
+.ec-company-name {
+  font-size: 11pt; font-weight: 700; color: #1e1b4b;
+}
+.ec-ceo-row {
+  display: flex; justify-content: center; align-items: center; gap: 8mm; margin-top: 2mm;
+}
+.ec-ceo-label { font-size: 9pt; color: #555; }
+.ec-ceo-name {
+  font-size: 10pt; font-weight: 600; color: #1e1b4b;
+  border-bottom: 1px solid #3730A3; min-width: 40mm;
+  display: inline-block; text-align: center; padding-bottom: 1px;
+}
+.ec-ceo-name:focus { outline: none; border-color: #6366F1; }
+
+/* ── 직인 원 ── */
+.ec-seal {
+  width: 25mm; height: 25mm;
+  border: 2px dashed #C7D2FE;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 1px;
+  margin: 4mm auto 0;
+  color: #C7D2FE; font-size: 9pt;
+  position: relative; z-index: 1;
+}
+
+/* ── 회사 주소 푸터 ── */
+.ec-address-footer {
+  border-top: 1px solid #E0E7FF;
+  padding-top: 4mm; margin-top: 2mm;
+  text-align: center; font-size: 8pt; color: #888;
+  position: relative; z-index: 1;
+}
+.ec-address-footer[contenteditable]:focus { outline: none; }
+
+/* ── 인쇄 CSS ── */
+@media print {
+  .ctrl-panel, nav, footer { display: none !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-wrap { background: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .a4-page { width: 100% !important; border-radius: 0 !important; }
+  @page { size: A4; margin: 0; }
+}
+@media (max-width: 900px) {
+  .form-page-wrap { grid-template-columns: 1fr; }
+  .ctrl-panel { position: static; }
+  .a4-page { width: 100%; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<main class="form-page-wrap">
+  <!-- ── 좌측 컨트롤 패널 ── -->
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="ctrl-back-link">← 서식 목록</a>
+    <h2>🏢 재직증명서 작성</h2>
+
+    <div class="ctrl-section">
+      <label>회사명</label>
+      <input type="text" id="ctrl-company" placeholder="예: (주)스타트업" oninput="syncField('company',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>대표이사명</label>
+      <input type="text" id="ctrl-ceo" placeholder="예: 김대표" oninput="syncField('ceo',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>성명</label>
+      <input type="text" id="ctrl-name" placeholder="홍길동" oninput="syncField('empname',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>소속부서</label>
+      <input type="text" id="ctrl-dept" placeholder="예: 개발팀" oninput="syncField('dept',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>직위·직책</label>
+      <input type="text" id="ctrl-pos" placeholder="예: 과장" oninput="syncField('pos',this.value)">
+    </div>
+    <div class="ctrl-section">
+      <label>문서번호</label>
+      <input type="text" id="ctrl-docno" placeholder="예: 재직-2025-001" oninput="syncField('docno',this.value)">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="ctrl-file-btn">
+        <span>🖼 로고 이미지 선택</span>
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+      </label>
+    </div>
+
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
+
+    <div class="tip-box">
+      💡 표 안 각 셀을 클릭하면 직접 수정할 수 있습니다.<br>
+      직인란은 실제 도장 날인 후 스캔하거나, PDF로 출력 후 날인하세요.
+    </div>
+  </aside>
+
+  <!-- ── 우측 문서 영역 ── -->
+  <div class="doc-wrap">
+    <div class="a4-page">
+
+      <!-- 워터마크 -->
+      <div class="ec-watermark">ORIGINAL</div>
+
+      <!-- 헤더 행 -->
+      <div class="ec-header-row">
+        <div class="ec-logo-area">
+          <div class="ec-logo-placeholder" id="logo-placeholder">🏢<br>로고</div>
+          <img class="ec-logo-img" id="doc-logo" src="" alt="회사로고">
+        </div>
+        <div class="ec-doc-meta">
+          문서번호: <strong><span id="doc-docno" contenteditable="true" data-field="docno">재직-0000-000</span></strong><br>
+          발행일: <span id="doc-issuedate"></span>
+        </div>
+      </div>
+
+      <!-- 제목 -->
+      <div class="ec-title-block">
+        <span class="ec-title">재&nbsp;&nbsp;직&nbsp;&nbsp;증&nbsp;&nbsp;명&nbsp;&nbsp;서</span>
+        <span class="ec-subtitle">CERTIFICATE OF EMPLOYMENT</span>
+      </div>
+      <div class="ec-title-divider"></div>
+
+      <!-- 정보 테이블 -->
+      <table class="ec-cert-table">
+        <tr>
+          <th>성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명</th>
+          <td id="doc-empname" contenteditable="true" data-field="empname">홍길동</td>
+          <th>생 년 월 일</th>
+          <td contenteditable="true">____년 __월 __일</td>
+        </tr>
+        <tr>
+          <th>주민등록번호</th>
+          <td contenteditable="true">______-_______</td>
+          <th>고 용 형 태</th>
+          <td contenteditable="true">정규직</td>
+        </tr>
+        <tr>
+          <th>소&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;속</th>
+          <td id="doc-dept" contenteditable="true" data-field="dept">개발팀</td>
+          <th>직&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;위</th>
+          <td id="doc-pos" contenteditable="true" data-field="pos">과장</td>
+        </tr>
+        <tr>
+          <th>직&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;책</th>
+          <td contenteditable="true"></td>
+          <th>입&nbsp;&nbsp;사&nbsp;&nbsp;일</th>
+          <td contenteditable="true">____년 __월 __일</td>
+        </tr>
+        <tr>
+          <th>재 직 기 간</th>
+          <td contenteditable="true">____년 __월 __일 ~ 현재</td>
+          <th>비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;고</th>
+          <td contenteditable="true"></td>
+        </tr>
+      </table>
+
+      <!-- 증명 문구 -->
+      <div class="ec-cert-text">
+        <p>위 사람은 현재 당사에 재직 중임을 증명합니다.</p>
+        <p class="en">This is to certify that the above-named person is currently employed at our company.</p>
+      </div>
+
+      <!-- 용도 -->
+      <div class="ec-purpose">
+        <span class="ec-purpose-label">용&nbsp;&nbsp;&nbsp;&nbsp;도</span>
+        <span class="ec-purpose-field" contenteditable="true">금융기관 제출용</span>
+      </div>
+
+      <!-- 발급일 + 회사 + 직인 -->
+      <div class="ec-issue-section">
+        <div class="ec-issue-date" id="issue-date-text"></div>
+        <div class="ec-company-block">
+          <div class="ec-company-name" id="doc-company" contenteditable="true" data-field="company">회사명</div>
+          <div class="ec-ceo-row">
+            <span class="ec-ceo-label">대표이사</span>
+            <span class="ec-ceo-name" id="doc-ceo" contenteditable="true" data-field="ceo">대표이사명</span>
+            <span style="font-size:8.5pt;color:#888;">(서명 또는 날인)</span>
+          </div>
+        </div>
+        <div class="ec-seal">
+          <span style="font-size:7.5pt;color:#A5B4FC;">직</span>
+          <span style="font-size:7.5pt;color:#A5B4FC;">인</span>
+        </div>
+      </div>
+
+      <!-- 주소 푸터 -->
+      <div class="ec-address-footer" contenteditable="true">
+        주소: 서울특별시 강남구 테헤란로 123 | 대표전화: 02-0000-0000
+      </div>
+
+    </div><!-- /.a4-page -->
+  </div><!-- /.doc-wrap -->
+</main>
+
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+<script>
+// 오늘 날짜 자동 입력
+(function() {
+  const today = new Date();
+  const ymd = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('doc-issuedate').textContent = ymd;
+  document.getElementById('issue-date-text').textContent = ymd;
+})();
+
+// 컨트롤 패널 → 문서 동기화
+const fieldDefaults = {
+  company: '회사명', ceo: '대표이사명', empname: '홍길동',
+  dept: '개발팀', pos: '과장', docno: '재직-0000-000'
+};
+function syncField(field, val) {
+  const els = document.querySelectorAll(`[data-field="${field}"]`);
+  els.forEach(el => { el.textContent = val || fieldDefaults[field]; });
+}
+
+// 로고 업로드
+function uploadLogo(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('doc-logo');
+    img.src = e.target.result;
+    img.classList.add('visible');
+    document.getElementById('logo-placeholder').style.display = 'none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// 초기화
+function resetForm() {
+  if (!confirm('모든 내용을 초기화할까요?')) return;
+  ['ctrl-company','ctrl-ceo','ctrl-name','ctrl-dept','ctrl-pos','ctrl-docno']
+    .forEach(id => document.getElementById(id).value = '');
+  Object.keys(fieldDefaults).forEach(f => syncField(f, ''));
+  const img = document.getElementById('doc-logo');
+  img.src = ''; img.classList.remove('visible');
+  document.getElementById('logo-placeholder').style.display = '';
+}
+</script>
+</body>
+</html>

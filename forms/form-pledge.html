@@ -1,0 +1,268 @@
+<!-- 각서 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>각서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.form-page-wrap {
+  max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 5rem;
+  display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;
+}
+.ctrl-panel {
+  background: #fff; border: 1px solid #e2e8f0;
+  border-radius: 18px; padding: 1.5rem; position: sticky; top: 80px;
+  box-shadow: 0 4px 24px rgba(30,43,74,.08);
+}
+.ctrl-panel h2 { font-size: .97rem; font-weight: 800; color: #1E2B4A; margin-bottom: 1.2rem; }
+.ctrl-section { margin-bottom: .9rem; }
+.ctrl-section label { display: block; font-size: .77rem; font-weight: 700; color: #64748b; margin-bottom: .28rem; }
+.ctrl-section input {
+  width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px;
+  font-size: .85rem; color: #1E2B4A; background: #f8fafc; box-sizing: border-box;
+}
+.ctrl-divider { height: 1px; background: #e2e8f0; margin: 1rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg,#1E2B4A,#3B82F6); color: #fff;
+  border: none; border-radius: 12px; font-size: .95rem; font-weight: 700; cursor: pointer;
+}
+.print-btn:hover { opacity: .88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: .6rem;
+  background: none; border: 1px solid #e2e8f0;
+  border-radius: 10px; font-size: .82rem; color: #64748b; cursor: pointer;
+}
+.tip-box {
+  background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px;
+  padding: .8rem 1rem; font-size: .76rem; color: #92400E; line-height: 1.65; margin-top: .8rem;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .82rem; color: #64748b; text-decoration: none;
+  padding: 7px 14px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem;
+}
+.back-link:hover { background: #EFF6FF; }
+.doc-wrap {
+  background: #DBEAFE; border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+/* A4 */
+.doc-page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  padding: 0; overflow: hidden;
+  font-family: 'Noto Serif KR','Malgun Gothic',serif; font-size: 10pt; color: #222;
+  box-sizing: border-box;
+}
+/* Dark top gradient border - 8mm */
+.doc-top-border {
+  height: 8mm;
+  background: linear-gradient(90deg, #0F172A 0%, #1E2B4A 40%, #1E40AF 80%, #3B82F6 100%);
+  display: flex; align-items: center; padding: 0 10mm;
+}
+.doc-top-border span { color: rgba(255,255,255,.6); font-size: 7.5pt; letter-spacing: 2px; }
+.doc-body { padding: 8mm 13mm 12mm; }
+/* Header */
+.doc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4mm; }
+.logo-area { display: flex; align-items: center; gap: 10px; }
+.logo-img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; display: none; }
+.logo-placeholder { width: 36px; height: 36px; border: 1.5px dashed #94a3b8; border-radius: 6px; display: flex; align-items:center; justify-content:center; color:#94a3b8; font-size:9px; text-align:center; cursor:pointer; }
+/* Recipient row */
+.recipient-row {
+  display: flex; align-items: baseline; gap: 6px;
+  border-bottom: 2px solid #1E2B4A; padding-bottom: 2mm; margin-bottom: 4mm;
+  font-size: 9.5pt;
+}
+.recipient-row .lbl { color: #1E2B4A; font-weight: 700; white-space: nowrap; }
+.recipient-row .val { flex: 1; font-size: 9.5pt; color: #222; outline: none; }
+.subject-row {
+  display: flex; align-items: baseline; gap: 6px;
+  margin-bottom: 4mm; font-size: 9.5pt;
+}
+.subject-row .lbl { color: #1E2B4A; font-weight: 700; white-space: nowrap; }
+.subject-row .val { flex: 1; font-size: 9.5pt; color: #222; outline: none; border-bottom: 1px solid #cbd5e1; }
+/* BIG title */
+.big-title {
+  text-align: center; font-size: 22pt; font-weight: 700; color: #1E2B4A;
+  letter-spacing: 12px; margin: 5mm 0 2mm;
+}
+.big-title-sub-line {
+  width: 50%; height: 1.5px; background: linear-gradient(90deg, transparent, #1E2B4A, transparent);
+  margin: 0 auto 5mm;
+}
+/* Pledge text area */
+.pledge-area {
+  border: 1.5px solid #1E2B4A; border-radius: 6px;
+  min-height: 50mm; padding: 4mm; font-size: 9.5pt; color: #374151; line-height: 1.85;
+  background: #FAFBFF; outline: none; margin-bottom: 5mm;
+  font-family: 'Noto Serif KR','Malgun Gothic',serif;
+}
+/* Items table */
+.items-table { width: 100%; border-collapse: collapse; margin-bottom: 5mm; font-size: 9.5pt; }
+.items-table th { background: #1E2B4A; color: #fff; padding: 2mm 3mm; text-align: center; font-weight: 700; width: 12%; }
+.items-table td { border: 1px solid #cbd5e1; padding: 2.5mm 3mm; min-height: 10mm; }
+.items-table tr:nth-child(even) td { background: #f8fafc; }
+/* Signature */
+.sig-section { border-top: 1.5px solid #1E2B4A; padding-top: 4mm; margin-top: 4mm; }
+.sig-title { font-size: 9.5pt; font-weight: 700; color: #1E2B4A; margin-bottom: 3mm; }
+.sig-block { display: flex; gap: 8mm; align-items: flex-end; }
+.sig-fields { flex: 1; }
+.sig-row { display: flex; gap: 4px; font-size: 9pt; margin-bottom: 2mm; align-items: flex-end; }
+.sig-lbl { color: #64748b; width: 42px; flex-shrink: 0; }
+.sig-val { flex: 1; border-bottom: 1px solid #cbd5e1; min-height: 14px; outline: none; }
+.stamp-circle {
+  width: 28mm; height: 28mm; border: 1.5px dashed #dc2626; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #dc2626; font-size: 9pt; font-weight: 700; flex-shrink: 0;
+}
+.sig-date { font-size: 10pt; font-weight: 600; color: #1E2B4A; text-align: center; margin-bottom: 4mm; }
+[contenteditable="true"] { outline: none; }
+[contenteditable="true"]:hover { background: rgba(59,130,246,.06); border-radius: 3px; }
+[contenteditable="true"]:focus { background: #EFF6FF; border-radius: 3px; box-shadow: 0 0 0 2px #3B82F6; }
+@media print {
+  .ctrl-panel, nav, footer, .back-link { display: none !important; }
+  .form-page-wrap { display: block; padding: 0; }
+  .doc-wrap { background: none; padding: 0; }
+  .doc-page { width: 100%; box-shadow: none; margin: 0; }
+  @page { size: A4; margin: 0; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>✍ 각서</h2>
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label style="cursor:pointer;">
+        <input type="file" accept="image/*" id="logoInput" style="display:none">
+        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
+      </label>
+    </div>
+    <div class="ctrl-section">
+      <label>서약 항목 추가</label>
+      <button onclick="addItem()" style="width:100%;padding:9px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;font-size:.84rem;color:#1E40AF;cursor:pointer;font-weight:600;">+ 항목 추가</button>
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="location.reload()">초기화</button>
+    <div class="tip-box">⚠ 각서는 법적 효력이 있는 문서입니다. 내용을 정확히 확인 후 서명하세요.</div>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="doc-page">
+      <div class="doc-top-border">
+        <span>PLEDGE DOCUMENT — CONFIDENTIAL</span>
+      </div>
+      <div class="doc-body">
+        <div class="doc-header">
+          <div class="logo-area">
+            <label for="logoInput" style="cursor:pointer;">
+              <div class="logo-placeholder" id="logoPlaceholder">로고</div>
+              <img id="logoImg" class="logo-img" alt="로고">
+            </label>
+          </div>
+        </div>
+
+        <div class="recipient-row">
+          <span class="lbl">수 신:</span>
+          <span class="val" contenteditable="true"></span>
+          <span style="color:#64748b;font-size:8.5pt;">귀중</span>
+        </div>
+
+        <div class="subject-row">
+          <span class="lbl">제 목:</span>
+          <span class="val" contenteditable="true"></span>
+        </div>
+
+        <div class="big-title">각 &nbsp;&nbsp; 서</div>
+        <div class="big-title-sub-line"></div>
+
+        <!-- Pledge body -->
+        <div class="pledge-area" contenteditable="true">본인 [성명]은(는) [사안]과 관련하여 향후 일체의 이의를 제기하지 아니하며, 위반 시 민·형사상의 책임을 감수할 것을 엄숙히 서약합니다.
+
+만일 위 서약을 어길 경우 어떠한 법적 제재도 감수하겠습니다.</div>
+
+        <!-- Items -->
+        <table class="items-table" id="itemsTable">
+          <tr style="background:#1E2B4A;">
+            <th>번호</th>
+            <th style="text-align:left;width:88%;">서약 내용</th>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-weight:700;">1</td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-weight:700;">2</td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-weight:700;">3</td>
+            <td contenteditable="true"></td>
+          </tr>
+        </table>
+
+        <!-- Signature -->
+        <div class="sig-date" id="sigDate"></div>
+        <div class="sig-section">
+          <div class="sig-title">서 약 인</div>
+          <div class="sig-block">
+            <div class="sig-fields">
+              <div class="sig-row"><span class="sig-lbl">성&nbsp;&nbsp;&nbsp;&nbsp;명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-lbl">생년월일</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-lbl">주&nbsp;&nbsp;&nbsp;&nbsp;소</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-lbl">연락처</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-lbl">서&nbsp;&nbsp;&nbsp;&nbsp;명</span><span class="sig-val" contenteditable="true"></span></div>
+            </div>
+            <div class="stamp-circle">인</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="nav.js?v=3" defer></script>
+<script src="auth.js" defer></script>
+<script src="footer-inject.js" defer></script>
+<script>
+(function(){
+  const d = new Date();
+  document.getElementById('sigDate').textContent =
+    d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
+})();
+
+let itemCount = 3;
+function addItem(){
+  itemCount++;
+  const table = document.getElementById('itemsTable');
+  const tr = document.createElement('tr');
+  if (itemCount % 2 === 0) tr.style.background = '#f8fafc';
+  tr.innerHTML = '<td style="text-align:center;font-weight:700;border:1px solid #cbd5e1;">' + itemCount + '</td><td contenteditable="true" style="border:1px solid #cbd5e1;padding:2.5mm 3mm;"></td>';
+  table.appendChild(tr);
+}
+
+document.getElementById('logoInput').addEventListener('change', function(e){
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = document.getElementById('logoImg');
+    img.src = ev.target.result; img.style.display = 'block';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+</body>
+</html>

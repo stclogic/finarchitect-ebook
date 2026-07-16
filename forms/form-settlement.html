@@ -1,0 +1,334 @@
+<!-- 합의서 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>합의서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.form-page-wrap {
+  max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 5rem;
+  display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;
+}
+.ctrl-panel {
+  background: #fff; border: 1px solid #e2e8f0;
+  border-radius: 18px; padding: 1.5rem; position: sticky; top: 80px;
+  box-shadow: 0 4px 24px rgba(30,43,74,.08);
+}
+.ctrl-panel h2 { font-size: .97rem; font-weight: 800; color: #1E2B4A; margin-bottom: 1.2rem; }
+.ctrl-section { margin-bottom: .9rem; }
+.ctrl-section label { display: block; font-size: .77rem; font-weight: 700; color: #64748b; margin-bottom: .28rem; }
+.ctrl-section input, .ctrl-section select {
+  width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px;
+  font-size: .85rem; color: #1E2B4A; background: #f8fafc; box-sizing: border-box;
+}
+.ctrl-divider { height: 1px; background: #e2e8f0; margin: 1rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg,#1E2B4A,#3B82F6); color: #fff;
+  border: none; border-radius: 12px; font-size: .95rem; font-weight: 700; cursor: pointer;
+}
+.print-btn:hover { opacity: .88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: .6rem;
+  background: none; border: 1px solid #e2e8f0;
+  border-radius: 10px; font-size: .82rem; color: #64748b; cursor: pointer;
+}
+.tip-box {
+  background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px;
+  padding: .8rem 1rem; font-size: .76rem; color: #1E40AF; line-height: 1.65; margin-top: .8rem;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .82rem; color: #64748b; text-decoration: none;
+  padding: 7px 14px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem;
+}
+.back-link:hover { background: #EFF6FF; }
+.doc-wrap {
+  background: #DBEAFE; border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+/* A4 */
+.doc-page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  padding: 0; overflow: hidden;
+  font-family: 'Noto Serif KR','Malgun Gothic',serif; font-size: 10pt; color: #222;
+  box-sizing: border-box;
+}
+/* Blue accent top bar */
+.doc-top-bar {
+  height: 8px;
+  background: linear-gradient(90deg, #1E2B4A 0%, #3B82F6 60%, #93C5FD 100%);
+}
+.doc-body { padding: 10mm 13mm 12mm; }
+/* Header row */
+.doc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5mm; }
+.logo-area { display: flex; align-items: center; gap: 10px; }
+.logo-img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; display: none; }
+.logo-placeholder { width: 36px; height: 36px; border: 1.5px dashed #94a3b8; border-radius: 6px; display: flex; align-items:center; justify-content:center; color:#94a3b8; font-size:9px; text-align:center; cursor:pointer; }
+.doc-num-badge { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 6px; padding: 3px 10px; font-size: 8pt; color: #1E40AF; }
+/* Title */
+.doc-title-block { text-align: center; margin: 4mm 0 5mm; }
+.doc-title-ko { font-size: 18pt; font-weight: 700; color: #1E2B4A; letter-spacing: 10px; display: block; }
+.title-accent-bar { width: 80mm; height: 3px; background: linear-gradient(90deg,#1E2B4A,#3B82F6,#93C5FD); margin: 2mm auto; border-radius: 2px; }
+.doc-title-en { font-size: 8.5pt; color: #64748b; letter-spacing: 3px; }
+/* Party cards */
+.party-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-bottom: 5mm; }
+.party-card {
+  border-radius: 8px; padding: 3mm 4mm;
+  border: 1.5px solid;
+}
+.party-card.gap-card { border-color: #1E2B4A; background: #F0F7FF; }
+.party-card.eul-card { border-color: #3B82F6; background: #EFF6FF; }
+.party-card-title {
+  font-size: 8.5pt; font-weight: 700; padding-bottom: 1.5mm; margin-bottom: 2mm;
+  border-bottom: 1px solid;
+}
+.gap-card .party-card-title { color: #1E2B4A; border-color: #1E2B4A; }
+.eul-card .party-card-title { color: #3B82F6; border-color: #3B82F6; }
+.party-row { display: flex; gap: 3px; font-size: 8.5pt; margin-bottom: 1.5mm; align-items: flex-end; }
+.party-lbl { color: #64748b; white-space: nowrap; width: 32px; flex-shrink: 0; }
+.party-val { flex: 1; border-bottom: 1px solid #cbd5e1; min-height: 13px; outline: none; }
+/* Preamble */
+.preamble {
+  background: #F8FAFC; border-left: 3px solid #3B82F6; border-radius: 0 6px 6px 0;
+  padding: 3mm 4mm; font-size: 9.5pt; color: #1E2B4A; line-height: 1.8;
+  margin-bottom: 5mm; font-weight: 600;
+}
+/* Agreement items */
+.agreement-section { margin-bottom: 4mm; }
+.agreement-section-title {
+  background: #1E2B4A; color: #fff; font-size: 9pt; font-weight: 700;
+  padding: 2mm 4mm; border-radius: 4px; margin-bottom: 2mm;
+}
+.agree-area {
+  border: 1px solid #cbd5e1; border-radius: 6px;
+  min-height: 20mm; padding: 3mm; font-size: 9.5pt; color: #374151; line-height: 1.75; outline: none;
+}
+/* Clause */
+.clause { margin-bottom: 3.5mm; page-break-inside: avoid; }
+.clause-header { display: flex; align-items: center; gap: 7px; margin-bottom: 1.2mm; }
+.clause-badge {
+  min-width: 19px; height: 19px; border-radius: 50%;
+  background: #1E2B4A; color: #fff; font-size: 8pt; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.clause-title { font-size: 9pt; font-weight: 700; color: #1E2B4A; }
+.clause-body { font-size: 9pt; color: #374151; line-height: 1.75; padding-left: 26px; }
+/* Sig */
+.sig-section { margin-top: 6mm; }
+.sig-date { text-align: center; font-size: 10pt; color: #1E2B4A; font-weight: 600; margin-bottom: 4mm; }
+.sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.sig-card { border: 1.5px solid #1E2B4A; border-radius: 8px; padding: 4mm; position: relative; }
+.sig-card-title { font-size: 8.5pt; font-weight: 700; color: #1E2B4A; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 1.5mm; margin-bottom: 2mm; }
+.sig-row { display: flex; gap: 4px; font-size: 8.5pt; margin-bottom: 1.5mm; align-items: flex-end; }
+.sig-lbl { color: #64748b; width: 30px; flex-shrink: 0; }
+.sig-val { flex: 1; border-bottom: 1px solid #cbd5e1; min-height: 13px; outline: none; }
+.stamp-circle {
+  width: 26mm; height: 26mm; border: 1.5px dashed #dc2626; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #dc2626; font-size: 9pt; font-weight: 700;
+  position: absolute; right: 3mm; bottom: 3mm;
+}
+[contenteditable="true"] { outline: none; }
+[contenteditable="true"]:hover { background: rgba(59,130,246,.06); border-radius: 3px; }
+[contenteditable="true"]:focus { background: #EFF6FF; border-radius: 3px; box-shadow: 0 0 0 2px #3B82F6; }
+@media print {
+  .ctrl-panel, nav, footer, .back-link { display: none !important; }
+  .form-page-wrap { display: block; padding: 0; }
+  .doc-wrap { background: none; padding: 0; }
+  .doc-page { width: 100%; box-shadow: none; margin: 0; }
+  @page { size: A4; margin: 0; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>🤝 합의서</h2>
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label style="cursor:pointer;">
+        <input type="file" accept="image/*" id="logoInput" style="display:none">
+        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
+      </label>
+    </div>
+    <div class="ctrl-section">
+      <label>문서번호</label>
+      <input type="text" id="docNum" placeholder="SA-2026-001">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="location.reload()">초기화</button>
+    <div class="tip-box">💡 합의 내용 영역을 클릭하여 구체적인 합의 사항을 입력하세요.</div>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="doc-page">
+      <div class="doc-top-bar"></div>
+      <div class="doc-body">
+        <div class="doc-header">
+          <div class="logo-area">
+            <label for="logoInput" style="cursor:pointer;">
+              <div class="logo-placeholder" id="logoPlaceholder">로고</div>
+              <img id="logoImg" class="logo-img" alt="로고">
+            </label>
+          </div>
+          <div class="doc-num-badge" id="docNumDisplay">SA-2026-001</div>
+        </div>
+
+        <div class="doc-title-block">
+          <span class="doc-title-ko">합 &nbsp; 의 &nbsp; 서</span>
+          <div class="title-accent-bar"></div>
+          <span class="doc-title-en">SETTLEMENT AGREEMENT</span>
+        </div>
+
+        <!-- Party cards -->
+        <div class="party-grid">
+          <div class="party-card gap-card">
+            <div class="party-card-title">甲 (갑)</div>
+            <div class="party-row"><span class="party-lbl">성명</span><span class="party-val" contenteditable="true"></span></div>
+            <div class="party-row"><span class="party-lbl">주소</span><span class="party-val" contenteditable="true"></span></div>
+            <div class="party-row"><span class="party-lbl">연락처</span><span class="party-val" contenteditable="true"></span></div>
+          </div>
+          <div class="party-card eul-card">
+            <div class="party-card-title">乙 (을)</div>
+            <div class="party-row"><span class="party-lbl">성명</span><span class="party-val" contenteditable="true"></span></div>
+            <div class="party-row"><span class="party-lbl">주소</span><span class="party-val" contenteditable="true"></span></div>
+            <div class="party-row"><span class="party-lbl">연락처</span><span class="party-val" contenteditable="true"></span></div>
+          </div>
+        </div>
+
+        <div class="preamble">
+          갑과 을은 다음 사항에 관하여 원만히 합의하고 이를 성실히 이행할 것을 확약한다.
+        </div>
+
+        <!-- 합의 사항 -->
+        <div class="agreement-section">
+          <div class="agreement-section-title">▪ 합의 사항</div>
+          <div class="agree-area" contenteditable="true">1.
+2.
+3. </div>
+        </div>
+
+        <!-- Clauses -->
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">1</div>
+            <div class="clause-title">합의 내용</div>
+          </div>
+          <div class="clause-body">
+            을은 갑에게 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 원(￦&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)을 합의금으로 지급하기로 한다. 상기 금원은 본 합의서 체결일로부터 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;</span>일 이내에 지급한다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">2</div>
+            <div class="clause-title">이행 방법 및 시기</div>
+          </div>
+          <div class="clause-body">
+            합의금은 갑이 지정한 아래 계좌로 이체하는 방법으로 지급한다.<br>
+            은행: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; 계좌번호: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; 예금주: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">3</div>
+            <div class="clause-title">상호 권리 포기</div>
+          </div>
+          <div class="clause-body">
+            갑과 을은 본 합의서 체결로써 이 사건과 관련한 민사상, 형사상 일체의 이의를 제기하지 아니하기로 하며, 향후 어떠한 소송, 고소, 고발 등 법적 절차를 취하지 아니하기로 한다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">4</div>
+            <div class="clause-title">비밀 유지</div>
+          </div>
+          <div class="clause-body">
+            갑과 을은 본 합의의 내용 및 관련 사항을 제3자에게 공개하지 아니하기로 한다. 단, 법원 명령 또는 법령상 의무에 의한 경우는 예외로 한다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">5</div>
+            <div class="clause-title">합의 위반 시 조치</div>
+          </div>
+          <div class="clause-body">
+            당사자 일방이 본 합의 내용을 위반할 경우, 상대방은 본 합의를 해제하고 위약금으로 금 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>원을 청구할 수 있으며, 이와 별도로 실손해에 대한 배상을 청구할 수 있다.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-header">
+            <div class="clause-badge">6</div>
+            <div class="clause-title">효력 발생</div>
+          </div>
+          <div class="clause-body">
+            본 합의서는 갑과 을 쌍방이 서명·날인한 날로부터 효력이 발생하며, 본 합의서는 2부를 작성하여 각 1부씩 보관한다.
+          </div>
+        </div>
+
+        <!-- Signature -->
+        <div class="sig-section">
+          <div class="sig-date" id="sigDate"></div>
+          <div class="sig-grid">
+            <div class="sig-card">
+              <div class="sig-card-title">甲</div>
+              <div class="sig-row"><span class="sig-lbl">성명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-lbl">주소</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-lbl">서명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="stamp-circle">인</div>
+            </div>
+            <div class="sig-card">
+              <div class="sig-card-title">乙</div>
+              <div class="sig-row"><span class="sig-lbl">성명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-lbl">주소</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="sig-row"><span class="sig-lbl">서명</span><span class="sig-val" contenteditable="true"></span></div>
+              <div class="stamp-circle">인</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="nav.js?v=3" defer></script>
+<script src="auth.js" defer></script>
+<script src="footer-inject.js" defer></script>
+<script>
+(function(){
+  const d = new Date();
+  document.getElementById('sigDate').textContent =
+    d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
+})();
+document.getElementById('docNum').addEventListener('input', function(){
+  document.getElementById('docNumDisplay').textContent = this.value;
+});
+document.getElementById('logoInput').addEventListener('change', function(e){
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = document.getElementById('logoImg');
+    img.src = ev.target.result; img.style.display = 'block';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+</body>
+</html>

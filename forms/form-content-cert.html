@@ -1,0 +1,334 @@
+<!-- 내용증명 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내용증명 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.form-page-wrap {
+  max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 5rem;
+  display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;
+}
+.ctrl-panel {
+  background: #fff; border: 1px solid #e2e8f0;
+  border-radius: 18px; padding: 1.5rem; position: sticky; top: 80px;
+  box-shadow: 0 4px 24px rgba(30,43,74,.08);
+}
+.ctrl-panel h2 { font-size: .97rem; font-weight: 800; color: #1E2B4A; margin-bottom: 1.2rem; }
+.ctrl-section { margin-bottom: .9rem; }
+.ctrl-section label { display: block; font-size: .77rem; font-weight: 700; color: #64748b; margin-bottom: .28rem; }
+.ctrl-section input {
+  width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px;
+  font-size: .85rem; color: #1E2B4A; background: #f8fafc; box-sizing: border-box;
+}
+.ctrl-divider { height: 1px; background: #e2e8f0; margin: 1rem 0; }
+.print-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg,#7f1d1d,#dc2626); color: #fff;
+  border: none; border-radius: 12px; font-size: .95rem; font-weight: 700; cursor: pointer;
+}
+.print-btn:hover { opacity: .88; }
+.reset-btn {
+  width: 100%; padding: 9px; margin-top: .6rem;
+  background: none; border: 1px solid #e2e8f0;
+  border-radius: 10px; font-size: .82rem; color: #64748b; cursor: pointer;
+}
+.tip-box {
+  background: #FFF5F5; border: 1px solid #FCA5A5; border-radius: 10px;
+  padding: .8rem 1rem; font-size: .76rem; color: #991B1B; line-height: 1.65; margin-top: .8rem;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .82rem; color: #64748b; text-decoration: none;
+  padding: 7px 14px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 1rem;
+}
+.back-link:hover { background: #FFF5F5; }
+.doc-wrap {
+  background: #DBEAFE; border-radius: 14px; padding: 2rem 1rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+/* A4 */
+.doc-page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  padding: 0; overflow: hidden;
+  font-family: 'Noto Serif KR','Malgun Gothic',serif; font-size: 10pt; color: #222;
+  box-sizing: border-box;
+}
+/* Red accent top bar */
+.doc-top-bar {
+  height: 10px;
+  background: linear-gradient(90deg, #7F1D1D 0%, #DC2626 50%, #F87171 100%);
+}
+.doc-body { padding: 8mm 13mm 10mm; }
+/* Header */
+.doc-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4mm; }
+.logo-area { display: flex; align-items: center; gap: 10px; }
+.logo-img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; display: none; }
+.logo-placeholder { width: 36px; height: 36px; border: 1.5px dashed #94a3b8; border-radius: 6px; display: flex; align-items:center; justify-content:center; color:#94a3b8; font-size:9px; text-align:center; cursor:pointer; }
+.postal-badge {
+  background: #DC2626; color: #fff; font-size: 7.5pt; font-weight: 700;
+  padding: 3px 10px; border-radius: 6px; letter-spacing: 1px;
+}
+/* Big title */
+.doc-title-block { text-align: center; margin: 3mm 0 5mm; }
+.doc-title-ko { font-size: 16pt; font-weight: 700; color: #1E2B4A; letter-spacing: 8px; display: block; }
+.title-divider { width: 70mm; height: 2px; background: linear-gradient(90deg,#DC2626,#1E2B4A); margin: 2mm auto; }
+.doc-title-sub { font-size: 8pt; color: #64748b; letter-spacing: 2px; }
+/* Info grid — sender / recipient */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-bottom: 5mm; }
+.info-box { border-radius: 8px; padding: 3mm 4mm; }
+.info-box.sender { background: #EFF6FF; border: 1.5px solid #93C5FD; }
+.info-box.recipient { background: #FFF5F5; border: 1.5px solid #FCA5A5; }
+.info-box-title { font-size: 8.5pt; font-weight: 700; padding-bottom: 1.5mm; margin-bottom: 2mm; border-bottom: 1px solid; display: flex; align-items: center; gap: 5px; }
+.sender .info-box-title { color: #1E40AF; border-color: #93C5FD; }
+.recipient .info-box-title { color: #DC2626; border-color: #FCA5A5; }
+.info-row { display: flex; gap: 4px; font-size: 8.5pt; margin-bottom: 1.5mm; align-items: flex-end; }
+.info-lbl { color: #64748b; width: 32px; flex-shrink: 0; }
+.info-val { flex: 1; border-bottom: 1px solid #e2e8f0; min-height: 13px; outline: none; }
+/* Reference */
+.ref-row {
+  display: flex; gap: 6px; align-items: baseline;
+  border: 1.5px solid #1E2B4A; border-radius: 6px;
+  padding: 2.5mm 4mm; margin-bottom: 5mm; font-size: 9.5pt;
+}
+.ref-row .lbl { font-weight: 700; color: #1E2B4A; white-space: nowrap; }
+.ref-row .val { flex: 1; outline: none; border-bottom: 1px solid #cbd5e1; }
+/* Sections */
+.section-title {
+  background: #1E2B4A; color: #fff; font-size: 9pt; font-weight: 700;
+  padding: 2mm 4mm; border-radius: 4px 4px 0 0; margin-bottom: 0;
+}
+.section-body {
+  border: 1.5px solid #1E2B4A; border-top: none; border-radius: 0 0 4px 4px;
+  padding: 3mm 4mm; margin-bottom: 4mm; font-size: 9.5pt; color: #374151; line-height: 1.8;
+  min-height: 22mm; outline: none;
+}
+/* Demand items */
+.demand-section { margin-bottom: 4mm; }
+.demand-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+.demand-table th { background: #7F1D1D; color: #fff; padding: 2mm 3mm; text-align: center; width: 10%; }
+.demand-table td { border: 1px solid #fca5a5; padding: 2.5mm 3mm; }
+.demand-table tr:nth-child(even) td { background: #fff5f5; }
+.add-row-btn {
+  font-size: 8.5pt; color: #DC2626; background: #FFF5F5; border: 1px solid #FCA5A5;
+  border-radius: 6px; padding: 4px 10px; cursor: pointer; margin-top: 2mm;
+}
+/* Deadline */
+.deadline-box {
+  border: 1.5px dashed #DC2626; border-radius: 6px; padding: 2.5mm 4mm;
+  font-size: 9.5pt; color: #1E2B4A; margin-bottom: 3mm; display: flex; align-items: center; gap: 6px;
+}
+.deadline-box .dl-lbl { font-weight: 700; color: #DC2626; white-space: nowrap; }
+.deadline-box .dl-val { border-bottom: 1px solid #cbd5e1; flex: 1; min-height: 13px; outline: none; }
+/* Warning */
+.warning-box {
+  background: linear-gradient(90deg,#7F1D1D,#991B1B); color: #fff; border-radius: 6px;
+  padding: 2.5mm 4mm; font-size: 9pt; line-height: 1.7; margin-bottom: 4mm;
+}
+/* Footer sig */
+.sig-row-line { display: flex; gap: 8mm; align-items: flex-end; justify-content: flex-end; margin-top: 4mm; }
+.sig-name { display: flex; align-items: flex-end; gap: 4px; font-size: 9.5pt; }
+.sig-name .lbl { color: #64748b; white-space: nowrap; }
+.sig-name .val { border-bottom: 1px solid #94a3b8; min-width: 40mm; min-height: 14px; outline: none; }
+.sig-date { font-size: 10pt; font-weight: 600; color: #1E2B4A; text-align: center; margin: 3mm 0 2mm; }
+.stamp-circle {
+  width: 22mm; height: 22mm; border: 1.5px dashed #dc2626; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #dc2626; font-size: 9pt; font-weight: 700; flex-shrink: 0;
+}
+/* Certification box */
+.cert-box {
+  border: 2px dashed #94a3b8; border-radius: 8px; padding: 4mm;
+  margin-top: 6mm; text-align: center; color: #64748b; font-size: 9pt; line-height: 1.8;
+}
+.cert-box .cert-title { font-weight: 700; color: #1E2B4A; font-size: 9.5pt; margin-bottom: 1mm; }
+.cert-box .postmaster { margin-top: 2mm; font-weight: 700; color: #374151; }
+[contenteditable="true"] { outline: none; }
+[contenteditable="true"]:hover { background: rgba(220,38,38,.05); border-radius: 3px; }
+[contenteditable="true"]:focus { background: #FFF5F5; border-radius: 3px; box-shadow: 0 0 0 2px #DC2626; }
+@media print {
+  .ctrl-panel, nav, footer, .back-link, .add-row-btn { display: none !important; }
+  .form-page-wrap { display: block; padding: 0; }
+  .doc-wrap { background: none; padding: 0; }
+  .doc-page { width: 100%; box-shadow: none; margin: 0; }
+  @page { size: A4; margin: 0; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>📮 내용증명</h2>
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label style="cursor:pointer;">
+        <input type="file" accept="image/*" id="logoInput" style="display:none">
+        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
+      </label>
+    </div>
+    <div class="ctrl-section">
+      <label>이행 기한</label>
+      <input type="text" id="deadlineInput" placeholder="2026년 8월 1일">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="location.reload()">초기화</button>
+    <div class="tip-box">📮 내용증명은 우체국에서 발송하면 법적 증거력이 생깁니다. 동일 내용 3부를 작성하세요 (발신인·수신인·우체국 각 1부).</div>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="doc-page">
+      <div class="doc-top-bar"></div>
+      <div class="doc-body">
+        <!-- Header -->
+        <div class="doc-header">
+          <div class="logo-area">
+            <label for="logoInput" style="cursor:pointer;">
+              <div class="logo-placeholder" id="logoPlaceholder">로고</div>
+              <img id="logoImg" class="logo-img" alt="로고">
+            </label>
+          </div>
+          <div class="postal-badge">우체국 발송용 · CERTIFIED MAIL</div>
+        </div>
+
+        <!-- Title -->
+        <div class="doc-title-block">
+          <span class="doc-title-ko">내 &nbsp; 용 &nbsp; 증 &nbsp; 명</span>
+          <div class="title-divider"></div>
+          <span class="doc-title-sub">CERTIFIED DOCUMENT OF CONTENT</span>
+        </div>
+
+        <!-- Sender / Recipient -->
+        <div class="info-grid">
+          <div class="info-box sender">
+            <div class="info-box-title">📤 발 신 인</div>
+            <div class="info-row"><span class="info-lbl">성명</span><span class="info-val" contenteditable="true"></span></div>
+            <div class="info-row"><span class="info-lbl">주소</span><span class="info-val" contenteditable="true"></span></div>
+            <div class="info-row"><span class="info-lbl">연락처</span><span class="info-val" contenteditable="true"></span></div>
+          </div>
+          <div class="info-box recipient">
+            <div class="info-box-title">📥 수 신 인</div>
+            <div class="info-row"><span class="info-lbl">성명</span><span class="info-val" contenteditable="true"></span></div>
+            <div class="info-row"><span class="info-lbl">주소</span><span class="info-val" contenteditable="true"></span></div>
+            <div class="info-row"><span class="info-lbl">연락처</span><span class="info-val" contenteditable="true"></span></div>
+          </div>
+        </div>
+
+        <!-- Reference -->
+        <div class="ref-row">
+          <span class="lbl">제목(건명):</span>
+          <span class="val" contenteditable="true"></span>
+        </div>
+
+        <!-- 경위 -->
+        <div class="section-title">1. 경위 설명</div>
+        <div class="section-body" contenteditable="true">본인은 귀하에 대하여 다음과 같은 사유로 본 내용증명을 발송합니다.</div>
+
+        <!-- 요구 사항 -->
+        <div class="demand-section">
+          <div class="section-title">2. 요구 사항</div>
+          <table class="demand-table" id="demandTable">
+            <tr>
+              <th>번호</th>
+              <th style="text-align:left;width:90%;">요구 내용</th>
+            </tr>
+            <tr>
+              <td style="text-align:center;font-weight:700;">1</td>
+              <td contenteditable="true"></td>
+            </tr>
+            <tr>
+              <td style="text-align:center;font-weight:700;">2</td>
+              <td contenteditable="true"></td>
+            </tr>
+            <tr>
+              <td style="text-align:center;font-weight:700;">3</td>
+              <td contenteditable="true"></td>
+            </tr>
+          </table>
+          <button class="add-row-btn" onclick="addDemand()">+ 요구 항목 추가</button>
+        </div>
+
+        <!-- Deadline -->
+        <div class="deadline-box">
+          <span class="dl-lbl">이행 기한:</span>
+          <span class="dl-val" id="deadlineDisplay" contenteditable="true"></span>
+          <span style="font-size:9pt;color:#64748b;">까지</span>
+        </div>
+
+        <!-- Warning -->
+        <div class="warning-box">
+          상기 요구 사항을 이행 기한 내에 이행하지 않을 경우, 민사소송 제기, 형사고소 등 가능한 모든 법적 조치를 취할 것임을 통보합니다.
+        </div>
+
+        <!-- Sig -->
+        <div class="sig-date" id="sigDate"></div>
+        <div class="sig-row-line">
+          <div class="sig-name">
+            <span class="lbl">발신인:</span>
+            <span class="val" contenteditable="true"></span>
+            <span style="margin-left:3px;font-size:9.5pt;">(서명)</span>
+          </div>
+          <div class="stamp-circle">인</div>
+        </div>
+
+        <!-- Certification box -->
+        <div class="cert-box">
+          <div class="cert-title">[ 우체국 증명 ]</div>
+          위 내용이 발송 문서와 동일함을 증명합니다.
+          <div class="cert-postmaster">
+            발송일: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 우체국명: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+          <div style="margin-top:2mm;">우체국장 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (인)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="nav.js?v=3" defer></script>
+<script src="auth.js" defer></script>
+<script src="footer-inject.js" defer></script>
+<script>
+(function(){
+  const d = new Date();
+  document.getElementById('sigDate').textContent =
+    d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
+})();
+
+document.getElementById('deadlineInput').addEventListener('input', function(){
+  document.getElementById('deadlineDisplay').textContent = this.value;
+});
+
+document.getElementById('logoInput').addEventListener('change', function(e){
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = document.getElementById('logoImg');
+    img.src = ev.target.result; img.style.display = 'block';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+let demandCount = 3;
+function addDemand(){
+  demandCount++;
+  const table = document.getElementById('demandTable');
+  const tr = document.createElement('tr');
+  if (demandCount % 2 === 0) tr.style.background = '#fff5f5';
+  tr.innerHTML = '<td style="text-align:center;font-weight:700;border:1px solid #fca5a5;">' + demandCount + '</td><td contenteditable="true" style="border:1px solid #fca5a5;padding:2.5mm 3mm;"></td>';
+  table.appendChild(tr);
+}
+</script>
+</body>
+</html>

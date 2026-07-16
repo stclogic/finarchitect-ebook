@@ -1,0 +1,336 @@
+<!-- 주주간계약서 온라인 작성 및 인쇄/PDF 다운로드 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주주간계약서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --amber:#B45309; --amber-light:#F59E0B; --amber-bg:#FFFBEB;
+  --amber-mid:#FEF3C7; --amber-dark:#78350F;
+  --navy:#1E2B4A;
+}
+body { background: var(--amber-bg); }
+.form-page-wrap {
+  max-width: 1300px; margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;
+}
+.ctrl-panel { background: #fff; border: 1px solid #F3D5A0; border-radius: 18px; padding: 1.5rem; position: sticky; top: 80px; box-shadow: 0 4px 20px rgba(180,83,9,.08); }
+.ctrl-panel h2 { font-size: 1rem; font-weight: 800; color: var(--amber-dark); margin-bottom: 1.2rem; display: flex; align-items: center; gap: .5rem; }
+.ctrl-section { margin-bottom: 1.2rem; }
+.ctrl-section label { display: block; font-size: .78rem; font-weight: 700; color: #92400E; margin-bottom: .3rem; }
+.ctrl-section input[type="text"] { width: 100%; padding: 8px 10px; border: 1px solid #F3D5A0; border-radius: 8px; font-size: .85rem; background: var(--amber-bg); color: var(--amber-dark); }
+.ctrl-divider { height: 1px; background: #F3D5A0; margin: 1.1rem 0; }
+.print-btn { width: 100%; padding: 13px; background: var(--amber); color: #fff; border: none; border-radius: 12px; font-size: .95rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: .5rem; }
+.print-btn:hover { background: var(--amber-dark); }
+.back-link { display: inline-flex; align-items: center; gap: .4rem; font-size: .82rem; color: #92400E; text-decoration: none; margin-bottom: 1rem; padding: 6px 12px; background: var(--amber-mid); border-radius: 8px; }
+.back-link:hover { background: #FDE68A; }
+.tip-box { background: var(--amber-bg); border: 1px solid #F3D5A0; border-radius: 10px; padding: 10px 12px; font-size: .8rem; color: #92400E; line-height: 1.6; margin-top: 1rem; }
+/* ── 문서 ── */
+.doc-bg { background: var(--amber-mid); border-radius: 18px; padding: 2rem 1.5rem; display: flex; justify-content: center; }
+.a4-page {
+  width: 210mm; min-height: 297mm; background: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  font-family: 'Noto Serif KR', 'Malgun Gothic', serif;
+  font-size: 10pt; color: #1a1a1a; padding: 14mm 14mm;
+}
+/* 문서 헤더 */
+.doc-header { text-align: center; margin-bottom: 8mm; padding-bottom: 5mm; border-bottom: 3px solid var(--navy); }
+.doc-title-ko { font-size: 22pt; font-weight: 700; color: var(--navy); letter-spacing: .15em; }
+.doc-title-en { font-size: 10pt; color: #888; letter-spacing: .1em; margin-top: 2px; }
+.doc-intro {
+  font-size: 9.5pt; line-height: 2; text-align: justify;
+  margin-bottom: 6mm; padding: 8px 12px;
+  background: var(--amber-bg); border-left: 4px solid var(--amber);
+  border-radius: 0 6px 6px 0;
+}
+.doc-intro [contenteditable] { display: inline; }
+/* 당사자 테이블 */
+.party-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 6mm; }
+.party-table th { background: var(--navy); color: #fff; padding: 5px 10px; text-align: center; border: 1px solid #2D3A5C; font-size: 8.5pt; }
+.party-table td { padding: 5px 10px; border: 1px solid #D1D5DB; vertical-align: top; }
+.party-table td:first-child { background: var(--amber-bg); font-weight: 700; color: var(--amber-dark); text-align: center; width: 30px; }
+.party-table td[contenteditable]:focus { outline: 2px solid var(--amber-light); outline-offset: -2px; background: #FFFBEB; }
+/* 조항 */
+.article { margin-bottom: 5mm; }
+.article-title {
+  font-size: 10pt; font-weight: 700; color: var(--navy);
+  background: linear-gradient(90deg, #EEF2FF, #F8F9FF);
+  padding: 5px 10px; border-left: 4px solid var(--navy);
+  border-radius: 0 5px 5px 0; margin-bottom: 3mm;
+}
+.article-title .art-no { color: var(--amber); margin-right: 6px; }
+.article-body { font-size: 9pt; line-height: 2; padding-left: 4mm; }
+.clause-para { margin-bottom: 2mm; }
+.clause-no { color: var(--amber); font-weight: 700; margin-right: 4px; }
+.clause-text { outline: none; }
+.clause-text:hover { background: #FFFBEB; border-radius: 3px; }
+.clause-text:focus { background: #FEF3C7; border-radius: 3px; outline: 1px solid var(--amber-light); }
+.sub-clause { padding-left: 10mm; font-size: 9pt; line-height: 1.9; margin: 1mm 0; }
+.sub-clause-no { color: #888; margin-right: 4px; }
+.sub-clause [contenteditable]:focus { background: #FFFBEB; border-radius: 2px; outline: 1px solid #F3D5A0; }
+/* 구분선 */
+.art-divider { height: 1px; background: linear-gradient(90deg, var(--amber), transparent); margin: 5mm 0; }
+/* 서명 섹션 */
+.sig-section { margin-top: 8mm; border-top: 2px solid var(--navy); padding-top: 6mm; }
+.sig-section-title { text-align: center; font-size: 10pt; font-weight: 700; color: var(--navy); margin-bottom: 6mm; }
+.sig-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 4mm; }
+.sig-card { border: 1.5px solid #D1D5DB; border-radius: 8px; padding: 8px 10px; }
+.sig-card-head { background: var(--navy); color: #fff; text-align: center; font-size: 8.5pt; font-weight: 700; padding: 4px; border-radius: 4px 4px 0 0; margin: -8px -10px 8px; }
+.sig-field { font-size: 8.5pt; line-height: 1.9; }
+.sig-label2 { color: #888; font-size: 8pt; }
+.sig-val { border-bottom: 1px solid #E5C07B; outline: none; display: block; padding: 0 2px; min-width: 60px; }
+.sig-val:focus { border-bottom-color: var(--amber); background: #FFFBEB; }
+.sig-stamp { text-align: right; margin-top: 6px; }
+.stamp-circle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 2px solid var(--amber); border-radius: 50%; font-size: 8pt; color: var(--amber); font-weight: 700; }
+.date-signed { text-align: center; font-size: 9pt; color: #555; margin-bottom: 5mm; }
+@media print {
+  .ctrl-panel, nav, footer, .back-link { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; }
+}
+@page { size: A4; margin: 0; }
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>🤝 주주간계약서 설정</h2>
+    <div class="ctrl-section">
+      <label>회사명</label>
+      <input type="text" id="ctrlCompany" placeholder="(주)회사명">
+    </div>
+    <div class="ctrl-section">
+      <label>계약 일자</label>
+      <input type="text" id="ctrlDate">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <div class="tip-box">
+      ⚠️ 이 서식은 참고용 템플릿입니다. 실제 계약 체결 전에는 반드시 법률 전문가의 검토를 받으시기 바랍니다.
+    </div>
+  </aside>
+
+  <div class="doc-bg">
+    <div class="a4-page">
+
+      <div class="doc-header">
+        <div class="doc-title-ko">주 주 간 계 약 서</div>
+        <div class="doc-title-en">SHAREHOLDERS AGREEMENT</div>
+      </div>
+
+      <div class="doc-intro">
+        <span id="dispCompany" contenteditable="true">(주)회사명</span> (이하 "회사")의 주주들은 주주간의 권리·의무 관계를 명확히 하고 회사의 건전한 발전을 도모하기 위하여 <span id="dispDate" contenteditable="true"></span> 다음과 같이 주주간계약을 체결한다.
+      </div>
+
+      <!-- 당사자 -->
+      <table class="party-table">
+        <thead><tr><th>구분</th><th>성명 / 법인명</th><th>주민번호 / 사업자번호</th><th>주소</th><th>보유 주식 수</th><th>지분율</th></tr></thead>
+        <tbody>
+          <tr><td>갑</td><td contenteditable="true">성명을 입력하세요</td><td contenteditable="true">000000-0000000</td><td contenteditable="true">주소를 입력하세요</td><td contenteditable="true">50,000주</td><td contenteditable="true">50%</td></tr>
+          <tr><td>을</td><td contenteditable="true">성명을 입력하세요</td><td contenteditable="true">000000-0000000</td><td contenteditable="true">주소를 입력하세요</td><td contenteditable="true">30,000주</td><td contenteditable="true">30%</td></tr>
+          <tr><td>병</td><td contenteditable="true">성명을 입력하세요</td><td contenteditable="true">000000-0000000</td><td contenteditable="true">주소를 입력하세요</td><td contenteditable="true">20,000주</td><td contenteditable="true">20%</td></tr>
+        </tbody>
+      </table>
+
+      <!-- 제1조 -->
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 1 조</span> 정의</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-no">①</span><span class="clause-text" contenteditable="true">"주식"이란 회사가 발행한 보통주식 및 기타 종류 주식을 의미한다.</span></div>
+          <div class="clause-para"><span class="clause-no">②</span><span class="clause-text" contenteditable="true">"이사회"란 상법 및 정관에 따라 구성된 회사의 이사회를 의미한다.</span></div>
+          <div class="clause-para"><span class="clause-no">③</span><span class="clause-text" contenteditable="true">"매각"이란 주식의 양도, 질권 설정, 신탁, 그 밖에 이에 준하는 일체의 처분 행위를 의미한다.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <!-- 제2조 -->
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 2 조</span> 주식 양도 제한</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-no">①</span><span class="clause-text" contenteditable="true">각 주주는 다른 주주 전원의 서면 동의 없이 보유 주식의 전부 또는 일부를 제3자에게 양도할 수 없다.</span></div>
+          <div class="clause-para"><span class="clause-no">②</span><span class="clause-text" contenteditable="true">주식을 양도하고자 하는 주주(이하 "양도인")는 다른 주주에게 우선매수권을 제공하여야 한다. 우선매수권의 행사기간은 통보일로부터 30일로 한다.</span></div>
+          <div class="clause-para"><span class="clause-no">③</span><span class="clause-text" contenteditable="true">양도인이 제3자와 매각 조건에 합의한 경우, 다른 주주들은 동반매각권(Tag-Along Right)을 행사하여 동일한 조건으로 자신의 주식을 함께 매각할 수 있다.</span></div>
+          <div class="clause-para"><span class="clause-no">④</span><span class="clause-text" contenteditable="true">과반수 주주가 제3자에게 주식을 매각하는 경우, 해당 제3자의 요청이 있으면 소수 주주에게 동일한 조건으로 주식을 매각할 것을 요구할 수 있다(강제매각권, Drag-Along Right).</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <!-- 제3조 -->
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 3 조</span> 경영 참여</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-no">①</span><span class="clause-text" contenteditable="true">이사회는 각 주주가 합의하는 방식으로 구성하되, 갑은 대표이사 1인을 포함하여 이사 2인을 지명할 권리를 가진다.</span></div>
+          <div class="clause-para"><span class="clause-no">②</span><span class="clause-text" contenteditable="true">을 및 병은 각 1인의 이사를 지명할 권리를 가진다. 단, 지분율이 10% 미만으로 감소한 경우 해당 권리는 소멸한다.</span></div>
+          <div class="clause-para"><span class="clause-no">③</span><span class="clause-text" contenteditable="true">다음 사항은 주주 전원의 동의를 요하는 중요 사항으로 한다: (i) 정관 변경, (ii) 합병·분할·해산, (iii) 신주 발행, (iv) 자본금 변경, (v) 주요 자산 처분.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <!-- 제4조 -->
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 4 조</span> 배당 정책</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-no">①</span><span class="clause-text" contenteditable="true">회사는 당기순이익의 일정 비율 이상을 배당 재원으로 적립하도록 노력한다.</span></div>
+          <div class="clause-para"><span class="clause-no">②</span><span class="clause-text" contenteditable="true">배당금은 지분율에 비례하여 분배하며, 구체적인 배당 시기 및 금액은 이사회 결의로 결정한다.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <!-- 제5조 -->
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 5 조</span> 자금 조달</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-no">①</span><span class="clause-text" contenteditable="true">추가 자금 조달이 필요한 경우, 기존 주주들은 지분율에 비례하여 신주 인수 우선권을 가진다.</span></div>
+          <div class="clause-para"><span class="clause-no">②</span><span class="clause-text" contenteditable="true">외부 투자자 유치 시 투자 조건 및 밸류에이션은 이사회 결의를 통해 결정하며, 기존 주주의 지분 희석을 최소화하도록 노력한다.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <!-- 제6~12조 (간략) -->
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 6 조</span> 지식재산권 귀속</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-text" contenteditable="true">주주가 회사의 업무 수행 중 개발한 일체의 지식재산권(특허, 저작권, 영업비밀 포함)은 회사에 귀속된다. 주주는 이에 필요한 서류에 협조할 의무를 진다.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 7 조</span> 경업금지 및 전속 의무</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-no">①</span><span class="clause-text" contenteditable="true">각 주주는 계약 기간 중 회사와 동종 사업을 영위하거나 경쟁 업체에 참여할 수 없다.</span></div>
+          <div class="clause-para"><span class="clause-no">②</span><span class="clause-text" contenteditable="true">경업금지 의무는 주주가 회사를 퇴사하거나 주식을 전량 처분한 날로부터 2년간 존속한다.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 8 조</span> 비밀유지</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-text" contenteditable="true">각 주주는 본 계약 및 회사의 영업비밀, 기술정보, 고객정보 등 일체의 기밀 정보를 제3자에게 누설하거나 허가 없이 사용할 수 없다. 비밀유지 의무는 본 계약 종료 후 5년간 유효하다.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 9 조</span> 계약 해지</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-text" contenteditable="true">다음 각 호에 해당하는 경우, 다른 주주들의 동의로 본 계약을 해지하거나 해당 주주를 계약에서 제외할 수 있다: (i) 중대한 계약 위반, (ii) 파산 또는 회생 신청, (iii) 금고 이상의 형사 처벌 확정.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 10 조</span> 진술 및 보장</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-text" contenteditable="true">각 주주는 본 계약 체결일 기준으로 (i) 본 계약의 체결 및 이행에 법적 제한이 없고, (ii) 자신의 주식에 제3자의 권리가 설정되지 않았으며, (iii) 법령 및 정관을 위반하는 사항이 없음을 진술하고 보장한다.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 11 조</span> 손해배상</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-text" contenteditable="true">본 계약을 위반한 주주는 이로 인해 다른 주주 또는 회사에 발생한 일체의 손해를 배상할 책임을 진다. 손해배상액의 예정 또는 위약벌이 적용되는 경우 해당 금액은 별첨으로 정한다.</span></div>
+        </div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="article">
+        <div class="article-title"><span class="art-no">제 12 조</span> 준거법 및 분쟁 해결</div>
+        <div class="article-body">
+          <div class="clause-para"><span class="clause-no">①</span><span class="clause-text" contenteditable="true">본 계약은 대한민국 법률에 따라 해석·적용된다.</span></div>
+          <div class="clause-para"><span class="clause-no">②</span><span class="clause-text" contenteditable="true">본 계약과 관련된 분쟁은 당사자 간 협의를 통해 해결함을 원칙으로 하며, 협의가 이루어지지 않을 경우 서울중앙지방법원을 전속 관할 법원으로 한다.</span></div>
+        </div>
+      </div>
+
+      <!-- 서명 -->
+      <div class="sig-section">
+        <div class="date-signed">이 계약의 성립을 증명하기 위하여 당사자 전원이 서명 날인한다.<br><span id="sigDate" contenteditable="true"></span></div>
+        <div class="sig-section-title">당사자 서명</div>
+        <div class="sig-grid">
+          <div class="sig-card">
+            <div class="sig-card-head">갑 (대표주주)</div>
+            <div class="sig-field">
+              <span class="sig-label2">성명</span>
+              <span class="sig-val" contenteditable="true">홍길동</span>
+              <span class="sig-label2">주민번호</span>
+              <span class="sig-val" contenteditable="true">000000-0000000</span>
+              <span class="sig-label2">주소</span>
+              <span class="sig-val" contenteditable="true">서울시 ○○구 ○○로 000</span>
+            </div>
+            <div class="sig-stamp"><span class="stamp-circle">인</span></div>
+          </div>
+          <div class="sig-card">
+            <div class="sig-card-head">을 (주주)</div>
+            <div class="sig-field">
+              <span class="sig-label2">성명</span>
+              <span class="sig-val" contenteditable="true">김철수</span>
+              <span class="sig-label2">주민번호</span>
+              <span class="sig-val" contenteditable="true">000000-0000000</span>
+              <span class="sig-label2">주소</span>
+              <span class="sig-val" contenteditable="true">서울시 ○○구 ○○로 000</span>
+            </div>
+            <div class="sig-stamp"><span class="stamp-circle">인</span></div>
+          </div>
+          <div class="sig-card">
+            <div class="sig-card-head">병 (주주)</div>
+            <div class="sig-field">
+              <span class="sig-label2">성명</span>
+              <span class="sig-val" contenteditable="true">이영희</span>
+              <span class="sig-label2">주민번호</span>
+              <span class="sig-val" contenteditable="true">000000-0000000</span>
+              <span class="sig-label2">주소</span>
+              <span class="sig-val" contenteditable="true">서울시 ○○구 ○○로 000</span>
+            </div>
+            <div class="sig-stamp"><span class="stamp-circle">인</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const today = new Date();
+  const ds = today.getFullYear() + '년 ' + (today.getMonth()+1) + '월 ' + today.getDate() + '일';
+  document.getElementById('ctrlDate').value = ds;
+  document.getElementById('dispDate').textContent = ds + '에';
+  document.getElementById('sigDate').textContent = ds;
+});
+document.getElementById('ctrlDate').addEventListener('input', function() {
+  document.getElementById('dispDate').textContent = this.value + '에';
+  document.getElementById('sigDate').textContent = this.value;
+});
+document.getElementById('ctrlCompany').addEventListener('input', function() {
+  document.getElementById('dispCompany').textContent = this.value;
+});
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!-- 회의록 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회의록 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+.form-page-wrap {
+  max-width:1300px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+.ctrl-panel h2 { font-size:.95rem; font-weight:800; color:#1E293B; margin-bottom:1.2rem; display:flex; align-items:center; gap:.4rem; }
+.ctrl-section { margin-bottom:1.2rem; }
+.ctrl-section label { display:block; font-size:.76rem; font-weight:700; color:#64748B; margin-bottom:.3rem; text-transform:uppercase; letter-spacing:.04em; }
+.ctrl-section input[type="text"], .ctrl-section select {
+  width:100%; padding:8px 10px; border:1px solid #E2E8F0;
+  border-radius:8px; font-size:.84rem; color:#1E293B; background:#F8FAFC; box-sizing:border-box;
+}
+.ctrl-file-btn { display:flex; align-items:center; gap:.5rem; padding:9px 14px; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:8px; cursor:pointer; font-size:.82rem; color:#64748B; transition:border-color .15s; }
+.ctrl-file-btn:hover { border-color:#1E293B; color:#1E293B; }
+.ctrl-file-btn input { display:none; }
+.ctrl-divider { height:1px; background:#F1F5F9; margin:1rem 0; }
+.print-btn { width:100%; padding:12px; background:#1E293B; color:#fff; border:none; border-radius:12px; font-size:.92rem; font-weight:700; cursor:pointer; transition:opacity .15s; display:flex; align-items:center; justify-content:center; gap:.5rem; }
+.print-btn:hover { opacity:.85; }
+.back-link { display:block; text-align:center; margin-top:.8rem; font-size:.8rem; color:#64748B; text-decoration:none; }
+.back-link:hover { color:#1E293B; }
+.tip-box { background:#EFF6FF; border:1px solid #BFDBFE; border-radius:10px; padding:.75rem 1rem; font-size:.75rem; color:#1E40AF; line-height:1.6; margin-top:.8rem; }
+.logo-preview { max-width:100%; max-height:60px; object-fit:contain; margin-top:.5rem; border-radius:6px; }
+
+/* 문서 컨테이너 */
+.doc-wrap { background:#E2E8F0; border-radius:14px; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; }
+.a4 {
+  width:210mm; background:#fff; box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:0 0 14mm; box-sizing:border-box;
+  font-family:'Noto Serif KR','Malgun Gothic',serif; font-size:10pt; color:#1E293B; line-height:1.7;
+}
+
+/* 상단 강조 바 */
+.top-bar {
+  height:5mm; background:linear-gradient(90deg,#1E293B 0%,#475569 60%,#64748B 100%);
+  border-radius:0 0 2px 2px; margin-bottom:0;
+}
+
+/* 문서 헤더 */
+.doc-header {
+  padding:5mm 14mm 4mm; display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1.5px solid #E2E8F0;
+}
+.doc-logo { max-height:38px; max-width:110px; object-fit:contain; }
+.doc-logo-placeholder { width:90px; height:34px; background:#F1F5F9; border:1px dashed #CBD5E1; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:7.5pt; color:#94A3B8; cursor:pointer; }
+.doc-title-block { text-align:center; }
+.doc-title { font-size:19pt; font-weight:900; color:#1E293B; letter-spacing:.3em; }
+.doc-subtitle { font-size:7.5pt; color:#64748B; letter-spacing:.3em; margin-top:.5mm; }
+.doc-meta-right { text-align:right; font-size:8pt; color:#475569; line-height:1.9; }
+
+/* 회의 기본 정보 */
+.info-grid { padding:0 14mm; }
+.meeting-info-table { width:100%; border-collapse:collapse; font-size:9pt; margin-top:3mm; }
+.meeting-info-table th { background:#F1F5F9; font-weight:700; color:#475569; padding:2mm 3mm; border:1px solid #E2E8F0; white-space:nowrap; width:18%; text-align:center; }
+.meeting-info-table td { border:1px solid #E2E8F0; padding:2mm 3mm; }
+.meeting-type-btns { display:flex; gap:2mm; }
+.mtype-btn { padding:1mm 3mm; border:1px solid #CBD5E1; border-radius:12px; font-size:7.5pt; cursor:pointer; color:#475569; background:#fff; transition:all .15s; }
+.mtype-btn.active, .mtype-btn:hover { background:#1E293B; color:#fff; border-color:#1E293B; }
+
+/* 섹션 헤더 */
+.sec-head { display:flex; align-items:center; gap:2mm; background:#1E293B; color:#fff; padding:2mm 4mm; font-size:9pt; font-weight:700; letter-spacing:.05em; margin:4mm 14mm 0; border-radius:4px; }
+.sec-num { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; background:#475569; border-radius:50%; font-size:7pt; font-weight:700; flex-shrink:0; }
+
+/* 안건 아이템 */
+.agenda-section { padding:0 14mm; }
+.agenda-item { border:1px solid #E2E8F0; border-radius:8px; margin:3mm 0; overflow:hidden; }
+.agenda-header { display:flex; align-items:center; gap:2mm; background:#F8FAFC; padding:2.5mm 3mm; border-bottom:1px solid #E2E8F0; }
+.agenda-badge { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#1E293B; color:#fff; border-radius:50%; font-size:8pt; font-weight:700; flex-shrink:0; }
+.agenda-title { font-weight:700; font-size:9.5pt; flex:1; }
+.agenda-body { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.agenda-field { padding:2mm 3mm; border-bottom:1px solid #F1F5F9; }
+.agenda-field:last-child { border-bottom:none; }
+.agenda-field label { display:block; font-size:7.5pt; font-weight:700; color:#64748B; margin-bottom:1mm; }
+.agenda-field [contenteditable] { min-height:10mm; width:100%; outline:none; font-size:8.5pt; }
+.agenda-field [contenteditable]:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+.agenda-field [contenteditable]:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+.agenda-field-full { grid-column:1/-1; padding:2mm 3mm; border-bottom:1px solid #F1F5F9; }
+.agenda-field-full label { display:block; font-size:7.5pt; font-weight:700; color:#64748B; margin-bottom:1mm; }
+.agenda-field-full [contenteditable] { min-height:12mm; width:100%; outline:none; font-size:8.5pt; }
+.agenda-field-full [contenteditable]:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+.agenda-field-full [contenteditable]:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+
+/* 액션 아이템 */
+.action-section { padding:0 14mm; }
+.action-table { width:100%; border-collapse:collapse; font-size:8.5pt; }
+.action-table thead th { background:#92400E; color:#fff; padding:2mm 2.5mm; border:1px solid #78350F; text-align:center; font-size:8pt; }
+.action-table tbody td { border:1px solid #FED7AA; padding:2mm 2.5mm; vertical-align:middle; }
+.action-table tbody tr:nth-child(even) td { background:#FFFBEB; }
+.action-table td:first-child { text-align:center; color:#92400E; font-weight:700; width:6%; }
+.status-select { border:1px solid #FED7AA; border-radius:4px; padding:1px 4px; font-size:7.5pt; color:#92400E; background:#fff; }
+.action-border-wrap { border:2px solid #F59E0B; border-radius:8px; overflow:hidden; margin:3mm 0; }
+.action-border-wrap thead { border-radius:6px 6px 0 0; overflow:hidden; }
+
+/* 다음 회의 */
+.next-section { padding:0 14mm; }
+.next-table { width:100%; border-collapse:collapse; font-size:9pt; }
+.next-table th { background:#F1F5F9; font-weight:700; color:#475569; padding:2mm 3mm; border:1px solid #E2E8F0; width:20%; text-align:center; }
+.next-table td { border:1px solid #E2E8F0; padding:2mm 3mm; }
+
+/* 결재 영역 */
+.approval-section { padding:0 14mm; }
+.approval-row { display:flex; gap:2mm; align-items:flex-end; margin-top:3mm; }
+.writer-box { flex:2; }
+.approval-chain { display:flex; gap:0; flex:3; }
+.appr-box { flex:1; border:1px solid #CBD5E1; text-align:center; }
+.appr-box:not(:last-child) { border-right:none; }
+.appr-title { background:#334155; color:#fff; font-size:8pt; font-weight:700; padding:1.5mm; }
+.appr-name { min-height:6mm; font-size:8.5pt; font-weight:700; padding:1.5mm; border-bottom:1px solid #F1F5F9; }
+.appr-sign { height:12mm; border-bottom:1px solid #F1F5F9; }
+.appr-date { font-size:7pt; color:#64748B; padding:1mm; }
+.writer-label { font-size:8pt; color:#64748B; margin-bottom:1mm; }
+.writer-info { display:flex; gap:3mm; font-size:8.5pt; }
+.writer-info span { font-weight:700; }
+
+/* contenteditable 기본 */
+[contenteditable] { outline:none; }
+[contenteditable]:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+[contenteditable]:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+
+.add-row-btn { padding:4px 12px; background:#F1F5F9; border:1px solid #CBD5E1; border-radius:6px; font-size:7.5pt; color:#475569; cursor:pointer; transition:all .15s; margin:2mm 14mm 0; display:block; }
+.add-row-btn:hover { background:#1E293B; color:#fff; border-color:#1E293B; }
+.add-agenda-btn { padding:5px 14px; background:#F1F5F9; border:1px solid #CBD5E1; border-radius:8px; font-size:8pt; color:#475569; cursor:pointer; transition:all .15s; margin:2mm 14mm; display:block; }
+.add-agenda-btn:hover { background:#1E293B; color:#fff; }
+
+@media print {
+  .ctrl-panel { display:none !important; }
+  nav, footer { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .a4 { box-shadow:none; width:100%; }
+  @page { size:A4; margin:0; }
+  .add-row-btn, .add-agenda-btn { display:none; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <h2>⚙️ 문서 설정</h2>
+    <div class="ctrl-section">
+      <label>문서 번호</label>
+      <input type="text" id="docNo" placeholder="예) MM-2026-001" oninput="document.getElementById('docNoOut').textContent=this.value">
+    </div>
+    <div class="ctrl-section">
+      <label>회의 일시</label>
+      <input type="text" id="meetDate" oninput="document.getElementById('meetDateOut').textContent=this.value">
+    </div>
+    <div class="ctrl-divider"></div>
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="ctrl-file-btn">
+        <span>📎</span><span>이미지 선택</span>
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+      </label>
+      <img id="logoPreview" class="logo-preview" style="display:none">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <div class="tip-box">💡 안건 추가 버튼으로 의제를 자유롭게 늘릴 수 있습니다. 회의 유형 버튼은 클릭하여 선택하세요.</div>
+  </aside>
+
+  <main class="doc-wrap">
+    <div class="a4" id="docA4">
+      <div class="top-bar"></div>
+
+      <!-- 헤더 -->
+      <div class="doc-header">
+        <div>
+          <div class="doc-logo-placeholder" id="logoPlaceholder" onclick="document.querySelector('.ctrl-file-btn input').click()">로고 삽입</div>
+          <img id="docLogo" class="doc-logo" style="display:none" alt="로고">
+        </div>
+        <div class="doc-title-block">
+          <div class="doc-title">회  의  록</div>
+          <div class="doc-subtitle">MEETING MINUTES</div>
+        </div>
+        <div class="doc-meta-right">
+          <div>문서번호: <strong id="docNoOut">MM-2026-001</strong></div>
+          <div>일시: <strong id="meetDateOut"></strong></div>
+        </div>
+      </div>
+
+      <!-- 회의 기본 정보 -->
+      <div class="info-grid">
+        <table class="meeting-info-table">
+          <tr>
+            <th>회의명</th>
+            <td contenteditable="true"></td>
+            <th>회의 유형</th>
+            <td>
+              <div class="meeting-type-btns">
+                <button class="mtype-btn active" onclick="selectType(this)">정기</button>
+                <button class="mtype-btn" onclick="selectType(this)">임시</button>
+                <button class="mtype-btn" onclick="selectType(this)">긴급</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>일시</th>
+            <td contenteditable="true"></td>
+            <th>장소</th>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <th>주관 부서</th>
+            <td contenteditable="true"></td>
+            <th>회의 주재자</th>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <th>참석자</th>
+            <td colspan="3" contenteditable="true" style="color:#475569;font-size:8.5pt">성명, 성명, 성명 (쉼표로 구분)</td>
+          </tr>
+          <tr>
+            <th>불참자</th>
+            <td contenteditable="true"></td>
+            <th>배포 대상</th>
+            <td contenteditable="true"></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 안건 -->
+      <div class="sec-head" style="margin-top:5mm"><span class="sec-num">1</span> 안건</div>
+      <div class="agenda-section" id="agendaSection"></div>
+      <button class="add-agenda-btn" onclick="addAgenda()">+ 안건 추가</button>
+
+      <!-- 액션 아이템 -->
+      <div class="sec-head"><span class="sec-num">2</span> 액션 아이템</div>
+      <div class="action-section">
+        <div class="action-border-wrap">
+          <table class="action-table" id="actionTable">
+            <thead>
+              <tr>
+                <th style="width:5%">No</th>
+                <th style="width:38%">내용</th>
+                <th style="width:18%">담당자</th>
+                <th style="width:18%">기한</th>
+                <th style="width:21%">상태</th>
+              </tr>
+            </thead>
+            <tbody id="actionBody"></tbody>
+          </table>
+        </div>
+        <button class="add-row-btn" style="margin:2mm 0 0" onclick="addAction()">+ 행 추가</button>
+      </div>
+
+      <!-- 다음 회의 -->
+      <div class="sec-head" style="margin-top:4mm"><span class="sec-num">3</span> 다음 회의</div>
+      <div class="next-section">
+        <table class="next-table">
+          <tr>
+            <th>예정 일시</th>
+            <td contenteditable="true"></td>
+            <th>예정 장소</th>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <th>주요 안건</th>
+            <td colspan="3" contenteditable="true"></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 결재 -->
+      <div class="sec-head" style="margin-top:4mm"><span class="sec-num">4</span> 작성자 및 결재</div>
+      <div class="approval-section">
+        <div class="approval-row">
+          <div class="writer-box">
+            <div class="writer-label">작성자 정보</div>
+            <div class="writer-info">
+              <span contenteditable="true" style="min-width:20mm">소속부서</span>
+              <span contenteditable="true" style="min-width:16mm">직위</span>
+              <span contenteditable="true" style="min-width:16mm">성명</span>
+            </div>
+          </div>
+          <div class="approval-chain">
+            <div class="appr-box"><div class="appr-title">팀 장</div><div class="appr-name" contenteditable="true"></div><div class="appr-sign"></div><div class="appr-date" contenteditable="true">결재일</div></div>
+            <div class="appr-box"><div class="appr-title">부 장</div><div class="appr-name" contenteditable="true"></div><div class="appr-sign"></div><div class="appr-date" contenteditable="true">결재일</div></div>
+            <div class="appr-box"><div class="appr-title">임 원</div><div class="appr-name" contenteditable="true"></div><div class="appr-sign"></div><div class="appr-date" contenteditable="true">결재일</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  const today = new Date();
+  const d = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('meetDate').value = d;
+  document.getElementById('meetDateOut').textContent = d;
+})();
+
+function uploadLogo(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const src = e.target.result;
+    document.getElementById('docLogo').src = src;
+    document.getElementById('docLogo').style.display = '';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+    document.getElementById('logoPreview').src = src;
+    document.getElementById('logoPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function selectType(btn) {
+  btn.closest('.meeting-type-btns').querySelectorAll('.mtype-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+let agendaCount = 0;
+function addAgenda(title='', discuss='', decision='', person='', deadline='') {
+  agendaCount++;
+  const section = document.getElementById('agendaSection');
+  const div = document.createElement('div');
+  div.className = 'agenda-item';
+  div.innerHTML = `
+    <div class="agenda-header">
+      <span class="agenda-badge">${agendaCount}</span>
+      <span class="agenda-title" contenteditable="true">${title || '안건 제목을 입력하세요'}</span>
+    </div>
+    <div class="agenda-body">
+      <div class="agenda-field-full">
+        <label>논의 내용</label>
+        <div contenteditable="true" style="min-height:14mm">${discuss}</div>
+      </div>
+      <div class="agenda-field">
+        <label>결정 사항</label>
+        <div contenteditable="true" style="min-height:10mm">${decision}</div>
+      </div>
+      <div class="agenda-field">
+        <label>담당자</label>
+        <div contenteditable="true">${person}</div>
+      </div>
+      <div class="agenda-field">
+        <label>완료 기한</label>
+        <div contenteditable="true">${deadline}</div>
+      </div>
+    </div>`;
+  section.appendChild(div);
+}
+
+function addAction(content='', person='', deadline='') {
+  const tbody = document.getElementById('actionBody');
+  const n = tbody.rows.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${n}</td>
+    <td contenteditable="true">${content}</td>
+    <td contenteditable="true">${person}</td>
+    <td contenteditable="true">${deadline}</td>
+    <td>
+      <select class="status-select">
+        <option>진행전</option><option>진행중</option><option>완료</option>
+      </select>
+    </td>`;
+  tbody.appendChild(tr);
+}
+
+// 초기 데이터
+addAgenda('2026년 하반기 사업 계획 검토','하반기 주요 프로젝트 일정 및 예산 배분 방향에 대해 논의함. 팀별 추진 계획서를 검토하고 우선순위를 조정함.','Q3 집중 프로젝트 3건 선정, 각 팀장 책임 추진','전 팀장','2026-08-15');
+addAgenda('신규 협력사 계약 검토','○○파트너스와의 MOU 체결 여부 검토. 법무팀 의견 및 예산 담당자 검토 결과 공유.','계약 초안 수정 후 재검토 예정','법무팀','2026-07-31');
+addAgenda('사무실 이전 관련 사항','임차 계약 만료에 따른 이전 일정 및 후보지 3곳 제안 검토.','후보지 2곳으로 압축, 다음 회의 전까지 최종 선정','총무팀','2026-08-05');
+
+['Q3 추진 계획서 작성','사업부별 계획서 작성 후 팀장 검토','2026-07-25',
+ '협력사 계약 초안 수정','법무팀 의견 반영','2026-07-28',
+ '사무실 후보지 현장 방문','총무팀 주관 임원진 동행','2026-07-22',
+ '하반기 예산안 확정','CFO 검토 후 결재','2026-08-01',
+ '전사 공지 발송','확정 내용 전사 공유','2026-08-02',
+].reduce((acc, v, i) => { if(i%3===0) acc.push([]); acc[acc.length-1].push(v); return acc; }, [])
+.forEach(r => addAction(r[0], r[1], r[2]));
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

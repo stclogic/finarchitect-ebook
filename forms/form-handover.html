@@ -1,0 +1,507 @@
+<!-- 인수인계서 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인수인계서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+/* ── 레이아웃 ── */
+.form-page-wrap {
+  max-width:1300px; margin:0 auto;
+  padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr;
+  gap:2rem; align-items:start;
+}
+/* ── 좌측 패널 ── */
+.ctrl-panel {
+  background:#fff; border:1px solid #E2E8F0;
+  border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+.ctrl-panel h2 {
+  font-size:.95rem; font-weight:800; color:#1E293B;
+  margin-bottom:1.2rem; display:flex; align-items:center; gap:.4rem;
+}
+.ctrl-section { margin-bottom:1.2rem; }
+.ctrl-section label {
+  display:block; font-size:.76rem; font-weight:700;
+  color:#64748B; margin-bottom:.3rem; text-transform:uppercase; letter-spacing:.04em;
+}
+.ctrl-section input[type="text"] {
+  width:100%; padding:8px 10px; border:1px solid #E2E8F0;
+  border-radius:8px; font-size:.84rem; color:#1E293B; background:#F8FAFC; box-sizing:border-box;
+}
+.ctrl-file-btn {
+  display:flex; align-items:center; gap:.5rem; padding:9px 14px;
+  background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:8px;
+  cursor:pointer; font-size:.82rem; color:#64748B; transition:border-color .15s;
+}
+.ctrl-file-btn:hover { border-color:#1E293B; color:#1E293B; }
+.ctrl-file-btn input { display:none; }
+.ctrl-divider { height:1px; background:#F1F5F9; margin:1rem 0; }
+.print-btn {
+  width:100%; padding:12px; background:#1E293B; color:#fff;
+  border:none; border-radius:12px; font-size:.92rem; font-weight:700;
+  cursor:pointer; transition:opacity .15s; display:flex; align-items:center;
+  justify-content:center; gap:.5rem;
+}
+.print-btn:hover { opacity:.85; }
+.back-link {
+  display:block; text-align:center; margin-top:.8rem;
+  font-size:.8rem; color:#64748B; text-decoration:none;
+}
+.back-link:hover { color:#1E293B; }
+.tip-box {
+  background:#FFF7ED; border:1px solid #FED7AA; border-radius:10px;
+  padding:.75rem 1rem; font-size:.75rem; color:#9A3412; line-height:1.6; margin-top:.8rem;
+}
+.logo-preview { max-width:100%; max-height:60px; object-fit:contain; margin-top:.5rem; border-radius:6px; }
+
+/* ── 문서 컨테이너 ── */
+.doc-wrap {
+  background:#E2E8F0; border-radius:14px; padding:2rem 1rem;
+  display:flex; flex-direction:column; align-items:center;
+}
+.a4 {
+  width:210mm; background:#fff;
+  box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:14mm 14mm; box-sizing:border-box;
+  font-family:'Noto Serif KR','Malgun Gothic',serif;
+  font-size:10pt; color:#1E293B; line-height:1.7;
+}
+
+/* ── 문서 헤더 ── */
+.doc-header {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:6mm; padding-bottom:4mm; border-bottom:2px solid #1E293B;
+}
+.doc-header-left { display:flex; align-items:center; gap:3mm; }
+.doc-logo { max-height:40px; max-width:120px; object-fit:contain; }
+.doc-logo-placeholder {
+  width:100px; height:36px; background:#F1F5F9; border:1px dashed #CBD5E1;
+  border-radius:4px; display:flex; align-items:center; justify-content:center;
+  font-size:7.5pt; color:#94A3B8; cursor:pointer;
+}
+.doc-title-block { text-align:center; flex:1; }
+.doc-title {
+  font-size:20pt; font-weight:900; color:#1E293B; letter-spacing:.15em; line-height:1.2;
+}
+.doc-subtitle { font-size:8pt; color:#64748B; letter-spacing:.25em; margin-top:1mm; }
+.doc-meta-right { text-align:right; font-size:8.5pt; color:#475569; line-height:1.8; }
+.doc-meta-right span { display:block; }
+
+/* ── 섹션 헤더 ── */
+.sec-head {
+  display:flex; align-items:center; gap:2mm;
+  background:#1E293B; color:#fff;
+  padding:2.5mm 4mm; border-radius:4px;
+  font-size:9.5pt; font-weight:700; letter-spacing:.05em;
+  margin:5mm 0 3mm;
+}
+.sec-num {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:16px; height:16px; background:#475569; border-radius:50%;
+  font-size:7.5pt; font-weight:700; flex-shrink:0;
+}
+
+/* ── 기본 정보 테이블 ── */
+.info-table {
+  width:100%; border-collapse:collapse; font-size:9pt;
+}
+.info-table th, .info-table td {
+  border:1px solid #CBD5E1; padding:2.5mm 3mm;
+}
+.info-table th {
+  background:#F1F5F9; font-weight:700; color:#475569;
+  white-space:nowrap; width:22%; text-align:center;
+}
+.info-table td { color:#1E293B; }
+.info-table .group-header {
+  background:#E2E8F0; font-weight:700; color:#1E293B;
+  text-align:center; font-size:8.5pt;
+}
+
+/* ── 업무 현황 테이블 ── */
+.work-table {
+  width:100%; border-collapse:collapse; font-size:8.5pt;
+}
+.work-table th {
+  background:#334155; color:#fff; padding:2mm 2.5mm;
+  border:1px solid #475569; text-align:center; font-size:8pt;
+}
+.work-table td {
+  border:1px solid #E2E8F0; padding:2mm 2.5mm;
+  vertical-align:top;
+}
+.work-table tr:nth-child(even) td { background:#F8FAFC; }
+.work-table td:first-child {
+  text-align:center; color:#64748B; font-weight:700; width:6%;
+}
+.status-checks { display:flex; flex-direction:column; gap:1mm; font-size:7.5pt; }
+.status-checks label { display:flex; align-items:center; gap:1mm; cursor:pointer; white-space:nowrap; }
+
+/* ── 경고 박스 ── */
+.warn-box {
+  background:#FEF2F2; border:1.5px solid #FECACA; border-radius:6px;
+  padding:3mm 4mm; font-size:8pt; color:#991B1B;
+  display:flex; align-items:center; gap:2mm; margin:3mm 0;
+}
+
+/* ── 서명란 ── */
+.sig-row {
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:3mm; margin-top:5mm;
+}
+.sig-box {
+  border:1px solid #CBD5E1; border-radius:6px; padding:3mm;
+  text-align:center;
+}
+.sig-box-title {
+  background:#1E293B; color:#fff; font-size:8pt; font-weight:700;
+  padding:2mm; border-radius:3px; margin-bottom:2mm;
+}
+.sig-box-name {
+  font-size:9pt; font-weight:700; min-height:8mm;
+  border-bottom:1px solid #E2E8F0; margin-bottom:1mm; padding-bottom:1mm;
+}
+.sig-box-info { font-size:7.5pt; color:#64748B; line-height:1.6; }
+.sig-space { height:14mm; border:1px dashed #E2E8F0; border-radius:4px; margin:2mm 0; }
+
+/* ── contenteditable ── */
+[contenteditable] { outline:none; }
+[contenteditable]:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+[contenteditable]:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+.ce-block {
+  min-height:24mm; border:1px solid #E2E8F0; border-radius:4px;
+  padding:3mm; font-size:9pt; color:#1E293B; line-height:1.7;
+}
+.ce-block:hover { box-shadow:0 0 0 2px #94A3B8; }
+.ce-block:focus { box-shadow:0 0 0 2px #475569; }
+
+/* ── 행 추가 버튼 ── */
+.add-row-btn {
+  padding:4px 12px; background:#F1F5F9; border:1px solid #CBD5E1;
+  border-radius:6px; font-size:7.5pt; color:#475569; cursor:pointer;
+  transition:all .15s; margin-top:2mm;
+}
+.add-row-btn:hover { background:#1E293B; color:#fff; border-color:#1E293B; }
+
+/* ── 확인 문구 ── */
+.confirm-line {
+  text-align:center; font-size:9.5pt; color:#475569;
+  margin:5mm 0 3mm; padding:3mm; background:#F8FAFC;
+  border-radius:4px; letter-spacing:.02em;
+}
+
+/* ── 기밀 배지 ── */
+.conf-badge {
+  display:inline-block; background:#EF4444; color:#fff;
+  font-size:7pt; font-weight:700; padding:1px 5px; border-radius:3px;
+  letter-spacing:.05em; vertical-align:middle;
+}
+
+/* ── 인쇄 ── */
+@media print {
+  .ctrl-panel { display:none !important; }
+  nav, footer, .back-link-wrap { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .a4 { box-shadow:none; width:100%; }
+  @page { size:A4; margin:0; }
+  .add-row-btn { display:none; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <!-- ── 좌측 컨트롤 패널 ── -->
+  <aside class="ctrl-panel">
+    <h2>⚙️ 문서 설정</h2>
+
+    <div class="ctrl-section">
+      <label>문서 번호</label>
+      <input type="text" id="docNo" placeholder="예) HO-2026-001" oninput="document.getElementById('docNoOut').textContent=this.value">
+    </div>
+
+    <div class="ctrl-section">
+      <label>작성일</label>
+      <input type="text" id="docDate" oninput="document.getElementById('docDateOut').textContent=this.value">
+    </div>
+
+    <div class="ctrl-section">
+      <label>기관/부서명</label>
+      <input type="text" id="orgName" placeholder="예) ○○주식회사 기획팀" oninput="document.getElementById('orgNameOut').textContent=this.value">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="ctrl-file-btn">
+        <span>📎</span><span>이미지 선택</span>
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+      </label>
+      <img id="logoPreview" class="logo-preview" style="display:none">
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+
+    <div class="tip-box">
+      💡 <strong>작성 안내.</strong> 셀을 클릭하여 바로 편집하세요. 보안 정보 기재 시 실제 비밀번호 대신 힌트만 입력하시기 바랍니다.
+    </div>
+  </aside>
+
+  <!-- ── 우측 문서 영역 ── -->
+  <main class="doc-wrap">
+    <div class="a4" id="docA4">
+
+      <!-- 문서 헤더 -->
+      <div class="doc-header">
+        <div class="doc-header-left">
+          <div class="doc-logo-placeholder" id="logoPlaceholder" onclick="document.querySelector('.ctrl-file-btn input').click()">
+            로고 삽입
+          </div>
+          <img id="docLogo" class="doc-logo" style="display:none" alt="로고">
+        </div>
+        <div class="doc-title-block">
+          <div class="doc-title">인수인계서</div>
+          <div class="doc-subtitle">HANDOVER DOCUMENT</div>
+        </div>
+        <div class="doc-meta-right">
+          <span>문서번호 : <strong id="docNoOut">HO-2026-001</strong></span>
+          <span>작성일 : <strong id="docDateOut"></strong></span>
+          <span id="orgNameOut" style="color:#1E293B;font-weight:700"></span>
+        </div>
+      </div>
+
+      <!-- 기본 정보 -->
+      <div class="sec-head"><span class="sec-num">1</span> 기본 정보</div>
+      <table class="info-table">
+        <tr>
+          <th>인수인계 부서</th>
+          <td colspan="3" contenteditable="true" style="min-width:60mm"></td>
+        </tr>
+        <tr>
+          <td class="group-header" colspan="4">인계자 (업무를 넘기는 사람)</td>
+        </tr>
+        <tr>
+          <th>성명</th>
+          <td contenteditable="true"></td>
+          <th>직위</th>
+          <td contenteditable="true"></td>
+        </tr>
+        <tr>
+          <th>연락처</th>
+          <td contenteditable="true"></td>
+          <th>E-mail</th>
+          <td contenteditable="true"></td>
+        </tr>
+        <tr>
+          <td class="group-header" colspan="4">인수자 (업무를 받는 사람)</td>
+        </tr>
+        <tr>
+          <th>성명</th>
+          <td contenteditable="true"></td>
+          <th>직위</th>
+          <td contenteditable="true"></td>
+        </tr>
+        <tr>
+          <th>연락처</th>
+          <td contenteditable="true"></td>
+          <th>E-mail</th>
+          <td contenteditable="true"></td>
+        </tr>
+        <tr>
+          <th>인수인계 일시</th>
+          <td colspan="3" contenteditable="true"></td>
+        </tr>
+      </table>
+
+      <!-- 업무 현황 -->
+      <div class="sec-head"><span class="sec-num">2</span> 업무 현황</div>
+      <table class="work-table" id="workTable">
+        <thead>
+          <tr>
+            <th style="width:5%">번호</th>
+            <th style="width:18%">업무명</th>
+            <th style="width:35%">상세 내용</th>
+            <th style="width:16%">진행 상태</th>
+            <th style="width:26%">특이사항</th>
+          </tr>
+        </thead>
+        <tbody id="workBody"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addWorkRow()">+ 행 추가</button>
+
+      <!-- 자료 목록 -->
+      <div class="sec-head"><span class="sec-num">3</span> 주요 자료 및 파일 목록</div>
+      <table class="work-table" id="fileTable">
+        <thead>
+          <tr>
+            <th style="width:5%">번호</th>
+            <th style="width:28%">자료명</th>
+            <th style="width:28%">보관 위치</th>
+            <th style="width:22%">담당자</th>
+            <th style="width:17%">비고</th>
+          </tr>
+        </thead>
+        <tbody id="fileBody"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addFileRow()">+ 행 추가</button>
+
+      <!-- 계정 및 시스템 -->
+      <div class="sec-head"><span class="sec-num">4</span> 계정 및 시스템 접근 정보 <span class="conf-badge">기밀</span></div>
+      <div class="warn-box">⚠ 본 문서는 기밀이므로 보안에 유의하십시오. 실제 비밀번호 대신 힌트 또는 보관 위치를 기재하시기 바랍니다.</div>
+      <table class="work-table" id="sysTable">
+        <thead>
+          <tr>
+            <th style="width:25%">시스템명</th>
+            <th style="width:22%">계정 (ID)</th>
+            <th style="width:28%">비밀번호 힌트</th>
+            <th style="width:25%">관리자 연락처</th>
+          </tr>
+        </thead>
+        <tbody id="sysBody"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addSysRow()">+ 행 추가</button>
+
+      <!-- 특이사항 -->
+      <div class="sec-head"><span class="sec-num">5</span> 특이사항 및 인계 메모</div>
+      <div class="ce-block" contenteditable="true" style="min-height:22mm">인계 시 주의해야 할 사항, 미완료 업무, 중요 일정 등을 기재하세요.</div>
+
+      <!-- 확인 문구 -->
+      <div class="confirm-line">
+        위 내용과 같이 인수인계가 완료되었음을 확인합니다.
+      </div>
+
+      <!-- 서명란 -->
+      <div class="sig-row">
+        <div class="sig-box">
+          <div class="sig-box-title">인 계 자</div>
+          <div class="sig-box-name" contenteditable="true" style="min-height:8mm"></div>
+          <div class="sig-space"></div>
+          <div class="sig-box-info">서명 / 인</div>
+        </div>
+        <div class="sig-box">
+          <div class="sig-box-title">인 수 자</div>
+          <div class="sig-box-name" contenteditable="true" style="min-height:8mm"></div>
+          <div class="sig-space"></div>
+          <div class="sig-box-info">서명 / 인</div>
+        </div>
+        <div class="sig-box">
+          <div class="sig-box-title">확인자 (팀장)</div>
+          <div class="sig-box-name" contenteditable="true" style="min-height:8mm"></div>
+          <div class="sig-space"></div>
+          <div class="sig-box-info">서명 / 인</div>
+        </div>
+      </div>
+
+    </div><!-- /a4 -->
+  </main>
+</div><!-- /form-page-wrap -->
+
+<script>
+// 오늘 날짜 자동 설정
+(function(){
+  const today = new Date();
+  const d = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('docDate').value = d;
+  document.getElementById('docDateOut').textContent = d;
+})();
+
+// 로고 업로드
+function uploadLogo(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const src = e.target.result;
+    document.getElementById('docLogo').src = src;
+    document.getElementById('docLogo').style.display = '';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+    document.getElementById('logoPreview').src = src;
+    document.getElementById('logoPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// 업무 현황 행
+function addWorkRow(nm='', detail='', note='') {
+  const tbody = document.getElementById('workBody');
+  const n = tbody.rows.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${n}</td>
+    <td contenteditable="true">${nm}</td>
+    <td contenteditable="true">${detail}</td>
+    <td>
+      <div class="status-checks">
+        <label><input type="checkbox"> 완료</label>
+        <label><input type="checkbox"> 진행중</label>
+        <label><input type="checkbox"> 대기</label>
+      </div>
+    </td>
+    <td contenteditable="true">${note}</td>`;
+  tbody.appendChild(tr);
+}
+
+// 자료 목록 행
+function addFileRow(nm='', loc='', person='', note='') {
+  const tbody = document.getElementById('fileBody');
+  const n = tbody.rows.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${n}</td>
+    <td contenteditable="true">${nm}</td>
+    <td contenteditable="true">${loc}</td>
+    <td contenteditable="true">${person}</td>
+    <td contenteditable="true">${note}</td>`;
+  tbody.appendChild(tr);
+}
+
+// 시스템 행
+function addSysRow(sys='', id='', hint='', contact='') {
+  const tbody = document.getElementById('sysBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td contenteditable="true">${sys}</td>
+    <td contenteditable="true">${id}</td>
+    <td contenteditable="true">${hint}</td>
+    <td contenteditable="true">${contact}</td>`;
+  tbody.appendChild(tr);
+}
+
+// 초기 데이터 삽입
+const workDefaults = [
+  ['정기 보고서 작성','매월 말일 경영진 보고용 실적 집계 및 PPT 작성','데이터팀 협조 필요'],
+  ['계약서 검토 및 관리','신규 계약서 수령 → 법무팀 전달 → 파일 서버 보관','계약서 원본은 사무실 캐비닛 A-3'],
+  ['거래처 월례 미팅','매월 둘째 주 화요일 10:00 정기 미팅','담당 거래처: ○○상사, △△코퍼레이션'],
+  ['예산 집행 관리','부서 예산 집행 현황 월별 업데이트 및 재무팀 보고','엑셀 파일: Z드라이브\\예산관리\\2026'],
+  ['팀원 근태 취합','매월 말 근태 시스템 다운로드 → HR팀 전달','ERP 시스템 인사관리 메뉴'],
+  ['','',''],['','',''],['','',''],['','',''],['','','']
+];
+workDefaults.forEach(r => addWorkRow(r[0], r[1], r[2]));
+
+const fileDefaults = [
+  ['거래처 계약서 원본','사무실 캐비닛 A-3','홍길동 대리'],
+  ['예산 집행 엑셀','Z드라이브\\예산관리\\2026','재무팀 공유'],
+  ['업무 매뉴얼','공유 폴더 > 팀 문서 > 매뉴얼','최신 버전: v3.2'],
+  ['고객사 연락처 DB','CRM 시스템 / 로컬 백업: 바탕화면','월 1회 백업 권장'],
+  ['보안 인증서','IT팀 보관','갱신일: 2027-03-31']
+];
+fileDefaults.forEach(r => addFileRow(r[0], r[1], r[2], r[3]||''));
+
+['ERP (그룹웨어)', '재무 시스템', '이메일 (Outlook)', '협업툴 (Teams)', '파일서버 (VPN)']
+  .forEach(s => addSysRow(s,'','담당자 문의','IT 헬프데스크 내선 100'));
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!-- 표준정관 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>표준정관 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.form-page-wrap {
+  max-width:1200px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #e2e8f0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 4px 24px rgba(30,58,95,.1);
+}
+.ctrl-panel h2 { font-size:.97rem; font-weight:800; color:#1E3A5F; margin-bottom:1.2rem; }
+.ctrl-section { margin-bottom:.9rem; }
+.ctrl-section label { display:block; font-size:.77rem; font-weight:700; color:#64748b; margin-bottom:.28rem; }
+.ctrl-section input, .ctrl-section select {
+  width:100%; padding:8px 10px; border:1px solid #e2e8f0; border-radius:8px;
+  font-size:.85rem; color:#1E3A5F; background:#f8fafc; box-sizing:border-box;
+}
+.ctrl-divider { height:1px; background:#e2e8f0; margin:1rem 0; }
+.print-btn {
+  width:100%; padding:13px;
+  background:linear-gradient(135deg,#1E3A5F,#2563EB); color:#fff;
+  border:none; border-radius:12px; font-size:.95rem; font-weight:700; cursor:pointer; transition:opacity .2s;
+}
+.print-btn:hover { opacity:.88; }
+.reset-btn {
+  width:100%; padding:9px; margin-top:.6rem;
+  background:none; border:1px solid #e2e8f0; border-radius:10px; font-size:.82rem; color:#64748b; cursor:pointer;
+}
+.tip-box {
+  background:#DBEAFE; border:1px solid #93C5FD; border-radius:10px;
+  padding:.8rem 1rem; font-size:.76rem; color:#1E3A5F; line-height:1.65; margin-top:.8rem;
+}
+.back-link {
+  display:inline-flex; align-items:center; gap:.3rem;
+  font-size:.82rem; color:#64748b; text-decoration:none;
+  padding:7px 14px; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:1rem; transition:background .2s;
+}
+.back-link:hover { background:#DBEAFE; }
+.doc-wrap { background:#DBEAFE; border-radius:14px; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; }
+.doc-page {
+  width:210mm; min-height:297mm; background:#fff;
+  box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:0; overflow:hidden; font-family:'Noto Serif KR','Malgun Gothic',serif; font-size:10pt; color:#222; position:relative;
+}
+.doc-header-bar {
+  height:14mm; background:linear-gradient(90deg,#1E3A5F 0%,#2563EB 100%);
+  display:flex; align-items:center; padding:0 10mm; gap:12px;
+}
+.doc-header-bar .icon { font-size:20px; color:#fff; }
+.doc-header-bar .doc-num { color:rgba(255,255,255,.7); font-size:8pt; margin-left:auto; }
+.doc-body { padding:8mm 12mm 10mm; }
+.logo-area { display:flex; align-items:center; gap:10px; margin-bottom:3mm; }
+.logo-img { width:36px; height:36px; object-fit:contain; border-radius:6px; display:none; }
+.logo-placeholder {
+  width:36px; height:36px; border:1.5px dashed #93C5FD; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; color:#93C5FD; font-size:9px; text-align:center; line-height:1.2; cursor:pointer;
+}
+.doc-title { text-align:center; margin:5mm 0 3mm; }
+.doc-title h1 { font-size:24pt; font-weight:700; letter-spacing:14px; color:#1E3A5F; margin:0; }
+.doc-title .en { font-size:8.5pt; color:#2563EB; letter-spacing:3px; margin-top:2mm; }
+.doc-title .corp-name { font-size:13pt; font-weight:700; color:#1E3A5F; margin-top:2mm; border-bottom:2px solid #2563EB; display:inline-block; padding-bottom:1mm; }
+.doc-divider { height:2px; background:linear-gradient(90deg,#1E3A5F,#2563EB); margin:3mm 0; border-radius:1px; }
+.doc-divider-thin { height:1px; background:#DBEAFE; margin:2mm 0; }
+
+/* 전문 */
+.preamble {
+  background:#f0f6ff; border-left:4px solid #2563EB; padding:3mm 4mm; margin:3mm 0;
+  font-size:8.5pt; line-height:1.8; color:#334155; border-radius:0 6px 6px 0;
+}
+
+/* 장(Chapter) 헤더 */
+.chapter-header {
+  background:linear-gradient(90deg,#1E3A5F,#1E40AF); color:#fff;
+  padding:2.5mm 5mm; font-size:9.5pt; font-weight:700; border-radius:6px;
+  margin:5mm 0 2mm; letter-spacing:2px; display:flex; align-items:center; gap:6px;
+}
+.chapter-header .ch-num {
+  background:rgba(255,255,255,.2); border-radius:4px; padding:0.5mm 3mm;
+  font-size:8.5pt;
+}
+
+/* 조(Article) */
+.article-row { margin:2mm 0; display:flex; align-items:baseline; gap:6px; }
+.article-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:22px; height:22px; background:#2563EB; color:#fff;
+  border-radius:50%; font-size:7.5pt; font-weight:700; flex-shrink:0;
+  margin-right:2px;
+}
+.article-label { font-size:9pt; font-weight:700; color:#1E3A5F; white-space:nowrap; }
+.article-content { flex:1; font-size:8.5pt; line-height:1.7; color:#333; }
+.article-content[contenteditable]:hover { outline:2px solid #93C5FD; border-radius:3px; }
+.article-content[contenteditable]:focus { outline:3px solid #2563EB; border-radius:3px; background:#EFF6FF; }
+
+/* 항목 목록 */
+.sub-list { list-style:none; padding:0; margin:1mm 0 1mm 4mm; }
+.sub-list li { font-size:8.5pt; line-height:1.7; color:#333; display:flex; gap:4px; }
+.sub-list li::before { content:''; }
+.sub-num { color:#2563EB; font-weight:700; font-size:8pt; white-space:nowrap; }
+
+/* 부칙 */
+.addendum {
+  background:#f0f6ff; border:1.5px solid #BFDBFE; border-radius:6px; padding:3mm 4mm; margin:4mm 0;
+}
+.addendum-title { font-size:9pt; font-weight:700; color:#1E3A5F; margin-bottom:2mm; }
+
+.stamp-row { display:flex; justify-content:space-around; margin:4mm 0 3mm; gap:1rem; }
+.stamp-block { text-align:center; flex:1; }
+.stamp-block .s-title { font-size:8.5pt; font-weight:700; color:#1E3A5F; margin-bottom:2mm; }
+.stamp-block .s-info { font-size:8pt; line-height:1.8; color:#444; }
+.stamp-box { width:28mm; height:20mm; border:1px solid #BFDBFE; border-radius:4px; margin:2mm auto 0; display:flex; align-items:center; justify-content:center; color:#ccc; font-size:7pt; }
+
+[contenteditable]:hover { outline:2px solid #93C5FD; border-radius:3px; }
+[contenteditable]:focus { outline:3px solid #2563EB; border-radius:3px; background:#EFF6FF; }
+
+.section-badge {
+  display:inline-block; background:#1E3A5F; color:#fff; font-size:7.5pt; font-weight:700;
+  padding:1mm 3mm; border-radius:4px; margin:2mm 0 1mm;
+}
+
+@media print {
+  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .doc-page { width:210mm; box-shadow:none; min-height:auto; }
+  @page { size:A4; margin:0; }
+  body { background:#fff !important; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>🏛️ 표준정관</h2>
+    <div class="ctrl-section">
+      <label>회사 로고 업로드</label>
+      <input type="file" accept="image/*" id="logoUpload" style="font-size:.78rem;">
+    </div>
+    <div class="ctrl-section">
+      <label>회사명 (상호)</label>
+      <input type="text" id="corpName" placeholder="예: 주식회사 ○○">
+    </div>
+    <div class="ctrl-section">
+      <label>작성일</label>
+      <input type="date" id="docDate">
+    </div>
+    <div class="ctrl-section">
+      <label>설립일</label>
+      <input type="date" id="foundDate">
+    </div>
+    <div class="ctrl-section">
+      <label>발행주식 총수</label>
+      <input type="text" id="totalShares" placeholder="예: 10,000,000주">
+    </div>
+    <div class="ctrl-section">
+      <label>1주의 금액</label>
+      <input type="text" id="parValue" placeholder="예: 500원">
+    </div>
+    <div class="ctrl-section">
+      <label>사업연도</label>
+      <select id="bizYear">
+        <option>1월 1일 ~ 12월 31일</option>
+        <option>4월 1일 ~ 3월 31일</option>
+        <option>7월 1일 ~ 6월 30일</option>
+      </select>
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
+    <div class="tip-box">
+      💡 <strong>작성 Tip</strong><br>
+      정관은 회사의 최고 헌법입니다. 각 조항을 클릭하여 직접 편집하세요. 공증 전 법무사·변호사 검토를 권장합니다.
+    </div>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="doc-page" id="docPage">
+      <div class="doc-header-bar">
+        <span class="icon">🏛️</span>
+        <span style="color:#fff;font-size:9pt;font-weight:700;">ARTICLES OF INCORPORATION</span>
+        <span class="doc-num" id="dispDocNum"></span>
+      </div>
+
+      <div class="doc-body">
+        <div class="logo-area">
+          <div class="logo-placeholder" id="logoHolder" onclick="document.getElementById('logoUpload').click()">로고<br>업로드</div>
+          <img class="logo-img" id="logoImg" src="" alt="logo">
+          <div style="flex:1; text-align:right; font-size:7.5pt; color:#888;"><span id="dispDate"></span></div>
+        </div>
+
+        <div class="doc-title">
+          <h1>정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;관</h1>
+          <div class="en">ARTICLES OF INCORPORATION</div>
+          <div class="corp-name" id="dispCorpName" contenteditable="true">주식회사 ○○○</div>
+        </div>
+        <div class="doc-divider"></div>
+
+        <!-- 전문 -->
+        <div class="preamble" contenteditable="true">
+          본 회사는 건전한 기업 윤리와 사회적 책임을 바탕으로 지속 가능한 경영을 추구하며, 주주 가치 극대화와 이해관계자와의 상생을 목적으로 설립된다. 이에 「상법」 및 관계 법령에 따라 다음과 같이 정관을 제정한다.
+        </div>
+
+        <!-- 제1장 총칙 -->
+        <div class="chapter-header">
+          <span class="ch-num">제 1 장</span> 총&nbsp;&nbsp;칙
+        </div>
+        <div class="article-row">
+          <div class="article-badge">1</div>
+          <span class="article-label">제1조 (상호)</span>
+          <div class="article-content" contenteditable="true">본 회사는 <span id="dispCorpName2" style="font-weight:700; text-decoration:underline;">주식회사 ○○○</span>이라 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">2</div>
+          <span class="article-label">제2조 (목적)</span>
+          <div class="article-content" contenteditable="true">본 회사는 다음 사업을 목적으로 한다.<br>
+            1. 소프트웨어 개발 및 공급업<br>
+            2. 정보통신 서비스업<br>
+            3. 전자상거래업<br>
+            4. 위 각 호에 부대하는 일체의 사업</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">3</div>
+          <span class="article-label">제3조 (소재지)</span>
+          <div class="article-content" contenteditable="true">본 회사의 본점을 _______에 두고, 필요에 따라 국내외에 지점 및 사무소를 설치할 수 있다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">4</div>
+          <span class="article-label">제4조 (공고방법)</span>
+          <div class="article-content" contenteditable="true">본 회사의 공고는 회사 인터넷 홈페이지(www.___.com)에 게재한다. 다만, 전산 장애 또는 그 밖의 부득이한 사유로 게재가 불가능한 경우에는 「상법」에서 정한 방법에 의한다.</div>
+        </div>
+
+        <!-- 제2장 주식 -->
+        <div class="chapter-header">
+          <span class="ch-num">제 2 장</span> 주&nbsp;&nbsp;식
+        </div>
+        <div class="article-row">
+          <div class="article-badge">5</div>
+          <span class="article-label">제5조 (발행주식 총수)</span>
+          <div class="article-content">본 회사가 발행할 주식의 총수는 <span id="dispTotalShares" contenteditable="true" style="font-weight:700; color:#2563EB;">10,000,000주</span>로 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">6</div>
+          <span class="article-label">제6조 (1주의 금액)</span>
+          <div class="article-content">본 회사 주식 1주의 금액은 <span id="dispParValue" contenteditable="true" style="font-weight:700; color:#2563EB;">500원</span>으로 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">7</div>
+          <span class="article-label">제7조 (설립 시 발행주식)</span>
+          <div class="article-content" contenteditable="true">회사 설립 시 발행하는 주식의 총수는 ____주로 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">8</div>
+          <span class="article-label">제8조 (주권의 종류)</span>
+          <div class="article-content" contenteditable="true">본 회사의 주권은 1주권, 5주권, 10주권, 50주권, 100주권, 500주권, 1,000주권 및 10,000주권의 8종류로 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">9</div>
+          <span class="article-label">제9조 (주식 양도 제한)</span>
+          <div class="article-content" contenteditable="true">본 회사의 주식을 양도하려는 주주는 이사회의 승인을 받아야 한다. 이사회가 양도를 승인하지 아니하는 경우에는 「상법」 제335조의2 이하 규정에 따른다.</div>
+        </div>
+
+        <!-- 제3장 주주총회 -->
+        <div class="chapter-header">
+          <span class="ch-num">제 3 장</span> 주&nbsp;주&nbsp;총&nbsp;회
+        </div>
+        <div class="article-row">
+          <div class="article-badge">10</div>
+          <span class="article-label">제10조 (정기주주총회)</span>
+          <div class="article-content" contenteditable="true">정기주주총회는 매 사업연도 종료 후 3개월 이내에 개최한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">11</div>
+          <span class="article-label">제11조 (임시주주총회)</span>
+          <div class="article-content" contenteditable="true">임시주주총회는 필요한 때에 이사회 결의로 소집한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">12</div>
+          <span class="article-label">제12조 (소집 통지)</span>
+          <div class="article-content" contenteditable="true">주주총회 소집은 회의일 2주 전에 각 주주에게 서면 또는 전자문서로 통지한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">13</div>
+          <span class="article-label">제13조 (의결권)</span>
+          <div class="article-content" contenteditable="true">주주는 소유 주식 1주당 1개의 의결권을 가진다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">14</div>
+          <span class="article-label">제14조 (결의 방법)</span>
+          <div class="article-content" contenteditable="true">보통결의는 출석한 주주의 의결권의 과반수로 하되, 발행주식 총수의 4분의 1 이상이어야 한다. 특별결의는 출석한 주주의 의결권의 3분의 2 이상으로 하되, 발행주식 총수의 3분의 1 이상이어야 한다.</div>
+        </div>
+
+        <!-- 제4장 이사·이사회 -->
+        <div class="chapter-header">
+          <span class="ch-num">제 4 장</span> 이사&nbsp;·&nbsp;이사회
+        </div>
+        <div class="article-row">
+          <div class="article-badge">15</div>
+          <span class="article-label">제15조 (이사의 수)</span>
+          <div class="article-content" contenteditable="true">본 회사의 이사는 1인 이상 15인 이하로 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">16</div>
+          <span class="article-label">제16조 (이사의 임기)</span>
+          <div class="article-content" contenteditable="true">이사의 임기는 3년으로 한다. 단, 임기 만료 전 최후의 결산기에 관한 정기주주총회가 그 임기 중에 종료하지 아니한 때에는 그 총회의 종결 시까지 임기를 연장한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">17</div>
+          <span class="article-label">제17조 (이사회 구성 및 소집)</span>
+          <div class="article-content" contenteditable="true">이사회는 이사 전원으로 구성하고, 대표이사 또는 이사회에서 선임한 이사가 소집한다. 이사회 소집 통지는 회의일 3일 전에 한다. 다만, 이사 전원의 동의가 있으면 통지 없이 소집할 수 있다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">18</div>
+          <span class="article-label">제18조 (대표이사)</span>
+          <div class="article-content" contenteditable="true">대표이사는 이사회 결의로 선임하며, 회사를 대표하고 업무를 집행한다.</div>
+        </div>
+
+        <!-- 제5장 감사 -->
+        <div class="chapter-header">
+          <span class="ch-num">제 5 장</span> 감&nbsp;&nbsp;사
+        </div>
+        <div class="article-row">
+          <div class="article-badge">19</div>
+          <span class="article-label">제19조 (감사)</span>
+          <div class="article-content" contenteditable="true">본 회사는 1인 이상의 감사를 둔다. 감사의 임기는 3년으로 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">20</div>
+          <span class="article-label">제20조 (감사의 권한)</span>
+          <div class="article-content" contenteditable="true">감사는 이사의 직무 집행을 감사하고 언제든지 회사의 업무·재산 상황을 조사할 수 있다.</div>
+        </div>
+
+        <!-- 제6장 계산 -->
+        <div class="chapter-header">
+          <span class="ch-num">제 6 장</span> 계&nbsp;&nbsp;산
+        </div>
+        <div class="article-row">
+          <div class="article-badge">21</div>
+          <span class="article-label">제21조 (사업연도)</span>
+          <div class="article-content">본 회사의 사업연도는 <span id="dispBizYear" contenteditable="true" style="font-weight:700; color:#2563EB;">1월 1일부터 12월 31일까지</span>로 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">22</div>
+          <span class="article-label">제22조 (재무제표)</span>
+          <div class="article-content" contenteditable="true">대표이사는 정기주주총회 6주 전에 재무제표 및 그 부속명세서, 영업보고서를 감사에게 제출하여야 한다.</div>
+        </div>
+        <div class="article-row">
+          <div class="article-badge">23</div>
+          <span class="article-label">제23조 (이익 배당)</span>
+          <div class="article-content" contenteditable="true">이익의 배당은 매 결산기 말 현재 주주명부에 기재된 주주에게 한다. 이익 배당은 현금 또는 주식으로 할 수 있다.</div>
+        </div>
+
+        <div class="doc-divider"></div>
+
+        <!-- 부칙 -->
+        <div class="addendum">
+          <div class="addendum-title">부&nbsp;&nbsp;&nbsp;&nbsp;칙</div>
+          <div class="article-row">
+            <div class="article-badge" style="background:#1E3A5F;">1</div>
+            <span class="article-label">제1조 (설립일)</span>
+            <div class="article-content">본 정관은 <span id="dispFoundDate" contenteditable="true" style="font-weight:700; color:#1E3A5F;">____년 ____월 ____일</span> 부터 효력을 발생한다.</div>
+          </div>
+          <div class="article-row">
+            <div class="article-badge" style="background:#1E3A5F;">2</div>
+            <span class="article-label">제2조 (발기인)</span>
+            <div class="article-content" contenteditable="true">본 회사 설립 시 발기인의 성명, 주민등록번호 및 주소는 다음과 같다.<br>
+              성명: ___________&nbsp;&nbsp; 주민번호: _______________&nbsp;&nbsp; 주소: ___________________
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; font-size:9pt; color:#1E3A5F; font-weight:700; margin:4mm 0 2mm;">
+          위와 같이 정관을 작성하고 발기인 전원이 서명·날인한다.
+        </div>
+        <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
+
+        <div class="stamp-row">
+          <div class="stamp-block">
+            <div class="s-title">발기인 대표</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:</div>
+            <div class="stamp-box">인</div>
+          </div>
+          <div class="stamp-block">
+            <div class="s-title">발기인</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:</div>
+            <div class="stamp-box">인</div>
+          </div>
+          <div class="stamp-block">
+            <div class="s-title">발기인</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:</div>
+            <div class="stamp-box">인</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const today = new Date();
+  document.getElementById('docDate').value = today.toISOString().split('T')[0];
+  const formatted = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+})();
+
+document.getElementById('docDate').addEventListener('change', function() {
+  const d = new Date(this.value);
+  const formatted = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+});
+
+document.getElementById('foundDate').addEventListener('change', function() {
+  const d = new Date(this.value);
+  document.getElementById('dispFoundDate').textContent = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+});
+
+document.getElementById('corpName').addEventListener('input', function() {
+  document.getElementById('dispCorpName').textContent = this.value;
+  document.getElementById('dispCorpName2').textContent = this.value;
+  document.getElementById('dispDocNum').textContent = this.value + ' 정관';
+});
+
+document.getElementById('totalShares').addEventListener('input', function() {
+  document.getElementById('dispTotalShares').textContent = this.value;
+});
+
+document.getElementById('parValue').addEventListener('input', function() {
+  document.getElementById('dispParValue').textContent = this.value;
+});
+
+document.getElementById('bizYear').addEventListener('change', function() {
+  document.getElementById('dispBizYear').textContent = this.value;
+});
+
+document.getElementById('logoUpload').addEventListener('change', function(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    document.getElementById('logoImg').src = ev.target.result;
+    document.getElementById('logoImg').style.display = 'block';
+    document.getElementById('logoHolder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+function resetDoc() {
+  if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;
+  document.querySelectorAll('[contenteditable]').forEach(el => el.textContent = '');
+}
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

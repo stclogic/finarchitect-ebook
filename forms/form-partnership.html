@@ -1,0 +1,425 @@
+<!-- 동업계약서 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동업계약서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.form-page-wrap {
+  max-width:1200px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #e2e8f0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 4px 24px rgba(15,118,110,.1);
+}
+.ctrl-panel h2 { font-size:.97rem; font-weight:800; color:#0F766E; margin-bottom:1.2rem; }
+.ctrl-section { margin-bottom:.9rem; }
+.ctrl-section label { display:block; font-size:.77rem; font-weight:700; color:#64748b; margin-bottom:.28rem; }
+.ctrl-section input, .ctrl-section select {
+  width:100%; padding:8px 10px; border:1px solid #e2e8f0; border-radius:8px;
+  font-size:.85rem; color:#0F766E; background:#f8fafc; box-sizing:border-box;
+}
+.ctrl-divider { height:1px; background:#e2e8f0; margin:1rem 0; }
+.print-btn {
+  width:100%; padding:13px;
+  background:linear-gradient(135deg,#0F766E,#0D9488); color:#fff;
+  border:none; border-radius:12px; font-size:.95rem; font-weight:700; cursor:pointer; transition:opacity .2s;
+}
+.print-btn:hover { opacity:.88; }
+.reset-btn {
+  width:100%; padding:9px; margin-top:.6rem;
+  background:none; border:1px solid #e2e8f0; border-radius:10px; font-size:.82rem; color:#64748b; cursor:pointer;
+}
+.tip-box {
+  background:#CCFBF1; border:1px solid #5EEAD4; border-radius:10px;
+  padding:.8rem 1rem; font-size:.76rem; color:#0F766E; line-height:1.65; margin-top:.8rem;
+}
+.back-link {
+  display:inline-flex; align-items:center; gap:.3rem;
+  font-size:.82rem; color:#64748b; text-decoration:none;
+  padding:7px 14px; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:1rem; transition:background .2s;
+}
+.back-link:hover { background:#CCFBF1; }
+.doc-wrap { background:#CCFBF1; border-radius:14px; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; }
+.doc-page {
+  width:210mm; min-height:297mm; background:#fff;
+  box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:0; overflow:hidden; font-family:'Noto Serif KR','Malgun Gothic',serif; font-size:10pt; color:#222; position:relative;
+}
+.doc-header-bar {
+  height:14mm; background:linear-gradient(90deg,#0F766E 0%,#0D9488 60%,#14B8A6 100%);
+  display:flex; align-items:center; padding:0 10mm; gap:12px;
+}
+.doc-header-bar .icon { font-size:20px; color:#fff; }
+.doc-header-bar .doc-num { color:rgba(255,255,255,.75); font-size:8pt; margin-left:auto; }
+.doc-body { padding:8mm 12mm 10mm; }
+.logo-area { display:flex; align-items:center; gap:10px; margin-bottom:3mm; }
+.logo-img { width:36px; height:36px; object-fit:contain; border-radius:6px; display:none; }
+.logo-placeholder {
+  width:36px; height:36px; border:1.5px dashed #5EEAD4; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; color:#5EEAD4; font-size:9px; text-align:center; line-height:1.2; cursor:pointer;
+}
+.doc-title { text-align:center; margin:4mm 0 2mm; }
+.doc-title h1 { font-size:20pt; font-weight:700; letter-spacing:6px; color:#0F766E; margin:0; }
+.doc-title .en { font-size:8.5pt; color:#0D9488; letter-spacing:2px; margin-top:1mm; }
+.doc-title .subtitle { font-size:8pt; color:#666; margin-top:1mm; }
+.doc-divider { height:2px; background:linear-gradient(90deg,#0F766E,#14B8A6); margin:3mm 0; border-radius:1px; }
+.doc-divider-thin { height:1px; background:#CCFBF1; margin:2mm 0; }
+
+/* 당사자 — 좌우 배치 */
+.party-dual { display:grid; grid-template-columns:1fr 24px 1fr; gap:0; margin:3mm 0; }
+.party-card { border:1.5px solid #5EEAD4; border-radius:8px; overflow:hidden; }
+.party-card-header {
+  padding:2mm 3mm; font-size:8.5pt; font-weight:700; color:#fff; text-align:center;
+}
+.party-card-header.ga { background:linear-gradient(90deg,#0F766E,#0D9488); }
+.party-card-header.eul { background:linear-gradient(90deg,#0D9488,#14B8A6); }
+.party-card-body { padding:2mm 3mm; background:#f0fdfc; }
+.pc-row { display:flex; align-items:baseline; gap:4px; margin:1mm 0; font-size:8pt; }
+.pc-label { color:#0F766E; font-weight:700; font-size:7.5pt; white-space:nowrap; min-width:52px; }
+.pc-val { flex:1; border-bottom:1px solid #5EEAD4; min-height:4.5mm; }
+.party-divider-col { display:flex; align-items:center; justify-content:center; font-size:9pt; color:#0F766E; font-weight:700; }
+
+/* 사업 정보 박스 */
+.biz-box { border:1.5px solid #5EEAD4; border-radius:8px; padding:3mm 4mm; margin:3mm 0; background:#f0fdfc; }
+.biz-box-title { font-size:8pt; font-weight:700; color:#0F766E; background:#CCFBF1; padding:1.5mm 3mm; border-radius:4px; margin-bottom:2mm; display:inline-block; }
+.pb-row { display:flex; align-items:baseline; gap:6px; margin:1.5mm 0; font-size:9pt; }
+.pb-label { color:#0F766E; font-weight:700; white-space:nowrap; min-width:70px; font-size:8.5pt; }
+.pb-val { flex:1; border-bottom:1px solid #5EEAD4; min-height:5mm; padding-bottom:.5mm; }
+
+.section-badge { display:inline-block; background:#0F766E; color:#fff; font-size:7.5pt; font-weight:700; padding:1mm 3mm; border-radius:4px; margin:2mm 0 1mm; }
+
+/* 출자 테이블 */
+.capital-table { width:100%; border-collapse:collapse; margin:2mm 0; font-size:8.5pt; }
+.capital-table th { background:#0F766E; color:#fff; padding:2mm 3mm; text-align:center; }
+.capital-table td { border:1px solid #99F6E4; padding:2mm 3mm; text-align:center; }
+.capital-table tr:nth-child(even) td { background:#f0fdfc; }
+.capital-table tfoot td { background:#CCFBF1; font-weight:700; color:#0F766E; }
+
+/* 조항 */
+.article-section { margin:2.5mm 0; }
+.article-num {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:18px; height:18px; background:#0F766E; color:#fff;
+  border-radius:50%; font-size:7.5pt; font-weight:700; margin-right:4px; flex-shrink:0;
+}
+.article-title { font-size:9.5pt; font-weight:700; color:#0F766E; display:flex; align-items:center; margin:2.5mm 0 1mm; }
+.article-body { font-size:8.5pt; line-height:1.7; color:#333; padding-left:22px; }
+
+.data-table { width:100%; border-collapse:collapse; margin:2mm 0; font-size:8pt; }
+.data-table th { background:#0D9488; color:#fff; padding:1.5mm 2mm; text-align:center; }
+.data-table td { border:1px solid #99F6E4; padding:1.5mm 2mm; }
+
+.stamp-row { display:flex; justify-content:space-around; margin:6mm 0 3mm; gap:1rem; }
+.stamp-block { text-align:center; flex:1; }
+.stamp-block .s-title { font-size:8.5pt; font-weight:700; color:#0F766E; margin-bottom:2mm; }
+.stamp-block .s-info { font-size:8pt; line-height:1.8; color:#444; }
+.stamp-box { width:28mm; height:20mm; border:1px solid #99F6E4; border-radius:4px; margin:2mm auto 0; display:flex; align-items:center; justify-content:center; color:#ccc; font-size:7pt; }
+
+[contenteditable]:hover { outline:2px solid #5EEAD4; border-radius:3px; }
+[contenteditable]:focus { outline:3px solid #0F766E; border-radius:3px; background:#f0fdfc; }
+
+@media print {
+  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .doc-page { width:210mm; box-shadow:none; min-height:auto; }
+  @page { size:A4; margin:0; }
+  body { background:#fff !important; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>🤝 동업계약서</h2>
+    <div class="ctrl-section">
+      <label>회사 로고 업로드</label>
+      <input type="file" accept="image/*" id="logoUpload" style="font-size:.78rem;">
+    </div>
+    <div class="ctrl-section">
+      <label>작성일</label>
+      <input type="date" id="docDate">
+    </div>
+    <div class="ctrl-section">
+      <label>문서 번호</label>
+      <input type="text" id="docNum" placeholder="예: PRT-2025-001">
+    </div>
+    <div class="ctrl-section">
+      <label>상호 (사업체명)</label>
+      <input type="text" id="bizName" placeholder="예: ○○카페">
+    </div>
+    <div class="ctrl-section">
+      <label>총 출자금 (숫자)</label>
+      <input type="number" id="totalCapital" placeholder="예: 100000000">
+    </div>
+    <div class="ctrl-section">
+      <label>파트너 수</label>
+      <select id="partnerCount">
+        <option value="2">2인</option>
+        <option value="3">3인</option>
+        <option value="4">4인</option>
+      </select>
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
+    <div class="tip-box">
+      💡 <strong>작성 Tip</strong><br>
+      손익 배분 비율과 탈퇴 조건을 반드시 명확히 기재하세요. 분쟁 예방을 위해 업무 범위도 구체적으로 정하는 것을 권장합니다.
+    </div>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="doc-page" id="docPage">
+      <div class="doc-header-bar">
+        <span class="icon">🤝</span>
+        <span style="color:#fff;font-size:9pt;font-weight:700;">PARTNERSHIP AGREEMENT</span>
+        <span class="doc-num" id="dispDocNum">No. PRT-2025-001</span>
+      </div>
+
+      <div class="doc-body">
+        <div class="logo-area">
+          <div class="logo-placeholder" id="logoHolder" onclick="document.getElementById('logoUpload').click()">로고<br>업로드</div>
+          <img class="logo-img" id="logoImg" src="" alt="logo">
+          <div style="flex:1; text-align:right; font-size:7.5pt; color:#888;"><span id="dispDate"></span></div>
+        </div>
+
+        <div class="doc-title">
+          <h1>동&nbsp;&nbsp;업&nbsp;&nbsp;계&nbsp;&nbsp;약&nbsp;&nbsp;서</h1>
+          <div class="en">PARTNERSHIP AGREEMENT</div>
+          <div class="subtitle">아래 당사자들은 동업에 관하여 다음과 같이 계약을 체결한다.</div>
+        </div>
+        <div class="doc-divider"></div>
+
+        <!-- 당사자 좌우 배치 -->
+        <div class="party-dual">
+          <div class="party-card">
+            <div class="party-card-header ga">甲 — 대표 파트너</div>
+            <div class="party-card-body">
+              <div class="pc-row"><span class="pc-label">성명</span><span class="pc-val" contenteditable="true"></span></div>
+              <div class="pc-row"><span class="pc-label">생년월일</span><span class="pc-val" contenteditable="true"></span></div>
+              <div class="pc-row"><span class="pc-label">주소</span><span class="pc-val" contenteditable="true"></span></div>
+              <div class="pc-row"><span class="pc-label">연락처</span><span class="pc-val" contenteditable="true"></span></div>
+            </div>
+          </div>
+          <div class="party-divider-col">⇄</div>
+          <div class="party-card">
+            <div class="party-card-header eul">乙 — 파트너</div>
+            <div class="party-card-body">
+              <div class="pc-row"><span class="pc-label">성명</span><span class="pc-val" contenteditable="true"></span></div>
+              <div class="pc-row"><span class="pc-label">생년월일</span><span class="pc-val" contenteditable="true"></span></div>
+              <div class="pc-row"><span class="pc-label">주소</span><span class="pc-val" contenteditable="true"></span></div>
+              <div class="pc-row"><span class="pc-label">연락처</span><span class="pc-val" contenteditable="true"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 사업 기본 정보 -->
+        <div class="biz-box">
+          <div class="biz-box-title">▌ 사업 기본 사항</div>
+          <div class="pb-row"><span class="pb-label">상호</span><span class="pb-val" id="dispBizName" contenteditable="true"></span></div>
+          <div class="pb-row"><span class="pb-label">사업 내용</span><span class="pb-val" contenteditable="true"></span></div>
+          <div class="pb-row"><span class="pb-label">사업장 소재지</span><span class="pb-val" contenteditable="true"></span></div>
+          <div class="pb-row"><span class="pb-label">사업 개시일</span><span class="pb-val" contenteditable="true"></span></div>
+        </div>
+
+        <!-- 출자 테이블 -->
+        <div class="section-badge">▌ 출자금 및 지분</div>
+        <table class="capital-table">
+          <thead>
+            <tr><th>파트너</th><th>출자 형태</th><th>출자금액</th><th>지분 비율</th><th>비고</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td contenteditable="true">甲 (대표파트너)</td>
+              <td contenteditable="true">현금</td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+            </tr>
+            <tr>
+              <td contenteditable="true">乙 (파트너)</td>
+              <td contenteditable="true">현금</td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+            </tr>
+            <tr>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">합계</td>
+              <td id="dispTotalCapital" contenteditable="true"></td>
+              <td contenteditable="true">100%</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="doc-divider-thin"></div>
+
+        <!-- 13개 조항 -->
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">1</span>목적 및 사업 내용</div>
+          <div class="article-body" contenteditable="true">본 계약의 목적은 당사자들이 공동으로 사업을 영위하여 그 수익을 나누는 데 있다. 사업 내용은 위 사업 기본 사항에 명시된 바와 같으며, 변경 시 전원 합의로 한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">2</span>출자 및 지분</div>
+          <div class="article-body" contenteditable="true">각 파트너의 출자금 및 지분 비율은 위 출자금 표와 같다. 추가 출자가 필요한 경우 전원 합의 후 지분 비율에 따라 부담한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">3</span>손익 배분</div>
+          <div class="article-body" contenteditable="true">순이익 및 손실은 위 지분 비율에 따라 배분한다. 손익 정산은 분기별(3월, 6월, 9월, 12월 말)로 실시하며, 정산 후 30일 이내에 배분금을 지급한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">4</span>업무 집행</div>
+          <div class="article-body" contenteditable="true">갑이 대표 파트너로서 일상적인 업무를 집행한다. 주요 의사결정(500만 원 이상 지출, 계약 체결 등)은 파트너 전원의 서면 합의로 한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">5</span>경비 처리</div>
+          <div class="article-body" contenteditable="true">업무상 발생한 비용은 사업 계좌에서 지출한다. 개인 비용은 사전 합의 없이 사업 비용으로 처리할 수 없다. 월 ______만 원을 초과하는 지출은 전원 합의가 필요하다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">6</span>사업 계좌 관리</div>
+          <div class="article-body" contenteditable="true">사업 공동 계좌를 개설하고 모든 수입·지출은 해당 계좌를 통한다. 계좌 인출 권한은 갑 단독 또는 갑·을 공동으로 한다(중복 선택 가능). 월 정산 내역서를 전원에게 공유한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">7</span>경업 금지</div>
+          <div class="article-body" contenteditable="true">각 파트너는 계약 기간 중 및 탈퇴·해소 후 __년간, 본 사업장 반경 __km 이내에서 동종 업종을 영위하지 않는다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">8</span>신규 파트너 추가</div>
+          <div class="article-body" contenteditable="true">신규 파트너의 가입은 기존 파트너 전원의 서면 동의가 있어야 하며, 가입 시 기존 지분 비율에 따라 지분이 조정된다. 별도 추가계약서를 작성한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">9</span>파트너 탈퇴</div>
+          <div class="article-body" contenteditable="true">탈퇴를 원하는 파트너는 탈퇴 희망일 3개월 전에 서면으로 통보하여야 한다. 탈퇴 시 탈퇴일 기준 지분 평가액을 60일 이내에 정산·지급한다. 탈퇴 파트너의 지분은 잔류 파트너가 합의하에 인수한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">10</span>동업 해소</div>
+          <div class="article-body" contenteditable="true">동업 해소는 파트너 전원의 서면 합의로 한다. 해소 시 채무 변제 후 잔여 자산을 지분 비율에 따라 분배한다. 청산은 파트너 전원이 참여하여 진행한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">11</span>기밀 유지</div>
+          <div class="article-body" contenteditable="true">각 파트너는 사업과 관련하여 알게 된 거래처 정보, 영업 비밀 및 재무 정보를 제3자에게 누설하지 않는다. 이 의무는 계약 종료 후 __년간 지속된다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">12</span>분쟁 해결</div>
+          <div class="article-body" contenteditable="true">본 계약에 관한 분쟁은 우선 파트너 간 협의로 해결한다. 협의가 불가한 경우 사업장 소재지를 관할하는 법원을 제1심 법원으로 한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">13</span>기타</div>
+          <div class="article-body" contenteditable="true">본 계약서에 명시되지 않은 사항은 「민법」, 「상법」 및 관계 법령과 상관습에 따르며, 파트너 전원의 합의로 결정한다.</div>
+        </div>
+
+        <div class="doc-divider"></div>
+
+        <div style="text-align:center; font-size:9pt; color:#0F766E; font-weight:700; margin:3mm 0 2mm;">
+          위 계약 내용을 확인하고 각자 서명·날인한다.
+        </div>
+        <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
+
+        <div class="stamp-row">
+          <div class="stamp-block">
+            <div class="s-title">甲 — 대표 파트너</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:<br>연락처:</div>
+            <div class="stamp-box">인</div>
+          </div>
+          <div class="stamp-block">
+            <div class="s-title">乙 — 파트너</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:<br>연락처:</div>
+            <div class="stamp-box">인</div>
+          </div>
+          <div class="stamp-block" id="thirdParty" style="display:none;">
+            <div class="s-title">丙 — 파트너</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:<br>연락처:</div>
+            <div class="stamp-box">인</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const today = new Date();
+  document.getElementById('docDate').value = today.toISOString().split('T')[0];
+  const formatted = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+})();
+
+document.getElementById('docDate').addEventListener('change', function() {
+  const d = new Date(this.value);
+  const formatted = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+});
+
+document.getElementById('docNum').addEventListener('input', function() {
+  document.getElementById('dispDocNum').textContent = 'No. ' + this.value;
+});
+
+document.getElementById('bizName').addEventListener('input', function() {
+  document.getElementById('dispBizName').textContent = this.value;
+});
+
+document.getElementById('totalCapital').addEventListener('input', function() {
+  const n = parseInt(this.value, 10);
+  document.getElementById('dispTotalCapital').textContent = isNaN(n) ? '' : `₩ ${n.toLocaleString('ko-KR')}`;
+});
+
+document.getElementById('partnerCount').addEventListener('change', function() {
+  document.getElementById('thirdParty').style.display = parseInt(this.value) >= 3 ? 'block' : 'none';
+});
+
+document.getElementById('logoUpload').addEventListener('change', function(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    document.getElementById('logoImg').src = ev.target.result;
+    document.getElementById('logoImg').style.display = 'block';
+    document.getElementById('logoHolder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+function resetDoc() {
+  if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;
+  document.querySelectorAll('[contenteditable]').forEach(el => el.textContent = '');
+}
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!-- 기부약정서 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기부약정서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.form-page-wrap {
+  max-width:1200px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #e2e8f0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 4px 24px rgba(124,58,237,.1);
+}
+.ctrl-panel h2 { font-size:.97rem; font-weight:800; color:#7C3AED; margin-bottom:1.2rem; }
+.ctrl-section { margin-bottom:.9rem; }
+.ctrl-section label { display:block; font-size:.77rem; font-weight:700; color:#64748b; margin-bottom:.28rem; }
+.ctrl-section input, .ctrl-section select {
+  width:100%; padding:8px 10px; border:1px solid #e2e8f0; border-radius:8px;
+  font-size:.85rem; color:#7C3AED; background:#f8fafc; box-sizing:border-box;
+}
+.ctrl-divider { height:1px; background:#e2e8f0; margin:1rem 0; }
+.print-btn {
+  width:100%; padding:13px;
+  background:linear-gradient(135deg,#7C3AED,#F97316); color:#fff;
+  border:none; border-radius:12px; font-size:.95rem; font-weight:700; cursor:pointer; transition:opacity .2s;
+}
+.print-btn:hover { opacity:.88; }
+.reset-btn {
+  width:100%; padding:9px; margin-top:.6rem;
+  background:none; border:1px solid #e2e8f0; border-radius:10px; font-size:.82rem; color:#64748b; cursor:pointer;
+}
+.tip-box {
+  background:#EDE9FE; border:1px solid #C4B5FD; border-radius:10px;
+  padding:.8rem 1rem; font-size:.76rem; color:#7C3AED; line-height:1.65; margin-top:.8rem;
+}
+.back-link {
+  display:inline-flex; align-items:center; gap:.3rem;
+  font-size:.82rem; color:#64748b; text-decoration:none;
+  padding:7px 14px; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:1rem; transition:background .2s;
+}
+.back-link:hover { background:#EDE9FE; }
+.doc-wrap { background:#EDE9FE; border-radius:14px; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; }
+.doc-page {
+  width:210mm; min-height:297mm; background:#fff;
+  box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:0; overflow:hidden; font-family:'Noto Serif KR','Malgun Gothic',serif; font-size:10pt; color:#222; position:relative;
+}
+/* 상단 그라디언트 바 — 보라+오렌지 */
+.doc-header-bar {
+  height:14mm; background:linear-gradient(90deg,#7C3AED 0%,#F97316 100%);
+  display:flex; align-items:center; padding:0 10mm; gap:12px;
+}
+.doc-header-bar .icon { font-size:22px; color:#fff; }
+.doc-header-bar .doc-num { color:rgba(255,255,255,.75); font-size:8pt; margin-left:auto; }
+.doc-body { padding:8mm 12mm 10mm; }
+.logo-area { display:flex; align-items:center; gap:10px; margin-bottom:3mm; }
+.logo-img { width:36px; height:36px; object-fit:contain; border-radius:6px; display:none; }
+.logo-placeholder {
+  width:36px; height:36px; border:1.5px dashed #C4B5FD; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; color:#C4B5FD; font-size:9px; text-align:center; line-height:1.2; cursor:pointer;
+}
+.doc-title { text-align:center; margin:3mm 0 2mm; }
+.doc-title h1 { font-size:19pt; font-weight:700; letter-spacing:5px; color:#7C3AED; margin:0; }
+.doc-title .en { font-size:8pt; color:#A78BFA; letter-spacing:2px; margin-top:1mm; }
+.doc-title .subtitle { font-size:9pt; color:#F97316; font-weight:600; margin-top:2mm; letter-spacing:1px; }
+.doc-divider { height:3px; background:linear-gradient(90deg,#7C3AED,#A78BFA,#F97316); margin:3mm 0; border-radius:2px; }
+.doc-divider-thin { height:1px; background:#EDE9FE; margin:2mm 0; }
+
+/* 단체 정보 박스 */
+.org-box {
+  border:1.5px solid #A78BFA; border-radius:8px; overflow:hidden; margin:3mm 0;
+}
+.org-box-header {
+  background:linear-gradient(90deg,#7C3AED,#A78BFA); color:#fff;
+  padding:2mm 4mm; font-size:8.5pt; font-weight:700; display:flex; align-items:center; gap:5px;
+}
+.org-box-body { padding:3mm 4mm; background:#faf5ff; }
+.pb-row { display:flex; align-items:baseline; gap:6px; margin:1.5mm 0; font-size:9pt; }
+.pb-label { color:#7C3AED; font-weight:700; white-space:nowrap; min-width:70px; font-size:8.5pt; }
+.pb-val { flex:1; border-bottom:1px solid #A78BFA; min-height:5mm; padding-bottom:.5mm; }
+
+/* 기부자 박스 */
+.donor-box {
+  border:1.5px solid #FED7AA; border-radius:8px; overflow:hidden; margin:3mm 0;
+}
+.donor-box-header {
+  background:linear-gradient(90deg,#F97316,#FDBA74); color:#fff;
+  padding:2mm 4mm; font-size:8.5pt; font-weight:700; display:flex; align-items:center; gap:5px;
+}
+.donor-box-body { padding:3mm 4mm; background:#fff7ed; }
+
+.section-badge {
+  display:inline-block; background:#7C3AED; color:#fff; font-size:7.5pt; font-weight:700;
+  padding:1mm 3mm; border-radius:4px; margin:2mm 0 1mm;
+}
+.section-badge-orange {
+  display:inline-block; background:#F97316; color:#fff; font-size:7.5pt; font-weight:700;
+  padding:1mm 3mm; border-radius:4px; margin:2mm 0 1mm;
+}
+
+/* 기부 상세 테이블 */
+.donation-detail-table { width:100%; border-collapse:collapse; margin:2mm 0; font-size:8.5pt; }
+.donation-detail-table th { background:#7C3AED; color:#fff; padding:1.5mm 3mm; text-align:left; font-weight:700; width:30%; }
+.donation-detail-table td { border:1px solid #DDD6FE; padding:1.5mm 3mm; }
+.donation-detail-table tr:nth-child(even) td { background:#faf5ff; }
+
+/* 체크박스 스타일 */
+.check-group { display:flex; gap:8px; flex-wrap:wrap; font-size:8.5pt; align-items:center; }
+.check-item { display:inline-flex; align-items:center; gap:3px; cursor:pointer; }
+.check-item input[type=checkbox] { accent-color:#7C3AED; }
+
+.article-section { margin:2.5mm 0; }
+.article-num {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:17px; height:17px; background:#7C3AED; color:#fff;
+  border-radius:50%; font-size:7.5pt; font-weight:700; margin-right:4px; flex-shrink:0;
+}
+.article-title { font-size:9.5pt; font-weight:700; color:#7C3AED; display:flex; align-items:center; margin:2mm 0 1mm; }
+.article-body { font-size:8.5pt; line-height:1.7; color:#333; padding-left:21px; }
+
+.stamp-row { display:flex; justify-content:space-around; margin:5mm 0 3mm; gap:1rem; }
+.stamp-block { text-align:center; flex:1; }
+.stamp-block .s-title { font-size:8.5pt; font-weight:700; color:#7C3AED; margin-bottom:2mm; }
+.stamp-block .s-info { font-size:8pt; line-height:1.8; color:#444; }
+.stamp-box { width:28mm; height:20mm; border:1px solid #DDD6FE; border-radius:4px; margin:2mm auto 0; display:flex; align-items:center; justify-content:center; color:#ccc; font-size:7pt; }
+
+/* 하단 따뜻한 메시지 */
+.warm-footer {
+  background:linear-gradient(135deg,#7C3AED 0%,#F97316 100%);
+  border-radius:8px; padding:3mm 4mm; text-align:center; margin-top:4mm;
+  color:#fff; font-size:9pt; font-weight:600; letter-spacing:1px;
+}
+
+[contenteditable]:hover { outline:2px solid #A78BFA; border-radius:3px; }
+[contenteditable]:focus { outline:3px solid #7C3AED; border-radius:3px; background:#faf5ff; }
+
+@media print {
+  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .doc-page { width:210mm; box-shadow:none; min-height:auto; }
+  @page { size:A4; margin:0; }
+  body { background:#fff !important; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <h2>💜 기부약정서</h2>
+    <div class="ctrl-section">
+      <label>단체 로고 업로드</label>
+      <input type="file" accept="image/*" id="logoUpload" style="font-size:.78rem;">
+    </div>
+    <div class="ctrl-section">
+      <label>작성일</label>
+      <input type="date" id="docDate">
+    </div>
+    <div class="ctrl-section">
+      <label>문서 번호</label>
+      <input type="text" id="docNum" placeholder="예: DON-2025-001">
+    </div>
+    <div class="ctrl-section">
+      <label>기부 금액 (숫자)</label>
+      <input type="number" id="donationAmt" placeholder="예: 1200000">
+    </div>
+    <div class="ctrl-section">
+      <label>기부 유형</label>
+      <select id="donationType">
+        <option value="일시기부">일시기부</option>
+        <option value="정기기부">정기기부</option>
+      </select>
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
+    <div class="tip-box">
+      💡 <strong>작성 Tip</strong><br>
+      기부금 영수증은 소득공제에 활용됩니다. 지정기부 시 사용 목적을 명확히 기재하면 투명한 나눔이 됩니다.
+    </div>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="doc-page" id="docPage">
+      <div class="doc-header-bar">
+        <span class="icon">🤍</span>
+        <span style="color:#fff;font-size:9pt;font-weight:700;">DONATION PLEDGE AGREEMENT</span>
+        <span class="doc-num" id="dispDocNum">No. DON-2025-001</span>
+      </div>
+
+      <div class="doc-body">
+        <div class="logo-area">
+          <div class="logo-placeholder" id="logoHolder" onclick="document.getElementById('logoUpload').click()">로고<br>업로드</div>
+          <img class="logo-img" id="logoImg" src="" alt="logo">
+          <div style="flex:1; text-align:right; font-size:7.5pt; color:#888;"><span id="dispDate"></span></div>
+        </div>
+
+        <div class="doc-title">
+          <h1>기&nbsp;&nbsp;부&nbsp;&nbsp;약&nbsp;&nbsp;정&nbsp;&nbsp;서</h1>
+          <div class="en">DONATION PLEDGE AGREEMENT</div>
+          <div class="subtitle">🧡 나눔으로 세상을 바꾸는 약속 🧡</div>
+        </div>
+        <div class="doc-divider"></div>
+
+        <!-- 수혜 단체 정보 -->
+        <div class="org-box">
+          <div class="org-box-header">💜 기부 수혜 단체 (受益 法人)</div>
+          <div class="org-box-body">
+            <div class="pb-row"><span class="pb-label">단 체 명</span><span class="pb-val" contenteditable="true"></span></div>
+            <div class="pb-row"><span class="pb-label">대 표 자</span><span class="pb-val" contenteditable="true" style="max-width:60mm;"></span><span class="pb-label" style="margin-left:4mm;">사업자번호</span><span class="pb-val" contenteditable="true"></span></div>
+            <div class="pb-row"><span class="pb-label">설립 목적</span><span class="pb-val" contenteditable="true"></span></div>
+            <div class="pb-row"><span class="pb-label">주소</span><span class="pb-val" contenteditable="true"></span></div>
+            <div class="pb-row"><span class="pb-label">연 락 처</span><span class="pb-val" contenteditable="true" style="max-width:60mm;"></span><span class="pb-label" style="margin-left:4mm;">이메일</span><span class="pb-val" contenteditable="true"></span></div>
+          </div>
+        </div>
+
+        <!-- 기부자 정보 -->
+        <div class="donor-box">
+          <div class="donor-box-header">🧡 기부자 정보 (寄附者)</div>
+          <div class="donor-box-body">
+            <div class="pb-row"><span class="pb-label" style="color:#F97316;">성명/법인명</span><span class="pb-val" style="border-bottom-color:#FDBA74;" contenteditable="true"></span></div>
+            <div class="pb-row"><span class="pb-label" style="color:#F97316;">생년월일/사번</span><span class="pb-val" style="border-bottom-color:#FDBA74; max-width:55mm;" contenteditable="true"></span><span class="pb-label" style="margin-left:4mm;color:#F97316;">연락처</span><span class="pb-val" style="border-bottom-color:#FDBA74;" contenteditable="true"></span></div>
+            <div class="pb-row"><span class="pb-label" style="color:#F97316;">주소</span><span class="pb-val" style="border-bottom-color:#FDBA74;" contenteditable="true"></span></div>
+            <div class="pb-row"><span class="pb-label" style="color:#F97316;">이메일</span><span class="pb-val" style="border-bottom-color:#FDBA74;" contenteditable="true"></span></div>
+          </div>
+        </div>
+
+        <div class="doc-divider-thin"></div>
+
+        <!-- 기부 상세 내용 -->
+        <div class="section-badge">▌ 기부 상세 내용</div>
+        <table class="donation-detail-table">
+          <tbody>
+            <tr>
+              <th>기부 금액</th>
+              <td>
+                <div id="dispDonationAmt" contenteditable="true" style="font-size:10.5pt;font-weight:700;color:#7C3AED;">금 _______________ 원 (₩ )</div>
+                <div id="dispDonationAmtKor" contenteditable="true" style="font-size:8.5pt;color:#555;margin-top:1mm;">금 ___________________________ 원정</div>
+              </td>
+            </tr>
+            <tr>
+              <th>기부 방법</th>
+              <td>
+                <div class="check-group">
+                  <label class="check-item"><input type="checkbox"> 현금</label>
+                  <label class="check-item"><input type="checkbox"> 현물</label>
+                  <label class="check-item"><input type="checkbox"> 부동산</label>
+                  <label class="check-item"><input type="checkbox"> 주식·유가증권</label>
+                  <label class="check-item"><input type="checkbox"> 기타</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>기부 유형</th>
+              <td>
+                <div class="check-group">
+                  <label class="check-item"><input type="checkbox" id="chkOnce"> 일시 기부</label>
+                  <label class="check-item"><input type="checkbox" id="chkRegular"> 정기 기부</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>기부 일시</th>
+              <td contenteditable="true"></td>
+            </tr>
+            <tr id="regularRow">
+              <th>정기 기부 조건</th>
+              <td>
+                주기:
+                <div class="check-group" style="display:inline-flex;">
+                  <label class="check-item"><input type="checkbox"> 매월</label>
+                  <label class="check-item"><input type="checkbox"> 분기</label>
+                  <label class="check-item"><input type="checkbox"> 매년</label>
+                </div>
+                &nbsp; 이체일: <span contenteditable="true" style="border-bottom:1px solid #DDD6FE; display:inline-block; min-width:30mm;">매월   일</span><br>
+                계좌: <span contenteditable="true" style="border-bottom:1px solid #DDD6FE; display:inline-block; min-width:70mm;"></span>
+              </td>
+            </tr>
+            <tr>
+              <th>목적 지정 여부</th>
+              <td>
+                <div class="check-group">
+                  <label class="check-item"><input type="checkbox"> 지정 기부</label>
+                  <label class="check-item"><input type="checkbox"> 비지정 기부</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>지정 사용 목적</th>
+              <td contenteditable="true">비지정 기부의 경우 단체의 설립 목적 사업에 사용</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="doc-divider-thin"></div>
+
+        <!-- 약정 조항 -->
+        <div class="section-badge">▌ 약정 조항</div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">1</span>기부금 사용</div>
+          <div class="article-body" contenteditable="true">단체는 기부자가 지정한 목적 사업 또는 단체의 정관상 설립 목적 사업에 기부금을 사용한다. 기부금을 다른 용도로 전용하지 않는다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">2</span>영수증 발행</div>
+          <div class="article-body" contenteditable="true">단체는 기부금 수령 후 즉시 「소득세법」 제34조 및 「법인세법」 제24조에 따른 기부금 영수증을 발행하여 기부자에게 교부한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">3</span>결과 보고</div>
+          <div class="article-body" contenteditable="true">단체는 매년 1회 이상 기부금 사용 내역과 사업 성과를 기부자에게 보고한다. 보고는 서면 또는 이메일로 한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">4</span>기부 취소</div>
+          <div class="article-body" contenteditable="true">기부자는 기부금 이행 전까지 서면으로 약정을 취소할 수 있다. 이미 이행된 기부금은 원칙적으로 환급되지 않으나, 단체의 목적사업 중단 또는 불법 사용이 확인된 경우 반환을 요구할 수 있다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">5</span>개인정보 처리 동의</div>
+          <div class="article-body" contenteditable="true">기부자는 기부금 영수증 발행, 사업 보고 등을 위해 단체가 본인의 개인정보를 수집·이용하는 것에 동의한다. 단체는 「개인정보 보호법」에 따라 기부자의 정보를 안전하게 관리한다.</div>
+        </div>
+
+        <div class="article-section">
+          <div class="article-title"><span class="article-num">6</span>기타</div>
+          <div class="article-body" contenteditable="true">본 약정서에 명시되지 않은 사항은 「기부금품의 모집 및 사용에 관한 법률」 및 관계 법령을 따른다.</div>
+        </div>
+
+        <div class="doc-divider"></div>
+
+        <div style="text-align:center; font-size:9pt; color:#7C3AED; font-weight:700; margin:3mm 0 1mm;">
+          위 약정 내용을 확인하고 아래와 같이 서명·날인한다.
+        </div>
+        <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
+
+        <div class="stamp-row">
+          <div class="stamp-block">
+            <div class="s-title">기부자</div>
+            <div class="s-info" contenteditable="true">성명:<br>주소:<br>연락처:</div>
+            <div class="stamp-box">인</div>
+          </div>
+          <div class="stamp-block">
+            <div class="s-title">단체 대표자</div>
+            <div class="s-info" contenteditable="true">단체명:<br>대표자:<br>연락처:</div>
+            <div class="stamp-box">인</div>
+          </div>
+        </div>
+
+        <!-- 따뜻한 마무리 메시지 -->
+        <div class="warm-footer">
+          이 약정은 사랑과 나눔의 정신으로 체결되었습니다. 💜🧡
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const today = new Date();
+  document.getElementById('docDate').value = today.toISOString().split('T')[0];
+  const formatted = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+})();
+
+document.getElementById('docDate').addEventListener('change', function() {
+  const d = new Date(this.value);
+  const formatted = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+  document.getElementById('dispDate').textContent = formatted;
+  document.getElementById('sigDate').textContent = formatted;
+});
+
+document.getElementById('docNum').addEventListener('input', function() {
+  document.getElementById('dispDocNum').textContent = 'No. ' + this.value;
+});
+
+function numberToKorean(n) {
+  const units = ['','만','억','조'];
+  const digits = ['','일','이','삼','사','오','육','칠','팔','구'];
+  const places = ['','십','백','천'];
+  if (n === 0) return '영';
+  let result = ''; let unitIdx = 0;
+  while (n > 0) {
+    const chunk = n % 10000;
+    if (chunk > 0) {
+      let chunkStr = ''; let tmp = chunk;
+      for (let p = 0; tmp > 0; p++, tmp = Math.floor(tmp/10)) {
+        const d = tmp % 10;
+        if (d > 0) chunkStr = digits[d] + places[p] + chunkStr;
+      }
+      result = chunkStr + units[unitIdx] + result;
+    }
+    n = Math.floor(n / 10000); unitIdx++;
+  }
+  return result;
+}
+
+document.getElementById('donationAmt').addEventListener('input', function() {
+  const n = parseInt(this.value, 10);
+  if (!isNaN(n)) {
+    document.getElementById('dispDonationAmt').textContent = `금 ${n.toLocaleString('ko-KR')} 원 (₩ ${n.toLocaleString('ko-KR')})`;
+    document.getElementById('dispDonationAmtKor').textContent = `금 ${numberToKorean(n)} 원정`;
+  }
+});
+
+document.getElementById('logoUpload').addEventListener('change', function(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    document.getElementById('logoImg').src = ev.target.result;
+    document.getElementById('logoImg').style.display = 'block';
+    document.getElementById('logoHolder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+function resetDoc() {
+  if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    if (el.id === 'dispDonationAmt') el.textContent = '금 _______________ 원 (₩ )';
+    else if (el.id === 'dispDonationAmtKor') el.textContent = '금 ___________________________ 원정';
+    else el.textContent = '';
+  });
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+}
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

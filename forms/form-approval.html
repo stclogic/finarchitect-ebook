@@ -1,0 +1,391 @@
+<!-- 품의서(결재문서) 온라인 작성 및 인쇄/PDF 출력 서식 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>품의서 — 온라인 작성 및 PDF 출력 | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+.form-page-wrap {
+  max-width:1300px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+.ctrl-panel h2 { font-size:.95rem; font-weight:800; color:#1E293B; margin-bottom:1.2rem; display:flex; align-items:center; gap:.4rem; }
+.ctrl-section { margin-bottom:1.2rem; }
+.ctrl-section label { display:block; font-size:.76rem; font-weight:700; color:#64748B; margin-bottom:.3rem; text-transform:uppercase; letter-spacing:.04em; }
+.ctrl-section input[type="text"] { width:100%; padding:8px 10px; border:1px solid #E2E8F0; border-radius:8px; font-size:.84rem; color:#1E293B; background:#F8FAFC; box-sizing:border-box; }
+.ctrl-file-btn { display:flex; align-items:center; gap:.5rem; padding:9px 14px; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:8px; cursor:pointer; font-size:.82rem; color:#64748B; transition:border-color .15s; }
+.ctrl-file-btn:hover { border-color:#1E293B; color:#1E293B; }
+.ctrl-file-btn input { display:none; }
+.ctrl-divider { height:1px; background:#F1F5F9; margin:1rem 0; }
+.print-btn { width:100%; padding:12px; background:#1E293B; color:#fff; border:none; border-radius:12px; font-size:.92rem; font-weight:700; cursor:pointer; transition:opacity .15s; display:flex; align-items:center; justify-content:center; gap:.5rem; }
+.print-btn:hover { opacity:.85; }
+.back-link { display:block; text-align:center; margin-top:.8rem; font-size:.8rem; color:#64748B; text-decoration:none; }
+.back-link:hover { color:#1E293B; }
+.tip-box { background:#F0FDF4; border:1px solid #BBF7D0; border-radius:10px; padding:.75rem 1rem; font-size:.75rem; color:#14532D; line-height:1.6; margin-top:.8rem; }
+.logo-preview { max-width:100%; max-height:60px; object-fit:contain; margin-top:.5rem; border-radius:6px; }
+
+/* 문서 컨테이너 */
+.doc-wrap { background:#E2E8F0; border-radius:14px; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; }
+.a4 {
+  width:210mm; background:#fff; box-shadow:0 8px 40px rgba(0,0,0,.18);
+  padding:15mm 14mm; box-sizing:border-box;
+  font-family:'Noto Serif KR','Malgun Gothic',serif; font-size:10pt; color:#1E293B; line-height:1.7;
+}
+
+/* 문서 최상단: 로고 + 결재란 */
+.doc-top-row {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:5mm;
+}
+.doc-logo-area { display:flex; flex-direction:column; align-items:flex-start; gap:1mm; }
+.doc-logo { max-height:42px; max-width:130px; object-fit:contain; }
+.doc-logo-placeholder { width:100px; height:38px; background:#F1F5F9; border:1px dashed #CBD5E1; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:7.5pt; color:#94A3B8; cursor:pointer; }
+
+/* ── 결재란 (핵심 요소) ── */
+.approval-grid {
+  display:flex; border:2px solid #1E293B; border-radius:6px; overflow:hidden;
+  flex-shrink:0; box-shadow:0 2px 8px rgba(30,41,59,.15);
+}
+.appr-col { display:flex; flex-direction:column; min-width:26mm; }
+.appr-col:not(:last-child) { border-right:1px solid #CBD5E1; }
+.appr-role {
+  background:#1E293B; color:#fff; text-align:center;
+  font-size:8pt; font-weight:700; padding:1.5mm 2mm;
+  letter-spacing:.08em;
+}
+.appr-name-box {
+  text-align:center; font-size:9pt; font-weight:700; min-height:7mm;
+  padding:1mm 2mm; border-bottom:1px solid #E2E8F0;
+}
+.appr-sign-box {
+  height:16mm; border-bottom:1px solid #E2E8F0;
+  display:flex; align-items:center; justify-content:center;
+  color:#CBD5E1; font-size:8pt;
+}
+.appr-date-box { font-size:7pt; color:#64748B; text-align:center; padding:1mm 2mm; min-height:5mm; }
+
+/* 문서 제목 */
+.doc-title-center {
+  text-align:center; margin:4mm 0 5mm;
+  padding-bottom:4mm; border-bottom:2px solid #1E293B;
+}
+.doc-title { font-size:21pt; font-weight:900; color:#1E293B; letter-spacing:.3em; }
+.doc-subtitle { font-size:8pt; color:#64748B; letter-spacing:.25em; margin-top:.5mm; }
+
+/* 기본 정보 박스 */
+.basic-info-box {
+  border:1.5px solid #CBD5E1; border-radius:6px; overflow:hidden;
+  margin-bottom:5mm;
+}
+.basic-info-table { width:100%; border-collapse:collapse; font-size:9pt; }
+.basic-info-table th { background:#F1F5F9; font-weight:700; color:#475569; padding:2mm 3mm; border:1px solid #E2E8F0; white-space:nowrap; width:20%; text-align:center; }
+.basic-info-table td { border:1px solid #E2E8F0; padding:2mm 3mm; }
+
+/* 섹션 */
+.sec-head { display:flex; align-items:center; gap:2mm; background:#1E293B; color:#fff; padding:2mm 4mm; border-radius:4px; font-size:9pt; font-weight:700; letter-spacing:.05em; margin:4mm 0 2mm; }
+.sec-num { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; background:#475569; border-radius:50%; font-size:7pt; font-weight:700; flex-shrink:0; }
+
+/* 내용 블록 */
+.content-block {
+  border:1px solid #E2E8F0; border-radius:6px; min-height:18mm;
+  padding:3mm; font-size:9pt; color:#1E293B; line-height:1.75;
+  margin-bottom:3mm; outline:none;
+}
+.content-block:hover { box-shadow:0 0 0 2px #94A3B8; }
+.content-block:focus { box-shadow:0 0 0 2px #475569; }
+
+/* 예산 테이블 */
+.budget-table { width:100%; border-collapse:collapse; font-size:8.5pt; margin-bottom:3mm; }
+.budget-table th { background:#334155; color:#fff; padding:2mm 2.5mm; border:1px solid #475569; text-align:center; font-size:8pt; }
+.budget-table td { border:1px solid #E2E8F0; padding:2mm 2.5mm; }
+.budget-table tr:nth-child(even) td { background:#F8FAFC; }
+.budget-table .total-row td { background:#1E293B; color:#fff; font-weight:700; text-align:center; border-color:#334155; }
+.budget-table td:nth-child(2) { text-align:right; font-weight:700; color:#1E40AF; }
+
+/* 첨부 서류 */
+.attach-list { list-style:none; padding:0; margin:0; }
+.attach-item { display:flex; align-items:center; gap:2mm; padding:1.5mm 0; border-bottom:1px solid #F1F5F9; }
+.attach-item:last-child { border-bottom:none; }
+.attach-item input[type="checkbox"] { width:13px; height:13px; accent-color:#1E293B; flex-shrink:0; }
+.attach-item [contenteditable] { flex:1; outline:none; font-size:8.5pt; }
+.attach-item [contenteditable]:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+.attach-item [contenteditable]:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+
+/* 기안자 서명 */
+.drafter-row { display:flex; justify-content:flex-end; gap:4mm; align-items:center; margin-top:5mm; padding-top:3mm; border-top:1px solid #E2E8F0; }
+.drafter-box { text-align:center; }
+.drafter-label { font-size:7.5pt; color:#64748B; margin-bottom:1mm; }
+.drafter-name { font-size:9.5pt; font-weight:700; min-width:24mm; border-bottom:1px solid #CBD5E1; padding-bottom:1mm; }
+.drafter-sign { height:12mm; width:30mm; border:1px dashed #E2E8F0; border-radius:4px; margin:1mm auto; }
+
+/* contenteditable */
+[contenteditable] { outline:none; }
+[contenteditable]:hover { box-shadow:0 0 0 2px #94A3B8 inset; border-radius:2px; }
+[contenteditable]:focus { box-shadow:0 0 0 2px #475569 inset; border-radius:2px; }
+
+.add-row-btn { padding:4px 12px; background:#F1F5F9; border:1px solid #CBD5E1; border-radius:6px; font-size:7.5pt; color:#475569; cursor:pointer; transition:all .15s; margin-top:2mm; }
+.add-row-btn:hover { background:#1E293B; color:#fff; border-color:#1E293B; }
+
+@media print {
+  .ctrl-panel { display:none !important; }
+  nav, footer { display:none !important; }
+  .form-page-wrap { display:block; padding:0; }
+  .doc-wrap { background:none; padding:0; border-radius:0; }
+  .a4 { box-shadow:none; width:100%; }
+  @page { size:A4; margin:0; }
+  .add-row-btn { display:none; }
+}
+</style>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="form-page-wrap">
+  <aside class="ctrl-panel">
+    <h2>⚙️ 문서 설정</h2>
+    <div class="ctrl-section">
+      <label>문서 번호</label>
+      <input type="text" id="docNo" placeholder="예) AP-2026-042" oninput="document.getElementById('docNoOut').textContent=this.value">
+    </div>
+    <div class="ctrl-section">
+      <label>기안일</label>
+      <input type="text" id="docDate" oninput="document.getElementById('docDateOut').textContent=this.value">
+    </div>
+    <div class="ctrl-section">
+      <label>소속 부서</label>
+      <input type="text" id="dept" placeholder="예) 전략기획팀" oninput="document.getElementById('deptOut').textContent=this.value">
+    </div>
+    <div class="ctrl-divider"></div>
+    <div class="ctrl-section">
+      <label>로고 업로드</label>
+      <label class="ctrl-file-btn">
+        <span>📎</span><span>이미지 선택</span>
+        <input type="file" accept="image/*" onchange="uploadLogo(this)">
+      </label>
+      <img id="logoPreview" class="logo-preview" style="display:none">
+    </div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <a href="../forms.html" class="back-link">← 서식 목록</a>
+    <div class="tip-box">💡 상단 결재란에 결재자 성명을 직접 입력하세요. 결재 도장/서명은 인쇄 후 날인하면 됩니다.</div>
+  </aside>
+
+  <main class="doc-wrap">
+    <div class="a4" id="docA4">
+
+      <!-- 최상단: 로고 + 결재란 -->
+      <div class="doc-top-row">
+        <div class="doc-logo-area">
+          <div class="doc-logo-placeholder" id="logoPlaceholder" onclick="document.querySelector('.ctrl-file-btn input').click()">로고 삽입</div>
+          <img id="docLogo" class="doc-logo" style="display:none" alt="로고">
+        </div>
+        <div class="approval-grid">
+          <div class="appr-col">
+            <div class="appr-role">담 당</div>
+            <div class="appr-name-box" contenteditable="true"></div>
+            <div class="appr-sign-box">인</div>
+            <div class="appr-date-box" contenteditable="true"></div>
+          </div>
+          <div class="appr-col">
+            <div class="appr-role">팀 장</div>
+            <div class="appr-name-box" contenteditable="true"></div>
+            <div class="appr-sign-box">인</div>
+            <div class="appr-date-box" contenteditable="true"></div>
+          </div>
+          <div class="appr-col">
+            <div class="appr-role">부 장</div>
+            <div class="appr-name-box" contenteditable="true"></div>
+            <div class="appr-sign-box">인</div>
+            <div class="appr-date-box" contenteditable="true"></div>
+          </div>
+          <div class="appr-col">
+            <div class="appr-role">이 사</div>
+            <div class="appr-name-box" contenteditable="true"></div>
+            <div class="appr-sign-box">인</div>
+            <div class="appr-date-box" contenteditable="true"></div>
+          </div>
+          <div class="appr-col">
+            <div class="appr-role">대표이사</div>
+            <div class="appr-name-box" contenteditable="true"></div>
+            <div class="appr-sign-box">인</div>
+            <div class="appr-date-box" contenteditable="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 문서 제목 -->
+      <div class="doc-title-center">
+        <div class="doc-title">품  의  서</div>
+        <div class="doc-subtitle">APPROVAL DOCUMENT</div>
+      </div>
+
+      <!-- 기본 정보 -->
+      <div class="basic-info-box">
+        <table class="basic-info-table">
+          <tr>
+            <th>문서번호</th>
+            <td id="docNoOut">AP-2026-042</td>
+            <th>시행일</th>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <th>기안일</th>
+            <td id="docDateOut"></td>
+            <th>결재 기한</th>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <th>기안자</th>
+            <td contenteditable="true"></td>
+            <th>소속 부서</th>
+            <td id="deptOut"></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 제목 -->
+      <div class="sec-head"><span class="sec-num">1</span> 품의 제목</div>
+      <div class="content-block" contenteditable="true" style="min-height:8mm;font-size:10.5pt;font-weight:700;">품의 제목을 입력하세요</div>
+
+      <!-- 목적 -->
+      <div class="sec-head"><span class="sec-num">2</span> 목적</div>
+      <div class="content-block" contenteditable="true" style="min-height:14mm">본 품의의 목적 및 추진 배경을 간략히 기재하세요.</div>
+
+      <!-- 배경 및 현황 -->
+      <div class="sec-head"><span class="sec-num">3</span> 배경 및 현황</div>
+      <div class="content-block" contenteditable="true" style="min-height:18mm">현황 분석 및 추진 배경을 상세히 기재하세요.</div>
+
+      <!-- 세부 내용 -->
+      <div class="sec-head"><span class="sec-num">4</span> 세부 내용</div>
+      <div class="content-block" contenteditable="true" style="min-height:26mm">추진 방법, 일정, 담당자, 세부 계획 등을 기재하세요.</div>
+
+      <!-- 예산 내역 -->
+      <div class="sec-head"><span class="sec-num">5</span> 예산 내역</div>
+      <table class="budget-table" id="budgetTable">
+        <thead>
+          <tr>
+            <th style="width:5%">번호</th>
+            <th style="width:30%">항목</th>
+            <th style="width:20%">금액 (원)</th>
+            <th style="width:30%">산출 근거</th>
+            <th style="width:15%">비고</th>
+          </tr>
+        </thead>
+        <tbody id="budgetBody"></tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="2" style="text-align:center">합 계</td>
+            <td id="totalAmount">0</td>
+            <td colspan="2"></td>
+          </tr>
+        </tfoot>
+      </table>
+      <button class="add-row-btn" onclick="addBudgetRow()">+ 행 추가</button>
+
+      <!-- 기대 효과 -->
+      <div class="sec-head"><span class="sec-num">6</span> 기대 효과</div>
+      <div class="content-block" contenteditable="true" style="min-height:14mm">본 품의 승인 시 예상되는 효과 및 기대 성과를 기재하세요.</div>
+
+      <!-- 첨부 서류 -->
+      <div class="sec-head"><span class="sec-num">7</span> 첨부 서류</div>
+      <div style="border:1px solid #E2E8F0; border-radius:6px; padding:3mm; margin-bottom:3mm;">
+        <ul class="attach-list" id="attachList"></ul>
+        <button class="add-row-btn" onclick="addAttach()">+ 첨부 추가</button>
+      </div>
+
+      <!-- 기안자 서명 -->
+      <div class="drafter-row">
+        <div>
+          <div style="font-size:8.5pt;color:#475569;margin-bottom:1mm">위와 같이 품의하오니 재가하여 주시기 바랍니다.</div>
+          <div style="font-size:8pt;color:#94A3B8">작성일: <span id="signDateOut"></span></div>
+        </div>
+        <div class="drafter-box">
+          <div class="drafter-label">기 안 자</div>
+          <div class="drafter-name" contenteditable="true" style="text-align:center"></div>
+          <div class="drafter-sign"></div>
+          <div style="font-size:7.5pt;color:#64748B;text-align:center">서명 / 인</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  const today = new Date();
+  const d = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('docDate').value = d;
+  document.getElementById('docDateOut').textContent = d;
+  document.getElementById('signDateOut').textContent = d;
+})();
+
+function uploadLogo(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const src = e.target.result;
+    document.getElementById('docLogo').src = src;
+    document.getElementById('docLogo').style.display = '';
+    document.getElementById('logoPlaceholder').style.display = 'none';
+    document.getElementById('logoPreview').src = src;
+    document.getElementById('logoPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+const budgetRows = [];
+function addBudgetRow(item='', amount='', basis='', note='') {
+  const tbody = document.getElementById('budgetBody');
+  const n = tbody.rows.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="text-align:center">${n}</td>
+    <td contenteditable="true">${item}</td>
+    <td contenteditable="true" oninput="calcTotal()">${amount}</td>
+    <td contenteditable="true">${basis}</td>
+    <td contenteditable="true">${note}</td>`;
+  tbody.appendChild(tr);
+}
+
+function calcTotal() {
+  let total = 0;
+  document.querySelectorAll('#budgetBody tr td:nth-child(3)').forEach(td => {
+    const v = parseInt(td.textContent.replace(/[^0-9]/g,'') || '0');
+    total += v;
+  });
+  document.getElementById('totalAmount').textContent = total.toLocaleString('ko-KR');
+}
+
+function addAttach(text='') {
+  const list = document.getElementById('attachList');
+  const li = document.createElement('li');
+  li.className = 'attach-item';
+  li.innerHTML = `<input type="checkbox"><span contenteditable="true">${text || '첨부 서류명을 입력하세요'}</span>`;
+  list.appendChild(li);
+}
+
+// 초기 예산 데이터
+[
+  ['용역비','3,500,000','3인×1,166,667원','외주 업체'],
+  ['인쇄 및 홍보물','800,000','리플릿 1,000부','디자인 포함'],
+  ['교통비 및 출장비','350,000','2인×2회','지방 출장'],
+  ['소모품비','150,000','사무용품 일식',''],
+  ['예비비','200,000','예산의 4%','']
+].forEach(r => addBudgetRow(r[0],r[1],r[2],r[3]));
+calcTotal();
+
+['사업계획서 1부','견적서 3매 (업체별)','이사회 검토 의견서','관련 법규 검토 의견서'].forEach(t => addAttach(t));
+</script>
+<script src="../assets/js/nav.js?v=3"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

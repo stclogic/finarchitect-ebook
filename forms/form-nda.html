@@ -130,9 +130,28 @@
 [contenteditable="true"]:focus { background: #EFF6FF; border-radius: 3px; box-shadow: 0 0 0 2px #3B82F6; }
 /* Upload area */
 .logo-upload-label { cursor: pointer; }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border,#e2e8f0); background:none; color:var(--text2,#64748b); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 /* ── Print ── */
 @media print {
-  .ctrl-panel, nav, footer, .back-link, .doc-wrap > *:not(.doc-page) { display: none !important; }
+  .ctrl-panel, nav, footer, .back-link, .doc-wrap > *:not(.doc-page) { display: none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   .form-page-wrap { display: block; padding: 0; }
   .doc-wrap { background: none; padding: 0; }
   .doc-page { width: 100%; box-shadow: none; margin: 0; }
@@ -170,6 +189,14 @@
     </div>
 
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2,#64748b);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
 
     <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="location.reload()">초기화</button>
@@ -199,15 +226,15 @@
         </div>
 
         <div class="doc-title-block">
-          <span class="doc-title-ko">비 밀 유 지 계 약 서</span>
+          <span class="doc-title-ko" id="formDocTitle">비 밀 유 지 계 약 서</span>
           <div class="title-divider"></div>
-          <span class="doc-title-en">NON-DISCLOSURE AGREEMENT</span>
+          <span class="doc-title-en" id="formDocSub">NON-DISCLOSURE AGREEMENT</span>
         </div>
 
         <!-- Party table -->
         <table class="party-table">
           <tr>
-            <th><span class="party-label">甲</span> 정보제공자</th>
+            <th id="thA"><span class="party-label">甲</span> 정보제공자</th>
             <td>
               회 사 명: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
               대 표 자: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -221,7 +248,7 @@
             </td>
           </tr>
           <tr>
-            <th><span class="party-label">乙</span> 정보수령자</th>
+            <th id="thB"><span class="party-label">乙</span> 정보수령자</th>
             <td>
               회 사 명: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
               대 표 자: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -343,12 +370,13 @@
 
         <!-- Signature -->
         <div class="sig-section">
+          <p id="sigPrefix" style="font-size:9pt;color:#374151;text-align:center;margin-bottom:3mm;">위 계약의 성립을 증명하기 위하여 이 계약서를 작성하고 기명날인한다.</p>
           <div class="sig-date">
             <span id="sigDate" contenteditable="true"></span>
           </div>
           <div class="sig-grid">
             <div class="sig-card">
-              <div class="sig-card-title">甲 (정보제공자)</div>
+              <div class="sig-card-title" id="sigA">甲 (정보제공자)</div>
               <div class="sig-row"><span class="sig-label">회사명</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="sig-row"><span class="sig-label">대표자</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="sig-row"><span class="sig-label">주&nbsp;&nbsp;&nbsp;&nbsp;소</span><span class="sig-val" contenteditable="true"></span></div>
@@ -356,7 +384,7 @@
               <div class="stamp-circle">인</div>
             </div>
             <div class="sig-card">
-              <div class="sig-card-title">乙 (정보수령자)</div>
+              <div class="sig-card-title" id="sigB">乙 (정보수령자)</div>
               <div class="sig-row"><span class="sig-label">회사명</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="sig-row"><span class="sig-label">대표자</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="sig-row"><span class="sig-label">주&nbsp;&nbsp;&nbsp;&nbsp;소</span><span class="sig-val" contenteditable="true"></span></div>
@@ -391,6 +419,47 @@ document.getElementById('docNum').addEventListener('input', function(){
 document.getElementById('ndaPeriod').addEventListener('input', function(){
   document.getElementById('periodDisplay').textContent = this.value;
 });
+
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '비 밀 유 지 계 약 서', docSub: 'NON-DISCLOSURE AGREEMENT',
+    thA: '<span class="party-label">甲</span> 정보제공자', thB: '<span class="party-label">乙</span> 정보수령자',
+    sigA: '甲 (정보제공자)', sigB: '乙 (정보수령자)',
+    sigPrefix: '위 계약의 성립을 증명하기 위하여 이 계약서를 작성하고 기명날인한다.',
+    clauseTitles: ['정의 (비밀정보의 범위)','비밀유지 의무','비밀유지 예외','비밀정보의 반환 및 파기','비밀유지 기간','지식재산권','손해배상','계약 기간 및 해지','일반 조항','준거법 및 분쟁 해결']
+  },
+  en: {
+    docTitle: 'NON-DISCLOSURE AGREEMENT', docSub: 'Confidentiality Agreement',
+    thA: 'Disclosing Party', thB: 'Receiving Party',
+    sigA: 'Disclosing Party', sigB: 'Receiving Party',
+    sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Non-Disclosure Agreement.',
+    clauseTitles: ['Art.1 — Definitions','Art.2 — Confidentiality Obligations','Art.3 — Exceptions','Art.4 — Return & Destruction','Art.5 — Term of Confidentiality','Art.6 — Intellectual Property','Art.7 — Damages','Art.8 — Term & Termination','Art.9 — General Provisions','Art.10 — Governing Law & Disputes']
+  },
+  ja: {
+    docTitle: '秘 密 保 持 契 約 書', docSub: 'Non-Disclosure Agreement',
+    thA: '<span class="party-label">甲</span> 情報開示者', thB: '<span class="party-label">乙</span> 情報受領者',
+    sigA: '甲（情報開示者）', sigB: '乙（情報受領者）',
+    sigPrefix: '上記契約の成立を証明するため、本秘密保持契約書を作成し、記名押印する。',
+    clauseTitles: ['第1条 — 定義','第2条 — 秘密保持義務','第3条 — 秘密情報の例外','第4条 — 返還及び廃棄','第5条 — 秘密保持期間','第6条 — 知的財産権','第7条 — 損害賠償','第8条 — 契約期間及び解除','第9条 — 一般条項','第10条 — 準拠法及び紛争解決']
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
+  document.getElementById('formDocTitle').textContent = d.docTitle;
+  document.getElementById('formDocSub').textContent = d.docSub;
+  document.getElementById('thA').innerHTML = d.thA;
+  document.getElementById('thB').innerHTML = d.thB;
+  document.getElementById('sigA').textContent = d.sigA;
+  document.getElementById('sigB').textContent = d.sigB;
+  document.getElementById('sigPrefix').textContent = d.sigPrefix;
+  var clauseTitles = document.querySelectorAll('.clause-title');
+  d.clauseTitles.forEach(function(t, i) {
+    if (!clauseTitles[i]) return;
+    clauseTitles[i].textContent = t;
+  });
+}
 
 // 로고 업로드
 document.getElementById('logoInput').addEventListener('change', function(e){

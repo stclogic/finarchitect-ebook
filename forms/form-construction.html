@@ -125,8 +125,28 @@
 .amount-box { flex:1; border:1px solid #A7F3D0; border-radius:4px; padding:2mm; background:#f9fafb; font-size:8.5pt; }
 .amount-box .ab-label { font-size:7.5pt; color:#065F46; font-weight:700; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .ctrl-panel, nav, footer, .back-link { display:none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   .form-page-wrap { display:block; padding:0; }
   .doc-wrap { background:none; padding:0; border-radius:0; }
   .doc-page { width:210mm; box-shadow:none; min-height:auto; }
@@ -142,7 +162,7 @@
   <!-- 좌측 컨트롤 패널 -->
   <aside class="ctrl-panel">
     <a href="../forms.html" class="back-link">← 서식 목록</a>
-    <h2>🏗️ 공사도급계약서</h2>
+    <h2 id="ctrlTitle">🏗️ 공사도급계약서</h2>
 
     <div class="ctrl-section">
       <label>회사 로고 업로드</label>
@@ -174,7 +194,16 @@
 
     <div class="ctrl-divider"></div>
 
-    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="printBtn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
 
     <div class="tip-box">
@@ -206,8 +235,8 @@
         </div>
 
         <div class="doc-title">
-          <h1>공&nbsp;&nbsp;사&nbsp;&nbsp;도&nbsp;&nbsp;급&nbsp;&nbsp;계&nbsp;&nbsp;약&nbsp;&nbsp;서</h1>
-          <div class="en">CONSTRUCTION CONTRACT</div>
+          <h1 id="formDocTitle">공&nbsp;&nbsp;사&nbsp;&nbsp;도&nbsp;&nbsp;급&nbsp;&nbsp;계&nbsp;&nbsp;약&nbsp;&nbsp;서</h1>
+          <div class="en" id="docSubTitle">CONSTRUCTION CONTRACT</div>
           <div class="subtitle">본 계약은 도급인과 수급인 간에 아래와 같이 체결한다.</div>
         </div>
         <div class="doc-divider"></div>
@@ -226,8 +255,8 @@
           <thead>
             <tr>
               <th style="width:22%;">구분</th>
-              <th>도급인 (甲)</th>
-              <th>수급인 (乙)</th>
+              <th id="thOwner">도급인 (甲)</th>
+              <th id="thContractor">수급인 (乙)</th>
             </tr>
           </thead>
           <tbody>
@@ -245,7 +274,7 @@
         <!-- 제1조 도급금액 -->
         <div class="article-section">
           <div class="article-title">
-            <span class="article-num">1</span>도급 금액
+            <span class="article-num">1</span><span id="at-1">도급 금액</span>
           </div>
           <div class="article-body">
             총 공사금액은 아래와 같으며, 부가가치세를 포함한다.
@@ -272,7 +301,7 @@
 
         <!-- 제2조 -->
         <div class="article-section">
-          <div class="article-title"><span class="article-num">2</span>공사 범위</div>
+          <div class="article-title"><span class="article-num">2</span><span id="at-2">공사 범위</span></div>
           <div class="article-body" contenteditable="true">
             수급인은 도급인으로부터 위임받은 공사 내역서(별첨)에 따라 공사를 성실히 수행한다. 공사 범위의 변경이 필요한 경우 제4조(설계변경)에 따른다.<br>
             □ 공사 내역서 첨부 확인 &nbsp;&nbsp; □ 설계 도면 첨부 확인 &nbsp;&nbsp; □ 시방서 첨부 확인
@@ -281,7 +310,7 @@
 
         <!-- 제3조 -->
         <div class="article-section">
-          <div class="article-title"><span class="article-num">3</span>공사 기간</div>
+          <div class="article-title"><span class="article-num">3</span><span id="at-3">공사 기간</span></div>
           <div class="article-body" contenteditable="true">
             착공일로부터 준공예정일까지로 하며, 천재지변 등 불가항력적 사유로 공기 연장이 필요한 경우 갑의 서면 승인을 받아야 한다. 정당한 사유 없이 공기가 지연될 경우 지체상금으로 1일당 총 공사금액의 0.1%(천분의 일)를 도급인에게 지급한다.
           </div>
@@ -302,49 +331,49 @@
 
         <!-- 제4~12조 -->
         <div class="article-section">
-          <div class="article-title"><span class="article-num">4</span>설계 변경</div>
+          <div class="article-title"><span class="article-num">4</span><span id="at-4">설계 변경</span></div>
           <div class="article-body" contenteditable="true">설계 변경은 갑의 서면 요청 또는 현장 여건에 따라 협의 후 진행하며, 변경 금액은 별도 계약서를 체결하여 정산한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">5</span>하자 담보 책임</div>
+          <div class="article-title"><span class="article-num">5</span><span id="at-5">하자 담보 책임</span></div>
           <div class="article-body">
             준공일로부터 <span id="dispWarranty" style="font-weight:700; color:#065F46;">2년</span> 동안 수급인은 공사 목적물의 하자에 대하여 무상 보수 책임을 진다. 구조적 결함의 경우 「건설산업기본법」에서 정한 기간을 따른다.
           </div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">6</span>기성 검사 및 준공 검사</div>
+          <div class="article-title"><span class="article-num">6</span><span id="at-6">기성 검사 및 준공 검사</span></div>
           <div class="article-body" contenteditable="true">수급인은 공정 단계별 기성 검사를 신청하고, 갑은 7일 이내에 검사를 완료한다. 준공 후 14일 이내에 준공 검사를 완료하며, 합격 후 잔금을 지급한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">7</span>재료 및 노무</div>
+          <div class="article-title"><span class="article-num">7</span><span id="at-7">재료 및 노무</span></div>
           <div class="article-body" contenteditable="true">수급인은 관계 법령이 정한 품질 기준에 적합한 재료를 사용하고 숙련된 기능인을 투입한다. 재료 변경 시 사전에 갑의 승인을 받아야 한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">8</span>안전 관리</div>
+          <div class="article-title"><span class="article-num">8</span><span id="at-8">안전 관리</span></div>
           <div class="article-body" contenteditable="true">수급인은 「산업안전보건법」을 준수하고 안전 관리 계획을 수립·이행한다. 공사 중 발생한 사고는 수급인의 책임으로 처리하며, 갑에게 즉시 통보한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">9</span>보험</div>
+          <div class="article-title"><span class="article-num">9</span><span id="at-9">보험</span></div>
           <div class="article-body" contenteditable="true">수급인은 착공 전 건설공사보험 및 산업재해보상보험에 가입하고 증권 사본을 갑에게 제출한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">10</span>계약 해지</div>
+          <div class="article-title"><span class="article-num">10</span><span id="at-10">계약 해지</span></div>
           <div class="article-body" contenteditable="true">갑 또는 을은 상대방이 본 계약을 위반하고 14일 이상 시정하지 아니할 경우 계약을 해지할 수 있다. 해지 시 기성고를 정산하고 이미 완료된 공사에 대한 비용을 지급한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">11</span>분쟁 해결</div>
+          <div class="article-title"><span class="article-num">11</span><span id="at-11">분쟁 해결</span></div>
           <div class="article-body" contenteditable="true">본 계약에 관한 분쟁은 건설분쟁조정위원회의 조정을 거치거나, 공사 현장 소재지를 관할하는 법원을 제1심 법원으로 한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">12</span>기타</div>
+          <div class="article-title"><span class="article-num">12</span><span id="at-12">기타</span></div>
           <div class="article-body" contenteditable="true">본 계약서에 명시되지 않은 사항은 「건설산업기본법」, 「건설기술진흥법」 및 관련 법령을 따르며, 상호 협의하여 결정한다. 환경 관리에 관한 사항은 관계 법령을 준수한다.</div>
         </div>
 
@@ -352,7 +381,7 @@
 
         <!-- 서명란 -->
         <div style="text-align:center; font-size:9pt; color:#065F46; font-weight:700; margin:3mm 0 2mm;">
-          위 계약 내용을 확인하고 각자 서명·날인한다.
+          <span id="sigPrefix">위 계약 내용을 확인하고 각자 서명·날인한다.</span>
         </div>
         <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
 
@@ -448,6 +477,49 @@ function numberToKorean(n) {
     unitIdx++;
   }
   return result;
+}
+
+// ── 언어 전환 ────────────────────────────────────────────────────
+var LANG_DATA = {
+  ko: {
+    ctrlTitle: '🏗️ 공사도급계약서', printBtn: '🖨️ 인쇄 / PDF 저장',
+    docTitle: '공  사  도  급  계  약  서', docSub: 'CONSTRUCTION CONTRACT',
+    thOwner: '도급인 (甲)', thContractor: '수급인 (乙)',
+    sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
+    articles: ['도급 금액','공사 범위','공사 기간','설계 변경','하자 담보 책임','기성 검사 및 준공 검사','재료 및 노무','안전 관리','보험','계약 해지','분쟁 해결','기타']
+  },
+  en: {
+    ctrlTitle: '🏗️ Construction Contract', printBtn: '🖨 Print / Save as PDF',
+    docTitle: 'CONSTRUCTION CONTRACT', docSub: 'Construction Work Order Agreement',
+    thOwner: 'Owner (Party A)', thContractor: 'Contractor (Party B)',
+    sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Construction Contract.',
+    articles: ['Art.1 — Contract Amount','Art.2 — Scope of Work','Art.3 — Construction Period','Art.4 — Design Changes','Art.5 — Defect Liability','Art.6 — Progress & Completion Inspection','Art.7 — Materials & Labor','Art.8 — Safety Management','Art.9 — Insurance','Art.10 — Termination','Art.11 — Dispute Resolution','Art.12 — Miscellaneous']
+  },
+  ja: {
+    ctrlTitle: '🏗️ 工事請負契約書', printBtn: '🖨 印刷 / PDF保存',
+    docTitle: '工事請負契約書', docSub: 'CONSTRUCTION CONTRACT',
+    thOwner: '注文者（甲）', thContractor: '請負人（乙）',
+    sigPrefix: '上記契約の成立を証明するため、本契約書を作成して記名押印する。',
+    articles: ['第1条 — 請負金額','第2条 — 工事範囲','第3条 — 工事期間','第4条 — 設計変更','第5条 — 瑕疵担保責任','第6条 — 出来高及び竣工検査','第7条 — 材料及び労務','第8条 — 安全管理','第9条 — 保険','第10条 — 契約解除','第11条 — 紛争解決','第12条 — その他']
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA[lang];
+  if (!d) return;
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-' + l).classList.toggle('active', l === lang);
+  });
+  document.getElementById('ctrlTitle').textContent = d.ctrlTitle;
+  document.getElementById('printBtn').textContent = d.printBtn;
+  document.getElementById('formDocTitle').textContent = d.docTitle;
+  document.getElementById('docSubTitle').textContent = d.docSub;
+  document.getElementById('thOwner').textContent = d.thOwner;
+  document.getElementById('thContractor').textContent = d.thContractor;
+  document.getElementById('sigPrefix').textContent = d.sigPrefix;
+  d.articles.forEach(function(title, i) {
+    var el = document.getElementById('at-' + (i+1));
+    if (el) el.textContent = title;
+  });
 }
 
 function resetDoc() {

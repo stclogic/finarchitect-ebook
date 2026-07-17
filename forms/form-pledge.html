@@ -125,6 +125,11 @@
 [contenteditable="true"] { outline: none; }
 [contenteditable="true"]:hover { background: rgba(59,130,246,.06); border-radius: 3px; }
 [contenteditable="true"]:focus { background: #EFF6FF; border-radius: 3px; box-shadow: 0 0 0 2px #3B82F6; }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border,#e2e8f0); background:none; color:var(--text2,#64748b); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
   .ctrl-panel, nav, footer, .back-link { display: none !important; }
   .form-page-wrap { display: block; padding: 0; }
@@ -132,6 +137,10 @@
   .doc-page { width: 100%; box-shadow: none; margin: 0; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 </style>
@@ -155,6 +164,14 @@
       <button onclick="addItem()" style="width:100%;padding:9px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;font-size:.84rem;color:#1E40AF;cursor:pointer;font-weight:600;">+ 항목 추가</button>
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2,#64748b);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="location.reload()">초기화</button>
     <div class="tip-box">⚠ 각서는 법적 효력이 있는 문서입니다. 내용을 정확히 확인 후 서명하세요.</div>
@@ -176,17 +193,17 @@
         </div>
 
         <div class="recipient-row">
-          <span class="lbl">수 신:</span>
+          <span class="lbl" id="lblTo">수 신:</span>
           <span class="val" contenteditable="true"></span>
           <span style="color:#64748b;font-size:8.5pt;">귀중</span>
         </div>
 
         <div class="subject-row">
-          <span class="lbl">제 목:</span>
+          <span class="lbl" id="lblSubject">제 목:</span>
           <span class="val" contenteditable="true"></span>
         </div>
 
-        <div class="big-title">각 &nbsp;&nbsp; 서</div>
+        <div class="big-title" id="formDocTitle">각 &nbsp;&nbsp; 서</div>
         <div class="big-title-sub-line"></div>
 
         <!-- Pledge body -->
@@ -217,7 +234,7 @@
         <!-- Signature -->
         <div class="sig-date" id="sigDate"></div>
         <div class="sig-section">
-          <div class="sig-title">서 약 인</div>
+          <div class="sig-title" id="sigTitle">서 약 인</div>
           <div class="sig-block">
             <div class="sig-fields">
               <div class="sig-row"><span class="sig-lbl">성&nbsp;&nbsp;&nbsp;&nbsp;명</span><span class="sig-val" contenteditable="true"></span></div>
@@ -244,6 +261,33 @@
   document.getElementById('sigDate').textContent =
     d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
 })();
+
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '각 &nbsp;&nbsp; 서', docSub: '',
+    lblTo: '수 신:', lblSubject: '제 목:',
+    sigTitle: '서 약 인'
+  },
+  en: {
+    docTitle: 'WRITTEN PLEDGE', docSub: 'Affidavit of Commitment',
+    lblTo: 'Addressee:', lblSubject: 'Subject:',
+    sigTitle: 'Pledgor'
+  },
+  ja: {
+    docTitle: '誓 &nbsp;&nbsp; 約 &nbsp;&nbsp; 書', docSub: '',
+    lblTo: '宛先:', lblSubject: '件名:',
+    sigTitle: '誓約者'
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
+  document.getElementById('formDocTitle').innerHTML = d.docTitle;
+  document.getElementById('lblTo').textContent = d.lblTo;
+  document.getElementById('lblSubject').textContent = d.lblSubject;
+  document.getElementById('sigTitle').textContent = d.sigTitle;
+}
 
 let itemCount = 3;
 function addItem(){

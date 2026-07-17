@@ -141,8 +141,28 @@
 [contenteditable]:hover { outline:2px solid #A78BFA; border-radius:3px; }
 [contenteditable]:focus { outline:3px solid #7C3AED; border-radius:3px; background:#faf5ff; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .ctrl-panel, nav, footer, .back-link { display:none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   .form-page-wrap { display:block; padding:0; }
   .doc-wrap { background:none; padding:0; border-radius:0; }
   .doc-page { width:210mm; box-shadow:none; min-height:auto; }
@@ -157,7 +177,7 @@
 <div class="form-page-wrap">
   <aside class="ctrl-panel">
     <a href="../forms.html" class="back-link">← 서식 목록</a>
-    <h2>💜 기부약정서</h2>
+    <h2 id="ctrlTitle">💜 기부약정서</h2>
     <div class="ctrl-section">
       <label>단체 로고 업로드</label>
       <input type="file" accept="image/*" id="logoUpload" style="font-size:.78rem;">
@@ -182,7 +202,16 @@
       </select>
     </div>
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="printBtn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
     <div class="tip-box">
       💡 <strong>작성 Tip</strong><br>
@@ -206,15 +235,15 @@
         </div>
 
         <div class="doc-title">
-          <h1>기&nbsp;&nbsp;부&nbsp;&nbsp;약&nbsp;&nbsp;정&nbsp;&nbsp;서</h1>
-          <div class="en">DONATION PLEDGE AGREEMENT</div>
-          <div class="subtitle">🧡 나눔으로 세상을 바꾸는 약속 🧡</div>
+          <h1 id="formDocTitle">기&nbsp;&nbsp;부&nbsp;&nbsp;약&nbsp;&nbsp;정&nbsp;&nbsp;서</h1>
+          <div class="en" id="docSubTitle">DONATION PLEDGE AGREEMENT</div>
+          <div class="subtitle" id="docSubtitle">🧡 나눔으로 세상을 바꾸는 약속 🧡</div>
         </div>
         <div class="doc-divider"></div>
 
         <!-- 수혜 단체 정보 -->
         <div class="org-box">
-          <div class="org-box-header">💜 기부 수혜 단체 (受益 法人)</div>
+          <div class="org-box-header" id="thOrg">💜 기부 수혜 단체 (受益 法人)</div>
           <div class="org-box-body">
             <div class="pb-row"><span class="pb-label">단 체 명</span><span class="pb-val" contenteditable="true"></span></div>
             <div class="pb-row"><span class="pb-label">대 표 자</span><span class="pb-val" contenteditable="true" style="max-width:60mm;"></span><span class="pb-label" style="margin-left:4mm;">사업자번호</span><span class="pb-val" contenteditable="true"></span></div>
@@ -226,7 +255,7 @@
 
         <!-- 기부자 정보 -->
         <div class="donor-box">
-          <div class="donor-box-header">🧡 기부자 정보 (寄附者)</div>
+          <div class="donor-box-header" id="thDonor">🧡 기부자 정보 (寄附者)</div>
           <div class="donor-box-body">
             <div class="pb-row"><span class="pb-label" style="color:#F97316;">성명/법인명</span><span class="pb-val" style="border-bottom-color:#FDBA74;" contenteditable="true"></span></div>
             <div class="pb-row"><span class="pb-label" style="color:#F97316;">생년월일/사번</span><span class="pb-val" style="border-bottom-color:#FDBA74; max-width:55mm;" contenteditable="true"></span><span class="pb-label" style="margin-left:4mm;color:#F97316;">연락처</span><span class="pb-val" style="border-bottom-color:#FDBA74;" contenteditable="true"></span></div>
@@ -308,39 +337,39 @@
         <div class="section-badge">▌ 약정 조항</div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">1</span>기부금 사용</div>
+          <div class="article-title"><span class="article-num">1</span><span id="at-1">기부금 사용</span></div>
           <div class="article-body" contenteditable="true">단체는 기부자가 지정한 목적 사업 또는 단체의 정관상 설립 목적 사업에 기부금을 사용한다. 기부금을 다른 용도로 전용하지 않는다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">2</span>영수증 발행</div>
+          <div class="article-title"><span class="article-num">2</span><span id="at-2">영수증 발행</span></div>
           <div class="article-body" contenteditable="true">단체는 기부금 수령 후 즉시 「소득세법」 제34조 및 「법인세법」 제24조에 따른 기부금 영수증을 발행하여 기부자에게 교부한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">3</span>결과 보고</div>
+          <div class="article-title"><span class="article-num">3</span><span id="at-3">결과 보고</span></div>
           <div class="article-body" contenteditable="true">단체는 매년 1회 이상 기부금 사용 내역과 사업 성과를 기부자에게 보고한다. 보고는 서면 또는 이메일로 한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">4</span>기부 취소</div>
+          <div class="article-title"><span class="article-num">4</span><span id="at-4">기부 취소</span></div>
           <div class="article-body" contenteditable="true">기부자는 기부금 이행 전까지 서면으로 약정을 취소할 수 있다. 이미 이행된 기부금은 원칙적으로 환급되지 않으나, 단체의 목적사업 중단 또는 불법 사용이 확인된 경우 반환을 요구할 수 있다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">5</span>개인정보 처리 동의</div>
+          <div class="article-title"><span class="article-num">5</span><span id="at-5">개인정보 처리 동의</span></div>
           <div class="article-body" contenteditable="true">기부자는 기부금 영수증 발행, 사업 보고 등을 위해 단체가 본인의 개인정보를 수집·이용하는 것에 동의한다. 단체는 「개인정보 보호법」에 따라 기부자의 정보를 안전하게 관리한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">6</span>기타</div>
+          <div class="article-title"><span class="article-num">6</span><span id="at-6">기타</span></div>
           <div class="article-body" contenteditable="true">본 약정서에 명시되지 않은 사항은 「기부금품의 모집 및 사용에 관한 법률」 및 관계 법령을 따른다.</div>
         </div>
 
         <div class="doc-divider"></div>
 
         <div style="text-align:center; font-size:9pt; color:#7C3AED; font-weight:700; margin:3mm 0 1mm;">
-          위 약정 내용을 확인하고 아래와 같이 서명·날인한다.
+          <span id="sigPrefix">위 약정 내용을 확인하고 아래와 같이 서명·날인한다.</span>
         </div>
         <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
 
@@ -425,6 +454,53 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
   };
   reader.readAsDataURL(file);
 });
+
+// ── 언어 전환 ────────────────────────────────────────────────────
+var LANG_DATA = {
+  ko: {
+    ctrlTitle: '💜 기부약정서', printBtn: '🖨️ 인쇄 / PDF 저장',
+    docTitle: '기  부  약  정  서', docSub: 'DONATION PLEDGE AGREEMENT',
+    docSubtitle: '🧡 나눔으로 세상을 바꾸는 약속 🧡',
+    thOrg: '💜 기부 수혜 단체 (受益 法人)', thDonor: '🧡 기부자 정보 (寄附者)',
+    sigPrefix: '위 약정 내용을 확인하고 아래와 같이 서명·날인한다.',
+    articles: ['기부금 사용','영수증 발행','결과 보고','기부 취소','개인정보 처리 동의','기타']
+  },
+  en: {
+    ctrlTitle: '💜 Donation Pledge', printBtn: '🖨 Print / Save as PDF',
+    docTitle: 'DONATION PLEDGE', docSub: 'Donation Commitment Agreement',
+    docSubtitle: '🧡 A promise to change the world through sharing 🧡',
+    thOrg: '💜 Recipient Organization', thDonor: '🧡 Donor Information',
+    sigPrefix: 'This pledge is made in the spirit of love and sharing.',
+    articles: ['Art.1 — Use of Donation','Art.2 — Receipt Issuance','Art.3 — Progress Reporting','Art.4 — Cancellation of Donation','Art.5 — Consent to Personal Data Processing','Art.6 — Miscellaneous']
+  },
+  ja: {
+    ctrlTitle: '💜 寄付誓約書', printBtn: '🖨 印刷 / PDF保存',
+    docTitle: '寄付誓約書', docSub: 'DONATION PLEDGE AGREEMENT',
+    docSubtitle: '🧡 分かち合いで世界を変える約束 🧡',
+    thOrg: '💜 受益団体', thDonor: '🧡 寄付者情報',
+    sigPrefix: 'この誓約は愛と分かち合いの精神のもと締結されました。',
+    articles: ['第1条 — 寄付金の使途','第2条 — 領収書の発行','第3条 — 実施報告','第4条 — 寄付の取消','第5条 — 個人情報処理への同意','第6条 — その他']
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA[lang];
+  if (!d) return;
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-' + l).classList.toggle('active', l === lang);
+  });
+  document.getElementById('ctrlTitle').textContent = d.ctrlTitle;
+  document.getElementById('printBtn').textContent = d.printBtn;
+  document.getElementById('formDocTitle').textContent = d.docTitle;
+  document.getElementById('docSubTitle').textContent = d.docSub;
+  document.getElementById('docSubtitle').textContent = d.docSubtitle;
+  document.getElementById('thOrg').textContent = d.thOrg;
+  document.getElementById('thDonor').textContent = d.thDonor;
+  document.getElementById('sigPrefix').textContent = d.sigPrefix;
+  d.articles.forEach(function(title, i) {
+    var el = document.getElementById('at-' + (i+1));
+    if (el) el.textContent = title;
+  });
+}
 
 function resetDoc() {
   if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;

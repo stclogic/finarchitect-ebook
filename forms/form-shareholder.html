@@ -89,6 +89,11 @@ body { background: var(--amber-bg); }
 .sig-stamp { text-align: right; margin-top: 6px; }
 .stamp-circle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 2px solid var(--amber); border-radius: 50%; font-size: 8pt; color: var(--amber); font-weight: 700; }
 .date-signed { text-align: center; font-size: 9pt; color: #555; margin-bottom: 5mm; }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#B45309; color:#B45309; }
+.lang-btn.active { background:#B45309; border-color:#B45309; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
   .ctrl-panel, nav, footer, .back-link { display: none !important; }
   body { background: #fff !important; }
@@ -98,6 +103,10 @@ body { background: var(--amber-bg); }
 }
 .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 </style>
 </head>
@@ -116,6 +125,14 @@ body { background: var(--amber-bg); }
       <input type="text" id="ctrlDate">
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <div class="tip-box">
       ⚠️ 이 서식은 참고용 템플릿입니다. 실제 계약 체결 전에는 반드시 법률 전문가의 검토를 받으시기 바랍니다.
@@ -126,8 +143,8 @@ body { background: var(--amber-bg); }
     <div class="a4-page">
 
       <div class="doc-header">
-        <div class="doc-title-ko">주 주 간 계 약 서</div>
-        <div class="doc-title-en">SHAREHOLDERS AGREEMENT</div>
+        <div class="doc-title-ko" id="formDocTitle">주 주 간 계 약 서</div>
+        <div class="doc-title-en" id="formDocSub">SHAREHOLDERS AGREEMENT</div>
       </div>
 
       <div class="doc-intro">
@@ -269,7 +286,7 @@ body { background: var(--amber-bg); }
 
       <!-- 서명 -->
       <div class="sig-section">
-        <div class="date-signed">이 계약의 성립을 증명하기 위하여 당사자 전원이 서명 날인한다.<br><span id="sigDate" contenteditable="true"></span></div>
+        <div class="date-signed"><span id="sigPrefix">이 계약의 성립을 증명하기 위하여 당사자 전원이 서명 날인한다.</span><br><span id="sigDate" contenteditable="true"></span></div>
         <div class="sig-section-title">당사자 서명</div>
         <div class="sig-grid">
           <div class="sig-card">
@@ -316,6 +333,51 @@ body { background: var(--amber-bg); }
 </div>
 
 <script>
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '주 주 간 계 약 서',
+    docSub: 'SHAREHOLDERS AGREEMENT',
+    clauseTitles: ['정의','주식 양도 제한','경영 참여','배당 정책','자금 조달','지식재산권 귀속','경업금지 및 전속 의무','비밀유지','계약 해지','진술 및 보장','손해배상','준거법 및 분쟁 해결'],
+    sigPrefix: '이 계약의 성립을 증명하기 위하여 당사자 전원이 서명 날인한다.'
+  },
+  en: {
+    docTitle: 'SHAREHOLDERS AGREEMENT',
+    docSub: 'Inter-Shareholder Agreement',
+    clauseTitles: ['Definitions','Transfer Restrictions','Management Participation','Dividend Policy','Funding','Intellectual Property','Non-Competition & Exclusivity','Confidentiality','Termination Events','Representations & Warranties','Indemnification','Governing Law & Disputes'],
+    sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Shareholders Agreement.'
+  },
+  ja: {
+    docTitle: '株 主 間 契 約 書',
+    docSub: 'SHAREHOLDERS AGREEMENT',
+    clauseTitles: ['定義','株式譲渡制限','経営参加','配当方針','資金調達','知的財産権帰属','競業禁止及び専属義務','秘密保持','解除事由','表明及び保証','損害賠償','準拠法及び紛争解決'],
+    sigPrefix: '上記契約の成立を証明するため、記名押印する。'
+  }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  document.getElementById('formDocTitle').textContent = d.docTitle;
+  document.getElementById('formDocSub').textContent = d.docSub;
+  document.getElementById('sigPrefix').textContent = d.sigPrefix;
+  // article-title: <span class="art-no">제 N 조</span> + text node
+  var articleTitles = document.querySelectorAll('.article-title');
+  articleTitles.forEach(function(el, i) {
+    if (!d.clauseTitles[i]) return;
+    var artNo = el.querySelector('.art-no');
+    // remove all child nodes except .art-no
+    while (el.lastChild && el.lastChild !== artNo) el.removeChild(el.lastChild);
+    if (artNo && artNo !== el.firstChild) { el.insertBefore(artNo, el.firstChild); }
+    el.appendChild(document.createTextNode(' ' + d.clauseTitles[i]));
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const today = new Date();
   const ds = today.getFullYear() + '년 ' + (today.getMonth()+1) + '월 ' + today.getDate() + '일';

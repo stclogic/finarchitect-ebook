@@ -138,6 +138,11 @@
 [contenteditable="true"] { outline: none; }
 [contenteditable="true"]:hover { background: rgba(59,130,246,.06); border-radius: 3px; }
 [contenteditable="true"]:focus { background: #EFF6FF; border-radius: 3px; box-shadow: 0 0 0 2px #3B82F6; }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border,#e2e8f0); background:none; color:var(--text2,#64748b); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
   .ctrl-panel, nav, footer, .back-link { display: none !important; }
   .form-page-wrap { display: block; padding: 0; }
@@ -145,6 +150,10 @@
   .doc-page { width: 100%; box-shadow: none; margin: 0; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 </style>
@@ -173,6 +182,14 @@
     </div>
 
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2,#64748b);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="location.reload()">초기화</button>
     <div class="tip-box">💡 각 항목을 클릭하여 내용을 직접 수정하세요.</div>
@@ -193,14 +210,14 @@
       <div class="big-title-wrap">
         <div class="title-deco">
           <div class="deco-line"></div>
-          <div class="big-title">위 &nbsp; 임 &nbsp; 장</div>
+          <div class="big-title" id="formDocTitle">위 &nbsp; 임 &nbsp; 장</div>
           <div class="deco-line right"></div>
         </div>
-        <div class="big-title-sub">POWER OF ATTORNEY</div>
+        <div class="big-title-sub" id="formDocSub">POWER OF ATTORNEY</div>
       </div>
 
       <!-- Recipient -->
-      <div class="recipient-box">
+      <div class="recipient-box" id="recipientBox">
         <div class="recip-row">
           <div class="recip-item">
             <span class="recip-lbl">성&nbsp;&nbsp;&nbsp;&nbsp;명</span>
@@ -229,26 +246,26 @@
         </div>
       </div>
 
-      <div class="delegation-stmt">
+      <div class="delegation-stmt" id="certText">
         본인은 아래 사항에 대하여 위와 같이 권한을 위임합니다.
       </div>
 
       <!-- Detail table -->
-      <table class="detail-table">
+      <table class="detail-table" id="detailTable">
         <tr>
-          <th>위임 사항</th>
+          <th id="th0">위임 사항</th>
           <td contenteditable="true" style="min-height:18mm;"></td>
         </tr>
         <tr>
-          <th>위임 범위</th>
+          <th id="th1">위임 범위</th>
           <td contenteditable="true"></td>
         </tr>
         <tr>
-          <th>위임 기간</th>
+          <th id="th2">위임 기간</th>
           <td contenteditable="true"></td>
         </tr>
         <tr>
-          <th>제한 사항</th>
+          <th id="th3">제한 사항</th>
           <td contenteditable="true"></td>
         </tr>
       </table>
@@ -285,7 +302,7 @@
 
       <div class="sig-final">
         <div class="sig-name-block">
-          위임인&nbsp;:&nbsp;
+          <span id="sigPrefix">위임인</span>&nbsp;:&nbsp;
           <span style="border-bottom:1px solid #94a3b8;min-width:50mm;display:inline-block;" contenteditable="true"></span>
           &nbsp;(서명)
         </div>
@@ -319,6 +336,43 @@
   document.getElementById('sigDate').textContent =
     d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
 })();
+
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '위 &nbsp; 임 &nbsp; 장', docSub: '',
+    certText: '본인은 아래 사항에 대하여 위와 같이 권한을 위임합니다.',
+    sigPrefix: '위임인',
+    agentLabel: '수 임 인', principalLabel: '위 임 인',
+    tableHeaders: ['위임 사항','위임 범위','위임 기간','제한 사항']
+  },
+  en: {
+    docTitle: 'POWER OF ATTORNEY', docSub: 'Authorization Letter',
+    certText: 'I hereby authorize the above-named agent to act on my behalf with respect to the matters listed below.',
+    sigPrefix: 'Principal (Authorizer)',
+    agentLabel: 'Agent (Authorized Person)', principalLabel: 'Principal (Authorizer)',
+    tableHeaders: ['Delegated Matter','Scope of Authority','Period of Delegation','Restrictions']
+  },
+  ja: {
+    docTitle: '委 &nbsp; 任 &nbsp; 状', docSub: '',
+    certText: '本人は下記の事項について上記のとおり権限を委任します。',
+    sigPrefix: '委任者',
+    agentLabel: '受 任 者', principalLabel: '委 任 者',
+    tableHeaders: ['委任事項','委任範囲','委任期間','制限事項']
+  }
+};
+var _pseudoStyle = document.createElement('style');
+document.head.appendChild(_pseudoStyle);
+function setLang(lang) {
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
+  document.getElementById('formDocTitle').innerHTML = d.docTitle;
+  document.getElementById('formDocSub').textContent = d.docSub;
+  document.getElementById('certText').textContent = d.certText;
+  document.getElementById('sigPrefix').textContent = d.sigPrefix;
+  d.tableHeaders.forEach(function(t, i){ var el = document.getElementById('th'+i); if(el) el.textContent = t; });
+  _pseudoStyle.textContent = '.recipient-box::before{content:"' + d.agentLabel + '"!important}.delegator-box::before{content:"' + d.principalLabel + '"!important}';
+}
 
 document.getElementById('docNum').addEventListener('input', function(){
   document.getElementById('docNumDisplay').textContent = this.value;

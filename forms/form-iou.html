@@ -159,6 +159,12 @@
 [contenteditable="true"]:hover { background: rgba(124,58,237,0.08); box-shadow: 0 0 0 1.5px rgba(124,58,237,0.25); }
 [contenteditable="true"]:focus { background: rgba(124,58,237,0.12); box-shadow: 0 0 0 2px rgba(124,58,237,0.4); }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
   body { background: #fff !important; }
   .ctrl-panel, .doc-wrap > *:not(.a4-page), .back-link,
@@ -170,6 +176,10 @@
   .iou-logo-placeholder { display: none !important; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 @media (max-width: 900px) {
@@ -215,7 +225,16 @@
       <input type="text" placeholder="2027년 07월 15일" oninput="syncField('.f-duedate', this.value)">
     </div>
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="if(confirm('초기화?'))location.reload()">↺ 초기화</button>
     <div class="tip-box">
       ⚠ <strong>법적 효력 강화 방법</strong><br>
@@ -436,6 +455,60 @@ function uploadLogo(input) {
   var el2 = document.getElementById('confDate');
   if (el2) el2.textContent = confDate;
 })();
+
+var LANG_DATA_FORM = {
+  ko: { docTitle:'차 용 증', docSub:'LOAN CERTIFICATE · PROMISSORY NOTE',
+    thBorrower:'차용인 (을) — 빌린 사람', thLender:'대여인 (갑) — 빌려준 사람',
+    sigBorrower:'차용인 (을) — 빌린 사람', sigLender:'대여인 (갑) — 빌려준 사람',
+    amountLabel:'차 용 금 액',
+    clauses:['차용 원금','이자','변제 기일 및 방법','기한 이익 상실','연체 이자','담보 및 연대보증','분쟁 해결'],
+    printBtn:'🖨 인쇄 / PDF 저장' },
+  en: { docTitle:'LOAN AGREEMENT', docSub:'MONETARY LOAN CONTRACT · PROMISSORY NOTE',
+    thBorrower:'Borrower (Debtor)', thLender:'Lender (Creditor)',
+    sigBorrower:'Borrower (Debtor)', sigLender:'Lender (Creditor)',
+    amountLabel:'LOAN AMOUNT',
+    clauses:['Art.1 — Principal Amount','Art.2 — Interest','Art.3 — Repayment Date & Method','Art.4 — Acceleration Clause','Art.5 — Default Interest','Art.6 — Collateral & Guarantee','Art.7 — Dispute Resolution'],
+    printBtn:'🖨 Print / Save as PDF' },
+  ja: { docTitle:'金銭消費貸借契約書', docSub:'借用証書 · PROMISSORY NOTE',
+    thBorrower:'借主（債務者）', thLender:'貸主（債権者）',
+    sigBorrower:'借主（債務者）', sigLender:'貸主（債権者）',
+    amountLabel:'借 用 金 額',
+    clauses:['第1条 — 借用元金','第2条 — 利息','第3条 — 返済期日及び方法','第4条 — 期限の利益喪失','第5条 — 遅延損害金','第6条 — 担保及び連帯保証','第7条 — 紛争解決'],
+    printBtn:'🖨 印刷 / PDF保存' }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  // document title & subtitle
+  document.querySelector('.iou-title').textContent = d.docTitle;
+  document.querySelector('.iou-subtitle').textContent = d.docSub;
+  // amount label
+  document.querySelector('.amount-label').textContent = d.amountLabel;
+  // party card titles
+  var cardTitles = document.querySelectorAll('.party-card-title');
+  if (cardTitles[0]) cardTitles[0].textContent = d.thBorrower;
+  if (cardTitles[1]) cardTitles[1].textContent = d.thLender;
+  // sig party titles
+  var sigTitles = document.querySelectorAll('.iou-sig-party-title');
+  if (sigTitles[0]) sigTitles[0].textContent = d.sigBorrower;
+  if (sigTitles[1]) sigTitles[1].textContent = d.sigLender;
+  // clause titles (numbered)
+  var clauseTitles = document.querySelectorAll('.iou-clause-title');
+  clauseTitles.forEach(function(el, i) {
+    var num = el.querySelector('.iou-num');
+    if (num && d.clauses[i]) el.innerHTML = num.outerHTML + d.clauses[i];
+  });
+  // print button
+  document.getElementById('print-btn').textContent = d.printBtn;
+  // html lang
+  document.documentElement.lang = lang;
+}
 </script>
 </body>
 </html>

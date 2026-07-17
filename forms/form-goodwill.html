@@ -133,8 +133,28 @@
 [contenteditable]:hover { outline:2px solid #14B8A6; border-radius:3px; }
 [contenteditable]:focus { outline:3px solid #0F766E; border-radius:3px; background:#f0fff8; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .ctrl-panel, nav, footer, .back-link { display:none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   .form-page-wrap { display:block; padding:0; }
   .doc-wrap { background:none; padding:0; border-radius:0; }
   .doc-page { width:210mm; box-shadow:none; min-height:auto; }
@@ -149,7 +169,7 @@
 <div class="form-page-wrap">
   <aside class="ctrl-panel">
     <a href="../forms.html" class="back-link">← 서식 목록</a>
-    <h2>🏪 권리금계약서</h2>
+    <h2 id="ctrlTitle">🏪 권리금계약서</h2>
     <div class="ctrl-section">
       <label>회사 로고 업로드</label>
       <input type="file" accept="image/*" id="logoUpload" style="font-size:.78rem;">
@@ -179,7 +199,16 @@
       <input type="number" id="floorAmt" placeholder="예: 5000000">
     </div>
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="printBtn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
     <div class="tip-box">
       💡 <strong>작성 Tip</strong><br>
@@ -203,8 +232,8 @@
         </div>
 
         <div class="doc-title">
-          <h1>권&nbsp;&nbsp;리&nbsp;&nbsp;금&nbsp;&nbsp;계&nbsp;&nbsp;약&nbsp;&nbsp;서</h1>
-          <div class="en">GOODWILL TRANSFER AGREEMENT</div>
+          <h1 id="formDocTitle">권&nbsp;&nbsp;리&nbsp;&nbsp;금&nbsp;&nbsp;계&nbsp;&nbsp;약&nbsp;&nbsp;서</h1>
+          <div class="en" id="docSubTitle">GOODWILL TRANSFER AGREEMENT</div>
           <div class="subtitle">상가임대차보호법 제10조의3·4에 의거하여 아래와 같이 체결한다.</div>
         </div>
         <div class="doc-divider"></div>
@@ -223,8 +252,8 @@
           <thead>
             <tr>
               <th style="width:22%;">구분</th>
-              <th>양도인 (甲) — 현 임차인</th>
-              <th>양수인 (乙) — 신규 임차인</th>
+              <th id="thSeller">양도인 (甲) — 현 임차인</th>
+              <th id="thBuyer">양수인 (乙) — 신규 임차인</th>
             </tr>
           </thead>
           <tbody>
@@ -239,7 +268,7 @@
 
         <!-- 제1조 권리금 -->
         <div class="article-section">
-          <div class="article-title"><span class="article-num">1</span>권리금</div>
+          <div class="article-title"><span class="article-num">1</span><span id="at-1">권리금</span></div>
           <div class="article-body">
             양도인과 양수인은 본 점포의 권리금을 아래와 같이 합의한다.
             <div class="amount-box" style="margin-top:2mm;">
@@ -266,7 +295,7 @@
 
         <!-- 제2조 지급 일정 -->
         <div class="article-section">
-          <div class="article-title"><span class="article-num">2</span>계약금 및 잔금 지급 일정</div>
+          <div class="article-title"><span class="article-num">2</span><span id="at-2">계약금 및 잔금 지급 일정</span></div>
           <div class="article-body">
             <table class="data-table">
               <thead><tr><th>구분</th><th>금액</th><th>지급일</th><th>지급방법</th></tr></thead>
@@ -281,7 +310,7 @@
 
         <!-- 제3조 임대인 동의 -->
         <div class="article-section">
-          <div class="article-title"><span class="article-num">3</span>임대인 동의</div>
+          <div class="article-title"><span class="article-num">3</span><span id="at-3">임대인 동의</span></div>
           <div class="article-body">
             <div class="law-box">
               「상가건물 임대차보호법」 제10조의4: 임대인은 임차인이 주선한 신규 임차인이 되려는 자로부터 권리금을 지급받는 것을 방해하여서는 아니 된다.
@@ -292,7 +321,7 @@
 
         <!-- 제4조 인수 범위 -->
         <div class="article-section">
-          <div class="article-title"><span class="article-num">4</span>인수 범위 — 시설물 목록</div>
+          <div class="article-title"><span class="article-num">4</span><span id="at-4">인수 범위 — 시설물 목록</span></div>
           <div class="article-body">
             <table class="data-table">
               <thead><tr><th>항목명</th><th>수량</th><th>상태</th><th>금액(원)</th><th>비고</th></tr></thead>
@@ -309,39 +338,39 @@
 
         <!-- 제5~10조 -->
         <div class="article-section">
-          <div class="article-title"><span class="article-num">5</span>명도 및 인수인계 일자</div>
+          <div class="article-title"><span class="article-num">5</span><span id="at-5">명도 및 인수인계 일자</span></div>
           <div class="article-body" contenteditable="true">갑은 잔금 수령 후 __일 이내에 본 점포를 을에게 명도하고, 인수인계서를 작성한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">6</span>영업 비밀 이전</div>
+          <div class="article-title"><span class="article-num">6</span><span id="at-6">영업 비밀 이전</span></div>
           <div class="article-body" contenteditable="true">갑은 기존 거래처 정보, 레시피, 영업 노하우 등을 성실히 을에게 이전한다. 이전 기간은 인수인계일로부터 __일로 한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">7</span>영업 방해 금지</div>
+          <div class="article-title"><span class="article-num">7</span><span id="at-7">영업 방해 금지</span></div>
           <div class="article-body" contenteditable="true">갑은 본 계약일로부터 __년간 본 점포 반경 __km 이내에서 동종 업종을 영위하지 않는다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">8</span>임대인의 계약 갱신 거절 시 손실 처리</div>
+          <div class="article-title"><span class="article-num">8</span><span id="at-8">임대인의 계약 갱신 거절 시 손실 처리</span></div>
           <div class="article-body" contenteditable="true">임대인이 정당한 사유 없이 을과의 임대차계약 갱신을 거절하여 을이 손해를 입은 경우, 임대인은 「상가건물 임대차보호법」에 따라 손해를 배상한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">9</span>계약 해지 및 위약금</div>
+          <div class="article-title"><span class="article-num">9</span><span id="at-9">계약 해지 및 위약금</span></div>
           <div class="article-body" contenteditable="true">갑이 계약을 위반하여 계약이 해지되는 경우 계약금의 2배를 을에게 반환한다. 을이 계약을 위반하는 경우 계약금을 포기한다.</div>
         </div>
 
         <div class="article-section">
-          <div class="article-title"><span class="article-num">10</span>분쟁 해결</div>
+          <div class="article-title"><span class="article-num">10</span><span id="at-10">분쟁 해결</span></div>
           <div class="article-body" contenteditable="true">본 계약에 관한 분쟁은 점포 소재지를 관할하는 법원을 제1심 법원으로 한다.</div>
         </div>
 
         <div class="doc-divider"></div>
 
         <div style="text-align:center; font-size:9pt; color:#0F766E; font-weight:700; margin:3mm 0 2mm;">
-          위 계약 내용을 확인하고 각자 서명·날인한다.
+          <span id="sigPrefix">위 계약 내용을 확인하고 각자 서명·날인한다.</span>
         </div>
         <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
 
@@ -444,6 +473,49 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
   };
   reader.readAsDataURL(file);
 });
+
+// ── 언어 전환 ────────────────────────────────────────────────────
+var LANG_DATA = {
+  ko: {
+    ctrlTitle: '🏪 권리금계약서', printBtn: '🖨️ 인쇄 / PDF 저장',
+    docTitle: '권  리  금  계  약  서', docSub: 'GOODWILL TRANSFER AGREEMENT',
+    thSeller: '양도인 (甲) — 현 임차인', thBuyer: '양수인 (乙) — 신규 임차인',
+    sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
+    articles: ['권리금','계약금 및 잔금 지급 일정','임대인 동의','인수 범위 — 시설물 목록','명도 및 인수인계 일자','영업 비밀 이전','영업 방해 금지','임대인의 계약 갱신 거절 시 손실 처리','계약 해지 및 위약금','분쟁 해결']
+  },
+  en: {
+    ctrlTitle: '🏪 Goodwill Transfer Agreement', printBtn: '🖨 Print / Save as PDF',
+    docTitle: 'GOODWILL TRANSFER AGREEMENT', docSub: 'Business Goodwill Transfer Contract',
+    thSeller: 'Transferor (Party A, Current Tenant)', thBuyer: 'Transferee (Party B, New Tenant)',
+    sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Goodwill Transfer Agreement.',
+    articles: ['Art.1 — Goodwill Amount','Art.2 — Deposit & Balance Payment','Art.3 — Landlord Consent','Art.4 — Scope of Transfer','Art.5 — Handover & Possession','Art.6 — Transfer of Trade Secrets','Art.7 — Non-Interference','Art.8 — Lease Renewal Refusal','Art.9 — Termination & Penalty','Art.10 — Dispute Resolution']
+  },
+  ja: {
+    ctrlTitle: '🏪 営業権譲渡契約書', printBtn: '🖨 印刷 / PDF保存',
+    docTitle: '営業権譲渡契約書', docSub: 'GOODWILL TRANSFER AGREEMENT',
+    thSeller: '譲渡人（甲、現賃借人）', thBuyer: '譲受人（乙、新賃借人）',
+    sigPrefix: '上記契約の成立を証明するため、本契約書を作成して記名押印する。',
+    articles: ['第1条 — 権利金','第2条 — 手付金及び残金','第3条 — 賃貸人の同意','第4条 — 引受範囲','第5条 — 明渡及び引継','第6条 — 営業秘密の移転','第7条 — 営業妨害禁止','第8条 — 賃貸借更新拒絶','第9条 — 解除及び違約金','第10条 — 紛争解決']
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA[lang];
+  if (!d) return;
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-' + l).classList.toggle('active', l === lang);
+  });
+  document.getElementById('ctrlTitle').textContent = d.ctrlTitle;
+  document.getElementById('printBtn').textContent = d.printBtn;
+  document.getElementById('formDocTitle').textContent = d.docTitle;
+  document.getElementById('docSubTitle').textContent = d.docSub;
+  document.getElementById('thSeller').textContent = d.thSeller;
+  document.getElementById('thBuyer').textContent = d.thBuyer;
+  document.getElementById('sigPrefix').textContent = d.sigPrefix;
+  d.articles.forEach(function(title, i) {
+    var el = document.getElementById('at-' + (i+1));
+    if (el) el.textContent = title;
+  });
+}
 
 function resetDoc() {
   if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;

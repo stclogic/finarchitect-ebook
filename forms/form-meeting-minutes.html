@@ -134,8 +134,28 @@
 .add-agenda-btn { padding:5px 14px; background:#F1F5F9; border:1px solid #CBD5E1; border-radius:8px; font-size:8pt; color:#475569; cursor:pointer; transition:all .15s; margin:2mm 14mm; display:block; }
 .add-agenda-btn:hover { background:#1E293B; color:#fff; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E293B; color:#1E293B; }
+.lang-btn.active { background:#1E293B; border-color:#1E293B; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
-  .ctrl-panel { display:none !important; }
+  .ctrl-panel { display:none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   nav, footer { display:none !important; }
   .form-page-wrap { display:block; padding:0; }
   .doc-wrap { background:none; padding:0; border-radius:0; }
@@ -169,6 +189,14 @@
       <img id="logoPreview" class="logo-preview" style="display:none">
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <a href="../forms.html" class="back-link">← 서식 목록</a>
     <div class="tip-box">💡 안건 추가 버튼으로 의제를 자유롭게 늘릴 수 있습니다. 회의 유형 버튼은 클릭하여 선택하세요.</div>
@@ -185,8 +213,8 @@
           <img id="docLogo" class="doc-logo" style="display:none" alt="로고">
         </div>
         <div class="doc-title-block">
-          <div class="doc-title">회  의  록</div>
-          <div class="doc-subtitle">MEETING MINUTES</div>
+          <div class="doc-title" id="formDocTitle">회  의  록</div>
+          <div class="doc-subtitle" id="formDocSub">MEETING MINUTES</div>
         </div>
         <div class="doc-meta-right">
           <div>문서번호: <strong id="docNoOut">MM-2026-001</strong></div>
@@ -198,9 +226,9 @@
       <div class="info-grid">
         <table class="meeting-info-table">
           <tr>
-            <th>회의명</th>
+            <th id="ih0">회의명</th>
             <td contenteditable="true"></td>
-            <th>회의 유형</th>
+            <th id="ih1">회의 유형</th>
             <td>
               <div class="meeting-type-btns">
                 <button class="mtype-btn active" onclick="selectType(this)">정기</button>
@@ -210,47 +238,47 @@
             </td>
           </tr>
           <tr>
-            <th>일시</th>
+            <th id="ih2">일시</th>
             <td contenteditable="true"></td>
-            <th>장소</th>
-            <td contenteditable="true"></td>
-          </tr>
-          <tr>
-            <th>주관 부서</th>
-            <td contenteditable="true"></td>
-            <th>회의 주재자</th>
+            <th id="ih3">장소</th>
             <td contenteditable="true"></td>
           </tr>
           <tr>
-            <th>참석자</th>
+            <th id="ih4">주관 부서</th>
+            <td contenteditable="true"></td>
+            <th id="ih5">회의 주재자</th>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <th id="ih6">참석자</th>
             <td colspan="3" contenteditable="true" style="color:#475569;font-size:8.5pt">성명, 성명, 성명 (쉼표로 구분)</td>
           </tr>
           <tr>
-            <th>불참자</th>
+            <th id="ih7">불참자</th>
             <td contenteditable="true"></td>
-            <th>배포 대상</th>
+            <th id="ih8">배포 대상</th>
             <td contenteditable="true"></td>
           </tr>
         </table>
       </div>
 
       <!-- 안건 -->
-      <div class="sec-head" style="margin-top:5mm"><span class="sec-num">1</span> 안건</div>
+      <div class="sec-head" style="margin-top:5mm"><span class="sec-num">1</span> <span id="sec1">안건</span></div>
       <div class="agenda-section" id="agendaSection"></div>
       <button class="add-agenda-btn" onclick="addAgenda()">+ 안건 추가</button>
 
       <!-- 액션 아이템 -->
-      <div class="sec-head"><span class="sec-num">2</span> 액션 아이템</div>
+      <div class="sec-head"><span class="sec-num">2</span> <span id="sec2">액션 아이템</span></div>
       <div class="action-section">
         <div class="action-border-wrap">
           <table class="action-table" id="actionTable">
             <thead>
               <tr>
-                <th style="width:5%">No</th>
-                <th style="width:38%">내용</th>
-                <th style="width:18%">담당자</th>
-                <th style="width:18%">기한</th>
-                <th style="width:21%">상태</th>
+                <th style="width:5%" id="ah0">No</th>
+                <th style="width:38%" id="ah1">내용</th>
+                <th style="width:18%" id="ah2">담당자</th>
+                <th style="width:18%" id="ah3">기한</th>
+                <th style="width:21%" id="ah4">상태</th>
               </tr>
             </thead>
             <tbody id="actionBody"></tbody>
@@ -260,24 +288,24 @@
       </div>
 
       <!-- 다음 회의 -->
-      <div class="sec-head" style="margin-top:4mm"><span class="sec-num">3</span> 다음 회의</div>
+      <div class="sec-head" style="margin-top:4mm"><span class="sec-num">3</span> <span id="sec3">다음 회의</span></div>
       <div class="next-section">
         <table class="next-table">
           <tr>
-            <th>예정 일시</th>
+            <th id="nh0">예정 일시</th>
             <td contenteditable="true"></td>
-            <th>예정 장소</th>
+            <th id="nh1">예정 장소</th>
             <td contenteditable="true"></td>
           </tr>
           <tr>
-            <th>주요 안건</th>
+            <th id="nh2">주요 안건</th>
             <td colspan="3" contenteditable="true"></td>
           </tr>
         </table>
       </div>
 
       <!-- 결재 -->
-      <div class="sec-head" style="margin-top:4mm"><span class="sec-num">4</span> 작성자 및 결재</div>
+      <div class="sec-head" style="margin-top:4mm"><span class="sec-num">4</span> <span id="sec4">작성자 및 결재</span></div>
       <div class="approval-section">
         <div class="approval-row">
           <div class="writer-box">
@@ -301,6 +329,43 @@
 </div>
 
 <script>
+const LANGS = {
+  ko: {
+    docTitle:'회  의  록', docSub:'MEETING MINUTES',
+    ih:['회의명','회의 유형','일시','장소','주관 부서','회의 주재자','참석자','불참자','배포 대상'],
+    sec:['안건','액션 아이템','다음 회의','작성자 및 결재'],
+    ah:['No','내용','담당자','기한','상태'],
+    nh:['예정 일시','예정 장소','주요 안건']
+  },
+  en: {
+    docTitle:'MEETING MINUTES', docSub:'Minutes of Meeting',
+    ih:['Meeting Name','Meeting Type','Date & Time','Venue','Organizing Dept.','Chairperson','Attendees','Absentees','Distribution'],
+    sec:['Agenda','Action Items','Next Meeting','Author & Approval'],
+    ah:['No','Action Item','Owner','Due Date','Status'],
+    nh:['Scheduled Date','Scheduled Venue','Key Agenda']
+  },
+  ja: {
+    docTitle:'会  議  録', docSub:'MEETING MINUTES',
+    ih:['会議名','会議種別','日時','場所','主管部署','議長','出席者','欠席者','配布先'],
+    sec:['議題','アクションアイテム','次回会議','作成者・決裁'],
+    ah:['No','内容','担当者','期限','状況'],
+    nh:['予定日時','予定場所','主要議題']
+  }
+};
+
+function setLang(lang) {
+  const t = LANGS[lang];
+  ['ko','en','ja'].forEach(l => {
+    document.getElementById('btn-'+l).classList.toggle('active', l===lang);
+  });
+  document.getElementById('formDocTitle').textContent = t.docTitle;
+  document.getElementById('formDocSub').textContent = t.docSub;
+  t.ih.forEach((h,i) => { const el = document.getElementById('ih'+i); if(el) el.textContent = h; });
+  t.sec.forEach((s,i) => { const el = document.getElementById('sec'+(i+1)); if(el) el.textContent = s; });
+  t.ah.forEach((h,i) => { const el = document.getElementById('ah'+i); if(el) el.textContent = h; });
+  t.nh.forEach((h,i) => { const el = document.getElementById('nh'+i); if(el) el.textContent = h; });
+}
+
 (function(){
   const today = new Date();
   const d = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;

@@ -254,6 +254,12 @@
 }
 .ec-address-footer[contenteditable]:focus { outline: none; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid #C7D2FE; background:none; color:#6366F1; cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#3730A3; color:#3730A3; }
+.lang-btn.active { background:#3730A3; border-color:#3730A3; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 /* ── 인쇄 CSS ── */
 @media print {
   .ctrl-panel, nav, footer { display: none !important; }
@@ -262,6 +268,10 @@
   .a4-page { width: 100% !important; border-radius: 0 !important; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 @media (max-width: 900px) {
@@ -316,7 +326,15 @@
     </div>
 
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <div style="font-size:0.78rem;font-weight:700;color:#6366F1;margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
 
     <div class="tip-box">
@@ -467,6 +485,65 @@ function resetForm() {
   const img = document.getElementById('doc-logo');
   img.src = ''; img.classList.remove('visible');
   document.getElementById('logo-placeholder').style.display = '';
+}
+
+var LANG_DATA_FORM = {
+  ko: { docTitle:'재&nbsp;&nbsp;직&nbsp;&nbsp;증&nbsp;&nbsp;명&nbsp;&nbsp;서', docSub:'CERTIFICATE OF EMPLOYMENT',
+    certText:'위 사람은 현재 당사에 재직 중임을 증명합니다.',
+    certTextEn:'This is to certify that the above-named person is currently employed at our company.',
+    purposeLabel:'용&nbsp;&nbsp;&nbsp;&nbsp;도',
+    purposeDefault:'금융기관 제출용',
+    ceoLabel:'대표이사',
+    ceoSuffix:'(서명 또는 날인)',
+    tableHeaders:['성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명','생 년 월 일','주민등록번호','고 용 형 태','소&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;속','직&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;위','직&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;책','입&nbsp;&nbsp;사&nbsp;&nbsp;일','재 직 기 간','비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;고'],
+    printBtn:'🖨 인쇄 / PDF 저장' },
+  en: { docTitle:'CERTIFICATE&nbsp;OF&nbsp;EMPLOYMENT', docSub:'재직증명서',
+    certText:'This is to certify that the above-named individual is currently employed at our company.',
+    certTextEn:'위 사람은 현재 당사에 재직 중임을 증명합니다.',
+    purposeLabel:'Purpose',
+    purposeDefault:'For financial institution submission',
+    ceoLabel:'CEO / Representative',
+    ceoSuffix:'(Signature or Seal)',
+    tableHeaders:['Name','Date of Birth','ID Number','Employment Type','Department','Title','Position','Date of Hire','Period of Employment','Remarks'],
+    printBtn:'🖨 Print / Save as PDF' },
+  ja: { docTitle:'在&nbsp;&nbsp;職&nbsp;&nbsp;証&nbsp;&nbsp;明&nbsp;&nbsp;書', docSub:'CERTIFICATE OF EMPLOYMENT',
+    certText:'上記の者が現在弊社に在職していることを証明します。',
+    certTextEn:'This is to certify that the above person is currently employed at our company.',
+    purposeLabel:'提出用途',
+    purposeDefault:'金融機関提出用',
+    ceoLabel:'代表取締役',
+    ceoSuffix:'（署名又は押印）',
+    tableHeaders:['氏&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名','生年月日','住民登録番号','雇用形態','所&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;属','役&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;職','職&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位','入&nbsp;&nbsp;社&nbsp;&nbsp;日','在職期間','備&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;考'],
+    printBtn:'🖨 印刷 / PDF保存' }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  // title & subtitle
+  document.querySelector('.ec-title').innerHTML = d.docTitle;
+  document.querySelector('.ec-subtitle').textContent = d.docSub;
+  // cert text
+  var certPs = document.querySelectorAll('.ec-cert-text p');
+  if (certPs[0]) certPs[0].textContent = d.certText;
+  if (certPs[1]) certPs[1].textContent = d.certTextEn;
+  // purpose label
+  document.querySelector('.ec-purpose-label').innerHTML = d.purposeLabel;
+  // CEO label & suffix
+  document.querySelector('.ec-ceo-label').textContent = d.ceoLabel;
+  var ceoSuffixEl = document.querySelector('.ec-ceo-row span:last-child');
+  if (ceoSuffixEl) ceoSuffixEl.textContent = d.ceoSuffix;
+  // table headers
+  var ths = document.querySelectorAll('.ec-cert-table th');
+  ths.forEach(function(th, i) { if (d.tableHeaders[i]) th.innerHTML = d.tableHeaders[i]; });
+  // print button
+  document.getElementById('print-btn').textContent = d.printBtn;
+  document.documentElement.lang = lang;
 }
 </script>
 </body>

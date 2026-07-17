@@ -132,6 +132,12 @@
 [contenteditable="true"]:hover { background: rgba(6,95,70,0.08); box-shadow: 0 0 0 1.5px rgba(6,95,70,0.25); }
 [contenteditable="true"]:focus { background: rgba(6,95,70,0.12); box-shadow: 0 0 0 2px rgba(6,95,70,0.4); }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
   body { background: #fff !important; }
   .ctrl-panel, .doc-wrap > *:not(.a4-page), .back-link,
@@ -143,6 +149,10 @@
   .contract-logo-placeholder { display: none !important; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 @media (max-width: 900px) {
@@ -198,7 +208,16 @@
       <input type="text" placeholder="2026.08.01 ~ 2028.07.31" oninput="syncField('.f-period', this.value)">
     </div>
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="if(confirm('초기화?'))location.reload()">↺ 초기화</button>
     <div class="tip-box">
       💡 이 계약서는 <strong>주택임대차보호법</strong>에 따른 표준 양식입니다. 계약 체결 후 <strong>확정일자</strong> 및 <strong>전입신고</strong>를 반드시 진행하세요.
@@ -466,16 +485,17 @@ function setType(val) {
   var title = document.getElementById('contractTitle');
   var rentWrap = document.getElementById('rentWrap');
   var jeonseRow = document.getElementById('jeonseAmtRow');
+  var d = LANG_DATA_FORM[_currentLang];
   if (val === 'jeonse') {
-    title.textContent = '전세 임대차 계약서';
+    title.textContent = d ? d.titleJeonse : '전세 임대차 계약서';
     rentWrap.style.display = 'none';
     jeonseRow.textContent = '월세: 해당 없음 (전세 계약)';
   } else if (val === 'commercial') {
-    title.textContent = '상가 임대차 계약서';
+    title.textContent = d ? d.titleCommercial : '상가 임대차 계약서';
     rentWrap.style.display = '';
     jeonseRow.textContent = '(상가임대차보호법 적용 여부 확인 필요)';
   } else {
-    title.textContent = '주택 임대차 계약서';
+    title.textContent = d ? d.titleMonthly : '주택 임대차 계약서';
     rentWrap.style.display = '';
     jeonseRow.textContent = '전세 보증금: 해당 없음 (월세 계약)';
   }
@@ -486,6 +506,59 @@ function setType(val) {
   var el = document.getElementById('docDate');
   if (el) el.textContent = str;
 })();
+
+var LANG_DATA_FORM = {
+  ko: { docTitle:'주택 임대차 계약서', docSub:'RESIDENTIAL LEASE AGREEMENT · 주택임대차보호법에 의거한 표준 계약서',
+    titleMonthly:'주택 임대차 계약서', titleJeonse:'전세 임대차 계약서', titleCommercial:'상가 임대차 계약서',
+    thLandlord:'임대인 (갑)', thTenant:'임차인 (을)',
+    sigLandlord:'임대인 (갑)', sigTenant:'임차인 (을)',
+    clauses:['보증금 및 임료','임대 기간','목적물 인도 및 용도','수선 및 유지 관리','전대 및 권리 양도 금지','보증금 반환 및 연체 이자','임대인의 방문 및 점검','계약 해지 및 위약금','공과금 및 관리비','임대인 변경 및 매매','특약 사항','분쟁 해결'],
+    printBtn:'🖨 인쇄 / PDF 저장' },
+  en: { docTitle:'LEASE AGREEMENT', docSub:'STANDARD LEASE CONTRACT · Based on Housing Lease Protection Act',
+    titleMonthly:'RESIDENTIAL LEASE AGREEMENT', titleJeonse:'JEONSE LEASE AGREEMENT', titleCommercial:'COMMERCIAL LEASE AGREEMENT',
+    thLandlord:'Landlord (Party A)', thTenant:'Tenant (Party B)',
+    sigLandlord:'Landlord (Party A)', sigTenant:'Tenant (Party B)',
+    clauses:['Art.1 — Deposit & Rent','Art.2 — Lease Period','Art.3 — Delivery & Use of Property','Art.4 — Repairs & Maintenance','Art.5 — Prohibition on Sublease & Transfer','Art.6 — Return of Deposit & Default Interest','Art.7 — Landlord Inspection Rights','Art.8 — Termination & Penalty','Art.9 — Utilities & Management Fees','Art.10 — Change of Landlord & Sale','Art.11 — Special Terms','Art.12 — Dispute Resolution'],
+    printBtn:'🖨 Print / Save as PDF' },
+  ja: { docTitle:'賃貸借契約書', docSub:'住宅賃貸借保護法に基づく標準契約書',
+    titleMonthly:'住宅賃貸借契約書', titleJeonse:'チョンセ賃貸借契約書', titleCommercial:'商業用賃貸借契約書',
+    thLandlord:'賃貸人（甲）', thTenant:'賃借人（乙）',
+    sigLandlord:'賃貸人（甲）', sigTenant:'賃借人（乙）',
+    clauses:['第1条 — 保証金及び賃料','第2条 — 賃貸期間','第3条 — 目的物の引渡し及び用途','第4条 — 修繕及び維持管理','第5条 — 転貸及び権利譲渡の禁止','第6条 — 保証金返還及び遅延損害金','第7条 — 賃貸人の訪問及び点検','第8条 — 契約解除及び違約金','第9条 — 公共料金及び管理費','第10条 — 賃貸人変更及び売買','第11条 — 特約事項','第12条 — 紛争解決'],
+    printBtn:'🖨 印刷 / PDF保存' }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  // document title & subtitle
+  var titleEl = document.getElementById('contractTitle');
+  if (titleEl) titleEl.textContent = d.docTitle;
+  document.querySelector('.contract-subtitle').textContent = d.docSub;
+  // parties table headers
+  var ths = document.querySelectorAll('.parties-table th');
+  if (ths[0]) ths[0].textContent = d.thLandlord;
+  if (ths[1]) ths[1].textContent = d.thTenant;
+  // sig titles
+  var sigTitles = document.querySelectorAll('.sig-party-title');
+  if (sigTitles[0]) sigTitles[0].textContent = d.sigLandlord;
+  if (sigTitles[1]) sigTitles[1].textContent = d.sigTenant;
+  // clause titles
+  var clauseTitles = document.querySelectorAll('.clause-title');
+  clauseTitles.forEach(function(el, i) {
+    var num = el.querySelector('.clause-num');
+    if (num && d.clauses[i]) el.innerHTML = num.outerHTML + d.clauses[i];
+  });
+  // print button
+  document.getElementById('print-btn').textContent = d.printBtn;
+  // html lang
+  document.documentElement.lang = lang;
+}
 </script>
 </body>
 </html>

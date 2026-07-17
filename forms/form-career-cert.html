@@ -265,6 +265,12 @@
 }
 .cc-address-footer:focus { outline: none; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E293B; color:#1E293B; }
+.lang-btn.active { background:#1E293B; border-color:#1E293B; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 /* ── 인쇄 CSS ── */
 @media print {
   .ctrl-panel, nav, footer { display: none !important; }
@@ -274,6 +280,10 @@
   .cc-del-btn { display: none !important; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 @media (max-width: 900px) {
@@ -324,6 +334,14 @@
     </div>
 
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
 
@@ -352,8 +370,8 @@
 
       <!-- 제목 -->
       <div class="cc-title-block">
-        <span class="cc-title">경&nbsp;&nbsp;력&nbsp;&nbsp;증&nbsp;&nbsp;명&nbsp;&nbsp;서</span>
-        <span class="cc-subtitle">CERTIFICATE OF CAREER / EMPLOYMENT HISTORY</span>
+        <span class="cc-title" id="formDocTitle">경&nbsp;&nbsp;력&nbsp;&nbsp;증&nbsp;&nbsp;명&nbsp;&nbsp;서</span>
+        <span class="cc-subtitle" id="formDocSub">CERTIFICATE OF CAREER / EMPLOYMENT HISTORY</span>
       </div>
       <div class="cc-divider"></div>
 
@@ -378,10 +396,10 @@
       <table class="cc-career-table" id="career-table">
         <thead>
           <tr>
-            <th style="width:28%">재직기간</th>
-            <th style="width:22%">소속부서</th>
-            <th style="width:18%">직위·직책</th>
-            <th style="width:28%">담당업무</th>
+            <th style="width:28%" id="ch0">재직기간</th>
+            <th style="width:22%" id="ch1">소속부서</th>
+            <th style="width:18%" id="ch2">직위·직책</th>
+            <th style="width:28%" id="ch3">담당업무</th>
             <th style="width:4%"></th>
           </tr>
         </thead>
@@ -412,18 +430,18 @@
 
       <!-- 총 경력 -->
       <div class="cc-total-career">
-        <span class="cc-total-label">총 경력 기간</span>
+        <span class="cc-total-label" id="totalCareerLabel">총 경력 기간</span>
         <span class="cc-total-field" contenteditable="true">_ 년 _ 개월</span>
       </div>
 
       <!-- 증명 문구 -->
-      <div class="cc-cert-text">
+      <div class="cc-cert-text" id="certText">
         위 사람의 경력이 사실임을 증명합니다.
       </div>
 
       <!-- 용도 -->
       <div class="cc-purpose">
-        <span class="cc-purpose-label">용&nbsp;&nbsp;&nbsp;&nbsp;도</span>
+        <span class="cc-purpose-label" id="purposeLabel">용&nbsp;&nbsp;&nbsp;&nbsp;도</span>
         <span class="cc-purpose-field" contenteditable="true">취업처 제출용</span>
       </div>
 
@@ -457,6 +475,43 @@
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/footer-inject.js"></script>
 <script>
+const LANGS = {
+  ko: {
+    docTitle:'경  력  증  명  서', docSub:'CERTIFICATE OF CAREER / EMPLOYMENT HISTORY',
+    ch:['재직기간','소속부서','직위·직책','담당업무'],
+    totalCareerLabel:'총 경력 기간',
+    certText:'위 사람의 경력이 사실임을 증명합니다.',
+    purposeLabel:'용    도'
+  },
+  en: {
+    docTitle:'CERTIFICATE OF CAREER', docSub:'Employment History Certificate',
+    ch:['Period of Employment','Department','Title & Position','Duties & Responsibilities'],
+    totalCareerLabel:'Total Career Length',
+    certText:'This is to certify that the above employment history is accurate and true.',
+    purposeLabel:'Purpose'
+  },
+  ja: {
+    docTitle:'経  歴  証  明  書', docSub:'CERTIFICATE OF CAREER / EMPLOYMENT HISTORY',
+    ch:['在職期間','所属部署','役職・職位','担当業務'],
+    totalCareerLabel:'総経歴期間',
+    certText:'上記の者の経歴が事実であることを証明します。',
+    purposeLabel:'提出用途'
+  }
+};
+
+function setLang(lang) {
+  const t = LANGS[lang];
+  ['ko','en','ja'].forEach(l => {
+    document.getElementById('btn-'+l).classList.toggle('active', l===lang);
+  });
+  document.getElementById('formDocTitle').textContent = t.docTitle;
+  document.getElementById('formDocSub').textContent = t.docSub;
+  t.ch.forEach((h,i) => { const el = document.getElementById('ch'+i); if(el) el.textContent = h; });
+  document.getElementById('totalCareerLabel').textContent = t.totalCareerLabel;
+  document.getElementById('certText').textContent = t.certText;
+  document.getElementById('purposeLabel').textContent = t.purposeLabel;
+}
+
 // 오늘 날짜 자동 입력
 (function() {
   const today = new Date();

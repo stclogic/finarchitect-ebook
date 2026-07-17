@@ -165,6 +165,11 @@ body { background: var(--amber-bg); }
 .sig-name-box { border: 1px solid #E5C07B; border-radius: 5px; padding: 6px 20px; }
 .sig-name { font-size: 11pt; font-weight: 700; outline: none; }
 .sig-name:focus { background: #FFFBEB; }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#B45309; color:#B45309; }
+.lang-btn.active { background:#B45309; border-color:#B45309; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
   .ctrl-panel, nav, footer, .back-link { display: none !important; }
   body { background: #fff !important; }
@@ -174,6 +179,10 @@ body { background: var(--amber-bg); }
 }
 .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 </style>
 </head>
@@ -196,6 +205,14 @@ body { background: var(--amber-bg); }
       <input type="text" id="ctrlTarget" placeholder="기관명 또는 투자자">
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
   </aside>
 
@@ -209,7 +226,7 @@ body { background: var(--amber-bg); }
           <div class="cover-logo-box" id="coverLogoBox">LOGO</div>
           <span class="cover-company-name" contenteditable="true">회사명을 입력하세요</span>
         </div>
-        <div class="cover-main-title">사업<span class="cover-accent">계획</span>서</div>
+        <div class="cover-main-title" id="formDocTitle">사업<span class="cover-accent">계획</span>서</div>
         <div class="cover-meta">
           <div class="cover-meta-row"><strong>제출일</strong><span class="cover-meta-val" id="dispDate" contenteditable="true"></span></div>
           <div class="cover-meta-row"><strong>제출처</strong><span class="cover-meta-val" id="dispTarget" contenteditable="true">기관명 / 투자자</span></div>
@@ -225,17 +242,17 @@ body { background: var(--amber-bg); }
         <div class="toc-box">
           <div class="toc-title">목 차</div>
           <ol class="toc-list">
-            <li><span>1.</span><span contenteditable="true">사업 개요</span></li>
-            <li><span>2.</span><span contenteditable="true">제품·서비스</span></li>
-            <li><span>3.</span><span contenteditable="true">시장 분석</span></li>
-            <li><span>4.</span><span contenteditable="true">마케팅 전략</span></li>
-            <li><span>5.</span><span contenteditable="true">재무 계획</span></li>
-            <li><span>6.</span><span contenteditable="true">자금 조달 계획</span></li>
+            <li><span>1.</span><span id="toc1" contenteditable="true">사업 개요</span></li>
+            <li><span>2.</span><span id="toc2" contenteditable="true">제품·서비스</span></li>
+            <li><span>3.</span><span id="toc3" contenteditable="true">시장 분석</span></li>
+            <li><span>4.</span><span id="toc4" contenteditable="true">마케팅 전략</span></li>
+            <li><span>5.</span><span id="toc5" contenteditable="true">재무 계획</span></li>
+            <li><span>6.</span><span id="toc6" contenteditable="true">자금 조달 계획</span></li>
           </ol>
         </div>
 
         <!-- Section 1: 사업 개요 -->
-        <div class="sec-heading"><span class="sec-no">1</span>사업 개요</div>
+        <div class="sec-heading"><span class="sec-no">1</span><span id="sec1">사업 개요</span></div>
         <div class="field-grid">
           <div class="field-row"><span class="fl">사업명</span><span class="fv" contenteditable="true">사업명을 입력하세요</span></div>
           <div class="field-row"><span class="fl">사업 유형</span><span class="fv" contenteditable="true">IT서비스 / SaaS</span></div>
@@ -247,7 +264,7 @@ body { background: var(--amber-bg); }
         <div class="content-para" contenteditable="true">사업 비전 및 미션을 기재하세요. 이 사업이 해결하는 핵심 문제와 우리 기업의 존재 이유를 한두 단락으로 설명합니다.</div>
 
         <!-- Section 2: 제품·서비스 -->
-        <div class="sec-heading"><span class="sec-no">2</span>제품 · 서비스</div>
+        <div class="sec-heading"><span class="sec-no">2</span><span id="sec2">제품 · 서비스</span></div>
         <div class="content-para" contenteditable="true">주요 제품 및 서비스의 내용과 차별점을 기재하세요.</div>
         <div class="value-cards">
           <div class="val-card">
@@ -268,7 +285,7 @@ body { background: var(--amber-bg); }
         </div>
 
         <!-- Section 3: 시장 분석 -->
-        <div class="sec-heading"><span class="sec-no">3</span>시장 분석</div>
+        <div class="sec-heading"><span class="sec-no">3</span><span id="sec3">시장 분석</span></div>
         <div class="field-grid">
           <div class="field-row"><span class="fl">목표 시장</span><span class="fv" contenteditable="true">B2B SaaS 시장</span></div>
           <div class="field-row"><span class="fl">시장 규모</span><span class="fv" contenteditable="true">약 5,000억 원 (국내 기준)</span></div>
@@ -283,7 +300,7 @@ body { background: var(--amber-bg); }
         </table>
 
         <!-- Section 4: 마케팅 전략 -->
-        <div class="sec-heading"><span class="sec-no">4</span>마케팅 전략 (4P)</div>
+        <div class="sec-heading"><span class="sec-no">4</span><span id="sec4">마케팅 전략 (4P)</span></div>
         <table class="plan-table">
           <thead><tr><th style="width:70px">구분</th><th>내용</th></tr></thead>
           <tbody>
@@ -295,7 +312,7 @@ body { background: var(--amber-bg); }
         </table>
 
         <!-- Section 5: 재무 계획 -->
-        <div class="sec-heading"><span class="sec-no">5</span>재무 계획</div>
+        <div class="sec-heading"><span class="sec-no">5</span><span id="sec5">재무 계획</span></div>
         <table class="fin-table">
           <thead><tr><th style="text-align:left">항목</th><th>1년차</th><th>2년차</th><th>3년차</th></tr></thead>
           <tbody>
@@ -312,7 +329,7 @@ body { background: var(--amber-bg); }
         </div>
 
         <!-- Section 6: 자금 조달 -->
-        <div class="sec-heading"><span class="sec-no">6</span>자금 조달 계획</div>
+        <div class="sec-heading"><span class="sec-no">6</span><span id="sec6">자금 조달 계획</span></div>
         <div class="fund-row">
           <div class="fund-card">
             <div class="fund-label">총 소요자금</div>
@@ -351,6 +368,40 @@ body { background: var(--amber-bg); }
 </div>
 
 <script>
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '사업<span class="cover-accent">계획</span>서',
+    sectionTitles: ['사업 개요','제품 · 서비스','시장 분석','마케팅 전략 (4P)','재무 계획','자금 조달 계획']
+  },
+  en: {
+    docTitle: 'BUSINESS PLAN',
+    sectionTitles: ['Business Overview','Products & Services','Market Analysis','Marketing Strategy (4P)','Financial Plan','Funding Plan']
+  },
+  ja: {
+    docTitle: '事業<span class="cover-accent">計画</span>書',
+    sectionTitles: ['事業概要','製品・サービス','市場分析','マーケティング戦略（4P）','財務計画','資金調達計画']
+  }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  document.getElementById('formDocTitle').innerHTML = d.docTitle;
+  d.sectionTitles.forEach(function(title, i) {
+    var n = i + 1;
+    var tocEl = document.getElementById('toc' + n);
+    var secEl = document.getElementById('sec' + n);
+    if (tocEl) tocEl.textContent = title;
+    if (secEl) secEl.textContent = title;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const today = new Date();
   const ds = today.getFullYear() + '년 ' + (today.getMonth()+1) + '월 ' + today.getDate() + '일';

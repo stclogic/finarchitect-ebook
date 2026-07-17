@@ -152,6 +152,11 @@
 [contenteditable="true"] { outline: none; }
 [contenteditable="true"]:hover { background: rgba(220,38,38,.05); border-radius: 3px; }
 [contenteditable="true"]:focus { background: #FFF5F5; border-radius: 3px; box-shadow: 0 0 0 2px #DC2626; }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border,#e2e8f0); background:none; color:var(--text2,#64748b); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
   .ctrl-panel, nav, footer, .back-link, .add-row-btn { display: none !important; }
   .form-page-wrap { display: block; padding: 0; }
@@ -159,6 +164,10 @@
   .doc-page { width: 100%; box-shadow: none; margin: 0; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 </style>
@@ -182,6 +191,14 @@
       <input type="text" id="deadlineInput" placeholder="2026년 8월 1일">
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2,#64748b);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="location.reload()">초기화</button>
     <div class="tip-box">📮 내용증명은 우체국에서 발송하면 법적 증거력이 생깁니다. 동일 내용 3부를 작성하세요 (발신인·수신인·우체국 각 1부).</div>
@@ -204,21 +221,21 @@
 
         <!-- Title -->
         <div class="doc-title-block">
-          <span class="doc-title-ko">내 &nbsp; 용 &nbsp; 증 &nbsp; 명</span>
+          <span class="doc-title-ko" id="formDocTitle">내 &nbsp; 용 &nbsp; 증 &nbsp; 명</span>
           <div class="title-divider"></div>
-          <span class="doc-title-sub">CERTIFIED DOCUMENT OF CONTENT</span>
+          <span class="doc-title-sub" id="formDocSub">CERTIFIED DOCUMENT OF CONTENT</span>
         </div>
 
         <!-- Sender / Recipient -->
         <div class="info-grid">
           <div class="info-box sender">
-            <div class="info-box-title">📤 발 신 인</div>
+            <div class="info-box-title" id="senderHeader">📤 발 신 인</div>
             <div class="info-row"><span class="info-lbl">성명</span><span class="info-val" contenteditable="true"></span></div>
             <div class="info-row"><span class="info-lbl">주소</span><span class="info-val" contenteditable="true"></span></div>
             <div class="info-row"><span class="info-lbl">연락처</span><span class="info-val" contenteditable="true"></span></div>
           </div>
           <div class="info-box recipient">
-            <div class="info-box-title">📥 수 신 인</div>
+            <div class="info-box-title" id="receiverHeader">📥 수 신 인</div>
             <div class="info-row"><span class="info-lbl">성명</span><span class="info-val" contenteditable="true"></span></div>
             <div class="info-row"><span class="info-lbl">주소</span><span class="info-val" contenteditable="true"></span></div>
             <div class="info-row"><span class="info-lbl">연락처</span><span class="info-val" contenteditable="true"></span></div>
@@ -261,7 +278,7 @@
 
         <!-- Deadline -->
         <div class="deadline-box">
-          <span class="dl-lbl">이행 기한:</span>
+          <span class="dl-lbl" id="deadlineLabel">이행 기한:</span>
           <span class="dl-val" id="deadlineDisplay" contenteditable="true"></span>
           <span style="font-size:9pt;color:#64748b;">까지</span>
         </div>
@@ -275,7 +292,7 @@
         <div class="sig-date" id="sigDate"></div>
         <div class="sig-row-line">
           <div class="sig-name">
-            <span class="lbl">발신인:</span>
+            <span class="lbl" id="sigSenderLabel">발신인:</span>
             <span class="val" contenteditable="true"></span>
             <span style="margin-left:3px;font-size:9.5pt;">(서명)</span>
           </div>
@@ -285,7 +302,7 @@
         <!-- Certification box -->
         <div class="cert-box">
           <div class="cert-title">[ 우체국 증명 ]</div>
-          위 내용이 발송 문서와 동일함을 증명합니다.
+          <span id="certBoxText">위 내용이 발송 문서와 동일함을 증명합니다.</span>
           <div class="cert-postmaster">
             발송일: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 우체국명: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
@@ -306,6 +323,39 @@
   document.getElementById('sigDate').textContent =
     d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
 })();
+
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '내 &nbsp; 용 &nbsp; 증 &nbsp; 명', docSub: 'CERTIFIED DOCUMENT OF CONTENT',
+    senderHeader: '📤 발 신 인', receiverHeader: '📥 수 신 인',
+    certBoxText: '위 내용이 발송 문서와 동일함을 증명합니다.',
+    deadlineLabel: '이행 기한:', sigSenderLabel: '발신인:'
+  },
+  en: {
+    docTitle: 'CERTIFIED MAIL CONTENT', docSub: 'Certificate of Mailing Content (Registered Mail)',
+    senderHeader: '📤 Sender', receiverHeader: '📥 Recipient',
+    certBoxText: 'We hereby certify that the above content is identical to the document mailed.',
+    deadlineLabel: 'Compliance Deadline:', sigSenderLabel: 'Sender:'
+  },
+  ja: {
+    docTitle: '内 &nbsp; 容 &nbsp; 証 &nbsp; 明', docSub: '郵便による内容証明（書留郵便）',
+    senderHeader: '📤 発 信 人', receiverHeader: '📥 受 信 人',
+    certBoxText: '上記内容が発送文書と同一であることを証明します。',
+    deadlineLabel: '履行期限:', sigSenderLabel: '発信人:'
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
+  document.getElementById('formDocTitle').innerHTML = d.docTitle;
+  document.getElementById('formDocSub').textContent = d.docSub;
+  document.getElementById('senderHeader').textContent = d.senderHeader;
+  document.getElementById('receiverHeader').textContent = d.receiverHeader;
+  document.getElementById('certBoxText').textContent = d.certBoxText;
+  document.getElementById('deadlineLabel').textContent = d.deadlineLabel;
+  document.getElementById('sigSenderLabel').textContent = d.sigSenderLabel;
+}
 
 document.getElementById('deadlineInput').addEventListener('input', function(){
   document.getElementById('deadlineDisplay').textContent = this.value;

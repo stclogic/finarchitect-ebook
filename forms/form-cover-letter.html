@@ -226,6 +226,12 @@
   padding-bottom: 1px; margin-left: 8px;
 }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid #C7D2FE; background:none; color:#6366F1; cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#3730A3; color:#3730A3; }
+.lang-btn.active { background:#3730A3; border-color:#3730A3; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 /* ── 인쇄 CSS ── */
 @media print {
   .ctrl-panel, nav, footer, .doc-wrap > *:not(.a4-page) { display: none !important; }
@@ -239,6 +245,10 @@
   .cl-textarea:focus { box-shadow: none !important; background: transparent !important; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 @media (max-width: 900px) {
@@ -281,7 +291,15 @@
     </div>
 
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <div style="font-size:0.78rem;font-weight:700;color:#6366F1;margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
 
     <div class="tip-box">
@@ -434,6 +452,85 @@ function resetForm() {
   document.querySelectorAll('.cl-char-count').forEach(el => el.textContent = '0 / 500자');
   const img = document.getElementById('doc-logo');
   img.src = ''; img.classList.remove('visible');
+}
+
+var LANG_DATA_FORM = {
+  ko: { docTitle:'자  기  소  개  서', docSub:'',
+    sections:['성장과정','성격의 장·단점','지원동기','입사 후 포부'],
+    placeholders:[
+      '어떤 환경에서 성장하였고, 그 과정에서 어떤 가치관과 역량을 형성하게 되었는지 구체적으로 기술해 주세요.',
+      '본인의 성격 중 강점과 보완해야 할 점을 솔직하고 구체적으로 기술해 주세요. 단점은 극복 노력과 함께 서술하면 좋습니다.',
+      '해당 기업과 직무에 지원하게 된 구체적인 이유를 기술해 주세요. 기업 연구 내용과 본인의 역량 연결점을 명확히 제시해 주세요.',
+      '입사 후 단기·장기적으로 이루고 싶은 목표와 기여 방향을 구체적으로 기술해 주세요.'
+    ],
+    metaCompany:'🏢 지원회사', metaJob:'💼 지원직무', metaName:'👤 성명',
+    footerCert:'위 내용은 사실과 다름이 없습니다.',
+    charUnit:'자',
+    printBtn:'🖨 인쇄 / PDF 저장' },
+  en: { docTitle:'PERSONAL STATEMENT', docSub:'Cover Letter',
+    sections:['Background & Growth','Strengths & Weaknesses','Motivation for Application','Career Goals & Ambitions'],
+    placeholders:[
+      'Describe your upbringing and environment, and how they shaped your values and competencies.',
+      'Honestly describe your key strengths and areas for improvement. Include efforts to overcome weaknesses.',
+      'Explain specifically why you are applying to this company and role. Connect your research to your strengths.',
+      'Describe your short- and long-term goals after joining the company and how you plan to contribute.'
+    ],
+    metaCompany:'🏢 Company', metaJob:'💼 Position', metaName:'👤 Name',
+    footerCert:'I hereby certify that the above information is true and accurate.',
+    charUnit:'chars',
+    printBtn:'🖨 Print / Save as PDF' },
+  ja: { docTitle:'自 己 紹 介 書', docSub:'エントリーシート',
+    sections:['成長過程','長所・短所','志望動機','入社後の抱負'],
+    placeholders:[
+      'どのような環境で成長し、そのプロセスでどのような価値観と能力を培ったかを具体的に記述してください。',
+      '自分の性格の強みと改善すべき点を率直かつ具体的に記述してください。短所は克服への取り組みと共に述べると効果的です。',
+      'この企業と職種に応募した具体的な理由を記述してください。企業研究の内容と自分の強みとの接点を明確に示してください。',
+      '入社後、短期・長期的に達成したい目標と貢献の方向性を具体的に記述してください。'
+    ],
+    metaCompany:'🏢 志望企業', metaJob:'💼 志望職種', metaName:'👤 氏名',
+    footerCert:'上記の内容は事実と相違ありません。',
+    charUnit:'文字',
+    printBtn:'🖨 印刷 / PDF保存' }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  // doc title
+  document.querySelector('.cl-doc-title').textContent = d.docTitle;
+  // section titles & placeholders
+  var sectionTitles = document.querySelectorAll('.cl-section-title');
+  var textareas = document.querySelectorAll('.cl-textarea');
+  sectionTitles.forEach(function(el, i) { if (d.sections[i]) el.textContent = d.sections[i]; });
+  textareas.forEach(function(el, i) { if (d.placeholders[i]) el.setAttribute('data-placeholder', d.placeholders[i]); });
+  // header meta labels (reconstruct innerHTML keeping spans)
+  var metaSpans = document.querySelectorAll('.cl-header-meta > span');
+  if (metaSpans[0]) {
+    var companyField = metaSpans[0].querySelector('.cl-header-field');
+    metaSpans[0].innerHTML = d.metaCompany + ': ' + (companyField ? companyField.outerHTML : '<span class="cl-header-field" id="doc-company" contenteditable="true" data-field="company">회사명</span>');
+  }
+  if (metaSpans[1]) {
+    var jobField = metaSpans[1].querySelector('.cl-header-field');
+    metaSpans[1].innerHTML = d.metaJob + ': ' + (jobField ? jobField.outerHTML : '<span class="cl-header-field" id="doc-job" contenteditable="true" data-field="job">지원직무</span>');
+  }
+  if (metaSpans[2]) {
+    var nameField = metaSpans[2].querySelector('.cl-header-field');
+    metaSpans[2].innerHTML = d.metaName + ': ' + (nameField ? nameField.outerHTML : '<span class="cl-header-field" id="doc-name" contenteditable="true" data-field="name">이름</span>');
+  }
+  // footer cert text
+  document.querySelector('.cl-sign-label').textContent = d.footerCert;
+  // char count units
+  document.querySelectorAll('.cl-char-count').forEach(function(el) {
+    el.textContent = '0 / 500' + d.charUnit;
+  });
+  // print button
+  document.getElementById('print-btn').textContent = d.printBtn;
+  document.documentElement.lang = lang;
 }
 </script>
 </body>

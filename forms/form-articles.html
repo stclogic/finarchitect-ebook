@@ -128,8 +128,28 @@
   padding:1mm 3mm; border-radius:4px; margin:2mm 0 1mm;
 }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display:none !important; }
+  .ctrl-panel, nav, footer, .back-link { display:none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   .form-page-wrap { display:block; padding:0; }
   .doc-wrap { background:none; padding:0; border-radius:0; }
   .doc-page { width:210mm; box-shadow:none; min-height:auto; }
@@ -144,7 +164,7 @@
 <div class="form-page-wrap">
   <aside class="ctrl-panel">
     <a href="../forms.html" class="back-link">← 서식 목록</a>
-    <h2>🏛️ 표준정관</h2>
+    <h2 id="ctrlTitle">🏛️ 표준정관</h2>
     <div class="ctrl-section">
       <label>회사 로고 업로드</label>
       <input type="file" accept="image/*" id="logoUpload" style="font-size:.78rem;">
@@ -178,7 +198,16 @@
       </select>
     </div>
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="printBtn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetDoc()">↺ 초기화</button>
     <div class="tip-box">
       💡 <strong>작성 Tip</strong><br>
@@ -202,8 +231,8 @@
         </div>
 
         <div class="doc-title">
-          <h1>정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;관</h1>
-          <div class="en">ARTICLES OF INCORPORATION</div>
+          <h1 id="formDocTitle">정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;관</h1>
+          <div class="en" id="docSubTitle">ARTICLES OF INCORPORATION</div>
           <div class="corp-name" id="dispCorpName" contenteditable="true">주식회사 ○○○</div>
         </div>
         <div class="doc-divider"></div>
@@ -215,7 +244,7 @@
 
         <!-- 제1장 총칙 -->
         <div class="chapter-header">
-          <span class="ch-num">제 1 장</span> 총&nbsp;&nbsp;칙
+          <span class="ch-num" id="ch-num-1">제 1 장</span> <span id="ch-title-1">총&nbsp;&nbsp;칙</span>
         </div>
         <div class="article-row">
           <div class="article-badge">1</div>
@@ -244,7 +273,7 @@
 
         <!-- 제2장 주식 -->
         <div class="chapter-header">
-          <span class="ch-num">제 2 장</span> 주&nbsp;&nbsp;식
+          <span class="ch-num" id="ch-num-2">제 2 장</span> <span id="ch-title-2">주&nbsp;&nbsp;식</span>
         </div>
         <div class="article-row">
           <div class="article-badge">5</div>
@@ -274,7 +303,7 @@
 
         <!-- 제3장 주주총회 -->
         <div class="chapter-header">
-          <span class="ch-num">제 3 장</span> 주&nbsp;주&nbsp;총&nbsp;회
+          <span class="ch-num" id="ch-num-3">제 3 장</span> <span id="ch-title-3">주&nbsp;주&nbsp;총&nbsp;회</span>
         </div>
         <div class="article-row">
           <div class="article-badge">10</div>
@@ -304,7 +333,7 @@
 
         <!-- 제4장 이사·이사회 -->
         <div class="chapter-header">
-          <span class="ch-num">제 4 장</span> 이사&nbsp;·&nbsp;이사회
+          <span class="ch-num" id="ch-num-4">제 4 장</span> <span id="ch-title-4">이사&nbsp;·&nbsp;이사회</span>
         </div>
         <div class="article-row">
           <div class="article-badge">15</div>
@@ -329,7 +358,7 @@
 
         <!-- 제5장 감사 -->
         <div class="chapter-header">
-          <span class="ch-num">제 5 장</span> 감&nbsp;&nbsp;사
+          <span class="ch-num" id="ch-num-5">제 5 장</span> <span id="ch-title-5">감&nbsp;&nbsp;사</span>
         </div>
         <div class="article-row">
           <div class="article-badge">19</div>
@@ -344,7 +373,7 @@
 
         <!-- 제6장 계산 -->
         <div class="chapter-header">
-          <span class="ch-num">제 6 장</span> 계&nbsp;&nbsp;산
+          <span class="ch-num" id="ch-num-6">제 6 장</span> <span id="ch-title-6">계&nbsp;&nbsp;산</span>
         </div>
         <div class="article-row">
           <div class="article-badge">21</div>
@@ -366,7 +395,7 @@
 
         <!-- 부칙 -->
         <div class="addendum">
-          <div class="addendum-title">부&nbsp;&nbsp;&nbsp;&nbsp;칙</div>
+          <div class="addendum-title" id="ch-addendum">부&nbsp;&nbsp;&nbsp;&nbsp;칙</div>
           <div class="article-row">
             <div class="article-badge" style="background:#1E3A5F;">1</div>
             <span class="article-label">제1조 (설립일)</span>
@@ -382,7 +411,7 @@
         </div>
 
         <div style="text-align:center; font-size:9pt; color:#1E3A5F; font-weight:700; margin:4mm 0 2mm;">
-          위와 같이 정관을 작성하고 발기인 전원이 서명·날인한다.
+          <span id="sigPrefix">위와 같이 정관을 작성하고 발기인 전원이 서명·날인한다.</span>
         </div>
         <div style="text-align:center; font-size:9pt; color:#666; margin-bottom:4mm;" id="sigDate"></div>
 
@@ -457,6 +486,71 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
   };
   reader.readAsDataURL(file);
 });
+
+// ── 언어 전환 ────────────────────────────────────────────────────
+var LANG_DATA = {
+  ko: {
+    ctrlTitle: '🏛️ 표준정관', printBtn: '🖨️ 인쇄 / PDF 저장',
+    docTitle: '정      관', docSub: 'ARTICLES OF INCORPORATION',
+    sigPrefix: '위와 같이 정관을 작성하고 발기인 전원이 서명·날인한다.',
+    chapters: [
+      {num:'제 1 장', title:'총칙'},
+      {num:'제 2 장', title:'주식'},
+      {num:'제 3 장', title:'주주총회'},
+      {num:'제 4 장', title:'이사·이사회'},
+      {num:'제 5 장', title:'감사'},
+      {num:'제 6 장', title:'계산'}
+    ],
+    addendum: '부  칙'
+  },
+  en: {
+    ctrlTitle: '🏛️ Articles of Incorporation', printBtn: '🖨 Print / Save as PDF',
+    docTitle: 'ARTICLES OF INCORPORATION', docSub: 'Corporate Charter',
+    sigPrefix: 'IN WITNESS WHEREOF, all incorporators have executed these Articles of Incorporation.',
+    chapters: [
+      {num:'Ch. 1', title:'General Provisions'},
+      {num:'Ch. 2', title:'Shares'},
+      {num:'Ch. 3', title:'General Meeting of Shareholders'},
+      {num:'Ch. 4', title:'Directors & Board of Directors'},
+      {num:'Ch. 5', title:'Auditors'},
+      {num:'Ch. 6', title:'Accounting'}
+    ],
+    addendum: 'Supplementary Provisions'
+  },
+  ja: {
+    ctrlTitle: '🏛️ 定款', printBtn: '🖨 印刷 / PDF保存',
+    docTitle: '定    款', docSub: 'ARTICLES OF INCORPORATION',
+    sigPrefix: '上記定款を作成し、発起人全員が記名押印する。',
+    chapters: [
+      {num:'第1章', title:'総則'},
+      {num:'第2章', title:'株式'},
+      {num:'第3章', title:'株主総会'},
+      {num:'第4章', title:'取締役・取締役会'},
+      {num:'第5章', title:'監査役'},
+      {num:'第6章', title:'計算'}
+    ],
+    addendum: '附 則'
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA[lang];
+  if (!d) return;
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-' + l).classList.toggle('active', l === lang);
+  });
+  document.getElementById('ctrlTitle').textContent = d.ctrlTitle;
+  document.getElementById('printBtn').textContent = d.printBtn;
+  document.getElementById('formDocTitle').textContent = d.docTitle;
+  document.getElementById('docSubTitle').textContent = d.docSub;
+  document.getElementById('sigPrefix').textContent = d.sigPrefix;
+  document.getElementById('ch-addendum').textContent = d.addendum;
+  d.chapters.forEach(function(ch, i) {
+    var numEl = document.getElementById('ch-num-' + (i+1));
+    var titleEl = document.getElementById('ch-title-' + (i+1));
+    if (numEl) numEl.textContent = ch.num;
+    if (titleEl) titleEl.textContent = ch.title;
+  });
+}
 
 function resetDoc() {
   if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;

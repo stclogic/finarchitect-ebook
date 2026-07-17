@@ -125,8 +125,28 @@
 .add-row-btn { padding:4px 12px; background:#F1F5F9; border:1px solid #CBD5E1; border-radius:6px; font-size:7.5pt; color:#475569; cursor:pointer; transition:all .15s; margin-bottom:3mm; }
 .add-row-btn:hover { background:#1E293B; color:#fff; border-color:#1E293B; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E293B; color:#1E293B; }
+.lang-btn.active { background:#1E293B; border-color:#1E293B; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
-  .ctrl-panel { display:none !important; }
+  .ctrl-panel { display:none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   nav, footer { display:none !important; }
   .form-page-wrap { display:block; padding:0; }
   .doc-wrap { background:none; padding:0; border-radius:0; }
@@ -165,6 +185,14 @@
       <img id="logoPreview" class="logo-preview" style="display:none">
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <a href="../forms.html" class="back-link">← 서식 목록</a>
     <div class="tip-box">💡 업무 분류 셀을 클릭하면 드롭다운이 나타납니다. 완료율을 입력하면 진행 바가 자동으로 표시됩니다.</div>
@@ -180,8 +208,8 @@
           <img id="docLogo" class="doc-logo" style="display:none" alt="로고">
         </div>
         <div class="doc-title-block">
-          <div class="doc-title">업  무  일  지</div>
-          <div class="doc-subtitle">DAILY WORK LOG</div>
+          <div class="doc-title" id="formDocTitle">업  무  일  지</div>
+          <div class="doc-subtitle" id="formDocSub">DAILY WORK LOG</div>
         </div>
         <div class="doc-date-big">
           <span>날짜</span>
@@ -193,19 +221,19 @@
       <!-- 요약 스트립 -->
       <div class="summary-strip">
         <div class="strip-cell">
-          <div class="strip-label">소속</div>
+          <div class="strip-label" id="sl0">소속</div>
           <div class="strip-value" contenteditable="true"></div>
         </div>
         <div class="strip-cell">
-          <div class="strip-label">직위</div>
+          <div class="strip-label" id="sl1">직위</div>
           <div class="strip-value" contenteditable="true"></div>
         </div>
         <div class="strip-cell">
-          <div class="strip-label">성명</div>
+          <div class="strip-label" id="sl2">성명</div>
           <div class="strip-value" contenteditable="true"></div>
         </div>
         <div class="strip-cell">
-          <div class="strip-label">근무시간</div>
+          <div class="strip-label" id="sl3">근무시간</div>
           <div class="time-strip">
             <span id="timeInOut">09:00</span>
             <span style="color:#94A3B8">~</span>
@@ -215,7 +243,7 @@
       </div>
 
       <!-- 금일 목표 -->
-      <div class="sec-head"><span class="sec-num">1</span> 금일 목표</div>
+      <div class="sec-head"><span class="sec-num">1</span> <span id="sec1">금일 목표</span></div>
       <ul class="goal-list" id="goalList">
         <li class="goal-item"><span class="goal-num">1</span><span class="goal-text" contenteditable="true">오늘의 주요 목표를 입력하세요</span></li>
         <li class="goal-item"><span class="goal-num">2</span><span class="goal-text" contenteditable="true"></span></li>
@@ -223,15 +251,15 @@
       </ul>
 
       <!-- 업무 수행 내역 -->
-      <div class="sec-head"><span class="sec-num">2</span> 업무 수행 내역</div>
+      <div class="sec-head"><span class="sec-num">2</span> <span id="sec2">업무 수행 내역</span></div>
       <table class="work-table">
         <thead>
           <tr>
-            <th style="width:12%">시간</th>
-            <th style="width:16%">업무 분류</th>
-            <th style="width:38%">업무 내용</th>
-            <th style="width:14%">완료율</th>
-            <th style="width:20%">특이사항</th>
+            <th style="width:12%" id="wh0">시간</th>
+            <th style="width:16%" id="wh1">업무 분류</th>
+            <th style="width:38%" id="wh2">업무 내용</th>
+            <th style="width:14%" id="wh3">완료율</th>
+            <th style="width:20%" id="wh4">특이사항</th>
           </tr>
         </thead>
         <tbody id="workBody"></tbody>
@@ -239,15 +267,15 @@
       <button class="add-row-btn" onclick="addWorkRow()">+ 행 추가</button>
 
       <!-- 완료 업무 요약 -->
-      <div class="sec-head"><span class="sec-num">3</span> 완료 업무 요약</div>
+      <div class="sec-head"><span class="sec-num">3</span> <span id="sec3">완료 업무 요약</span></div>
       <div class="content-block" contenteditable="true" style="min-height:12mm">오늘 완료한 주요 업무 및 성과를 요약하세요.</div>
 
       <!-- 미완료 업무 -->
-      <div class="sec-head"><span class="sec-num">4</span> 미완료 업무 및 사유</div>
+      <div class="sec-head"><span class="sec-num">4</span> <span id="sec4">미완료 업무 및 사유</span></div>
       <div class="content-block" contenteditable="true" style="min-height:10mm">미완료 업무 내용과 사유, 조치 계획을 기재하세요.</div>
 
       <!-- 내일 계획 -->
-      <div class="sec-head"><span class="sec-num">5</span> 내일 계획</div>
+      <div class="sec-head"><span class="sec-num">5</span> <span id="sec5">내일 계획</span></div>
       <ul class="plan-list">
         <li class="plan-item">
           <span class="plan-priority p1">P1</span>
@@ -264,19 +292,19 @@
       </ul>
 
       <!-- 건의사항 -->
-      <div class="sec-head"><span class="sec-num">6</span> 건의사항 / 메모</div>
+      <div class="sec-head"><span class="sec-num">6</span> <span id="sec6">건의사항 / 메모</span></div>
       <div class="content-block" contenteditable="true" style="min-height:10mm">팀장에게 보고할 사항, 필요한 지원, 기타 메모를 입력하세요.</div>
 
       <!-- 서명란 -->
       <div class="sig-row">
         <div class="sig-box">
-          <div class="sig-title">작 성 자</div>
+          <div class="sig-title" id="sig0">작 성 자</div>
           <div class="sig-name" contenteditable="true" style="text-align:center"></div>
           <div class="sig-space"></div>
           <div style="font-size:7.5pt;color:#64748B">서명 / 인</div>
         </div>
         <div class="sig-box">
-          <div class="sig-title">확 인 자</div>
+          <div class="sig-title" id="sig1">확 인 자</div>
           <div class="sig-name" contenteditable="true" style="text-align:center"></div>
           <div class="sig-space"></div>
           <div style="font-size:7.5pt;color:#64748B">확인일: <span contenteditable="true" style="min-width:20mm;display:inline-block"></span></div>
@@ -288,6 +316,43 @@
 </div>
 
 <script>
+const LANGS = {
+  ko: {
+    docTitle:'업  무  일  지', docSub:'DAILY WORK LOG',
+    sl:['소속','직위','성명','근무시간'],
+    sec:['금일 목표','업무 수행 내역','완료 업무 요약','미완료 업무 및 사유','내일 계획','건의사항 / 메모'],
+    wh:['시간','업무 분류','업무 내용','완료율','특이사항'],
+    sig:['작 성 자','확 인 자']
+  },
+  en: {
+    docTitle:'DAILY WORK LOG', docSub:'Daily Activity Report',
+    sl:['Department','Title','Name','Working Hours'],
+    sec:["Today's Goals",'Work Activities','Summary of Completed Tasks','Incomplete Tasks & Reasons',"Tomorrow's Plan",'Suggestions / Notes'],
+    wh:['Time','Category','Work Content','Completion (%)','Notes'],
+    sig:['Prepared by','Reviewed by']
+  },
+  ja: {
+    docTitle:'業  務  日  誌', docSub:'DAILY WORK LOG',
+    sl:['所属','役職','氏名','勤務時間'],
+    sec:['本日目標','業務遂行内容','完了業務まとめ','未完了業務及び理由','明日の計画','要望・メモ'],
+    wh:['時間','業務分類','業務内容','完了率(%)','特記事項'],
+    sig:['作成者','確認者']
+  }
+};
+
+function setLang(lang) {
+  const t = LANGS[lang];
+  ['ko','en','ja'].forEach(l => {
+    document.getElementById('btn-'+l).classList.toggle('active', l===lang);
+  });
+  document.getElementById('formDocTitle').textContent = t.docTitle;
+  document.getElementById('formDocSub').textContent = t.docSub;
+  t.sl.forEach((s,i) => { const el = document.getElementById('sl'+i); if(el) el.textContent = s; });
+  t.sec.forEach((s,i) => { const el = document.getElementById('sec'+(i+1)); if(el) el.textContent = s; });
+  t.wh.forEach((h,i) => { const el = document.getElementById('wh'+i); if(el) el.textContent = h; });
+  t.sig.forEach((s,i) => { const el = document.getElementById('sig'+i); if(el) el.textContent = s; });
+}
+
 const DAYS = ['일','월','화','수','목','금','토'];
 const CATS = ['기획','개발','관리','영업','회의','보고','기타'];
 

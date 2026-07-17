@@ -202,9 +202,29 @@
   letter-spacing:.05em; vertical-align:middle;
 }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E293B; color:#1E293B; }
+.lang-btn.active { background:#1E293B; border-color:#1E293B; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 /* ── 인쇄 ── */
 @media print {
-  .ctrl-panel { display:none !important; }
+  .ctrl-panel { display:none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   nav, footer, .back-link-wrap { display:none !important; }
   .form-page-wrap { display:block; padding:0; }
   .doc-wrap { background:none; padding:0; border-radius:0; }
@@ -250,6 +270,15 @@
 
     <div class="ctrl-divider"></div>
 
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <a href="../forms.html" class="back-link">← 서식 목록</a>
 
@@ -271,8 +300,8 @@
           <img id="docLogo" class="doc-logo" style="display:none" alt="로고">
         </div>
         <div class="doc-title-block">
-          <div class="doc-title">인수인계서</div>
-          <div class="doc-subtitle">HANDOVER DOCUMENT</div>
+          <div class="doc-title" id="formDocTitle">인 수 인 계 서</div>
+          <div class="doc-subtitle" id="formDocSub">HANDOVER DOCUMENT</div>
         </div>
         <div class="doc-meta-right">
           <span>문서번호 : <strong id="docNoOut">HO-2026-001</strong></span>
@@ -282,10 +311,10 @@
       </div>
 
       <!-- 기본 정보 -->
-      <div class="sec-head"><span class="sec-num">1</span> 기본 정보</div>
+      <div class="sec-head"><span class="sec-num">1</span> <span id="sec1">기본 정보</span></div>
       <table class="info-table">
         <tr>
-          <th>인수인계 부서</th>
+          <th id="infoLabel0">인수인계 부서</th>
           <td colspan="3" contenteditable="true" style="min-width:60mm"></td>
         </tr>
         <tr>
@@ -325,15 +354,15 @@
       </table>
 
       <!-- 업무 현황 -->
-      <div class="sec-head"><span class="sec-num">2</span> 업무 현황</div>
+      <div class="sec-head"><span class="sec-num">2</span> <span id="sec2">업무 현황</span></div>
       <table class="work-table" id="workTable">
         <thead>
           <tr>
-            <th style="width:5%">번호</th>
-            <th style="width:18%">업무명</th>
-            <th style="width:35%">상세 내용</th>
-            <th style="width:16%">진행 상태</th>
-            <th style="width:26%">특이사항</th>
+            <th style="width:5%" id="wh0">번호</th>
+            <th style="width:18%" id="wh1">업무명</th>
+            <th style="width:35%" id="wh2">상세 내용</th>
+            <th style="width:16%" id="wh3">진행 상태</th>
+            <th style="width:26%" id="wh4">특이사항</th>
           </tr>
         </thead>
         <tbody id="workBody"></tbody>
@@ -341,15 +370,15 @@
       <button class="add-row-btn" onclick="addWorkRow()">+ 행 추가</button>
 
       <!-- 자료 목록 -->
-      <div class="sec-head"><span class="sec-num">3</span> 주요 자료 및 파일 목록</div>
+      <div class="sec-head"><span class="sec-num">3</span> <span id="sec3">주요 자료 및 파일 목록</span></div>
       <table class="work-table" id="fileTable">
         <thead>
           <tr>
-            <th style="width:5%">번호</th>
-            <th style="width:28%">자료명</th>
-            <th style="width:28%">보관 위치</th>
-            <th style="width:22%">담당자</th>
-            <th style="width:17%">비고</th>
+            <th style="width:5%" id="fh0">번호</th>
+            <th style="width:28%" id="fh1">자료명</th>
+            <th style="width:28%" id="fh2">보관 위치</th>
+            <th style="width:22%" id="fh3">담당자</th>
+            <th style="width:17%" id="fh4">비고</th>
           </tr>
         </thead>
         <tbody id="fileBody"></tbody>
@@ -357,15 +386,15 @@
       <button class="add-row-btn" onclick="addFileRow()">+ 행 추가</button>
 
       <!-- 계정 및 시스템 -->
-      <div class="sec-head"><span class="sec-num">4</span> 계정 및 시스템 접근 정보 <span class="conf-badge">기밀</span></div>
+      <div class="sec-head"><span class="sec-num">4</span> <span id="sec4">계정 및 시스템 접근 정보</span> <span class="conf-badge">기밀</span></div>
       <div class="warn-box">⚠ 본 문서는 기밀이므로 보안에 유의하십시오. 실제 비밀번호 대신 힌트 또는 보관 위치를 기재하시기 바랍니다.</div>
       <table class="work-table" id="sysTable">
         <thead>
           <tr>
-            <th style="width:25%">시스템명</th>
-            <th style="width:22%">계정 (ID)</th>
-            <th style="width:28%">비밀번호 힌트</th>
-            <th style="width:25%">관리자 연락처</th>
+            <th style="width:25%" id="sh0">시스템명</th>
+            <th style="width:22%" id="sh1">계정 (ID)</th>
+            <th style="width:28%" id="sh2">비밀번호 힌트</th>
+            <th style="width:25%" id="sh3">관리자 연락처</th>
           </tr>
         </thead>
         <tbody id="sysBody"></tbody>
@@ -373,7 +402,7 @@
       <button class="add-row-btn" onclick="addSysRow()">+ 행 추가</button>
 
       <!-- 특이사항 -->
-      <div class="sec-head"><span class="sec-num">5</span> 특이사항 및 인계 메모</div>
+      <div class="sec-head"><span class="sec-num">5</span> <span id="sec5">특이사항 및 인계 메모</span></div>
       <div class="ce-block" contenteditable="true" style="min-height:22mm">인계 시 주의해야 할 사항, 미완료 업무, 중요 일정 등을 기재하세요.</div>
 
       <!-- 확인 문구 -->
@@ -384,19 +413,19 @@
       <!-- 서명란 -->
       <div class="sig-row">
         <div class="sig-box">
-          <div class="sig-box-title">인 계 자</div>
+          <div class="sig-box-title" id="sig0">인 계 자</div>
           <div class="sig-box-name" contenteditable="true" style="min-height:8mm"></div>
           <div class="sig-space"></div>
           <div class="sig-box-info">서명 / 인</div>
         </div>
         <div class="sig-box">
-          <div class="sig-box-title">인 수 자</div>
+          <div class="sig-box-title" id="sig1">인 수 자</div>
           <div class="sig-box-name" contenteditable="true" style="min-height:8mm"></div>
           <div class="sig-space"></div>
           <div class="sig-box-info">서명 / 인</div>
         </div>
         <div class="sig-box">
-          <div class="sig-box-title">확인자 (팀장)</div>
+          <div class="sig-box-title" id="sig2">확인자 (팀장)</div>
           <div class="sig-box-name" contenteditable="true" style="min-height:8mm"></div>
           <div class="sig-space"></div>
           <div class="sig-box-info">서명 / 인</div>
@@ -475,6 +504,58 @@ function addSysRow(sys='', id='', hint='', contact='') {
     <td contenteditable="true">${hint}</td>
     <td contenteditable="true">${contact}</td>`;
   tbody.appendChild(tr);
+}
+
+// 언어 전환
+const LANGS = {
+  ko: {
+    docTitle:'인 수 인 계 서', docSub:'HANDOVER DOCUMENT',
+    sec:['기본 정보','업무 현황','주요 자료 및 파일 목록','계정 및 시스템 접근 정보','특이사항 및 인계 메모'],
+    wh:['번호','업무명','상세 내용','진행 상태','특이사항'],
+    fh:['번호','자료명','보관 위치','담당자','비고'],
+    sh:['시스템명','계정 (ID)','비밀번호 힌트','관리자 연락처'],
+    infoLabel:'인수인계 부서',
+    sig:['인 계 자','인 수 자','확인자 (팀장)']
+  },
+  en: {
+    docTitle:'HANDOVER DOCUMENT', docSub:'Job Transition Record',
+    sec:['Basic Information','Work Status','Documents & Files','System Account Access','Notes & Handover Memo'],
+    wh:['No.','Task Name','Details','Status','Notes'],
+    fh:['No.','Document Name','Location','Owner','Remarks'],
+    sh:['System Name','Account (ID)','Password Hint','Admin Contact'],
+    infoLabel:'Department',
+    sig:['Handover Person','Receiving Person','Supervisor']
+  },
+  ja: {
+    docTitle:'引 継 ぎ 書', docSub:'HANDOVER DOCUMENT',
+    sec:['基本情報','業務現況','資料・ファイル一覧','アカウント・システムアクセス情報','特記事項・引継メモ'],
+    wh:['番号','業務名','詳細内容','進捗状況','特記事項'],
+    fh:['番号','資料名','保管場所','担当者','備考'],
+    sh:['システム名','アカウント(ID)','パスワードヒント','管理者連絡先'],
+    infoLabel:'引継部署',
+    sig:['引継者','引受者','確認者（チームリーダー）']
+  }
+};
+
+function setLang(lang) {
+  const t = LANGS[lang];
+  // 버튼 active
+  ['ko','en','ja'].forEach(l => {
+    document.getElementById('btn-'+l).classList.toggle('active', l===lang);
+  });
+  // 제목
+  document.getElementById('formDocTitle').textContent = t.docTitle;
+  document.getElementById('formDocSub').textContent = t.docSub;
+  // 섹션 헤더
+  t.sec.forEach((s,i) => { document.getElementById('sec'+(i+1)).textContent = s; });
+  // 기본정보 라벨
+  document.getElementById('infoLabel0').textContent = t.infoLabel;
+  // 테이블 헤더
+  t.wh.forEach((h,i) => { document.getElementById('wh'+i).textContent = h; });
+  t.fh.forEach((h,i) => { document.getElementById('fh'+i).textContent = h; });
+  t.sh.forEach((h,i) => { document.getElementById('sh'+i).textContent = h; });
+  // 서명란
+  t.sig.forEach((s,i) => { document.getElementById('sig'+i).textContent = s; });
 }
 
 // 초기 데이터 삽입

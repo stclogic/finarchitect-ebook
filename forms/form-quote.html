@@ -325,6 +325,11 @@ body { background: var(--amber-bg); }
   margin-left: 8px; vertical-align: middle;
   letter-spacing: .05em; font-weight: 700;
 }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#B45309; color:#B45309; }
+.lang-btn.active { background:#B45309; border-color:#B45309; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 /* ── 인쇄 ── */
 @media print {
   body { background: #fff; }
@@ -339,6 +344,10 @@ body { background: var(--amber-bg); }
 }
 .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 </style>
 </head>
@@ -380,6 +389,14 @@ body { background: var(--amber-bg); }
     </div>
 
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
 
     <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
   </aside>
@@ -407,7 +424,7 @@ body { background: var(--amber-bg); }
           </div>
         </div>
         <div class="doc-title-block">
-          <div class="doc-title">견 &nbsp; 적 &nbsp; 서</div>
+          <div class="doc-title" id="formDocTitle">견 &nbsp; 적 &nbsp; 서</div>
           <div class="doc-meta">
             견적번호: <span id="dispQuoteNo" contenteditable="true">Q-2024-001</span><br>
             견적일자: <span id="dispDate" contenteditable="true"></span>
@@ -608,6 +625,53 @@ document.getElementById('ctrlDate').addEventListener('input', function() {
   document.getElementById('footerDate').textContent = this.value;
 });
 document.getElementById('vatToggle').addEventListener('change', recalcTotals);
+
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '견 &nbsp; 적 &nbsp; 서',
+    tableHeaders: ['No','품목명','규격','수량','단가','공급가액','비고'],
+    totalLabels: ['공급가액 합계','부가세 (10%)','합계금액'],
+    bankLabel: '입금 계좌',
+    termsLabel: '특기사항'
+  },
+  en: {
+    docTitle: 'QUOTATION',
+    tableHeaders: ['No','Item Description','Specification','Qty','Unit Price','Amount','Remarks'],
+    totalLabels: ['Subtotal','VAT (10%)','Total Amount'],
+    bankLabel: 'Bank Account for Payment',
+    termsLabel: 'Special Terms & Conditions'
+  },
+  ja: {
+    docTitle: '見 &nbsp; 積 &nbsp; 書',
+    tableHeaders: ['No','品目名','規格','数量','単価','供給価額','備考'],
+    totalLabels: ['小計','消費税 (10%)','合計金額'],
+    bankLabel: '振込先口座',
+    termsLabel: '特記事項'
+  }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  // 문서 제목
+  document.getElementById('formDocTitle').innerHTML = d.docTitle;
+  // 테이블 헤더
+  var ths = document.querySelectorAll('#itemsTable thead th');
+  d.tableHeaders.forEach(function(h, i) { if (ths[i]) ths[i].textContent = h; });
+  // 합계 레이블
+  var tls = document.querySelectorAll('.totals-row .tl');
+  d.totalLabels.forEach(function(lbl, i) { if (tls[i]) tls[i].textContent = lbl; });
+  // 섹션 레이블
+  var secLabels = document.querySelectorAll('.section-label');
+  if (secLabels[0]) secLabels[0].textContent = d.termsLabel;
+  if (secLabels[1]) secLabels[1].textContent = d.bankLabel;
+}
 
 // 로고 업로드
 document.getElementById('logoUpload').addEventListener('change', function(e) {

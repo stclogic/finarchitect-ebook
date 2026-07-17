@@ -133,8 +133,28 @@
 .add-row-btn { padding:4px 12px; background:#F1F5F9; border:1px solid #CBD5E1; border-radius:6px; font-size:7.5pt; color:#475569; cursor:pointer; transition:all .15s; margin-top:2mm; }
 .add-row-btn:hover { background:#1E293B; color:#fff; border-color:#1E293B; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E293B; color:#1E293B; }
+.lang-btn.active { background:#1E293B; border-color:#1E293B; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 @media print {
-  .ctrl-panel { display:none !important; }
+  .ctrl-panel { display:none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   nav, footer { display:none !important; }
   .form-page-wrap { display:block; padding:0; }
   .doc-wrap { background:none; padding:0; border-radius:0; }
@@ -172,6 +192,14 @@
       <img id="logoPreview" class="logo-preview" style="display:none">
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
     <a href="../forms.html" class="back-link">← 서식 목록</a>
     <div class="tip-box">💡 상단 결재란에 결재자 성명을 직접 입력하세요. 결재 도장/서명은 인쇄 후 날인하면 됩니다.</div>
@@ -188,31 +216,31 @@
         </div>
         <div class="approval-grid">
           <div class="appr-col">
-            <div class="appr-role">담 당</div>
+            <div class="appr-role" id="ar0">담 당</div>
             <div class="appr-name-box" contenteditable="true"></div>
             <div class="appr-sign-box">인</div>
             <div class="appr-date-box" contenteditable="true"></div>
           </div>
           <div class="appr-col">
-            <div class="appr-role">팀 장</div>
+            <div class="appr-role" id="ar1">팀 장</div>
             <div class="appr-name-box" contenteditable="true"></div>
             <div class="appr-sign-box">인</div>
             <div class="appr-date-box" contenteditable="true"></div>
           </div>
           <div class="appr-col">
-            <div class="appr-role">부 장</div>
+            <div class="appr-role" id="ar2">부 장</div>
             <div class="appr-name-box" contenteditable="true"></div>
             <div class="appr-sign-box">인</div>
             <div class="appr-date-box" contenteditable="true"></div>
           </div>
           <div class="appr-col">
-            <div class="appr-role">이 사</div>
+            <div class="appr-role" id="ar3">이 사</div>
             <div class="appr-name-box" contenteditable="true"></div>
             <div class="appr-sign-box">인</div>
             <div class="appr-date-box" contenteditable="true"></div>
           </div>
           <div class="appr-col">
-            <div class="appr-role">대표이사</div>
+            <div class="appr-role" id="ar4">대표이사</div>
             <div class="appr-name-box" contenteditable="true"></div>
             <div class="appr-sign-box">인</div>
             <div class="appr-date-box" contenteditable="true"></div>
@@ -222,60 +250,60 @@
 
       <!-- 문서 제목 -->
       <div class="doc-title-center">
-        <div class="doc-title">품  의  서</div>
-        <div class="doc-subtitle">APPROVAL DOCUMENT</div>
+        <div class="doc-title" id="formDocTitle">품  의  서</div>
+        <div class="doc-subtitle" id="formDocSub">결재문서</div>
       </div>
 
       <!-- 기본 정보 -->
       <div class="basic-info-box">
         <table class="basic-info-table">
           <tr>
-            <th>문서번호</th>
+            <th id="bi0">문서번호</th>
             <td id="docNoOut">AP-2026-042</td>
-            <th>시행일</th>
+            <th id="bi1">시행일</th>
             <td contenteditable="true"></td>
           </tr>
           <tr>
-            <th>기안일</th>
+            <th id="bi2">기안일</th>
             <td id="docDateOut"></td>
-            <th>결재 기한</th>
+            <th id="bi3">결재 기한</th>
             <td contenteditable="true"></td>
           </tr>
           <tr>
-            <th>기안자</th>
+            <th id="bi4">기안자</th>
             <td contenteditable="true"></td>
-            <th>소속 부서</th>
+            <th id="bi5">소속 부서</th>
             <td id="deptOut"></td>
           </tr>
         </table>
       </div>
 
       <!-- 제목 -->
-      <div class="sec-head"><span class="sec-num">1</span> 품의 제목</div>
+      <div class="sec-head"><span class="sec-num">1</span> <span id="sec1">품의 제목</span></div>
       <div class="content-block" contenteditable="true" style="min-height:8mm;font-size:10.5pt;font-weight:700;">품의 제목을 입력하세요</div>
 
       <!-- 목적 -->
-      <div class="sec-head"><span class="sec-num">2</span> 목적</div>
+      <div class="sec-head"><span class="sec-num">2</span> <span id="sec2">목적</span></div>
       <div class="content-block" contenteditable="true" style="min-height:14mm">본 품의의 목적 및 추진 배경을 간략히 기재하세요.</div>
 
       <!-- 배경 및 현황 -->
-      <div class="sec-head"><span class="sec-num">3</span> 배경 및 현황</div>
+      <div class="sec-head"><span class="sec-num">3</span> <span id="sec3">배경 및 현황</span></div>
       <div class="content-block" contenteditable="true" style="min-height:18mm">현황 분석 및 추진 배경을 상세히 기재하세요.</div>
 
       <!-- 세부 내용 -->
-      <div class="sec-head"><span class="sec-num">4</span> 세부 내용</div>
+      <div class="sec-head"><span class="sec-num">4</span> <span id="sec4">세부 내용</span></div>
       <div class="content-block" contenteditable="true" style="min-height:26mm">추진 방법, 일정, 담당자, 세부 계획 등을 기재하세요.</div>
 
       <!-- 예산 내역 -->
-      <div class="sec-head"><span class="sec-num">5</span> 예산 내역</div>
+      <div class="sec-head"><span class="sec-num">5</span> <span id="sec5">예산 내역</span></div>
       <table class="budget-table" id="budgetTable">
         <thead>
           <tr>
-            <th style="width:5%">번호</th>
-            <th style="width:30%">항목</th>
-            <th style="width:20%">금액 (원)</th>
-            <th style="width:30%">산출 근거</th>
-            <th style="width:15%">비고</th>
+            <th style="width:5%" id="bh0">번호</th>
+            <th style="width:30%" id="bh1">항목</th>
+            <th style="width:20%" id="bh2">금액 (원)</th>
+            <th style="width:30%" id="bh3">산출 근거</th>
+            <th style="width:15%" id="bh4">비고</th>
           </tr>
         </thead>
         <tbody id="budgetBody"></tbody>
@@ -290,11 +318,11 @@
       <button class="add-row-btn" onclick="addBudgetRow()">+ 행 추가</button>
 
       <!-- 기대 효과 -->
-      <div class="sec-head"><span class="sec-num">6</span> 기대 효과</div>
+      <div class="sec-head"><span class="sec-num">6</span> <span id="sec6">기대 효과</span></div>
       <div class="content-block" contenteditable="true" style="min-height:14mm">본 품의 승인 시 예상되는 효과 및 기대 성과를 기재하세요.</div>
 
       <!-- 첨부 서류 -->
-      <div class="sec-head"><span class="sec-num">7</span> 첨부 서류</div>
+      <div class="sec-head"><span class="sec-num">7</span> <span id="sec7">첨부 서류</span></div>
       <div style="border:1px solid #E2E8F0; border-radius:6px; padding:3mm; margin-bottom:3mm;">
         <ul class="attach-list" id="attachList"></ul>
         <button class="add-row-btn" onclick="addAttach()">+ 첨부 추가</button>
@@ -319,6 +347,43 @@
 </div>
 
 <script>
+const LANGS = {
+  ko: {
+    docTitle:'품  의  서', docSub:'결재문서',
+    ar:['담 당','팀 장','부 장','이 사','대표이사'],
+    bi:['문서번호','시행일','기안일','결재 기한','기안자','소속 부서'],
+    sec:['품의 제목','목적','배경 및 현황','세부 내용','예산 내역','기대 효과','첨부 서류'],
+    bh:['번호','항목','금액 (원)','산출 근거','비고']
+  },
+  en: {
+    docTitle:'APPROVAL REQUEST', docSub:'Business Proposal Document',
+    ar:['Staff','Team Lead','Manager','Director','CEO'],
+    bi:['Doc. No.','Effective Date','Approval Date','Author','Department',''],
+    sec:['Subject','Purpose','Background & Current Status','Details','Budget Breakdown','Expected Outcomes','Attachments'],
+    bh:['No.','Item','Amount','Basis of Calculation','Remarks']
+  },
+  ja: {
+    docTitle:'稟  議  書', docSub:'決裁文書',
+    ar:['担当','チームリーダー','部長','取締役','代表取締役'],
+    bi:['文書番号','施行日','決裁日','起案者','所属部署',''],
+    sec:['件名','目的','背景及び現状','詳細内容','予算明細','期待効果','添付書類'],
+    bh:['番号','項目','金額','算出根拠','備考']
+  }
+};
+
+function setLang(lang) {
+  const t = LANGS[lang];
+  ['ko','en','ja'].forEach(l => {
+    document.getElementById('btn-'+l).classList.toggle('active', l===lang);
+  });
+  document.getElementById('formDocTitle').textContent = t.docTitle;
+  document.getElementById('formDocSub').textContent = t.docSub;
+  t.ar.forEach((r,i) => { document.getElementById('ar'+i).textContent = r; });
+  t.bi.forEach((h,i) => { const el = document.getElementById('bi'+i); if(el) el.textContent = h; });
+  t.sec.forEach((s,i) => { const el = document.getElementById('sec'+(i+1)); if(el) el.textContent = s; });
+  t.bh.forEach((h,i) => { const el = document.getElementById('bh'+i); if(el) el.textContent = h; });
+}
+
 (function(){
   const today = new Date();
   const d = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;

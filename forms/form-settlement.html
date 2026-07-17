@@ -138,8 +138,27 @@
 [contenteditable="true"] { outline: none; }
 [contenteditable="true"]:hover { background: rgba(59,130,246,.06); border-radius: 3px; }
 [contenteditable="true"]:focus { background: #EFF6FF; border-radius: 3px; box-shadow: 0 0 0 2px #3B82F6; }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border,#e2e8f0); background:none; color:var(--text2,#64748b); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display: none !important; }
+  .ctrl-panel, nav, footer, .back-link { display: none !important; 
+  /* 페이지 구분 제어 */
+  .clause, .article, .section-block, .sig-section, .parties-table,
+  .info-table, .items-table, .agenda-item, .handover-row,
+  .section-box, .article-block, .cert-table, .poa-table,
+  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
+  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  /* 테이블 행 보호 */
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  /* 서명란 분리 방지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
+}
   .form-page-wrap { display: block; padding: 0; }
   .doc-wrap { background: none; padding: 0; }
   .doc-page { width: 100%; box-shadow: none; margin: 0; }
@@ -166,6 +185,14 @@
       <input type="text" id="docNum" placeholder="SA-2026-001">
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2,#64748b);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="location.reload()">초기화</button>
     <div class="tip-box">💡 합의 내용 영역을 클릭하여 구체적인 합의 사항을 입력하세요.</div>
@@ -186,21 +213,21 @@
         </div>
 
         <div class="doc-title-block">
-          <span class="doc-title-ko">합 &nbsp; 의 &nbsp; 서</span>
+          <span class="doc-title-ko" id="formDocTitle">합 &nbsp; 의 &nbsp; 서</span>
           <div class="title-accent-bar"></div>
-          <span class="doc-title-en">SETTLEMENT AGREEMENT</span>
+          <span class="doc-title-en" id="formDocSub">SETTLEMENT AGREEMENT</span>
         </div>
 
         <!-- Party cards -->
         <div class="party-grid">
           <div class="party-card gap-card">
-            <div class="party-card-title">甲 (갑)</div>
+            <div class="party-card-title" id="thA">甲 (갑)</div>
             <div class="party-row"><span class="party-lbl">성명</span><span class="party-val" contenteditable="true"></span></div>
             <div class="party-row"><span class="party-lbl">주소</span><span class="party-val" contenteditable="true"></span></div>
             <div class="party-row"><span class="party-lbl">연락처</span><span class="party-val" contenteditable="true"></span></div>
           </div>
           <div class="party-card eul-card">
-            <div class="party-card-title">乙 (을)</div>
+            <div class="party-card-title" id="thB">乙 (을)</div>
             <div class="party-row"><span class="party-lbl">성명</span><span class="party-val" contenteditable="true"></span></div>
             <div class="party-row"><span class="party-lbl">주소</span><span class="party-val" contenteditable="true"></span></div>
             <div class="party-row"><span class="party-lbl">연락처</span><span class="party-val" contenteditable="true"></span></div>
@@ -283,17 +310,18 @@
 
         <!-- Signature -->
         <div class="sig-section">
+          <p id="sigPrefix" style="font-size:9pt;color:#374151;text-align:center;margin-bottom:3mm;">위 합의 사실을 확인하고 본 합의서를 작성하고 기명날인한다.</p>
           <div class="sig-date" id="sigDate"></div>
           <div class="sig-grid">
             <div class="sig-card">
-              <div class="sig-card-title">甲</div>
+              <div class="sig-card-title" id="sigA">甲</div>
               <div class="sig-row"><span class="sig-lbl">성명</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="sig-row"><span class="sig-lbl">주소</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="sig-row"><span class="sig-lbl">서명</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="stamp-circle">인</div>
             </div>
             <div class="sig-card">
-              <div class="sig-card-title">乙</div>
+              <div class="sig-card-title" id="sigB">乙</div>
               <div class="sig-row"><span class="sig-lbl">성명</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="sig-row"><span class="sig-lbl">주소</span><span class="sig-val" contenteditable="true"></span></div>
               <div class="sig-row"><span class="sig-lbl">서명</span><span class="sig-val" contenteditable="true"></span></div>
@@ -316,6 +344,47 @@
   document.getElementById('sigDate').textContent =
     d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
 })();
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '합 &nbsp; 의 &nbsp; 서', docSub: 'SETTLEMENT AGREEMENT',
+    thA: '甲 (갑)', thB: '乙 (을)',
+    sigA: '甲', sigB: '乙',
+    sigPrefix: '위 합의 사실을 확인하고 본 합의서를 작성하고 기명날인한다.',
+    clauseTitles: ['합의 내용','이행 방법 및 시기','상호 권리 포기','비밀 유지','합의 위반 시 조치','효력 발생']
+  },
+  en: {
+    docTitle: 'SETTLEMENT AGREEMENT', docSub: 'Mutual Release Agreement',
+    thA: 'Party A', thB: 'Party B',
+    sigA: 'Party A', sigB: 'Party B',
+    sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Settlement Agreement.',
+    clauseTitles: ['Art.1 — Settlement Terms','Art.2 — Manner & Timing of Performance','Art.3 — Mutual Waiver of Claims','Art.4 — Confidentiality','Art.5 — Consequences of Breach','Art.6 — Effective Date']
+  },
+  ja: {
+    docTitle: '和 解 合 意 書', docSub: 'SETTLEMENT AGREEMENT',
+    thA: '甲（一方）', thB: '乙（他方）',
+    sigA: '甲', sigB: '乙',
+    sigPrefix: '上記の合意事実を確認し、本合意書を作成して記名押印する。',
+    clauseTitles: ['第1条 — 合意内容','第2条 — 履行方法及び時期','第3条 — 相互権利放棄','第4条 — 秘密保持','第5条 — 違反時の措置','第6条 — 効力発生']
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
+  document.getElementById('formDocTitle').innerHTML = d.docTitle;
+  document.getElementById('formDocSub').textContent = d.docSub;
+  document.getElementById('thA').textContent = d.thA;
+  document.getElementById('thB').textContent = d.thB;
+  document.getElementById('sigA').textContent = d.sigA;
+  document.getElementById('sigB').textContent = d.sigB;
+  document.getElementById('sigPrefix').textContent = d.sigPrefix;
+  var clauseTitles = document.querySelectorAll('.clause-title');
+  d.clauseTitles.forEach(function(t, i) {
+    if (!clauseTitles[i]) return;
+    clauseTitles[i].textContent = t;
+  });
+}
+
 document.getElementById('docNum').addEventListener('input', function(){
   document.getElementById('docNumDisplay').textContent = this.value;
 });

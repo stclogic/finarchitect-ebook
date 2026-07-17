@@ -133,6 +133,11 @@ body { background: var(--amber-bg); }
 .sig-name-field:focus { border-bottom-color: var(--amber); background: #FFFBEB; }
 .sig-stamp-row { display: flex; justify-content: flex-end; }
 .stamp-sm { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1.5px solid var(--amber); border-radius: 50%; font-size: 7.5pt; color: var(--amber); font-weight: 700; }
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#B45309; color:#B45309; }
+.lang-btn.active { background:#B45309; border-color:#B45309; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
   .ctrl-panel, nav, footer, .back-link { display: none !important; }
   body { background: #fff !important; }
@@ -142,6 +147,10 @@ body { background: var(--amber-bg); }
 }
 .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 </style>
 </head>
@@ -164,6 +173,14 @@ body { background: var(--amber-bg); }
       <input type="text" id="ctrlPlace" placeholder="본사 3층 회의실">
     </div>
     <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
     <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
   </aside>
 
@@ -174,23 +191,23 @@ body { background: var(--amber-bg); }
       <div class="doc-header">
         <div class="doc-header-line"></div>
         <div class="doc-company" id="dispCompany" contenteditable="true">(주)회사명</div>
-        <div class="doc-title-ko">이 사 회 의 사 록</div>
-        <div class="doc-title-en">BOARD OF DIRECTORS MEETING MINUTES</div>
+        <div class="doc-title-ko" id="formDocTitle">이 사 회 의 사 록</div>
+        <div class="doc-title-en" id="formDocSub">BOARD OF DIRECTORS MEETING MINUTES</div>
       </div>
 
       <!-- 회의 기본 정보 -->
       <table class="info-table">
         <tbody>
           <tr>
-            <th>개최 일시</th>
+            <th id="infoTh0">개최 일시</th>
             <td id="dispDate" contenteditable="true"></td>
-            <th>개최 장소</th>
+            <th id="infoTh1">개최 장소</th>
             <td id="dispPlace" contenteditable="true">본사 3층 회의실</td>
           </tr>
           <tr>
-            <th>의사 정족수</th>
+            <th id="infoTh2">의사 정족수</th>
             <td contenteditable="true">이사 총 5인 중 4인 출석 (과반수 충족)</td>
-            <th>의결 정족수</th>
+            <th id="infoTh3">의결 정족수</th>
             <td contenteditable="true">출석 이사 과반수의 찬성 (과반수 충족)</td>
           </tr>
         </tbody>
@@ -342,7 +359,7 @@ body { background: var(--amber-bg); }
 
       <!-- 마무리 -->
       <div class="closing-text">
-        위와 같이 의결하였음을 증명하기 위하여 이 의사록을 작성하고, 출석한 이사 및 감사가 아래에 서명 날인한다.<br>
+        <span id="closingPrefix">위와 같이 의결하였음을 증명하기 위하여 이 의사록을 작성하고, 출석한 이사 및 감사가 아래에 서명 날인한다.</span><br>
         <strong><span id="closingDate" contenteditable="true"></span></strong>
       </div>
 
@@ -388,6 +405,45 @@ body { background: var(--amber-bg); }
 </div>
 
 <script>
+// 언어 전환
+var LANG_DATA_FORM = {
+  ko: {
+    docTitle: '이 사 회 의 사 록',
+    docSub: 'BOARD OF DIRECTORS MEETING MINUTES',
+    meetingInfoLabels: ['개최 일시','개최 장소','의사 정족수','의결 정족수'],
+    sigPrefix: '위와 같이 의결하였음을 증명하기 위하여 이 의사록을 작성하고, 출석한 이사 및 감사가 아래에 서명 날인한다.'
+  },
+  en: {
+    docTitle: 'BOARD OF DIRECTORS MEETING MINUTES',
+    docSub: 'Board Resolution Record',
+    meetingInfoLabels: ['Date & Time','Venue','Quorum Required','Voting Threshold'],
+    sigPrefix: 'IN WITNESS WHEREOF, the attending directors and auditor have signed these minutes.'
+  },
+  ja: {
+    docTitle: '取 締 役 会 議 事 録',
+    docSub: 'BOARD OF DIRECTORS MEETING MINUTES',
+    meetingInfoLabels: ['開催日時','開催場所','定足数','議決要件'],
+    sigPrefix: '上記のとおり議決したことを証明するため、出席取締役及び監査役が署名する。'
+  }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  document.getElementById('formDocTitle').textContent = d.docTitle;
+  document.getElementById('formDocSub').textContent = d.docSub;
+  document.getElementById('closingPrefix').textContent = d.sigPrefix;
+  d.meetingInfoLabels.forEach(function(lbl, i) {
+    var el = document.getElementById('infoTh' + i);
+    if (el) el.textContent = lbl;
+  });
+}
+
 function toggleAttend(el) {
   if (el.classList.contains('yes')) {
     el.classList.remove('yes'); el.classList.add('no'); el.textContent = '불참';

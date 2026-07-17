@@ -295,6 +295,13 @@
 .slvl { width: 12px; height: 5px; border-radius: 2px; background: rgba(255,255,255,0.15); cursor: pointer; border: none; padding: 0; }
 .slvl.on { background: var(--cv-accent, #F59E0B); }
 
+/* ── 언어 전환 버튼 ── */
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid var(--border); background:none; color:var(--text2); cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#1E2B4A; color:#1E2B4A; }
+.lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 /* ── 인쇄 전용 CSS ── */
 @media print {
   body { background: #fff !important; }
@@ -315,6 +322,10 @@
   }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 
@@ -332,28 +343,28 @@
 
   <!-- ── 좌측 컨트롤 패널 ── -->
   <div class="ctrl-panel" id="ctrlPanel">
-    <h2>⚙ 이력서 설정</h2>
+    <h2 id="ctrlTitle">⚙ 이력서 설정</h2>
 
     <div class="ctrl-section">
-      <label>메인 컬러</label>
+      <label id="lbl-color">메인 컬러</label>
       <input type="color" id="colorPrimary" value="#1E2B4A" oninput="applyColor('primary', this.value)">
     </div>
     <div class="ctrl-section">
-      <label>포인트 컬러</label>
+      <label id="lbl-accent">포인트 컬러</label>
       <input type="color" id="colorAccent" value="#F59E0B" oninput="applyColor('accent', this.value)">
     </div>
 
     <div class="ctrl-divider"></div>
 
     <div class="ctrl-section">
-      <label>증명사진 업로드</label>
+      <label id="lbl-photo">증명사진 업로드</label>
       <label class="ctrl-file-btn">
         📷 사진 선택
         <input type="file" accept="image/*" onchange="uploadPhoto(this)">
       </label>
     </div>
     <div class="ctrl-section">
-      <label>회사/학교 로고 (좌측 하단)</label>
+      <label id="lbl-logo">회사/학교 로고 (좌측 하단)</label>
       <label class="ctrl-file-btn">
         🏢 로고 선택
         <input type="file" accept="image/*" onchange="uploadLogo(this)">
@@ -362,7 +373,17 @@
 
     <div class="ctrl-divider"></div>
 
-    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <div class="ctrl-divider"></div>
+    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+
+    <button class="print-btn" id="printBtn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="if(confirm('초기화하시겠습니까?'))location.reload()">↺ 초기화</button>
 
     <div class="tip-box">
@@ -402,7 +423,7 @@
 
         <!-- 연락처 -->
         <div class="cv-sb-section">
-          <div class="cv-sb-title">연락처</div>
+          <div class="cv-sb-title" id="sb-contact">연락처</div>
           <div id="contactList">
             <div class="cv-sb-row">
               <span class="cv-sb-icon">📱</span>
@@ -425,7 +446,7 @@
 
         <!-- 핵심 역량 -->
         <div class="cv-sb-section">
-          <div class="cv-sb-title">핵심 역량</div>
+          <div class="cv-sb-title" id="sb-skills">핵심 역량</div>
           <div id="skillList">
             <div class="cv-skill-bar-wrap skill-row">
               <div style="flex:1">
@@ -461,7 +482,7 @@
 
         <!-- 언어 -->
         <div class="cv-sb-section">
-          <div class="cv-sb-title">언어</div>
+          <div class="cv-sb-title" id="sb-lang">언어</div>
           <div id="langList">
             <div class="cv-sb-row">
               <span class="cv-sb-text" contenteditable="true">한국어</span>
@@ -479,7 +500,7 @@
 
         <!-- 자격증 -->
         <div class="cv-sb-section">
-          <div class="cv-sb-title">자격증</div>
+          <div class="cv-sb-title" id="sb-cert">자격증</div>
           <div id="certList">
             <div class="cv-sb-row">
               <span class="cv-sb-icon">🏅</span>
@@ -497,7 +518,7 @@
 
         <!-- 생년월일 -->
         <div class="cv-sb-section">
-          <div class="cv-sb-title">기본 정보</div>
+          <div class="cv-sb-title" id="sb-info">기본 정보</div>
           <div class="cv-sb-row">
             <span class="cv-sb-icon">🎂</span>
             <span class="cv-sb-text" contenteditable="true">1990. 01. 01</span>
@@ -521,13 +542,13 @@
 
         <!-- 자기소개 -->
         <div class="cv-section">
-          <div class="cv-section-title">✦ 자기소개</div>
+          <div class="cv-section-title" id="main-summary">✦ 자기소개</div>
           <div class="cv-summary block-edit" contenteditable="true">10년간 B2B SaaS 제품 기획 및 개발을 이끌어 온 PM입니다. 데이터 기반 의사결정과 크로스펑셔널 팀 협업에 강점이 있으며, 고객 중심 사고를 바탕으로 실질적인 비즈니스 성과를 만들어 왔습니다. 팀원들의 성장을 지원하는 서번트 리더십을 지향합니다.</div>
         </div>
 
         <!-- 경력사항 -->
         <div class="cv-section">
-          <div class="cv-section-title">💼 경력사항</div>
+          <div class="cv-section-title" id="main-exp">💼 경력사항</div>
           <div id="expList">
             <div class="cv-entry" data-entry="exp">
               <button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button>
@@ -556,7 +577,7 @@
 
         <!-- 학력사항 -->
         <div class="cv-section">
-          <div class="cv-section-title">🎓 학력사항</div>
+          <div class="cv-section-title" id="main-edu">🎓 학력사항</div>
           <div id="eduList">
             <div class="cv-entry" data-entry="edu">
               <button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button>
@@ -572,7 +593,7 @@
 
         <!-- 수상/활동 -->
         <div class="cv-section">
-          <div class="cv-section-title">🏆 수상 및 활동</div>
+          <div class="cv-section-title" id="main-award">🏆 수상 및 활동</div>
           <div id="awardList">
             <div class="cv-entry">
               <button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button>
@@ -676,6 +697,62 @@ function addAward() {
   div.className = 'cv-entry';
   div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">수상명 / 활동명</span><span class="cv-entry-period" contenteditable="true">YYYY.MM</span></div><div class="cv-entry-desc" contenteditable="true">내용을 입력하세요</div>';
   document.getElementById('awardList').appendChild(div);
+}
+
+// ── 언어 전환 ────────────────────────────────────────────────────
+var LANG_DATA = {
+  ko: {
+    ctrlTitle: '⚙ 이력서 설정',
+    lblColor: '메인 컬러', lblAccent: '포인트 컬러',
+    lblPhoto: '증명사진 업로드', lblLogo: '회사/학교 로고 (좌측 하단)',
+    printBtn: '🖨 인쇄 / PDF 저장',
+    sbContact: '연락처', sbSkills: '핵심 역량', sbLang: '언어',
+    sbCert: '자격증', sbInfo: '기본 정보',
+    mainSummary: '✦ 자기소개', mainExp: '💼 경력사항',
+    mainEdu: '🎓 학력사항', mainAward: '🏆 수상 및 활동'
+  },
+  en: {
+    ctrlTitle: '⚙ Resume Settings',
+    lblColor: 'Primary Color', lblAccent: 'Accent Color',
+    lblPhoto: 'Upload Photo', lblLogo: 'Company Logo',
+    printBtn: '🖨 Print / Save as PDF',
+    sbContact: 'Contact', sbSkills: 'Core Competencies', sbLang: 'Languages',
+    sbCert: 'Certifications', sbInfo: 'Personal Info',
+    mainSummary: '✦ Profile / Summary', mainExp: '💼 Work Experience',
+    mainEdu: '🎓 Education', mainAward: '🏆 Awards & Activities'
+  },
+  ja: {
+    ctrlTitle: '⚙ 履歴書設定',
+    lblColor: 'メインカラー', lblAccent: 'アクセントカラー',
+    lblPhoto: '写真アップロード', lblLogo: '会社ロゴ',
+    printBtn: '🖨 印刷 / PDF保存',
+    sbContact: '連絡先', sbSkills: '主要スキル', sbLang: '言語',
+    sbCert: '資格・免許', sbInfo: '基本情報',
+    mainSummary: '✦ 自己PR', mainExp: '💼 職務経歴',
+    mainEdu: '🎓 学歴', mainAward: '🏆 受賞・活動'
+  }
+};
+function setLang(lang) {
+  var d = LANG_DATA[lang];
+  if (!d) return;
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-' + l).classList.toggle('active', l === lang);
+  });
+  document.getElementById('ctrlTitle').textContent = d.ctrlTitle;
+  document.getElementById('lbl-color').textContent = d.lblColor;
+  document.getElementById('lbl-accent').textContent = d.lblAccent;
+  document.getElementById('lbl-photo').textContent = d.lblPhoto;
+  document.getElementById('lbl-logo').textContent = d.lblLogo;
+  document.getElementById('printBtn').textContent = d.printBtn;
+  document.getElementById('sb-contact').textContent = d.sbContact;
+  document.getElementById('sb-skills').textContent = d.sbSkills;
+  document.getElementById('sb-lang').textContent = d.sbLang;
+  document.getElementById('sb-cert').textContent = d.sbCert;
+  document.getElementById('sb-info').textContent = d.sbInfo;
+  document.getElementById('main-summary').textContent = d.mainSummary;
+  document.getElementById('main-exp').textContent = d.mainExp;
+  document.getElementById('main-edu').textContent = d.mainEdu;
+  document.getElementById('main-award').textContent = d.mainAward;
 }
 </script>
 </body>

@@ -244,6 +244,12 @@
 }
 .rs-logo.visible { display: inline-block; vertical-align: middle; margin-right: 6px; }
 
+.lang-btns { display:flex; gap:4px; margin-top:4px; }
+.lang-btn { flex:1; padding:5px 0; border-radius:8px; font-size:0.72rem; font-weight:800; border:1.5px solid #C7D2FE; background:none; color:#6366F1; cursor:pointer; transition:all .15s; }
+.lang-btn:hover { border-color:#3730A3; color:#3730A3; }
+.lang-btn.active { background:#3730A3; border-color:#3730A3; color:#fff; }
+.lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
+
 /* ── 인쇄 CSS ── */
 @media print {
   .ctrl-panel, nav, footer { display: none !important; }
@@ -252,6 +258,10 @@
   .a4-page { width: 100% !important; box-shadow: none !important; border-radius: 0 !important; }
   .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
   .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
   @page { size: A4; margin: 0; }
 }
 @media (max-width: 900px) {
@@ -306,7 +316,15 @@
     </div>
 
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <div style="font-size:0.78rem;font-weight:700;color:#6366F1;margin-bottom:0.5rem;">언어 / Language / 言語</div>
+    <div class="lang-btns">
+      <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
+    <div class="ctrl-divider"></div>
+    <button class="print-btn" id="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
 
     <div class="tip-box">
@@ -459,6 +477,70 @@ function resetForm() {
       if (!el.getAttribute('data-field')) el.textContent = '';
     }
   });
+}
+
+var LANG_DATA_FORM = {
+  ko: { docTitle:'사&nbsp;&nbsp;&nbsp;&nbsp;직&nbsp;&nbsp;&nbsp;&nbsp;서',
+    intro:'본인은 아래와 같은 사유로 부득이하게 사직하고자 하오니 허락하여 주시기 바랍니다.',
+    closing:'위와 같이 사직원을 제출합니다.',
+    thDept:'소 속 부 서', thPosition:'직 위 · 직 책', thName:'성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명',
+    thJoinDate:'입 &nbsp; 사 &nbsp; 일', thResignDate:'사직 예정일', thReason:'사 직 사 유',
+    reasonLabel:'📝 사직 사유 상세',
+    sigLabels:['소속','직위','성명','서명'],
+    addresseeSuffix:'대표이사 귀중',
+    printBtn:'🖨 인쇄 / PDF 저장' },
+  en: { docTitle:'LETTER&nbsp;OF&nbsp;RESIGNATION',
+    intro:'I hereby respectfully submit this letter of resignation for the reasons stated below.',
+    closing:'I hereby respectfully submit this letter of resignation.',
+    thDept:'Department', thPosition:'Job Title', thName:'Name',
+    thJoinDate:'Date of Hire', thResignDate:'Last Working Day', thReason:'Reason',
+    reasonLabel:'📝 Details of Resignation',
+    sigLabels:['Department','Title','Name','Signature'],
+    addresseeSuffix:'CEO',
+    printBtn:'🖨 Print / Save as PDF' },
+  ja: { docTitle:'退&nbsp;&nbsp;職&nbsp;&nbsp;届',
+    intro:'下記の理由により、誠に勝手ながら退職届を提出いたします。',
+    closing:'上記のとおり退職届を提出いたします。',
+    thDept:'所 属 部 署', thPosition:'役 職 · 職 位', thName:'氏&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名',
+    thJoinDate:'入&nbsp;&nbsp;社&nbsp;&nbsp;日', thResignDate:'退職予定日', thReason:'退職理由',
+    reasonLabel:'📝 退職理由詳細',
+    sigLabels:['所属','役職','氏名','署名'],
+    addresseeSuffix:'代表取締役 殿',
+    printBtn:'🖨 印刷 / PDF保存' }
+};
+
+var _currentLang = 'ko';
+function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
+  var d = LANG_DATA_FORM[lang];
+  ['ko','en','ja'].forEach(function(l) {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  // doc title
+  document.querySelector('.rs-title').innerHTML = d.docTitle;
+  // intro & closing
+  document.querySelector('.rs-intro').textContent = d.intro;
+  document.querySelector('.rs-closing').textContent = d.closing;
+  // table headers
+  var ths = document.querySelectorAll('.rs-info-table th');
+  var keys = ['thDept','thPosition','thName','thJoinDate','thResignDate','thReason'];
+  ths.forEach(function(th, i) { if (keys[i]) th.innerHTML = d[keys[i]]; });
+  // reason label
+  document.querySelector('.rs-reason-label').textContent = d.reasonLabel;
+  // sig item labels
+  var sigLabels = document.querySelectorAll('.rs-sign-item-label');
+  sigLabels.forEach(function(el, i) { if (d.sigLabels[i]) el.textContent = d.sigLabels[i]; });
+  // addressee suffix
+  var addrEl = document.querySelector('.rs-addressee strong');
+  if (addrEl) {
+    var companyEl = document.getElementById('addr-company');
+    var companyText = companyEl ? companyEl.textContent : '회사명';
+    addrEl.innerHTML = '<span id="addr-company" contenteditable="true">' + companyText + '</span> ' + d.addresseeSuffix;
+  }
+  // print button
+  document.getElementById('print-btn').textContent = d.printBtn;
+  document.documentElement.lang = lang;
 }
 </script>
 </body>

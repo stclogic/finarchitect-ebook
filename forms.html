@@ -260,6 +260,248 @@
 <script src="assets/js/footer-inject.js" defer></script>
 
 <script>
+// ── 다국어 번역 데이터 ────────────────────────────────────────
+var FORMS_LANG = {
+  ko: {
+    heroBadge: '✦ 서식 라이브러리 — 온라인 작성 · PDF 출력',
+    heroTitle: '작성하고, 바로 <em>출력</em>하세요',
+    heroDesc: '이력서부터 법률 계약서까지 — 온라인에서 직접 입력하고<br>단 한 번의 클릭으로 PDF를 만드는 전문가 서식 모음',
+    searchPlaceholder: '서식 검색... (예: 이력서, 근로계약서)',
+    searchBtn: '검색',
+    chips: ['이력서','근로계약서','임대차계약서','차용증','사직서','위임장'],
+    stat1: '현재 서식 수', stat2: '온라인 작성 지원', stat3: '무료 사용', stat4: '즉시 출력 가능',
+    statVal2: '전종',
+    cats: ['⊛ 전체','💼 취업·인사','⚖ 법률·계약','🏠 부동산','📊 금융·비즈니스','📋 행정·관리'],
+    featuredTitle: '이력서 — 이번 달 가장 많이 작성된 서식',
+    featuredDesc: 'A4 두 컬럼 디자인 · 사진·로고 업로드 · 항목 추가/삭제 · 색상 커스텀 · 원클릭 PDF 출력',
+    featuredBtn: '바로 작성하기 →',
+    sectionLive: '✅ 온라인 작성 · PDF 출력 지원',
+    sectionUpcoming: '🔜 준비 중 — 곧 온라인 작성 지원 예정',
+    countSuffix: '종',
+    cardBtn: '✏ 작성하기',
+  },
+  en: {
+    heroBadge: '✦ Form Library — Online Fill · PDF Export',
+    heroTitle: 'Fill in, <em>print out</em> instantly',
+    heroDesc: 'From resumes to legal contracts — fill online and<br>export a professional PDF in one click',
+    searchPlaceholder: 'Search forms... (e.g. resume, employment)',
+    searchBtn: 'Search',
+    chips: ['Resume','Employment Contract','Lease','IOU','Resignation','Power of Attorney'],
+    stat1: 'Forms Available', stat2: 'Online Fill Support', stat3: 'Free to Use', stat4: 'Instant PDF',
+    statVal2: 'All',
+    cats: ['⊛ All','💼 HR & Employment','⚖ Legal & Contracts','🏠 Real Estate','📊 Finance & Business','📋 Admin & Management'],
+    featuredTitle: 'Resume — Most Used Form This Month',
+    featuredDesc: 'Two-column A4 · Photo & logo upload · Add/remove items · Color customization · One-click PDF',
+    featuredBtn: 'Start Now →',
+    sectionLive: '✅ Online Fill & PDF Export Available',
+    sectionUpcoming: '🔜 Coming Soon — Online fill support planned',
+    countSuffix: ' forms',
+    cardBtn: '✏ Fill Out',
+  },
+  ja: {
+    heroBadge: '✦ 書式ライブラリ — オンライン記入 · PDF出力',
+    heroTitle: '記入して、すぐ<em>印刷</em>できます',
+    heroDesc: '履歴書から法律契約書まで — オンラインで直接入力し<br>ワンクリックでプロ仕様のPDFを作成',
+    searchPlaceholder: '書式を検索... (例: 履歴書、労働契約)',
+    searchBtn: '検索',
+    chips: ['履歴書','労働契約書','賃貸契約書','借用証書','辞表','委任状'],
+    stat1: '書式数', stat2: 'オンライン記入対応', stat3: '無料利用', stat4: 'PDF即時出力',
+    statVal2: '全種',
+    cats: ['⊛ 全て','💼 採用・人事','⚖ 法律・契約','🏠 不動産','📊 金融・ビジネス','📋 行政・管理'],
+    featuredTitle: '履歴書 — 今月最も多く作成された書式',
+    featuredDesc: 'A4二段組デザイン · 写真·ロゴアップロード · 項目追加/削除 · カラーカスタム · ワンクリックPDF',
+    featuredBtn: '今すぐ作成 →',
+    sectionLive: '✅ オンライン記入 · PDF出力対応',
+    sectionUpcoming: '🔜 準備中 — オンライン記入対応予定',
+    countSuffix: '種',
+    cardBtn: '✏ 記入する',
+  }
+};
+
+// ── 서식별 다국어 번역 ────────────────────────────────────────
+var FORM_I18N = {
+  resume: {
+    ko:{title:'이력서',desc:'두 컬럼 디자인, 사진·로고 업로드, 컬러 커스텀, 경력·학력 항목 추가/삭제',tags:['A4','사진첨부','로고','컬러설정','PDF출력'],badge:'🔥 인기 1위'},
+    en:{title:'Resume',desc:'Two-column layout, photo & logo upload, color customization, add/remove career & education items',tags:['A4','Photo','Logo','Color','PDF'],badge:'🔥 #1 Popular'},
+    ja:{title:'履歴書',desc:'二段組レイアウト、写真·ロゴアップロード、カラーカスタム、職歴·学歴追加/削除',tags:['A4','写真','ロゴ','カラー','PDF'],badge:'🔥 人気No.1'},
+  },
+  coverletter: {
+    ko:{title:'자기소개서',desc:'성장과정·성격·지원동기·포부 4섹션, 항목별 글자수 카운트, 인디고 그라디언트 헤더',tags:['4섹션','글자수카운트','인디고디자인','로고','PDF출력'],badge:'✍ 취업필수'},
+    en:{title:'Cover Letter',desc:'4 sections: background, personality, motivation, goals. Character count per section, indigo gradient header',tags:['4 Sections','Char Count','Indigo Design','Logo','PDF'],badge:'✍ Job Essential'},
+    ja:{title:'自己紹介書',desc:'成長過程·性格·志望動機·抱負の4セクション、文字数カウント、インディゴグラデーションヘッダー',tags:['4セクション','文字数','インディゴ','ロゴ','PDF'],badge:'✍ 就活必須'},
+  },
+  resignation: {
+    ko:{title:'사직서',desc:'우아한 중앙 정렬 레이아웃. 소속·직위·사직사유 테이블, 사직예정일 자동 입력',tags:['정중한형식','사직사유','날짜자동','서명란','PDF출력'],badge:'✓ 무료'},
+    en:{title:'Resignation Letter',desc:'Elegant centered layout. Department, position, and reason table, auto-filled resignation date',tags:['Formal','Reason','Auto Date','Signature','PDF'],badge:'✓ Free'},
+    ja:{title:'辞表',desc:'上品な中央揃えレイアウト。所属·役職·退職理由テーブル、退職予定日自動入力',tags:['丁寧な形式','退職理由','日付自動','署名欄','PDF'],badge:'✓ 無料'},
+  },
+  'emp-cert': {
+    ko:{title:'재직증명서',desc:'이중 테두리 공식 증명서 스타일. 영문 병기, 원형 직인란, 용도 선택 기능',tags:['이중테두리','영문병기','직인란','한영혼용','PDF출력'],badge:'🏛 공식문서'},
+    en:{title:'Employment Certificate',desc:'Double-border official style. Bilingual Korean/English, circular seal area, purpose selector',tags:['Double Border','Bilingual','Seal','KO/EN','PDF'],badge:'🏛 Official'},
+    ja:{title:'在職証明書',desc:'二重枠の公式スタイル。日英併記、円形印欄、用途選択機能',tags:['二重枠','英文併記','印欄','日英併記','PDF'],badge:'🏛 公式文書'},
+  },
+  'career-cert': {
+    ko:{title:'경력증명서',desc:'경력 사항 테이블(재직기간·소속·직위·담당업무), 행 추가 기능, 이중 테두리 공식 디자인',tags:['경력테이블','행추가','직인란','영문병기','PDF출력'],badge:'✓ 무료'},
+    en:{title:'Career Certificate',desc:'Career table (period, dept, position, duties), add rows feature, double-border official design',tags:['Career Table','Add Rows','Seal','Bilingual','PDF'],badge:'✓ Free'},
+    ja:{title:'職歴証明書',desc:'職歴テーブル（在籍期間·所属·役職·担当業務）、行追加機能、二重枠の公式デザイン',tags:['職歴テーブル','行追加','印欄','英文併記','PDF'],badge:'✓ 無料'},
+  },
+  employment: {
+    ko:{title:'근로계약서',desc:'정규직 표준 근로계약서. 근로기준법 기반 13개 조항, 비밀유지·경업금지·IP 포함',tags:['정규직','표준형','13개조항','근로기준법','PDF출력'],badge:'📋 법률완비'},
+    en:{title:'Employment Contract',desc:'Standard full-time contract. 13 clauses based on Labor Standards Act, incl. NDA, non-compete & IP',tags:['Full-time','Standard','13 Clauses','Labor Law','PDF'],badge:'📋 Legally Sound'},
+    ja:{title:'労働契約書',desc:'正社員標準労働契約書。労働基準法に基づく13条項、秘密保持·競業禁止·IPを含む',tags:['正社員','標準形式','13条項','労働基準法','PDF'],badge:'📋 法律完備'},
+  },
+  partnership: {
+    ko:{title:'동업계약서',desc:'갑·을·병 다수 당사자, 출자비율·손익배분·업무집행·경업금지 등 13개 조항',tags:['다수당사자','출자비율','손익배분','13개조항','PDF출력'],badge:'📊 비즈니스'},
+    en:{title:'Partnership Agreement',desc:'Multi-party (A/B/C), capital ratio, profit/loss sharing, management, non-compete. 13 clauses',tags:['Multi-party','Capital Ratio','Profit Share','13 Clauses','PDF'],badge:'📊 Business'},
+    ja:{title:'共同事業契約書',desc:'甲·乙·丙の複数当事者、出資比率·損益配分·業務執行·競業禁止など13条項',tags:['複数当事者','出資比率','損益配分','13条項','PDF'],badge:'📊 ビジネス'},
+  },
+  nda: {
+    ko:{title:'비밀유지계약(NDA)',desc:'영업비밀·기술·재무 정보 보호. 예외 조항, 반환·파기, 손해배상 등 10개 조항',tags:['NDA','영업비밀','10개조항','갑을계약','PDF출력'],badge:'⚖ 법률완비'},
+    en:{title:'Non-Disclosure Agreement (NDA)',desc:'Protects trade secrets, technology & financial info. Exceptions, return/destruction, damages. 10 clauses',tags:['NDA','Trade Secret','10 Clauses','Bilateral','PDF'],badge:'⚖ Legally Sound'},
+    ja:{title:'秘密保持契約（NDA）',desc:'営業秘密·技術·財務情報を保護。例外条項、返還·廃棄、損害賠償など10条項',tags:['NDA','営業秘密','10条項','甲乙契約','PDF'],badge:'⚖ 法律完備'},
+  },
+  poa: {
+    ko:{title:'위임장',desc:'위임 범위·기간·제한사항 테이블, 수임인 정보 박스, 첨부서류(인감·신분증) 체크리스트',tags:['위임범위','첨부서류','인감','수임인','PDF출력'],badge:'✓ 무료'},
+    en:{title:'Power of Attorney',desc:'Delegation scope/period/limits table, agent info box, attachment checklist (seal, ID)',tags:['Scope','Attachments','Seal','Agent Info','PDF'],badge:'✓ Free'},
+    ja:{title:'委任状',desc:'委任範囲·期間·制限事項テーブル、受任者情報ボックス、添付書類（印鑑·身分証）チェックリスト',tags:['委任範囲','添付書類','印鑑','受任者','PDF'],badge:'✓ 無料'},
+  },
+  settlement: {
+    ko:{title:'합의서',desc:'갑·을 투컬럼 파티 카드. 합의사항 편집 영역, 권리포기·비밀유지 등 6개 조항',tags:['투컬럼','6개조항','권리포기','서명날인','PDF출력'],badge:'⚖ 합의형'},
+    en:{title:'Settlement Agreement',desc:'Two-column party cards. Editable agreement area, waiver & confidentiality among 6 clauses',tags:['Two-column','6 Clauses','Waiver','Signature','PDF'],badge:'⚖ Settlement'},
+    ja:{title:'和解書',desc:'甲·乙の二段組パーティカード。合意事項編集エリア、権利放棄·秘密保持など6条項',tags:['二段組','6条項','権利放棄','署名捺印','PDF'],badge:'⚖ 和解型'},
+  },
+  pledge: {
+    ko:{title:'각서',desc:'22pt 대형 제목, 엄숙한 서약문 편집, 항목 동적 추가, 서약인 전체 정보 기재',tags:['서약문편집','항목추가','서명날인','공식형식','PDF출력'],badge:'✓ 무료'},
+    en:{title:'Pledge / Affidavit',desc:'Large 22pt title, editable solemn pledge text, dynamic item addition, full pledger info',tags:['Edit Pledge','Add Items','Signature','Official','PDF'],badge:'✓ Free'},
+    ja:{title:'誓約書',desc:'22pt大見出し、厳粛な誓約文編集、項目の動的追加、誓約者全情報記載',tags:['誓約文編集','項目追加','署名捺印','公式形式','PDF'],badge:'✓ 無料'},
+  },
+  'content-cert': {
+    ko:{title:'내용증명',desc:'발신·수신인 투컬럼, 요구사항 항목 추가, 우체국장 인증 박스, 빨간 액센트 디자인',tags:['내용증명','우체국','요구사항','법적효력','PDF출력'],badge:'📮 우편인증'},
+    en:{title:'Certified Mail Notice',desc:'Two-column sender/recipient, add demand items, postmaster certification box, red accent design',tags:['Certified Mail','Post Office','Demands','Legal Effect','PDF'],badge:'📮 Certified'},
+    ja:{title:'内容証明',desc:'発信·受信人の二段組、要求事項の項目追加、郵便局長認証ボックス、赤アクセントデザイン',tags:['内容証明','郵便局','要求事項','法的効力','PDF'],badge:'📮 郵便認証'},
+  },
+  donation: {
+    ko:{title:'기부약정서',desc:'기부자·단체 정보, 금액 한글 자동변환, 정기/일시 기부 선택, 영수증·결과보고 조항',tags:['기부금액','한글변환','정기기부','소득공제','PDF출력'],badge:'💜 나눔'},
+    en:{title:'Donation Pledge',desc:'Donor & org info, auto Korean amount conversion, recurring/one-time toggle, receipt & report clauses',tags:['Amount','Auto Convert','Recurring','Tax Deduction','PDF'],badge:'💜 Giving'},
+    ja:{title:'寄付約定書',desc:'寄付者·団体情報、金額の自動変換、定期/一時寄付選択、領収書·結果報告条項',tags:['寄付金額','自動変換','定期寄付','所得控除','PDF'],badge:'💜 寄付'},
+  },
+  iou: {
+    ko:{title:'차용증',desc:'차용 금액 한글 자동 변환, 이자·연체이자·기한이익상실 조항 포함, 담보·보증인 기재',tags:['한글금액자동변환','이자설정','7개조항','이자제한법','PDF출력'],badge:'✓ 무료'},
+    en:{title:'IOU / Loan Agreement',desc:'Auto Korean amount conversion, interest, late interest & acceleration clauses, collateral & guarantor',tags:['Auto Amount','Interest','7 Clauses','Interest Act','PDF'],badge:'✓ Free'},
+    ja:{title:'借用証書',desc:'借用金額の自動変換、利息·遅延利息·期限の利益喪失条項、担保·保証人記載',tags:['金額自動変換','利息設定','7条項','利息制限法','PDF'],badge:'✓ 無料'},
+  },
+  lease: {
+    ko:{title:'임대차계약서',desc:'주택·전세·상가 선택 가능. 주택임대차보호법 기반 12개 조항, 특약 직접 입력',tags:['주택임대','전세','상가','12개조항','확정일자'],badge:'🏠 실거래형'},
+    en:{title:'Lease Agreement',desc:'Choose residential / jeonse / commercial. 12 clauses based on Housing Lease Protection Act, custom special terms',tags:['Residential','Jeonse','Commercial','12 Clauses','Fixed Date'],badge:'🏠 Real Deal'},
+    ja:{title:'賃貸借契約書',desc:'住宅·チョンセ·商業施設を選択可能。住宅賃貸借保護法に基づく12条項、特約直接入力',tags:['住宅賃貸','チョンセ','商業施設','12条項','確定日付'],badge:'🏠 実取引型'},
+  },
+  construction: {
+    ko:{title:'공사도급계약서',desc:'공정별 일정 테이블, 계약금·중도금·잔금 지급 일정, 하자보수보증·안전관리 등 12개 조항',tags:['공정일정','12개조항','하자보수','안전관리','PDF출력'],badge:'🔨 공사형'},
+    en:{title:'Construction Contract',desc:'Schedule table by phase, payment plan (deposit/mid/final), defect warranty & safety mgmt. 12 clauses',tags:['Schedule','12 Clauses','Defect Warranty','Safety','PDF'],badge:'🔨 Construction'},
+    ja:{title:'工事請負契約書',desc:'工程別スケジュールテーブル、契約金·中間金·残金支払スケジュール、瑕疵修補保証·安全管理など12条項',tags:['工程スケジュール','12条項','瑕疵修補','安全管理','PDF'],badge:'🔨 工事型'},
+  },
+  goodwill: {
+    ko:{title:'권리금계약서',desc:'시설·영업·바닥 권리금 분류, 상가임대차보호법 제10조4 적용, 시설물 인수 테이블',tags:['권리금분류','10개조항','시설물인수','임대인동의','PDF출력'],badge:'🏪 상가형'},
+    en:{title:'Goodwill Agreement',desc:'Facility / business / floor goodwill classification, Commercial Lease Act Art.10-4, fixture handover table',tags:['Goodwill Type','10 Clauses','Fixtures','Landlord Consent','PDF'],badge:'🏪 Commercial'},
+    ja:{title:'権利金契約書',desc:'施設·営業·床権利金の分類、商業賃貸借保護法第10条4適用、設備引継テーブル',tags:['権利金分類','10条項','設備引継','賃貸人同意','PDF'],badge:'🏪 商業型'},
+  },
+  'business-plan': {
+    ko:{title:'사업계획서',desc:'네이비 커버, 6섹션(사업개요·제품·시장·4P마케팅·3년재무·자금조달), 경쟁사 분석 테이블',tags:['6섹션','3년재무','4P분석','경쟁사','PDF출력'],badge:'📈 창업필수'},
+    en:{title:'Business Plan',desc:'Navy cover, 6 sections (overview, product, market, 4P marketing, 3-yr financials, funding), competitor table',tags:['6 Sections','3-yr Financials','4P Analysis','Competitors','PDF'],badge:'📈 Startup Essential'},
+    ja:{title:'事業計画書',desc:'ネイビーカバー、6セクション（事業概要·製品·市場·4Pマーケティング·3年財務·資金調達）、競合分析テーブル',tags:['6セクション','3年財務','4P分析','競合','PDF'],badge:'📈 起業必須'},
+  },
+  quote: {
+    ko:{title:'견적서',desc:'수량×단가 자동 계산, 부가세 10% 자동, 한글 금액 변환, 부가세 포함/제외 토글',tags:['자동계산','부가세','한글금액','항목추가','PDF출력'],badge:'💼 자동계산'},
+    en:{title:'Quotation',desc:'Auto qty×price calculation, 10% VAT auto, Korean amount conversion, VAT incl/excl toggle',tags:['Auto Calc','VAT','Amount Words','Add Items','PDF'],badge:'💼 Auto Calc'},
+    ja:{title:'見積書',desc:'数量×単価の自動計算、消費税10%自動、金額の自動変換、税込/税抜トグル',tags:['自動計算','消費税','金額変換','項目追加','PDF'],badge:'💼 自動計算'},
+  },
+  invoice: {
+    ko:{title:'거래명세서',desc:'공급자·수급자 투컬럼 카드, 공급가액·세액·합계 3중 자동계산, 8행 품목 테이블',tags:['3중자동계산','투컬럼','8행테이블','한글금액','PDF출력'],badge:'✓ 무료'},
+    en:{title:'Invoice / Transaction Statement',desc:'Two-column supplier/buyer cards, triple auto-calc (supply/tax/total), 8-row item table',tags:['Triple Auto Calc','Two-column','8-row Table','Amount Words','PDF'],badge:'✓ Free'},
+    ja:{title:'取引明細書',desc:'供給者·受給者の二段組カード、供給価額·税額·合計の三重自動計算、8行品目テーブル',tags:['三重自動計算','二段組','8行テーブル','金額変換','PDF'],badge:'✓ 無料'},
+  },
+  shareholder: {
+    ko:{title:'주주간계약서',desc:'갑·을·병 다수 주주, 양도제한(우선매수권·동반매각), 경영참여·배당·경업금지 12개 조항',tags:['다수주주','12개조항','양도제한','배당정책','PDF출력'],badge:'⚖ 법률완비'},
+    en:{title:'Shareholders Agreement',desc:'Multi-shareholder (A/B/C), transfer restrictions (ROFR, drag-along), governance, dividends, non-compete. 12 clauses',tags:['Multi-shareholder','12 Clauses','Transfer Limits','Dividends','PDF'],badge:'⚖ Legally Sound'},
+    ja:{title:'株主間契約書',desc:'甲·乙·丙の複数株主、譲渡制限（優先買取権·同伴売却）、経営参加·配当·競業禁止12条項',tags:['複数株主','12条項','譲渡制限','配当政策','PDF'],badge:'⚖ 法律完備'},
+  },
+  'board-minutes': {
+    ko:{title:'이사회 의사록',desc:'출석 배지 토글, 안건별 찬반기권 카운트, 발언자 테이블, 6인 서명 그리드',tags:['출석관리','안건찬반','6인서명','법인','PDF출력'],badge:'📋 법인형'},
+    en:{title:'Board Meeting Minutes',desc:'Attendance badge toggle, vote count per agenda (for/against/abstain), speaker table, 6-person signature grid',tags:['Attendance','Vote Count','6 Signatures','Corporate','PDF'],badge:'📋 Corporate'},
+    ja:{title:'取締役会議事録',desc:'出席バッジトグル、議案別賛否棄権カウント、発言者テーブル、6名署名グリッド',tags:['出席管理','賛否棄権','6名署名','法人','PDF'],badge:'📋 法人型'},
+  },
+  articles: {
+    ko:{title:'표준정관',desc:'6장 구조(총칙·주식·주총·이사회·감사·계산), 장·조 계층 편집, 발기인 서명란',tags:['6장구조','조항편집','법인설립','발기인','PDF출력'],badge:'🏢 법인형'},
+    en:{title:'Articles of Incorporation',desc:'6-chapter structure (general, shares, shareholders meeting, board, auditors, accounts), hierarchical editing, founder signatures',tags:['6 Chapters','Edit Articles','Incorporation','Founders','PDF'],badge:'🏢 Corporate'},
+    ja:{title:'定款（標準）',desc:'6章構成（総則·株式·株主総会·取締役会·監査·計算）、章·条の階層編集、発起人署名欄',tags:['6章構成','条項編集','法人設立','発起人','PDF'],badge:'🏢 法人型'},
+  },
+  handover: {
+    ko:{title:'인수인계서',desc:'업무현황 10행(진행상태 체크박스), 자료·시스템 목록 테이블, 3인 서명(인계·인수·확인)',tags:['10행체크박스','시스템목록','3인서명','기밀경고','PDF출력'],badge:'🔄 인수형'},
+    en:{title:'Job Handover Document',desc:'10-row task status with checkboxes, document & system list table, 3-person signatures (handover/receiver/verifier)',tags:['10-row','System List','3 Signatures','Confidential','PDF'],badge:'🔄 Handover'},
+    ja:{title:'引継書',desc:'業務状況10行（進行状態チェックボックス）、資料·システム一覧テーブル、3名署名（引継·引受·確認）',tags:['10行チェック','システム一覧','3名署名','機密警告','PDF'],badge:'🔄 引継型'},
+  },
+  meeting: {
+    ko:{title:'회의록',desc:'정기/임시/긴급 토글, 카드형 안건(논의·결정·담당·기한), 황색 액션아이템, 결재 박스',tags:['안건카드','액션아이템','결재박스','미팅타입','PDF출력'],badge:'✓ 무료'},
+    en:{title:'Meeting Minutes',desc:'Regular/special/emergency toggle, card-style agenda (discussion/decision/owner/deadline), yellow action items, approval box',tags:['Agenda Cards','Action Items','Approval Box','Meeting Type','PDF'],badge:'✓ Free'},
+    ja:{title:'議事録',desc:'定期/臨時/緊急トグル、カード型議案（討議·決定·担当·期限）、黄色アクションアイテム、承認ボックス',tags:['議案カード','アクション','承認ボックス','会議タイプ','PDF'],badge:'✓ 無料'},
+  },
+  approval: {
+    ko:{title:'품의서',desc:'담당·팀장·부장·이사·대표이사 5단 결재란, 예산 내역 자동합계, 첨부서류 체크리스트',tags:['5단결재','예산합계','첨부체크리스트','기안자','PDF출력'],badge:'✅ 결재형'},
+    en:{title:'Approval Request',desc:'5-tier approval (staff/team lead/manager/director/CEO), auto budget total, attachment checklist',tags:['5-tier Approval','Budget Total','Attachments','Drafter','PDF'],badge:'✅ Approval'},
+    ja:{title:'稟議書',desc:'担当·チームリーダー·部長·取締役·代表取締役の5段承認欄、予算内訳自動合計、添付書類チェックリスト',tags:['5段承認','予算合計','添付チェック','起案者','PDF'],badge:'✅ 稟議型'},
+  },
+  worklog: {
+    ko:{title:'업무일지',desc:'금일목표·업무수행내역·미완료사유·내일계획 구조, 완료율 프로그레스바, 행 추가',tags:['목표설정','완료율','내일계획','행추가','PDF출력'],badge:'✓ 무료'},
+    en:{title:'Work Log',desc:"Today's goals, work done, incomplete reasons, tomorrow's plan. Completion rate progress bar, add rows",tags:['Goals','Completion Rate','Next Day Plan','Add Rows','PDF'],badge:'✓ Free'},
+    ja:{title:'業務日誌',desc:'本日目標·業務実績·未完了理由·明日の計画、完了率プログレスバー、行追加',tags:['目標設定','完了率','明日の計画','行追加','PDF'],badge:'✓ 無料'},
+  },
+};
+
+// ── 언어 전환 함수 ────────────────────────────────────────────
+function setLang(lang) {
+  var d = FORMS_LANG[lang] || FORMS_LANG.ko;
+
+  // Hero
+  document.querySelector('.flib-hero-badge').textContent = d.heroBadge;
+  document.querySelector('.flib-hero h1').innerHTML = d.heroTitle;
+  document.querySelector('.flib-hero p').innerHTML = d.heroDesc;
+  document.getElementById('searchInput').placeholder = d.searchPlaceholder;
+  document.querySelector('.flib-search-btn').textContent = d.searchBtn;
+
+  // Chips
+  var chips = document.querySelectorAll('.flib-chip');
+  d.chips.forEach(function(txt, i) { if (chips[i]) chips[i].textContent = txt; });
+
+  // Stats
+  var statLabels = document.querySelectorAll('.flib-stat-label');
+  var statVals = document.querySelectorAll('.flib-stat-val');
+  [d.stat1, d.stat2, d.stat3, d.stat4].forEach(function(txt, i) { if (statLabels[i]) statLabels[i].textContent = txt; });
+  if (statVals[1]) statVals[1].textContent = d.statVal2;
+
+  // Category tabs
+  var catTabs = document.querySelectorAll('.cat-tab');
+  d.cats.forEach(function(txt, i) { if (catTabs[i]) catTabs[i].textContent = txt; });
+
+  // Featured banner
+  document.querySelector('.featured-banner-text h3').textContent = d.featuredTitle;
+  document.querySelector('.featured-banner-text p').textContent = d.featuredDesc;
+  document.querySelector('.featured-banner-btn').textContent = d.featuredBtn;
+
+  // Section headers
+  var sectionTitles = document.querySelectorAll('.section-header-title');
+  if (sectionTitles[0]) sectionTitles[0].textContent = d.sectionLive;
+  if (sectionTitles[1]) sectionTitles[1].textContent = d.sectionUpcoming;
+
+  // 서식 데이터 & 카드 재렌더 (언어 반영)
+  currentLang = lang;
+  render();
+
+  // nav 버튼 sync
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+}
+
+var currentLang = (localStorage.getItem('site-lang') || 'ko');
+
 // ── 서식 데이터 ────────────────────────────────────────────────
 var LIVE_FORMS = [
   { id:'resume', cat:'job', icon:'👤', accent:'#1E2B4A', badge:'badge-pop', badgeText:'🔥 인기 1위',
@@ -408,21 +650,27 @@ function render() {
   var liveFiltered = LIVE_FORMS.filter(function(f) { return matchesCat(f) && matchesSearch(f); });
   var upFiltered = UPCOMING_FORMS.filter(function(f) { return matchesCat(f) && matchesSearch(f); });
 
-  document.getElementById('liveCount').textContent = liveFiltered.length + '종';
+  var langD = FORMS_LANG[currentLang] || FORMS_LANG.ko;
+  document.getElementById('liveCount').textContent = liveFiltered.length + langD.countSuffix;
   document.getElementById('liveGrid').innerHTML = liveFiltered.map(function(f) {
+    var i18n = (FORM_I18N[f.id] && FORM_I18N[f.id][currentLang]) || (FORM_I18N[f.id] && FORM_I18N[f.id].ko) || {};
+    var title = i18n.title || f.title;
+    var desc  = i18n.desc  || f.desc;
+    var tags  = i18n.tags  || f.tags;
+    var badge = i18n.badge || f.badgeText;
     return '<div class="form-card" onclick="location.href=\'' + f.href + '\'">' +
       '<div class="form-card-accent" style="background:' + f.accent + '"></div>' +
       '<div class="form-card-body">' +
         '<div class="form-card-top">' +
           '<span class="form-card-icon">' + f.icon + '</span>' +
-          '<span class="form-card-badge ' + f.badge + '">' + f.badgeText + '</span>' +
+          '<span class="form-card-badge ' + f.badge + '">' + badge + '</span>' +
         '</div>' +
-        '<div class="form-card-title">' + f.title + '</div>' +
-        '<div class="form-card-desc">' + f.desc + '</div>' +
-        '<div class="form-card-meta">' + f.tags.map(function(t) { return '<span class="meta-tag">' + t + '</span>'; }).join('') + '</div>' +
+        '<div class="form-card-title">' + title + '</div>' +
+        '<div class="form-card-desc">' + desc + '</div>' +
+        '<div class="form-card-meta">' + tags.map(function(t) { return '<span class="meta-tag">' + t + '</span>'; }).join('') + '</div>' +
       '</div>' +
       '<div class="form-card-footer">' +
-        '<a href="' + f.href + '" class="btn-open" style="color:' + f.accent + '; border-color:' + f.accent + '" onclick="event.stopPropagation()">✏ 작성하기</a>' +
+        '<a href="' + f.href + '" class="btn-open" style="color:' + f.accent + '; border-color:' + f.accent + '" onclick="event.stopPropagation()">' + langD.cardBtn + '</a>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -441,7 +689,13 @@ function render() {
   document.getElementById('featuredBanner').style.display = (currentSearch || currentCat !== 'all') ? 'none' : '';
 }
 
-render();
+// 페이지 로드 시 저장된 언어 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  currentLang = saved;
+  render();
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

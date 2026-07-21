@@ -188,7 +188,7 @@
   margin-bottom: 8mm;
 }
 .rs-reason-box:empty::before {
-  content: '사직 사유를 상세히 기재해 주세요.';
+  content: attr(data-placeholder);
   color: #A5B4FC;
 }
 .rs-reason-box:hover { background: #FAFAFF; }
@@ -368,7 +368,7 @@
         <div class="rs-header-row">
           <div class="rs-recipient">
             <img class="rs-logo" id="doc-logo" src="" alt="로고">
-            수&nbsp;신<br>
+            <span id="recipient-label">수&nbsp;신</span><br>
             <span class="rs-recipient-company">
               <span id="doc-company" contenteditable="true" data-field="company">회사명</span>
               &nbsp;<span id="doc-ceo" contenteditable="true" data-field="ceo">대표자명</span> 귀중
@@ -399,19 +399,19 @@
             <th>성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명</th>
             <td id="doc-name" contenteditable="true" data-field="name">홍길동</td>
             <th>입 &nbsp; 사 &nbsp; 일</th>
-            <td contenteditable="true">____년 __월 __일</td>
+            <td id="join-date-td" contenteditable="true">____년 __월 __일</td>
           </tr>
           <tr>
             <th>사직 예정일</th>
             <td id="doc-resigndate" contenteditable="true" data-field="resigndate">____년 __월 __일</td>
             <th>사 직 사 유</th>
-            <td contenteditable="true">일신상의 사유</td>
+            <td id="reason-td" contenteditable="true">일신상의 사유</td>
           </tr>
         </table>
 
         <!-- 사직 사유 상세 -->
         <div class="rs-reason-label">📝 사직 사유 상세</div>
-        <div class="rs-reason-box" contenteditable="true"></div>
+        <div class="rs-reason-box" contenteditable="true" data-placeholder="사직 사유를 상세히 기재해 주세요."></div>
 
         <!-- 결문 -->
         <div class="rs-closing">
@@ -455,26 +455,25 @@
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/footer-inject.js"></script>
 <script>
-// 오늘 날짜 자동 입력
-(function() {
-  const today = new Date();
-  const ymd = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+var _currentLangData = LANG_DATA_FORM.ko;
+
+function updateDate() {
+  var today = new Date();
+  var ymd = _currentLangData.dateFormatter(today.getFullYear(), today.getMonth()+1, today.getDate());
   document.getElementById('doc-date').textContent = ymd;
   document.getElementById('sign-date').textContent = ymd;
-})();
+}
 
 // 컨트롤 패널 → 문서 동기화
-const fieldDefaults = {
-  company: '회사명', ceo: '대표자명', dept: '부서명',
-  position: '직위', name: '홍길동', resigndate: '____년 __월 __일'
-};
 function syncField(field, val) {
-  const els = document.querySelectorAll(`[data-field="${field}"]`);
-  els.forEach(el => { el.textContent = val || fieldDefaults[field]; });
+  var els = document.querySelectorAll('[data-field="'+field+'"]');
+  els.forEach(function(el) { el.textContent = val || _currentLangData.fieldDefaults[field]; });
   if (field === 'company') {
-    document.getElementById('addr-company').textContent = val || '회사명';
+    document.getElementById('addr-company').textContent = val || _currentLangData.fieldDefaults.company;
   }
 }
+
+updateDate();
 
 // 로고 업로드
 function uploadLogo(input) {
@@ -490,15 +489,16 @@ function uploadLogo(input) {
 
 // 초기화
 function resetForm() {
-  if (!confirm('모든 내용을 초기화할까요?')) return;
+  if (!confirm(_currentLangData.resetConfirm)) return;
   ['ctrl-company','ctrl-ceo','ctrl-dept','ctrl-position','ctrl-name','ctrl-resign-date']
-    .forEach(id => document.getElementById(id).value = '');
-  Object.keys(fieldDefaults).forEach(f => syncField(f, ''));
-  document.querySelectorAll('[contenteditable]').forEach(el => {
-    if (el.closest('.rs-info-table') || el.classList.contains('rs-reason-box')) {
-      if (!el.getAttribute('data-field')) el.textContent = '';
-    }
-  });
+    .forEach(function(id) { document.getElementById(id).value = ''; });
+  Object.keys(_currentLangData.fieldDefaults).forEach(function(f) { syncField(f, ''); });
+  // 비-data-field td 초기화 (입사일, 사직사유)
+  var joinDateTd = document.getElementById('join-date-td');
+  if (joinDateTd) joinDateTd.textContent = _currentLangData.joinDateDefault;
+  var reasonTd = document.getElementById('reason-td');
+  if (reasonTd) reasonTd.textContent = _currentLangData.reasonDefault;
+  document.querySelector('.rs-reason-box').textContent = '';
 }
 
 var LANG_DATA_FORM = {
@@ -508,14 +508,19 @@ var LANG_DATA_FORM = {
     thDept:'소 속 부 서', thPosition:'직 위 · 직 책', thName:'성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명',
     thJoinDate:'입 &nbsp; 사 &nbsp; 일', thResignDate:'사직 예정일', thReason:'사 직 사 유',
     reasonLabel:'📝 사직 사유 상세',
-    sigLabels:['소속','직위','성명','서명'],
-    addresseeSuffix:'대표이사 귀중',
+    reasonPlaceholder:'사직 사유를 상세히 기재해 주세요.',
+    sigLabels:['소속','직위','성명','서명'], sealText:'(인)',
+    recipientLabel:'수&nbsp;&nbsp;신', addresseeSuffix:'대표이사 귀중',
+    fieldDefaults:{company:'회사명', ceo:'대표자명', dept:'부서명', position:'직위', name:'홍길동', resigndate:'____년 __월 __일'},
+    reasonDefault:'일신상의 사유',
+    joinDateDefault:'____년 __월 __일',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; },
     ctrlBackLink:'← 서식 목록', ctrlTitle:'📄 사직서 작성',
     ctrlLogoLabel:'로고 업로드', ctrlFileBtn:'🖼 로고 이미지 선택',
     ctrlLabels:['회사명','대표자명','소속부서','직위·직책','성명','사직 예정일'],
     ctrlPlaceholders:['예: (주)스타트업','예: 김대표','예: 개발팀','예: 과장','홍길동','예: 2025년 3월 31일'],
     langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
-    resetBtn:'↺ 초기화',
+    resetBtn:'↺ 초기화', resetConfirm:'모든 내용을 초기화할까요?',
     tipBox:'💡 표 안 항목을 클릭하면 직접 편집할 수 있습니다.<br>사직 사유란을 충분히 작성해 주세요.',
     printBtn:'🖨 인쇄 / PDF 저장' },
   en: { docTitle:'LETTER&nbsp;OF&nbsp;RESIGNATION',
@@ -524,14 +529,19 @@ var LANG_DATA_FORM = {
     thDept:'Department', thPosition:'Job Title', thName:'Name',
     thJoinDate:'Date of Hire', thResignDate:'Last Working Day', thReason:'Reason',
     reasonLabel:'📝 Details of Resignation',
-    sigLabels:['Department','Title','Name','Signature'],
-    addresseeSuffix:'CEO',
+    reasonPlaceholder:'Please describe the reason for resignation in detail.',
+    sigLabels:['Department','Title','Name','Signature'], sealText:'(Seal)',
+    recipientLabel:'To', addresseeSuffix:'CEO',
+    fieldDefaults:{company:'Company Name', ceo:'CEO Name', dept:'Department', position:'Job Title', name:'Full Name', resigndate:'e.g. March 31, 2025'},
+    reasonDefault:'Personal reasons',
+    joinDateDefault:'e.g. Jan 1, 2020',
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; },
     ctrlBackLink:'← Back to Forms', ctrlTitle:'📄 Resignation Letter',
     ctrlLogoLabel:'Logo Upload', ctrlFileBtn:'🖼 Select Logo Image',
     ctrlLabels:['Company Name','CEO / Director','Department','Job Title','Full Name','Resignation Date'],
     ctrlPlaceholders:['e.g. Startup Inc.','e.g. John CEO','e.g. Engineering','e.g. Manager','e.g. Jane Doe','e.g. March 31, 2025'],
     langNotice:'⚠ Switching language resets all content.',
-    resetBtn:'↺ Reset',
+    resetBtn:'↺ Reset', resetConfirm:'Reset all content?',
     tipBox:'💡 Click any cell in the table to edit it directly.<br>Please fill in the resignation reason in detail.',
     printBtn:'🖨 Print / Save as PDF' },
   ja: { docTitle:'退&nbsp;&nbsp;職&nbsp;&nbsp;届',
@@ -540,81 +550,126 @@ var LANG_DATA_FORM = {
     thDept:'所 属 部 署', thPosition:'役 職 · 職 位', thName:'氏&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名',
     thJoinDate:'入&nbsp;&nbsp;社&nbsp;&nbsp;日', thResignDate:'退職予定日', thReason:'退職理由',
     reasonLabel:'📝 退職理由詳細',
-    sigLabels:['所属','役職','氏名','署名'],
-    addresseeSuffix:'代表取締役 殿',
+    reasonPlaceholder:'退職理由を詳しくご記入ください。',
+    sigLabels:['所属','役職','氏名','署名'], sealText:'(印)',
+    recipientLabel:'宛&nbsp;&nbsp;先', addresseeSuffix:'代表取締役 殿',
+    fieldDefaults:{company:'会社名', ceo:'代表者名', dept:'部署名', position:'役職', name:'山田太郎', resigndate:'例：2025年3月31日'},
+    reasonDefault:'一身上の都合',
+    joinDateDefault:'例：2020年1月1日',
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; },
     ctrlBackLink:'← 書式一覧', ctrlTitle:'📄 退職届作成',
     ctrlLogoLabel:'ロゴアップロード', ctrlFileBtn:'🖼 ロゴ画像を選択',
     ctrlLabels:['会社名','代表者名','所属部署','役職・職位','氏名','退職予定日'],
     ctrlPlaceholders:['例：株式会社スタートアップ','例：田中代表','例：開発部','例：課長','例：山田太郎','例：2025年3月31日'],
     langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
-    resetBtn:'↺ リセット',
+    resetBtn:'↺ リセット', resetConfirm:'すべての内容をリセットしますか？',
     tipBox:'💡 表内の各セルをクリックして直接編集できます。<br>退職理由欄は十分に記入してください。',
     printBtn:'🖨 印刷 / PDF保存' }
 };
 
-var _currentLang = 'ko';
 function setLang(lang) {
-  if (_currentLang === lang) return;
-  _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
+  if (!d) return;
+  _currentLangData = d;
+
+  // nav lang buttons
   ['ko','en','ja'].forEach(function(l) {
-    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+    var btn = document.getElementById('btn-'+l);
+    if (btn) btn.classList.toggle('active', l === lang);
   });
-  // doc title
+
+  // 문서 제목·전문·결문
   document.querySelector('.rs-title').innerHTML = d.docTitle;
-  // intro & closing
   document.querySelector('.rs-intro').textContent = d.intro;
   document.querySelector('.rs-closing').textContent = d.closing;
-  // table headers
+
+  // 테이블 th
   var ths = document.querySelectorAll('.rs-info-table th');
-  var keys = ['thDept','thPosition','thName','thJoinDate','thResignDate','thReason'];
-  ths.forEach(function(th, i) { if (keys[i]) th.innerHTML = d[keys[i]]; });
-  // reason label
-  document.querySelector('.rs-reason-label').textContent = d.reasonLabel;
-  // sig item labels
-  var sigLabels = document.querySelectorAll('.rs-sign-item-label');
-  sigLabels.forEach(function(el, i) { if (d.sigLabels[i]) el.textContent = d.sigLabels[i]; });
-  // addressee suffix
+  ['thDept','thPosition','thName','thJoinDate','thResignDate','thReason'].forEach(function(k,i){
+    if (ths[i]) ths[i].innerHTML = d[k];
+  });
+
+  // 테이블 td 기본값 (입사일, 사직사유 — data-field 없는 td)
+  var joinTd = document.getElementById('join-date-td');
+  if (joinTd) joinTd.textContent = d.joinDateDefault;
+  var reasonTd = document.getElementById('reason-td');
+  if (reasonTd) reasonTd.textContent = d.reasonDefault;
+
+  // data-field td 기본값 갱신
+  Object.keys(d.fieldDefaults).forEach(function(f) {
+    var ctrlInput = document.getElementById('ctrl-'+f) || document.getElementById('ctrl-resign-date');
+    var inputVal = (f === 'resigndate')
+      ? (document.getElementById('ctrl-resign-date') || {}).value
+      : (document.getElementById('ctrl-'+f) || {}).value;
+    syncField(f, inputVal || '');
+  });
+
+  // 수신 레이블
+  var recipLabel = document.getElementById('recipient-label');
+  if (recipLabel) recipLabel.innerHTML = d.recipientLabel;
+
+  // 수신처 (addressee)
   var addrEl = document.querySelector('.rs-addressee strong');
   if (addrEl) {
     var companyEl = document.getElementById('addr-company');
-    var companyText = companyEl ? companyEl.textContent : '회사명';
+    var companyText = companyEl ? companyEl.textContent.trim() : d.fieldDefaults.company;
+    if (!companyText || companyText === LANG_DATA_FORM.ko.fieldDefaults.company ||
+        companyText === LANG_DATA_FORM.en.fieldDefaults.company ||
+        companyText === LANG_DATA_FORM.ja.fieldDefaults.company) {
+      companyText = d.fieldDefaults.company;
+    }
     addrEl.innerHTML = '<span id="addr-company" contenteditable="true">' + companyText + '</span> ' + d.addresseeSuffix;
   }
-  // print button
-  document.getElementById('print-btn').textContent = d.printBtn;
-  // ── ctrl panel UI ──
+
+  // 사직 사유 상세 레이블·placeholder
+  document.querySelector('.rs-reason-label').textContent = d.reasonLabel;
+  document.querySelector('.rs-reason-box').setAttribute('data-placeholder', d.reasonPlaceholder);
+
+  // 서명란 레이블·인장
+  var sigLabels = document.querySelectorAll('.rs-sign-item-label');
+  sigLabels.forEach(function(el, i) { if (d.sigLabels[i]) el.textContent = d.sigLabels[i]; });
+  var sealEl = document.querySelector('.rs-sign-seal');
+  if (sealEl) sealEl.textContent = d.sealText;
+
+  // 날짜 갱신
+  updateDate();
+
+  // ctrl panel
   var backLink = document.querySelector('.ctrl-back-link');
   if (backLink) backLink.textContent = d.ctrlBackLink;
   var ctrlH2 = document.querySelector('.ctrl-panel h2');
   if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
-  // regular labels (excludes .ctrl-file-btn)
-  var ctrlLabels = document.querySelectorAll('.ctrl-panel .ctrl-section label:not(.ctrl-file-btn)');
-  d.ctrlLabels.forEach(function(txt, i) {
-    if (ctrlLabels[i]) ctrlLabels[i].textContent = txt;
-  });
-  if (ctrlLabels[6]) ctrlLabels[6].textContent = d.ctrlLogoLabel;
-  // file button label
+
+  var ctrlSectionLabels = document.querySelectorAll('.ctrl-panel .ctrl-section label:not(.ctrl-file-btn)');
+  d.ctrlLabels.forEach(function(txt, i) { if (ctrlSectionLabels[i]) ctrlSectionLabels[i].textContent = txt; });
+  // 로고 label (인덱스 6)
+  if (ctrlSectionLabels[6]) ctrlSectionLabels[6].textContent = d.ctrlLogoLabel;
+
   var fileBtn = document.querySelector('.ctrl-file-btn');
   if (fileBtn) {
     var inp = fileBtn.querySelector('input');
     fileBtn.textContent = d.ctrlFileBtn;
     if (inp) fileBtn.appendChild(inp);
   }
-  // input placeholders
+
   var ctrlInputs = document.querySelectorAll('.ctrl-panel .ctrl-section input[type=text]');
-  d.ctrlPlaceholders.forEach(function(ph, i) {
-    if (ctrlInputs[i]) ctrlInputs[i].placeholder = ph;
-  });
-  // lang notice, reset btn, tip box
-  var langNotice = document.querySelector('.lang-notice');
-  if (langNotice) langNotice.textContent = d.langNotice;
-  var resetBtn = document.querySelector('.reset-btn');
-  if (resetBtn) resetBtn.textContent = d.resetBtn;
-  var tipBox = document.querySelector('.tip-box');
-  if (tipBox) tipBox.innerHTML = d.tipBox;
+  d.ctrlPlaceholders.forEach(function(ph, i) { if (ctrlInputs[i]) ctrlInputs[i].placeholder = ph; });
+
+  document.querySelector('.lang-notice').textContent = d.langNotice;
+  document.querySelector('.reset-btn').textContent = d.resetBtn;
+  document.querySelector('.tip-box').innerHTML = d.tipBox;
+  document.getElementById('print-btn').textContent = d.printBtn;
   document.documentElement.lang = lang;
+
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
 }
+
+// 페이지 로드 시 저장 언어 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+  else updateDate();
+})();
 </script>
 </body>
 </html>

@@ -411,19 +411,37 @@ var LANG_DATA_FORM = {
     docTitle: '이 사 회 의 사 록',
     docSub: 'BOARD OF DIRECTORS MEETING MINUTES',
     meetingInfoLabels: ['개최 일시','개최 장소','의사 정족수','의결 정족수'],
-    sigPrefix: '위와 같이 의결하였음을 증명하기 위하여 이 의사록을 작성하고, 출석한 이사 및 감사가 아래에 서명 날인한다.'
+    sigPrefix: '위와 같이 의결하였음을 증명하기 위하여 이 의사록을 작성하고, 출석한 이사 및 감사가 아래에 서명 날인한다.',
+    ctrlBackLink: '← 서식 목록',
+    ctrlTitle: '📋 이사회 의사록 설정',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장',
+    ctrlL0: '회사명', ctrlL1: '개최 일시', ctrlL2: '개최 장소',
+    ctrlP0: '(주)회사명', ctrlP1: '', ctrlP2: '본사 3층 회의실'
   },
   en: {
     docTitle: 'BOARD OF DIRECTORS MEETING MINUTES',
     docSub: 'Board Resolution Record',
     meetingInfoLabels: ['Date & Time','Venue','Quorum Required','Voting Threshold'],
-    sigPrefix: 'IN WITNESS WHEREOF, the attending directors and auditor have signed these minutes.'
+    sigPrefix: 'IN WITNESS WHEREOF, the attending directors and auditor have signed these minutes.',
+    ctrlBackLink: '← Back to Forms',
+    ctrlTitle: '📋 Board Meeting Minutes',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF',
+    ctrlL0: 'Company Name', ctrlL1: 'Date & Time', ctrlL2: 'Venue',
+    ctrlP0: 'Company Name, Inc.', ctrlP1: '', ctrlP2: 'HQ 3F Conference Room'
   },
   ja: {
     docTitle: '取 締 役 会 議 事 録',
     docSub: 'BOARD OF DIRECTORS MEETING MINUTES',
     meetingInfoLabels: ['開催日時','開催場所','定足数','議決要件'],
-    sigPrefix: '上記のとおり議決したことを証明するため、出席取締役及び監査役が署名する。'
+    sigPrefix: '上記のとおり議決したことを証明するため、出席取締役及び監査役が署名する。',
+    ctrlBackLink: '← 書式一覧',
+    ctrlTitle: '📋 取締役会議事録',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存',
+    ctrlL0: '会社名', ctrlL1: '開催日時', ctrlL2: '開催場所',
+    ctrlP0: '株式会社○○', ctrlP1: '', ctrlP2: '本社3階会議室'
   }
 };
 
@@ -442,6 +460,17 @@ function setLang(lang) {
     var el = document.getElementById('infoTh' + i);
     if (el) el.textContent = lbl;
   });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var h2 = document.querySelector('.ctrl-panel h2');
+  if (h2) h2.textContent = d.ctrlTitle;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var pb = document.querySelector('.print-btn'); if (pb) pb.textContent = d.printBtn;
+  var cls = document.querySelectorAll('.ctrl-section label');
+  ['ctrlL0','ctrlL1','ctrlL2'].forEach(function(k,i){ if(cls[i] && d[k]) cls[i].textContent = d[k]; });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1','ctrlP2'].forEach(function(k,i){ if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k]; });
 }
 
 function toggleAttend(el) {

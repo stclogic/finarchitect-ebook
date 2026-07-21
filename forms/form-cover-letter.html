@@ -416,7 +416,10 @@
 // 컨트롤 패널 → 문서 동기화
 function syncField(field, val) {
   const el = document.querySelector(`[data-field="${field}"]`);
-  if (el) el.textContent = val || (field === 'company' ? '회사명' : field === 'job' ? '지원직무' : '이름');
+  if (el) {
+    var d = LANG_DATA_FORM[_currentLang];
+    el.textContent = val || d.syncDefaults[field] || field;
+  }
 }
 
 // 로고 업로드
@@ -445,18 +448,21 @@ document.querySelectorAll('.cl-textarea').forEach(el => {
 
 // 초기화
 function resetForm() {
-  if (!confirm('모든 내용을 초기화할까요?')) return;
+  var d = LANG_DATA_FORM[_currentLang];
+  if (!confirm(d.resetConfirm)) return;
   ['ctrl-company','ctrl-job','ctrl-name'].forEach(id => document.getElementById(id).value = '');
   ['company','job','name'].forEach(f => syncField(f, ''));
   document.querySelectorAll('.cl-textarea').forEach(el => { el.textContent = ''; });
-  document.querySelectorAll('.cl-char-count').forEach(el => el.textContent = '0 / 500자');
+  document.querySelectorAll('.cl-char-count').forEach(el => el.textContent = '0 / ' + d.charLimit);
   const img = document.getElementById('doc-logo');
   img.src = ''; img.classList.remove('visible');
 }
 
 var LANG_DATA_FORM = {
-  ko: { docTitle:'자  기  소  개  서', docSub:'',
+  ko: {
+    docTitle:'자  기  소  개  서', docSub:'',
     sections:['성장과정','성격의 장·단점','지원동기','입사 후 포부'],
+    hints:['성장 배경·경험 중심으로 500자 내외 권장','구체적 사례와 함께 500자 내외 권장','기업·직무 연구 기반으로 500자 내외 권장','구체적 목표·기여 계획 500자 내외 권장'],
     placeholders:[
       '어떤 환경에서 성장하였고, 그 과정에서 어떤 가치관과 역량을 형성하게 되었는지 구체적으로 기술해 주세요.',
       '본인의 성격 중 강점과 보완해야 할 점을 솔직하고 구체적으로 기술해 주세요. 단점은 극복 노력과 함께 서술하면 좋습니다.',
@@ -464,11 +470,26 @@ var LANG_DATA_FORM = {
       '입사 후 단기·장기적으로 이루고 싶은 목표와 기여 방향을 구체적으로 기술해 주세요.'
     ],
     metaCompany:'🏢 지원회사', metaJob:'💼 지원직무', metaName:'👤 성명',
+    footerDateLabel:'작성일',
     footerCert:'위 내용은 사실과 다름이 없습니다.',
-    charUnit:'자',
-    printBtn:'🖨 인쇄 / PDF 저장' },
-  en: { docTitle:'PERSONAL STATEMENT', docSub:'Cover Letter',
+    footerSign:'(서명)',
+    charUnit:'자', charLimit:'500자',
+    ctrlTitle:'✏️ 자기소개서 작성',
+    ctrlBackLink:'← 서식 목록',
+    ctrlLabelCompany:'회사명', ctrlLabelJob:'지원직무', ctrlLabelName:'이름', ctrlLabelLogo:'로고 업로드',
+    ctrlPlaceholderCompany:'예: 삼성전자', ctrlPlaceholderJob:'예: 소프트웨어 엔지니어', ctrlPlaceholderName:'홍길동',
+    ctrlLogoBtn:'🖼 로고 이미지 선택',
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn:'🖨 인쇄 / PDF 저장',
+    resetBtn:'↺ 초기화',
+    tipBox:'💡 각 항목 클릭 후 직접 입력하세요.<br>권장 분량: 항목당 500자 내외<br>PDF 저장: 인쇄 → "PDF로 저장"',
+    resetConfirm:'모든 내용을 초기화할까요?',
+    syncDefaults:{company:'회사명', job:'지원직무', name:'이름'}
+  },
+  en: {
+    docTitle:'PERSONAL STATEMENT', docSub:'Cover Letter',
     sections:['Background & Growth','Strengths & Weaknesses','Motivation for Application','Career Goals & Ambitions'],
+    hints:['Approx. 500 chars · Focus on upbringing & experience','Approx. 500 chars · Include specific examples','Approx. 500 chars · Based on company research','Approx. 500 chars · Specific goals & contribution plan'],
     placeholders:[
       'Describe your upbringing and environment, and how they shaped your values and competencies.',
       'Honestly describe your key strengths and areas for improvement. Include efforts to overcome weaknesses.',
@@ -476,11 +497,26 @@ var LANG_DATA_FORM = {
       'Describe your short- and long-term goals after joining the company and how you plan to contribute.'
     ],
     metaCompany:'🏢 Company', metaJob:'💼 Position', metaName:'👤 Name',
+    footerDateLabel:'Date',
     footerCert:'I hereby certify that the above information is true and accurate.',
-    charUnit:'chars',
-    printBtn:'🖨 Print / Save as PDF' },
-  ja: { docTitle:'自 己 紹 介 書', docSub:'エントリーシート',
+    footerSign:'(Signature)',
+    charUnit:'chars', charLimit:'500 chars',
+    ctrlTitle:'✏️ Personal Statement',
+    ctrlBackLink:'← Back to Forms',
+    ctrlLabelCompany:'Company Name', ctrlLabelJob:'Position Applied', ctrlLabelName:'Your Name', ctrlLabelLogo:'Upload Logo',
+    ctrlPlaceholderCompany:'e.g. Samsung Electronics', ctrlPlaceholderJob:'e.g. Software Engineer', ctrlPlaceholderName:'John Doe',
+    ctrlLogoBtn:'🖼 Select Logo Image',
+    langNotice:'⚠ Switching language resets all content.',
+    printBtn:'🖨 Print / Save as PDF',
+    resetBtn:'↺ Reset',
+    tipBox:'💡 Click each section to type directly.<br>Recommended: ~500 chars per section<br>Save as PDF: Print → "Save as PDF"',
+    resetConfirm:'Reset all content?',
+    syncDefaults:{company:'Company Name', job:'Position', name:'Your Name'}
+  },
+  ja: {
+    docTitle:'自 己 紹 介 書', docSub:'エントリーシート',
     sections:['成長過程','長所・短所','志望動機','入社後の抱負'],
+    hints:['500文字程度 · 成長背景・経験を中心に','500文字程度 · 具体的な事例とともに','500文字程度 · 企業・職種研究を基に','500文字程度 · 具体的な目標・貢献計画'],
     placeholders:[
       'どのような環境で成長し、そのプロセスでどのような価値観と能力を培ったかを具体的に記述してください。',
       '自分の性格の強みと改善すべき点を率直かつ具体的に記述してください。短所は克服への取り組みと共に述べると効果的です。',
@@ -488,9 +524,22 @@ var LANG_DATA_FORM = {
       '入社後、短期・長期的に達成したい目標と貢献の方向性を具体的に記述してください。'
     ],
     metaCompany:'🏢 志望企業', metaJob:'💼 志望職種', metaName:'👤 氏名',
+    footerDateLabel:'作成日',
     footerCert:'上記の内容は事実と相違ありません。',
-    charUnit:'文字',
-    printBtn:'🖨 印刷 / PDF保存' }
+    footerSign:'（署名）',
+    charUnit:'文字', charLimit:'500文字',
+    ctrlTitle:'✏️ 自己紹介書作成',
+    ctrlBackLink:'← 書式一覧',
+    ctrlLabelCompany:'会社名', ctrlLabelJob:'志望職種', ctrlLabelName:'氏名', ctrlLabelLogo:'ロゴアップロード',
+    ctrlPlaceholderCompany:'例：サムスン電子', ctrlPlaceholderJob:'例：ソフトウェアエンジニア', ctrlPlaceholderName:'山田太郎',
+    ctrlLogoBtn:'🖼 ロゴ画像を選択',
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn:'🖨 印刷 / PDF保存',
+    resetBtn:'↺ リセット',
+    tipBox:'💡 各項目をクリックして直接入力してください。<br>推奨文字数：各項目500文字程度<br>PDF保存：印刷→「PDFとして保存」',
+    resetConfirm:'すべての内容をリセットしますか？',
+    syncDefaults:{company:'会社名', job:'志望職種', name:'氏名'}
+  }
 };
 
 var _currentLang = 'ko';
@@ -501,35 +550,56 @@ function setLang(lang) {
   ['ko','en','ja'].forEach(function(l) {
     document.getElementById('btn-'+l).classList.toggle('active', l === lang);
   });
-  // doc title
+  // ── 문서 영역 ──
   document.querySelector('.cl-doc-title').textContent = d.docTitle;
-  // section titles & placeholders
   var sectionTitles = document.querySelectorAll('.cl-section-title');
   var textareas = document.querySelectorAll('.cl-textarea');
+  var hints = document.querySelectorAll('.cl-hint');
   sectionTitles.forEach(function(el, i) { if (d.sections[i]) el.textContent = d.sections[i]; });
   textareas.forEach(function(el, i) { if (d.placeholders[i]) el.setAttribute('data-placeholder', d.placeholders[i]); });
-  // header meta labels (reconstruct innerHTML keeping spans)
+  hints.forEach(function(el, i) { if (d.hints[i]) el.textContent = d.hints[i]; });
+  // 헤더 메타 라벨
   var metaSpans = document.querySelectorAll('.cl-header-meta > span');
   if (metaSpans[0]) {
-    var companyField = metaSpans[0].querySelector('.cl-header-field');
-    metaSpans[0].innerHTML = d.metaCompany + ': ' + (companyField ? companyField.outerHTML : '<span class="cl-header-field" id="doc-company" contenteditable="true" data-field="company">회사명</span>');
+    var cf = metaSpans[0].querySelector('.cl-header-field'); metaSpans[0].innerHTML = d.metaCompany + ': ' + (cf ? cf.outerHTML : '');
   }
   if (metaSpans[1]) {
-    var jobField = metaSpans[1].querySelector('.cl-header-field');
-    metaSpans[1].innerHTML = d.metaJob + ': ' + (jobField ? jobField.outerHTML : '<span class="cl-header-field" id="doc-job" contenteditable="true" data-field="job">지원직무</span>');
+    var jf = metaSpans[1].querySelector('.cl-header-field'); metaSpans[1].innerHTML = d.metaJob + ': ' + (jf ? jf.outerHTML : '');
   }
   if (metaSpans[2]) {
-    var nameField = metaSpans[2].querySelector('.cl-header-field');
-    metaSpans[2].innerHTML = d.metaName + ': ' + (nameField ? nameField.outerHTML : '<span class="cl-header-field" id="doc-name" contenteditable="true" data-field="name">이름</span>');
+    var nf = metaSpans[2].querySelector('.cl-header-field'); metaSpans[2].innerHTML = d.metaName + ': ' + (nf ? nf.outerHTML : '');
   }
-  // footer cert text
+  // 푸터
   document.querySelector('.cl-sign-label').textContent = d.footerCert;
-  // char count units
+  document.querySelector('.cl-footer-left').innerHTML = d.footerDateLabel + ': <span id="footer-date" contenteditable="true">' + document.getElementById('footer-date').textContent + '</span>';
+  document.querySelector('.cl-footer-right span[style]').textContent = d.footerSign;
+  // 글자수
   document.querySelectorAll('.cl-char-count').forEach(function(el) {
-    el.textContent = '0 / 500' + d.charUnit;
+    var cur = el.textContent.split('/')[0].trim();
+    el.textContent = cur + ' / ' + d.charLimit;
   });
-  // print button
+  // ── 컨트롤 패널 ──
+  document.querySelector('.ctrl-panel h2').textContent = d.ctrlTitle;
+  document.querySelector('.ctrl-back-link').textContent = d.ctrlBackLink;
+  // 라벨
+  var labels = document.querySelectorAll('.ctrl-section label');
+  if (labels[0]) labels[0].textContent = d.ctrlLabelCompany;
+  if (labels[1]) labels[1].textContent = d.ctrlLabelJob;
+  if (labels[2]) labels[2].textContent = d.ctrlLabelName;
+  if (labels[3]) labels[3].textContent = d.ctrlLabelLogo;
+  // 입력창 placeholder
+  var inp = document.getElementById('ctrl-company'); if (inp) inp.placeholder = d.ctrlPlaceholderCompany;
+  var inp2 = document.getElementById('ctrl-job'); if (inp2) inp2.placeholder = d.ctrlPlaceholderJob;
+  var inp3 = document.getElementById('ctrl-name'); if (inp3) inp3.placeholder = d.ctrlPlaceholderName;
+  // 파일 버튼 텍스트
+  var fileSpan = document.querySelector('.ctrl-file-btn span'); if (fileSpan) fileSpan.textContent = d.ctrlLogoBtn;
+  // 버튼들
   document.getElementById('print-btn').textContent = d.printBtn;
+  document.querySelector('.reset-btn').textContent = d.resetBtn;
+  // lang-notice
+  document.querySelector('.lang-notice').textContent = d.langNotice;
+  // 팁박스
+  document.querySelector('.tip-box').innerHTML = d.tipBox;
   document.documentElement.lang = lang;
 }
 </script>

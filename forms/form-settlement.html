@@ -174,14 +174,14 @@
     <a href="../forms.html" class="back-link">← 서식 목록</a>
     <h2>🤝 합의서</h2>
     <div class="ctrl-section">
-      <label>로고 업로드</label>
+      <label id="ctrlLbl0">로고 업로드</label>
       <label style="cursor:pointer;">
         <input type="file" accept="image/*" id="logoInput" style="display:none">
-        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
+        <div id="ctrlLogoDiv" style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
       </label>
     </div>
     <div class="ctrl-section">
-      <label>문서번호</label>
+      <label id="ctrlLbl1">문서번호</label>
       <input type="text" id="docNum" placeholder="SA-2026-001">
     </div>
     <div class="ctrl-divider"></div>
@@ -351,21 +351,39 @@ var LANG_DATA_FORM = {
     thA: '甲 (갑)', thB: '乙 (을)',
     sigA: '甲', sigB: '乙',
     sigPrefix: '위 합의 사실을 확인하고 본 합의서를 작성하고 기명날인한다.',
-    clauseTitles: ['합의 내용','이행 방법 및 시기','상호 권리 포기','비밀 유지','합의 위반 시 조치','효력 발생']
+    clauseTitles: ['합의 내용','이행 방법 및 시기','상호 권리 포기','비밀 유지','합의 위반 시 조치','효력 발생'],
+    ctrlBackLink: '← 서식 목록', ctrlTitle: '🤝 합의서',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
+    tipBox: '💡 합의 내용 영역을 클릭하여 구체적인 합의 사항을 입력하세요.',
+    ctrlLogoBtn: '클릭하여 로고 선택',
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호'
   },
   en: {
     docTitle: 'SETTLEMENT AGREEMENT', docSub: 'Mutual Release Agreement',
     thA: 'Party A', thB: 'Party B',
     sigA: 'Party A', sigB: 'Party B',
     sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Settlement Agreement.',
-    clauseTitles: ['Art.1 — Settlement Terms','Art.2 — Manner & Timing of Performance','Art.3 — Mutual Waiver of Claims','Art.4 — Confidentiality','Art.5 — Consequences of Breach','Art.6 — Effective Date']
+    clauseTitles: ['Art.1 — Settlement Terms','Art.2 — Manner & Timing of Performance','Art.3 — Mutual Waiver of Claims','Art.4 — Confidentiality','Art.5 — Consequences of Breach','Art.6 — Effective Date'],
+    ctrlBackLink: '← Back to Forms', ctrlTitle: '🤝 Settlement Agreement',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
+    tipBox: '💡 Click the agreement content area to enter specific settlement terms.',
+    ctrlLogoBtn: 'Click to select logo',
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.'
   },
   ja: {
     docTitle: '和 解 合 意 書', docSub: 'SETTLEMENT AGREEMENT',
     thA: '甲（一方）', thB: '乙（他方）',
     sigA: '甲', sigB: '乙',
     sigPrefix: '上記の合意事実を確認し、本合意書を作成して記名押印する。',
-    clauseTitles: ['第1条 — 合意内容','第2条 — 履行方法及び時期','第3条 — 相互権利放棄','第4条 — 秘密保持','第5条 — 違反時の措置','第6条 — 効力発生']
+    clauseTitles: ['第1条 — 合意内容','第2条 — 履行方法及び時期','第3条 — 相互権利放棄','第4条 — 秘密保持','第5条 — 違反時の措置','第6条 — 効力発生'],
+    ctrlBackLink: '← 書式一覧', ctrlTitle: '🤝 和解合意書',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
+    tipBox: '💡 合意内容エリアをクリックして具体的な合意事項を入力してください。',
+    ctrlLogoBtn: 'ロゴを選択',
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号'
   }
 };
 function setLang(lang) {
@@ -383,6 +401,25 @@ function setLang(lang) {
     if (!clauseTitles[i]) return;
     clauseTitles[i].textContent = t;
   });
+  // ── 컨트롤 패널 UI ──
+  var backLink = document.querySelector('.back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.textContent = d.tipBox;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var printBtn = document.querySelector('.print-btn');
+  if (printBtn) printBtn.textContent = d.printBtn;
+  var ctrlLogoDiv = document.getElementById('ctrlLogoDiv');
+  if (ctrlLogoDiv) ctrlLogoDiv.textContent = d.ctrlLogoBtn;
+  var ctrlLbl0 = document.getElementById('ctrlLbl0');
+  if (ctrlLbl0) ctrlLbl0.textContent = d.ctrlLbl0;
+  var ctrlLbl1 = document.getElementById('ctrlLbl1');
+  if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
 }
 
 document.getElementById('docNum').addEventListener('input', function(){

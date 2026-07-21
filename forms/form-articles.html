@@ -491,6 +491,10 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
 var LANG_DATA = {
   ko: {
     ctrlTitle: '🏛️ 표준정관', printBtn: '🖨️ 인쇄 / PDF 저장',
+    ctrlBackLink: '← 서식 목록', langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.', resetBtn: '↺ 초기화',
+    ctrlL0: '회사 로고 업로드', ctrlL1: '회사명 (상호)', ctrlL2: '작성일', ctrlL3: '설립일', ctrlL4: '발행주식 총수', ctrlL5: '1주의 금액', ctrlL6: '사업연도',
+    ctrlP0: '예: 주식회사 ○○', ctrlP1: '예: 10,000,000주', ctrlP2: '예: 500원',
+    tipBox: '💡 <strong>작성 Tip</strong><br>정관은 회사의 최고 헌법입니다. 각 조항을 클릭하여 직접 편집하세요. 공증 전 법무사·변호사 검토를 권장합니다.',
     docTitle: '정      관', docSub: 'ARTICLES OF INCORPORATION',
     sigPrefix: '위와 같이 정관을 작성하고 발기인 전원이 서명·날인한다.',
     chapters: [
@@ -505,6 +509,10 @@ var LANG_DATA = {
   },
   en: {
     ctrlTitle: '🏛️ Articles of Incorporation', printBtn: '🖨 Print / Save as PDF',
+    ctrlBackLink: '← Back to Forms', langNotice: '⚠ Switching language resets all content.', resetBtn: '↺ Reset',
+    ctrlL0: 'Company Logo', ctrlL1: 'Company Name', ctrlL2: 'Document Date', ctrlL3: 'Incorporation Date', ctrlL4: 'Total Shares Issued', ctrlL5: 'Par Value per Share', ctrlL6: 'Fiscal Year',
+    ctrlP0: 'e.g. ABC Co., Ltd.', ctrlP1: 'e.g. 10,000,000 shares', ctrlP2: 'e.g. KRW 500',
+    tipBox: '💡 <strong>Writing Tip</strong><br>The Articles of Incorporation are the company\'s constitution. Click each clause to edit directly. Legal review by an attorney before notarization is recommended.',
     docTitle: 'ARTICLES OF INCORPORATION', docSub: 'Corporate Charter',
     sigPrefix: 'IN WITNESS WHEREOF, all incorporators have executed these Articles of Incorporation.',
     chapters: [
@@ -519,6 +527,10 @@ var LANG_DATA = {
   },
   ja: {
     ctrlTitle: '🏛️ 定款', printBtn: '🖨 印刷 / PDF保存',
+    ctrlBackLink: '← 書式一覧', langNotice: '⚠ 言語切替時にすべての内容がリセットされます。', resetBtn: '↺ リセット',
+    ctrlL0: '会社ロゴ', ctrlL1: '会社名（商号）', ctrlL2: '作成日', ctrlL3: '設立日', ctrlL4: '発行株式総数', ctrlL5: '1株の金額', ctrlL6: '事業年度',
+    ctrlP0: '例：株式会社○○', ctrlP1: '例：10,000,000株', ctrlP2: '例：500ウォン',
+    tipBox: '💡 <strong>作成Tip</strong><br>定款は会社の最高規範です。各条項をクリックして直接編集してください。公証前に司法書士・弁護士によるレビューをお勧めします。',
     docTitle: '定    款', docSub: 'ARTICLES OF INCORPORATION',
     sigPrefix: '上記定款を作成し、発起人全員が記名押印する。',
     chapters: [
@@ -549,6 +561,20 @@ function setLang(lang) {
     var titleEl = document.getElementById('ch-title-' + (i+1));
     if (numEl) numEl.textContent = ch.num;
     if (titleEl) titleEl.textContent = ch.title;
+  });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"], .back-link, .ctrl-back-link');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox || '';
+  var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not([for="logoUpload"]):not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2','ctrlL3','ctrlL4','ctrlL5','ctrlL6','ctrlL7'].forEach(function(k,i){
+    if(cls[i] && d[k]) cls[i].textContent = d[k];
+  });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1','ctrlP2','ctrlP3','ctrlP4'].forEach(function(k,i){
+    if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k];
   });
 }
 

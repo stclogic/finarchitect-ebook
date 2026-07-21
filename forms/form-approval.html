@@ -353,21 +353,42 @@ const LANGS = {
     ar:['담 당','팀 장','부 장','이 사','대표이사'],
     bi:['문서번호','시행일','기안일','결재 기한','기안자','소속 부서'],
     sec:['품의 제목','목적','배경 및 현황','세부 내용','예산 내역','기대 효과','첨부 서류'],
-    bh:['번호','항목','금액 (원)','산출 근거','비고']
+    bh:['번호','항목','금액 (원)','산출 근거','비고'],
+    ctrlTitle:'⚙️ 문서 설정', ctrlBackLink:'← 서식 목록',
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn:'🖨 인쇄 / PDF 저장', ctrlLogoBtn:'📎 이미지 선택',
+    addRowBtn:'+ 행 추가',
+    ctrlL0:'문서 번호', ctrlL1:'기안일', ctrlL2:'소속 부서', ctrlL3:'로고 업로드',
+    ctrlP0:'예) AP-2026-042', ctrlP1:'', ctrlP2:'예) 전략기획팀',
+    tipBox:'💡 상단 결재란에 결재자 성명을 직접 입력하세요. 결재 도장/서명은 인쇄 후 날인하면 됩니다.'
   },
   en: {
     docTitle:'APPROVAL REQUEST', docSub:'Business Proposal Document',
     ar:['Staff','Team Lead','Manager','Director','CEO'],
     bi:['Doc. No.','Effective Date','Approval Date','Author','Department',''],
     sec:['Subject','Purpose','Background & Current Status','Details','Budget Breakdown','Expected Outcomes','Attachments'],
-    bh:['No.','Item','Amount','Basis of Calculation','Remarks']
+    bh:['No.','Item','Amount','Basis of Calculation','Remarks'],
+    ctrlTitle:'⚙️ Document Settings', ctrlBackLink:'← Back to Forms',
+    langNotice:'⚠ Switching language resets all content.',
+    printBtn:'🖨 Print / Save as PDF', ctrlLogoBtn:'📎 Select Logo',
+    addRowBtn:'+ Add Row',
+    ctrlL0:'Document No.', ctrlL1:'Draft Date', ctrlL2:'Department', ctrlL3:'Upload Logo',
+    ctrlP0:'e.g. AP-2026-042', ctrlP1:'', ctrlP2:'e.g. Strategy Planning',
+    tipBox:'💡 Enter approver names directly in the approval boxes at the top. Sign or stamp after printing.'
   },
   ja: {
     docTitle:'稟  議  書', docSub:'決裁文書',
     ar:['担当','チームリーダー','部長','取締役','代表取締役'],
     bi:['文書番号','施行日','決裁日','起案者','所属部署',''],
     sec:['件名','目的','背景及び現状','詳細内容','予算明細','期待効果','添付書類'],
-    bh:['番号','項目','金額','算出根拠','備考']
+    bh:['番号','項目','金額','算出根拠','備考'],
+    ctrlTitle:'⚙️ 文書設定', ctrlBackLink:'← 書式一覧',
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn:'🖨 印刷 / PDF保存', ctrlLogoBtn:'📎 ロゴ選択',
+    addRowBtn:'+ 行を追加',
+    ctrlL0:'文書番号', ctrlL1:'起案日', ctrlL2:'所属部署', ctrlL3:'ロゴアップロード',
+    ctrlP0:'例）AP-2026-042', ctrlP1:'', ctrlP2:'例）戦略企画チーム',
+    tipBox:'💡 上部の決裁欄に承認者名を直接入力してください。押印・署名は印刷後に行ってください。'
   }
 };
 
@@ -382,6 +403,21 @@ function setLang(lang) {
   t.bi.forEach((h,i) => { const el = document.getElementById('bi'+i); if(el) el.textContent = h; });
   t.sec.forEach((s,i) => { const el = document.getElementById('sec'+(i+1)); if(el) el.textContent = s; });
   t.bh.forEach((h,i) => { const el = document.getElementById('bh'+i); if(el) el.textContent = h; });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = t.ctrlBackLink;
+  var h2 = document.querySelector('.ctrl-panel h2');
+  if (h2) h2.textContent = t.ctrlTitle;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = t.langNotice;
+  var pb = document.querySelector('.print-btn'); if (pb) pb.textContent = t.printBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2','ctrlL3'].forEach(function(k,i){ if(cls[i] && t[k]) cls[i].textContent = t[k]; });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1','ctrlP2'].forEach(function(k,i){ if(inps[i] && t[k]!==undefined) inps[i].placeholder = t[k]; });
+  var fuSpans = document.querySelectorAll('.ctrl-file-btn span');
+  if (fuSpans[1] && t.ctrlLogoBtn) fuSpans[1].textContent = t.ctrlLogoBtn;
+  document.querySelectorAll('.add-row-btn').forEach(function(b){ if(t.addRowBtn) b.textContent = t.addRowBtn; });
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = t.tipBox;
 }
 
 (function(){

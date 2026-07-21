@@ -335,21 +335,42 @@ const LANGS = {
     ih:['회의명','회의 유형','일시','장소','주관 부서','회의 주재자','참석자','불참자','배포 대상'],
     sec:['안건','액션 아이템','다음 회의','작성자 및 결재'],
     ah:['No','내용','담당자','기한','상태'],
-    nh:['예정 일시','예정 장소','주요 안건']
+    nh:['예정 일시','예정 장소','주요 안건'],
+    ctrlTitle:'⚙️ 문서 설정', ctrlBackLink:'← 서식 목록',
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn:'🖨 인쇄 / PDF 저장', ctrlLogoBtn:'📎 이미지 선택',
+    addRowBtn:'+ 행 추가', addAgendaBtn:'+ 안건 추가',
+    ctrlL0:'문서 번호', ctrlL1:'회의 일시', ctrlL2:'로고 업로드',
+    ctrlP0:'예) MM-2026-001',
+    tipBox:'💡 안건 추가 버튼으로 의제를 자유롭게 늘릴 수 있습니다. 회의 유형 버튼은 클릭하여 선택하세요.'
   },
   en: {
     docTitle:'MEETING MINUTES', docSub:'Minutes of Meeting',
     ih:['Meeting Name','Meeting Type','Date & Time','Venue','Organizing Dept.','Chairperson','Attendees','Absentees','Distribution'],
     sec:['Agenda','Action Items','Next Meeting','Author & Approval'],
     ah:['No','Action Item','Owner','Due Date','Status'],
-    nh:['Scheduled Date','Scheduled Venue','Key Agenda']
+    nh:['Scheduled Date','Scheduled Venue','Key Agenda'],
+    ctrlTitle:'⚙️ Document Settings', ctrlBackLink:'← Back to Forms',
+    langNotice:'⚠ Switching language resets all content.',
+    printBtn:'🖨 Print / Save as PDF', ctrlLogoBtn:'📎 Select Logo',
+    addRowBtn:'+ Add Row', addAgendaBtn:'+ Add Agenda',
+    ctrlL0:'Document No.', ctrlL1:'Meeting Date', ctrlL2:'Upload Logo',
+    ctrlP0:'e.g. MM-2026-001',
+    tipBox:'💡 Use the Add Agenda button to add more topics. Click the meeting type buttons to select.'
   },
   ja: {
     docTitle:'会  議  録', docSub:'MEETING MINUTES',
     ih:['会議名','会議種別','日時','場所','主管部署','議長','出席者','欠席者','配布先'],
     sec:['議題','アクションアイテム','次回会議','作成者・決裁'],
     ah:['No','内容','担当者','期限','状況'],
-    nh:['予定日時','予定場所','主要議題']
+    nh:['予定日時','予定場所','主要議題'],
+    ctrlTitle:'⚙️ 文書設定', ctrlBackLink:'← 書式一覧',
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn:'🖨 印刷 / PDF保存', ctrlLogoBtn:'📎 ロゴ選択',
+    addRowBtn:'+ 行を追加', addAgendaBtn:'+ 議題を追加',
+    ctrlL0:'文書番号', ctrlL1:'会議日時', ctrlL2:'ロゴアップロード',
+    ctrlP0:'例）MM-2026-001',
+    tipBox:'💡 議題追加ボタンで議題を増やせます。会議種別ボタンをクリックして選択してください。'
   }
 };
 
@@ -364,6 +385,22 @@ function setLang(lang) {
   t.sec.forEach((s,i) => { const el = document.getElementById('sec'+(i+1)); if(el) el.textContent = s; });
   t.ah.forEach((h,i) => { const el = document.getElementById('ah'+i); if(el) el.textContent = h; });
   t.nh.forEach((h,i) => { const el = document.getElementById('nh'+i); if(el) el.textContent = h; });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = t.ctrlBackLink;
+  var h2 = document.querySelector('.ctrl-panel h2');
+  if (h2) h2.textContent = t.ctrlTitle;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = t.langNotice;
+  var pb = document.querySelector('.print-btn'); if (pb) pb.textContent = t.printBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2'].forEach(function(k,i){ if(cls[i] && t[k]) cls[i].textContent = t[k]; });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  if (inps[0] && t.ctrlP0 !== undefined) inps[0].placeholder = t.ctrlP0;
+  var fuSpans = document.querySelectorAll('.ctrl-file-btn span');
+  if (fuSpans[1] && t.ctrlLogoBtn) fuSpans[1].textContent = t.ctrlLogoBtn;
+  document.querySelectorAll('.add-row-btn').forEach(function(b){ if(t.addRowBtn) b.textContent = t.addRowBtn; });
+  document.querySelectorAll('.add-agenda-btn').forEach(function(b){ if(t.addAgendaBtn) b.textContent = t.addAgendaBtn; });
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = t.tipBox;
 }
 
 (function(){

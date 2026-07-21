@@ -339,19 +339,40 @@ var LANG_DATA_FORM = {
     docTitle: '주 주 간 계 약 서',
     docSub: 'SHAREHOLDERS AGREEMENT',
     clauseTitles: ['정의','주식 양도 제한','경영 참여','배당 정책','자금 조달','지식재산권 귀속','경업금지 및 전속 의무','비밀유지','계약 해지','진술 및 보장','손해배상','준거법 및 분쟁 해결'],
-    sigPrefix: '이 계약의 성립을 증명하기 위하여 당사자 전원이 서명 날인한다.'
+    sigPrefix: '이 계약의 성립을 증명하기 위하여 당사자 전원이 서명 날인한다.',
+    ctrlBackLink: '← 서식 목록',
+    ctrlTitle: '🤝 주주간계약서 설정',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장',
+    tipBox: '⚠️ 이 서식은 참고용 템플릿입니다. 실제 계약 체결 전에는 반드시 법률 전문가의 검토를 받으시기 바랍니다.',
+    ctrlL0: '회사명', ctrlL1: '계약 일자',
+    ctrlP0: '(주)회사명', ctrlP1: ''
   },
   en: {
     docTitle: 'SHAREHOLDERS AGREEMENT',
     docSub: 'Inter-Shareholder Agreement',
     clauseTitles: ['Definitions','Transfer Restrictions','Management Participation','Dividend Policy','Funding','Intellectual Property','Non-Competition & Exclusivity','Confidentiality','Termination Events','Representations & Warranties','Indemnification','Governing Law & Disputes'],
-    sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Shareholders Agreement.'
+    sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Shareholders Agreement.',
+    ctrlBackLink: '← Back to Forms',
+    ctrlTitle: '📜 Shareholders Agreement',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF',
+    tipBox: '⚠️ This is a reference template only. Please consult a legal professional before executing any actual agreement.',
+    ctrlL0: 'Company Name', ctrlL1: 'Contract Date',
+    ctrlP0: 'Company Name, Inc.', ctrlP1: ''
   },
   ja: {
     docTitle: '株 主 間 契 約 書',
     docSub: 'SHAREHOLDERS AGREEMENT',
     clauseTitles: ['定義','株式譲渡制限','経営参加','配当方針','資金調達','知的財産権帰属','競業禁止及び専属義務','秘密保持','解除事由','表明及び保証','損害賠償','準拠法及び紛争解決'],
-    sigPrefix: '上記契約の成立を証明するため、記名押印する。'
+    sigPrefix: '上記契約の成立を証明するため、記名押印する。',
+    ctrlBackLink: '← 書式一覧',
+    ctrlTitle: '📜 株主間契約書',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存',
+    tipBox: '⚠️ このフォームは参考用テンプレートです。実際の契約締結前に必ず法律の専門家にご確認ください。',
+    ctrlL0: '会社名', ctrlL1: '契約日付',
+    ctrlP0: '株式会社○○', ctrlP1: ''
   }
 };
 
@@ -376,6 +397,18 @@ function setLang(lang) {
     if (artNo && artNo !== el.firstChild) { el.insertBefore(artNo, el.firstChild); }
     el.appendChild(document.createTextNode(' ' + d.clauseTitles[i]));
   });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var h2 = document.querySelector('.ctrl-panel h2');
+  if (h2) h2.textContent = d.ctrlTitle;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var pb = document.querySelector('.print-btn'); if (pb) pb.textContent = d.printBtn;
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
+  var cls = document.querySelectorAll('.ctrl-section label');
+  ['ctrlL0','ctrlL1'].forEach(function(k,i){ if(cls[i] && d[k]) cls[i].textContent = d[k]; });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1'].forEach(function(k,i){ if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k]; });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

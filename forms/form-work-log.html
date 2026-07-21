@@ -322,21 +322,42 @@ const LANGS = {
     sl:['소속','직위','성명','근무시간'],
     sec:['금일 목표','업무 수행 내역','완료 업무 요약','미완료 업무 및 사유','내일 계획','건의사항 / 메모'],
     wh:['시간','업무 분류','업무 내용','완료율','특이사항'],
-    sig:['작 성 자','확 인 자']
+    sig:['작 성 자','확 인 자'],
+    ctrlTitle:'⚙️ 문서 설정', ctrlBackLink:'← 서식 목록',
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn:'🖨 인쇄 / PDF 저장', ctrlLogoBtn:'📎 이미지 선택',
+    addRowBtn:'+ 행 추가',
+    ctrlL0:'작성 날짜', ctrlL1:'출근 시간', ctrlL2:'퇴근 시간', ctrlL3:'로고 업로드',
+    ctrlP1:'09:00', ctrlP2:'18:00',
+    tipBox:'💡 업무 분류 셀을 클릭하면 드롭다운이 나타납니다. 완료율을 입력하면 진행 바가 자동으로 표시됩니다.'
   },
   en: {
     docTitle:'DAILY WORK LOG', docSub:'Daily Activity Report',
     sl:['Department','Title','Name','Working Hours'],
     sec:["Today's Goals",'Work Activities','Summary of Completed Tasks','Incomplete Tasks & Reasons',"Tomorrow's Plan",'Suggestions / Notes'],
     wh:['Time','Category','Work Content','Completion (%)','Notes'],
-    sig:['Prepared by','Reviewed by']
+    sig:['Prepared by','Reviewed by'],
+    ctrlTitle:'⚙️ Document Settings', ctrlBackLink:'← Back to Forms',
+    langNotice:'⚠ Switching language resets all content.',
+    printBtn:'🖨 Print / Save as PDF', ctrlLogoBtn:'📎 Select Logo',
+    addRowBtn:'+ Add Row',
+    ctrlL0:'Date', ctrlL1:'Clock In', ctrlL2:'Clock Out', ctrlL3:'Upload Logo',
+    ctrlP1:'09:00', ctrlP2:'18:00',
+    tipBox:'💡 Click the work category cell to get a dropdown. Enter completion % to show the progress bar.'
   },
   ja: {
     docTitle:'業  務  日  誌', docSub:'DAILY WORK LOG',
     sl:['所属','役職','氏名','勤務時間'],
     sec:['本日目標','業務遂行内容','完了業務まとめ','未完了業務及び理由','明日の計画','要望・メモ'],
     wh:['時間','業務分類','業務内容','完了率(%)','特記事項'],
-    sig:['作成者','確認者']
+    sig:['作成者','確認者'],
+    ctrlTitle:'⚙️ 文書設定', ctrlBackLink:'← 書式一覧',
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn:'🖨 印刷 / PDF保存', ctrlLogoBtn:'📎 ロゴ選択',
+    addRowBtn:'+ 行を追加',
+    ctrlL0:'作成日', ctrlL1:'出勤時間', ctrlL2:'退勤時間', ctrlL3:'ロゴアップロード',
+    ctrlP1:'09:00', ctrlP2:'18:00',
+    tipBox:'💡 業務分類セルをクリックするとドロップダウンが表示されます。完了率を入力すると進捗バーが自動表示されます。'
   }
 };
 
@@ -351,6 +372,21 @@ function setLang(lang) {
   t.sec.forEach((s,i) => { const el = document.getElementById('sec'+(i+1)); if(el) el.textContent = s; });
   t.wh.forEach((h,i) => { const el = document.getElementById('wh'+i); if(el) el.textContent = h; });
   t.sig.forEach((s,i) => { const el = document.getElementById('sig'+i); if(el) el.textContent = s; });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = t.ctrlBackLink;
+  var h2 = document.querySelector('.ctrl-panel h2');
+  if (h2) h2.textContent = t.ctrlTitle;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = t.langNotice;
+  var pb = document.querySelector('.print-btn'); if (pb) pb.textContent = t.printBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2','ctrlL3'].forEach(function(k,i){ if(cls[i] && t[k]) cls[i].textContent = t[k]; });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP1','ctrlP2'].forEach(function(k,i){ if(inps[i] && t[k]!==undefined) inps[i].placeholder = t[k]; });
+  var fuSpans = document.querySelectorAll('.ctrl-file-btn span');
+  if (fuSpans[1] && t.ctrlLogoBtn) fuSpans[1].textContent = t.ctrlLogoBtn;
+  document.querySelectorAll('.add-row-btn').forEach(function(b){ if(t.addRowBtn) b.textContent = t.addRowBtn; });
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = t.tipBox;
 }
 
 const DAYS = ['일','월','화','수','목','금','토'];

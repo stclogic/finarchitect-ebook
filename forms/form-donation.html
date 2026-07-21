@@ -463,7 +463,13 @@ var LANG_DATA = {
     docSubtitle: '🧡 나눔으로 세상을 바꾸는 약속 🧡',
     thOrg: '💜 기부 수혜 단체 (受益 法人)', thDonor: '🧡 기부자 정보 (寄附者)',
     sigPrefix: '위 약정 내용을 확인하고 아래와 같이 서명·날인한다.',
-    articles: ['기부금 사용','영수증 발행','결과 보고','기부 취소','개인정보 처리 동의','기타']
+    articles: ['기부금 사용','영수증 발행','결과 보고','기부 취소','개인정보 처리 동의','기타'],
+    ctrlBackLink: '← 서식 목록',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    resetBtn: '↺ 초기화',
+    ctrlL0: '단체 로고 업로드', ctrlL1: '작성일', ctrlL2: '문서 번호', ctrlL3: '기부 금액 (숫자)', ctrlL4: '기부 유형',
+    ctrlP2: '예: DON-2025-001', ctrlP3: '예: 1200000',
+    tipBox: '💡 <strong>작성 Tip</strong><br>기부금 영수증은 소득공제에 활용됩니다. 지정기부 시 사용 목적을 명확히 기재하면 투명한 나눔이 됩니다.'
   },
   en: {
     ctrlTitle: '💜 Donation Pledge', printBtn: '🖨 Print / Save as PDF',
@@ -471,7 +477,13 @@ var LANG_DATA = {
     docSubtitle: '🧡 A promise to change the world through sharing 🧡',
     thOrg: '💜 Recipient Organization', thDonor: '🧡 Donor Information',
     sigPrefix: 'This pledge is made in the spirit of love and sharing.',
-    articles: ['Art.1 — Use of Donation','Art.2 — Receipt Issuance','Art.3 — Progress Reporting','Art.4 — Cancellation of Donation','Art.5 — Consent to Personal Data Processing','Art.6 — Miscellaneous']
+    articles: ['Art.1 — Use of Donation','Art.2 — Receipt Issuance','Art.3 — Progress Reporting','Art.4 — Cancellation of Donation','Art.5 — Consent to Personal Data Processing','Art.6 — Miscellaneous'],
+    ctrlBackLink: '← Back to Forms',
+    langNotice: '⚠ Switching language resets all content.',
+    resetBtn: '↺ Reset',
+    ctrlL0: 'Organization Logo', ctrlL1: 'Date', ctrlL2: 'Document No.', ctrlL3: 'Donation Amount', ctrlL4: 'Donation Type',
+    ctrlP2: 'e.g. DON-2025-001', ctrlP3: 'e.g. 1200000',
+    tipBox: '💡 <strong>Tips</strong><br>Donation receipts can be used for income tax deductions. For designated donations, clearly state the intended purpose for transparent giving.'
   },
   ja: {
     ctrlTitle: '💜 寄付誓約書', printBtn: '🖨 印刷 / PDF保存',
@@ -479,7 +491,13 @@ var LANG_DATA = {
     docSubtitle: '🧡 分かち合いで世界を変える約束 🧡',
     thOrg: '💜 受益団体', thDonor: '🧡 寄付者情報',
     sigPrefix: 'この誓約は愛と分かち合いの精神のもと締結されました。',
-    articles: ['第1条 — 寄付金の使途','第2条 — 領収書の発行','第3条 — 実施報告','第4条 — 寄付の取消','第5条 — 個人情報処理への同意','第6条 — その他']
+    articles: ['第1条 — 寄付金の使途','第2条 — 領収書の発行','第3条 — 実施報告','第4条 — 寄付の取消','第5条 — 個人情報処理への同意','第6条 — その他'],
+    ctrlBackLink: '← 書式一覧',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    resetBtn: '↺ リセット',
+    ctrlL0: '団体ロゴアップロード', ctrlL1: '作成日', ctrlL2: '文書番号', ctrlL3: '寄付金額', ctrlL4: '寄付種別',
+    ctrlP2: '例：DON-2025-001', ctrlP3: '例：1200000',
+    tipBox: '💡 <strong>作成のヒント</strong><br>寄付金領収書は所得控除に使用できます。指定寄付の場合は使途を明確に記載すると透明性が高まります。'
   }
 };
 function setLang(lang) {
@@ -500,6 +518,18 @@ function setLang(lang) {
     var el = document.getElementById('at-' + (i+1));
     if (el) el.textContent = title;
   });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
+  var cls = document.querySelectorAll('.ctrl-section label');
+  ['ctrlL0','ctrlL1','ctrlL2','ctrlL3','ctrlL4'].forEach(function(k,i){ if(cls[i] && d[k]) cls[i].textContent = d[k]; });
+  var docNumInp = document.getElementById('docNum');
+  if (docNumInp && d.ctrlP2 !== undefined) docNumInp.placeholder = d.ctrlP2;
+  var amtInp = document.getElementById('donationAmt');
+  if (amtInp && d.ctrlP3 !== undefined) amtInp.placeholder = d.ctrlP3;
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
 }
 
 function resetDoc() {

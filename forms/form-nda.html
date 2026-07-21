@@ -169,22 +169,22 @@
     <h2>🛡 비밀유지계약서</h2>
 
     <div class="ctrl-section">
-      <label>로고 업로드</label>
+      <label id="ctrlLbl0">로고 업로드</label>
       <label class="logo-upload-label">
         <input type="file" accept="image/*" id="logoInput" style="display:none">
-        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">
+        <div id="ctrlLogoDiv" style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">
           클릭하여 로고 선택
         </div>
       </label>
     </div>
 
     <div class="ctrl-section">
-      <label>문서번호</label>
+      <label id="ctrlLbl1">문서번호</label>
       <input type="text" id="docNum" placeholder="NDA-2026-001">
     </div>
 
     <div class="ctrl-section">
-      <label>비밀유지 기간 (년)</label>
+      <label id="ctrlLbl2">비밀유지 기간 (년)</label>
       <input type="number" id="ndaPeriod" value="3" min="1" max="10">
     </div>
 
@@ -427,21 +427,39 @@ var LANG_DATA_FORM = {
     thA: '<span class="party-label">甲</span> 정보제공자', thB: '<span class="party-label">乙</span> 정보수령자',
     sigA: '甲 (정보제공자)', sigB: '乙 (정보수령자)',
     sigPrefix: '위 계약의 성립을 증명하기 위하여 이 계약서를 작성하고 기명날인한다.',
-    clauseTitles: ['정의 (비밀정보의 범위)','비밀유지 의무','비밀유지 예외','비밀정보의 반환 및 파기','비밀유지 기간','지식재산권','손해배상','계약 기간 및 해지','일반 조항','준거법 및 분쟁 해결']
+    clauseTitles: ['정의 (비밀정보의 범위)','비밀유지 의무','비밀유지 예외','비밀정보의 반환 및 파기','비밀유지 기간','지식재산권','손해배상','계약 기간 및 해지','일반 조항','준거법 및 분쟁 해결'],
+    ctrlBackLink: '← 서식 목록', ctrlTitle: '🛡 비밀유지계약서',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
+    tipBox: '💡 파란색 텍스트를 클릭하면 직접 편집할 수 있습니다. 서명란에 당사자 정보를 입력 후 인쇄하세요.',
+    ctrlLogoBtn: '클릭하여 로고 선택',
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호', ctrlLbl2: '비밀유지 기간 (년)'
   },
   en: {
     docTitle: 'NON-DISCLOSURE AGREEMENT', docSub: 'Confidentiality Agreement',
     thA: 'Disclosing Party', thB: 'Receiving Party',
     sigA: 'Disclosing Party', sigB: 'Receiving Party',
     sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Non-Disclosure Agreement.',
-    clauseTitles: ['Art.1 — Definitions','Art.2 — Confidentiality Obligations','Art.3 — Exceptions','Art.4 — Return & Destruction','Art.5 — Term of Confidentiality','Art.6 — Intellectual Property','Art.7 — Damages','Art.8 — Term & Termination','Art.9 — General Provisions','Art.10 — Governing Law & Disputes']
+    clauseTitles: ['Art.1 — Definitions','Art.2 — Confidentiality Obligations','Art.3 — Exceptions','Art.4 — Return & Destruction','Art.5 — Term of Confidentiality','Art.6 — Intellectual Property','Art.7 — Damages','Art.8 — Term & Termination','Art.9 — General Provisions','Art.10 — Governing Law & Disputes'],
+    ctrlBackLink: '← Back to Forms', ctrlTitle: '🛡 Non-Disclosure Agreement',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
+    tipBox: '💡 Click blue text to edit directly. Fill in party details in the signature fields, then print.',
+    ctrlLogoBtn: 'Click to select logo',
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.', ctrlLbl2: 'Confidentiality Period (years)'
   },
   ja: {
     docTitle: '秘 密 保 持 契 約 書', docSub: 'Non-Disclosure Agreement',
     thA: '<span class="party-label">甲</span> 情報開示者', thB: '<span class="party-label">乙</span> 情報受領者',
     sigA: '甲（情報開示者）', sigB: '乙（情報受領者）',
     sigPrefix: '上記契約の成立を証明するため、本秘密保持契約書を作成し、記名押印する。',
-    clauseTitles: ['第1条 — 定義','第2条 — 秘密保持義務','第3条 — 秘密情報の例外','第4条 — 返還及び廃棄','第5条 — 秘密保持期間','第6条 — 知的財産権','第7条 — 損害賠償','第8条 — 契約期間及び解除','第9条 — 一般条項','第10条 — 準拠法及び紛争解決']
+    clauseTitles: ['第1条 — 定義','第2条 — 秘密保持義務','第3条 — 秘密情報の例外','第4条 — 返還及び廃棄','第5条 — 秘密保持期間','第6条 — 知的財産権','第7条 — 損害賠償','第8条 — 契約期間及び解除','第9条 — 一般条項','第10条 — 準拠法及び紛争解決'],
+    ctrlBackLink: '← 書式一覧', ctrlTitle: '🛡 秘密保持契約書',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
+    tipBox: '💡 青いテキストをクリックして直接編集できます。署名欄に当事者情報を入力後、印刷してください。',
+    ctrlLogoBtn: 'ロゴを選択',
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号', ctrlLbl2: '秘密保持期間（年）'
   }
 };
 function setLang(lang) {
@@ -459,6 +477,27 @@ function setLang(lang) {
     if (!clauseTitles[i]) return;
     clauseTitles[i].textContent = t;
   });
+  // ── 컨트롤 패널 UI ──
+  var backLink = document.querySelector('.back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.textContent = d.tipBox;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var printBtn = document.querySelector('.print-btn');
+  if (printBtn) printBtn.textContent = d.printBtn;
+  var ctrlLogoDiv = document.getElementById('ctrlLogoDiv');
+  if (ctrlLogoDiv) ctrlLogoDiv.textContent = d.ctrlLogoBtn;
+  var ctrlLbl0 = document.getElementById('ctrlLbl0');
+  if (ctrlLbl0) ctrlLbl0.textContent = d.ctrlLbl0;
+  var ctrlLbl1 = document.getElementById('ctrlLbl1');
+  if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
+  var ctrlLbl2 = document.getElementById('ctrlLbl2');
+  if (ctrlLbl2) ctrlLbl2.textContent = d.ctrlLbl2;
 }
 
 // 로고 업로드

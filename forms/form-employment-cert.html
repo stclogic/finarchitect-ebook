@@ -496,6 +496,13 @@ var LANG_DATA_FORM = {
     ceoLabel:'대표이사',
     ceoSuffix:'(서명 또는 날인)',
     tableHeaders:['성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명','생 년 월 일','주민등록번호','고 용 형 태','소&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;속','직&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;위','직&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;책','입&nbsp;&nbsp;사&nbsp;&nbsp;일','재 직 기 간','비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;고'],
+    ctrlBackLink:'← 서식 목록', ctrlTitle:'🏢 재직증명서 작성',
+    ctrlLogoLabel:'로고 업로드', ctrlFileBtn:'🖼 로고 이미지 선택',
+    ctrlLabels:['회사명','대표이사명','성명','소속부서','직위·직책','문서번호'],
+    ctrlPlaceholders:['예: (주)스타트업','예: 김대표','홍길동','예: 개발팀','예: 과장','예: 재직-2025-001'],
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    resetBtn:'↺ 초기화',
+    tipBox:'💡 표 안 각 셀을 클릭하면 직접 수정할 수 있습니다.<br>직인란은 실제 도장 날인 후 스캔하거나, PDF로 출력 후 날인하세요.',
     printBtn:'🖨 인쇄 / PDF 저장' },
   en: { docTitle:'CERTIFICATE&nbsp;OF&nbsp;EMPLOYMENT', docSub:'재직증명서',
     certText:'This is to certify that the above-named individual is currently employed at our company.',
@@ -505,6 +512,13 @@ var LANG_DATA_FORM = {
     ceoLabel:'CEO / Representative',
     ceoSuffix:'(Signature or Seal)',
     tableHeaders:['Name','Date of Birth','ID Number','Employment Type','Department','Title','Position','Date of Hire','Period of Employment','Remarks'],
+    ctrlBackLink:'← Back to Forms', ctrlTitle:'🏢 Employment Certificate',
+    ctrlLogoLabel:'Logo Upload', ctrlFileBtn:'🖼 Select Logo Image',
+    ctrlLabels:['Company Name','CEO / Director','Full Name','Department','Job Title','Document No.'],
+    ctrlPlaceholders:['e.g. Startup Inc.','e.g. John CEO','e.g. Jane Doe','e.g. Engineering','e.g. Manager','e.g. EMP-2025-001'],
+    langNotice:'⚠ Switching language resets all content.',
+    resetBtn:'↺ Reset',
+    tipBox:'💡 Click any cell in the table to edit it directly.<br>For the seal field, affix a physical stamp or print the PDF and stamp it.',
     printBtn:'🖨 Print / Save as PDF' },
   ja: { docTitle:'在&nbsp;&nbsp;職&nbsp;&nbsp;証&nbsp;&nbsp;明&nbsp;&nbsp;書', docSub:'CERTIFICATE OF EMPLOYMENT',
     certText:'上記の者が現在弊社に在職していることを証明します。',
@@ -514,6 +528,13 @@ var LANG_DATA_FORM = {
     ceoLabel:'代表取締役',
     ceoSuffix:'（署名又は押印）',
     tableHeaders:['氏&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名','生年月日','住民登録番号','雇用形態','所&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;属','役&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;職','職&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位','入&nbsp;&nbsp;社&nbsp;&nbsp;日','在職期間','備&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;考'],
+    ctrlBackLink:'← 書式一覧', ctrlTitle:'🏢 在職証明書作成',
+    ctrlLogoLabel:'ロゴアップロード', ctrlFileBtn:'🖼 ロゴ画像を選択',
+    ctrlLabels:['会社名','代表取締役名','氏名','所属部署','役職・職位','文書番号'],
+    ctrlPlaceholders:['例：株式会社スタートアップ','例：田中代表','例：山田太郎','例：開発部','例：課長','例：在職-2025-001'],
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    resetBtn:'↺ リセット',
+    tipBox:'💡 表内の各セルをクリックして直接編集できます。<br>押印欄には実印を押すか、PDF印刷後に押印してください。',
     printBtn:'🖨 印刷 / PDF保存' }
 };
 
@@ -543,6 +564,32 @@ function setLang(lang) {
   ths.forEach(function(th, i) { if (d.tableHeaders[i]) th.innerHTML = d.tableHeaders[i]; });
   // print button
   document.getElementById('print-btn').textContent = d.printBtn;
+  // ── ctrl panel UI ──
+  var backLink = document.querySelector('.ctrl-back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  var ctrlLabels = document.querySelectorAll('.ctrl-panel .ctrl-section label:not(.ctrl-file-btn)');
+  d.ctrlLabels.forEach(function(txt, i) {
+    if (ctrlLabels[i]) ctrlLabels[i].textContent = txt;
+  });
+  if (ctrlLabels[6]) ctrlLabels[6].textContent = d.ctrlLogoLabel;
+  var fileBtn = document.querySelector('.ctrl-file-btn');
+  if (fileBtn) {
+    var inp = fileBtn.querySelector('input');
+    fileBtn.textContent = d.ctrlFileBtn;
+    if (inp) fileBtn.appendChild(inp);
+  }
+  var ctrlInputs = document.querySelectorAll('.ctrl-panel .ctrl-section input[type=text]');
+  d.ctrlPlaceholders.forEach(function(ph, i) {
+    if (ctrlInputs[i]) ctrlInputs[i].placeholder = ph;
+  });
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.innerHTML = d.tipBox;
   document.documentElement.lang = lang;
 }
 </script>

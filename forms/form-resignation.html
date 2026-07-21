@@ -488,6 +488,13 @@ var LANG_DATA_FORM = {
     reasonLabel:'📝 사직 사유 상세',
     sigLabels:['소속','직위','성명','서명'],
     addresseeSuffix:'대표이사 귀중',
+    ctrlBackLink:'← 서식 목록', ctrlTitle:'📄 사직서 작성',
+    ctrlLogoLabel:'로고 업로드', ctrlFileBtn:'🖼 로고 이미지 선택',
+    ctrlLabels:['회사명','대표자명','소속부서','직위·직책','성명','사직 예정일'],
+    ctrlPlaceholders:['예: (주)스타트업','예: 김대표','예: 개발팀','예: 과장','홍길동','예: 2025년 3월 31일'],
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    resetBtn:'↺ 초기화',
+    tipBox:'💡 표 안 항목을 클릭하면 직접 편집할 수 있습니다.<br>사직 사유란을 충분히 작성해 주세요.',
     printBtn:'🖨 인쇄 / PDF 저장' },
   en: { docTitle:'LETTER&nbsp;OF&nbsp;RESIGNATION',
     intro:'I hereby respectfully submit this letter of resignation for the reasons stated below.',
@@ -497,6 +504,13 @@ var LANG_DATA_FORM = {
     reasonLabel:'📝 Details of Resignation',
     sigLabels:['Department','Title','Name','Signature'],
     addresseeSuffix:'CEO',
+    ctrlBackLink:'← Back to Forms', ctrlTitle:'📄 Resignation Letter',
+    ctrlLogoLabel:'Logo Upload', ctrlFileBtn:'🖼 Select Logo Image',
+    ctrlLabels:['Company Name','CEO / Director','Department','Job Title','Full Name','Resignation Date'],
+    ctrlPlaceholders:['e.g. Startup Inc.','e.g. John CEO','e.g. Engineering','e.g. Manager','e.g. Jane Doe','e.g. March 31, 2025'],
+    langNotice:'⚠ Switching language resets all content.',
+    resetBtn:'↺ Reset',
+    tipBox:'💡 Click any cell in the table to edit it directly.<br>Please fill in the resignation reason in detail.',
     printBtn:'🖨 Print / Save as PDF' },
   ja: { docTitle:'退&nbsp;&nbsp;職&nbsp;&nbsp;届',
     intro:'下記の理由により、誠に勝手ながら退職届を提出いたします。',
@@ -506,6 +520,13 @@ var LANG_DATA_FORM = {
     reasonLabel:'📝 退職理由詳細',
     sigLabels:['所属','役職','氏名','署名'],
     addresseeSuffix:'代表取締役 殿',
+    ctrlBackLink:'← 書式一覧', ctrlTitle:'📄 退職届作成',
+    ctrlLogoLabel:'ロゴアップロード', ctrlFileBtn:'🖼 ロゴ画像を選択',
+    ctrlLabels:['会社名','代表者名','所属部署','役職・職位','氏名','退職予定日'],
+    ctrlPlaceholders:['例：株式会社スタートアップ','例：田中代表','例：開発部','例：課長','例：山田太郎','例：2025年3月31日'],
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    resetBtn:'↺ リセット',
+    tipBox:'💡 表内の各セルをクリックして直接編集できます。<br>退職理由欄は十分に記入してください。',
     printBtn:'🖨 印刷 / PDF保存' }
 };
 
@@ -540,6 +561,36 @@ function setLang(lang) {
   }
   // print button
   document.getElementById('print-btn').textContent = d.printBtn;
+  // ── ctrl panel UI ──
+  var backLink = document.querySelector('.ctrl-back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  // regular labels (excludes .ctrl-file-btn)
+  var ctrlLabels = document.querySelectorAll('.ctrl-panel .ctrl-section label:not(.ctrl-file-btn)');
+  d.ctrlLabels.forEach(function(txt, i) {
+    if (ctrlLabels[i]) ctrlLabels[i].textContent = txt;
+  });
+  if (ctrlLabels[6]) ctrlLabels[6].textContent = d.ctrlLogoLabel;
+  // file button label
+  var fileBtn = document.querySelector('.ctrl-file-btn');
+  if (fileBtn) {
+    var inp = fileBtn.querySelector('input');
+    fileBtn.textContent = d.ctrlFileBtn;
+    if (inp) fileBtn.appendChild(inp);
+  }
+  // input placeholders
+  var ctrlInputs = document.querySelectorAll('.ctrl-panel .ctrl-section input[type=text]');
+  d.ctrlPlaceholders.forEach(function(ph, i) {
+    if (ctrlInputs[i]) ctrlInputs[i].placeholder = ph;
+  });
+  // lang notice, reset btn, tip box
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.innerHTML = d.tipBox;
   document.documentElement.lang = lang;
 }
 </script>

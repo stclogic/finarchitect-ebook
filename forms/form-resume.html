@@ -702,30 +702,39 @@ function addAward() {
 // ── 언어 전환 ────────────────────────────────────────────────────
 var LANG_DATA = {
   ko: {
-    ctrlTitle: '⚙ 이력서 설정',
+    ctrlTitle: '🎨 이력서 설정',
     lblColor: '메인 컬러', lblAccent: '포인트 컬러',
     lblPhoto: '증명사진 업로드', lblLogo: '회사/학교 로고 (좌측 하단)',
     printBtn: '🖨 인쇄 / PDF 저장',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    resetBtn: '↺ 초기화',
+    tipBox: '💡 <strong>PDF 저장 방법</strong><br>인쇄 버튼 클릭 → 프린터를 <strong>"PDF로 저장"</strong> 선택 → 저장<br><br>📝 각 항목을 <strong>직접 클릭</strong>해서 편집할 수 있습니다.',
     sbContact: '연락처', sbSkills: '핵심 역량', sbLang: '언어',
     sbCert: '자격증', sbInfo: '기본 정보',
     mainSummary: '✦ 자기소개', mainExp: '💼 경력사항',
     mainEdu: '🎓 학력사항', mainAward: '🏆 수상 및 활동'
   },
   en: {
-    ctrlTitle: '⚙ Resume Settings',
+    ctrlTitle: '🎨 Resume Settings',
     lblColor: 'Primary Color', lblAccent: 'Accent Color',
-    lblPhoto: 'Upload Photo', lblLogo: 'Company Logo',
+    lblPhoto: 'Upload Photo', lblLogo: 'Company / School Logo',
     printBtn: '🖨 Print / Save as PDF',
+    langNotice: '⚠ Switching language resets all content.',
+    resetBtn: '↺ Reset',
+    tipBox: '💡 <strong>Save as PDF</strong><br>Click Print → select <strong>"Save as PDF"</strong> as printer → Save<br><br>📝 Click any field in the document to <strong>edit directly</strong>.',
     sbContact: 'Contact', sbSkills: 'Core Competencies', sbLang: 'Languages',
     sbCert: 'Certifications', sbInfo: 'Personal Info',
     mainSummary: '✦ Profile / Summary', mainExp: '💼 Work Experience',
     mainEdu: '🎓 Education', mainAward: '🏆 Awards & Activities'
   },
   ja: {
-    ctrlTitle: '⚙ 履歴書設定',
+    ctrlTitle: '🎨 履歴書設定',
     lblColor: 'メインカラー', lblAccent: 'アクセントカラー',
-    lblPhoto: '写真アップロード', lblLogo: '会社ロゴ',
+    lblPhoto: '写真アップロード', lblLogo: '会社・学校ロゴ',
     printBtn: '🖨 印刷 / PDF保存',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    resetBtn: '↺ リセット',
+    tipBox: '💡 <strong>PDF保存方法</strong><br>印刷ボタンをクリック → プリンターで<strong>「PDFとして保存」</strong>を選択 → 保存<br><br>📝 各項目を<strong>直接クリック</strong>して編集できます。',
     sbContact: '連絡先', sbSkills: '主要スキル', sbLang: '言語',
     sbCert: '資格・免許', sbInfo: '基本情報',
     mainSummary: '✦ 自己PR', mainExp: '💼 職務経歴',
@@ -753,6 +762,10 @@ function setLang(lang) {
   document.getElementById('main-exp').textContent = d.mainExp;
   document.getElementById('main-edu').textContent = d.mainEdu;
   document.getElementById('main-award').textContent = d.mainAward;
+  // ── 컨트롤 패널 추가 번역 ──
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
 }
 </script>
 </body>

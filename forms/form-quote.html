@@ -633,21 +633,48 @@ var LANG_DATA_FORM = {
     tableHeaders: ['No','품목명','규격','수량','단가','공급가액','비고'],
     totalLabels: ['공급가액 합계','부가세 (10%)','합계금액'],
     bankLabel: '입금 계좌',
-    termsLabel: '특기사항'
+    termsLabel: '특기사항',
+    ctrlBackLink: '← 서식 목록',
+    ctrlTitle: '🧾 견적서 설정',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장',
+    ctrlLogoBtn: '📎 로고 선택 (PNG/JPG)',
+    addRowBtn: '+ 항목 추가',
+    ctrlL0: '회사 로고 업로드', ctrlL1: '견적서 번호', ctrlL2: '견적 일자', ctrlL3: '부가세 포함/제외',
+    ctrlP0: 'Q-2024-001', ctrlP1: '',
+    vatOptions: ['부가세 포함 (10%)', '부가세 제외']
   },
   en: {
     docTitle: 'QUOTATION',
     tableHeaders: ['No','Item Description','Specification','Qty','Unit Price','Amount','Remarks'],
     totalLabels: ['Subtotal','VAT (10%)','Total Amount'],
     bankLabel: 'Bank Account for Payment',
-    termsLabel: 'Special Terms & Conditions'
+    termsLabel: 'Special Terms & Conditions',
+    ctrlBackLink: '← Back to Forms',
+    ctrlTitle: '📋 Quotation',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF',
+    ctrlLogoBtn: '📎 Select Logo (PNG/JPG)',
+    addRowBtn: '+ Add Row',
+    ctrlL0: 'Company Logo', ctrlL1: 'Quote Number', ctrlL2: 'Quote Date', ctrlL3: 'VAT Setting',
+    ctrlP0: 'Q-2024-001', ctrlP1: '',
+    vatOptions: ['Include VAT (10%)', 'Exclude VAT']
   },
   ja: {
     docTitle: '見 &nbsp; 積 &nbsp; 書',
     tableHeaders: ['No','品目名','規格','数量','単価','供給価額','備考'],
     totalLabels: ['小計','消費税 (10%)','合計金額'],
     bankLabel: '振込先口座',
-    termsLabel: '特記事項'
+    termsLabel: '特記事項',
+    ctrlBackLink: '← 書式一覧',
+    ctrlTitle: '📋 見積書作成',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存',
+    ctrlLogoBtn: '📎 ロゴ選択 (PNG/JPG)',
+    addRowBtn: '+ 行を追加',
+    ctrlL0: '会社ロゴ', ctrlL1: '見積番号', ctrlL2: '見積日付', ctrlL3: '消費税設定',
+    ctrlP0: 'Q-2024-001', ctrlP1: '',
+    vatOptions: ['消費税込み (10%)', '消費税なし']
   }
 };
 
@@ -671,6 +698,23 @@ function setLang(lang) {
   var secLabels = document.querySelectorAll('.section-label');
   if (secLabels[0]) secLabels[0].textContent = d.termsLabel;
   if (secLabels[1]) secLabels[1].textContent = d.bankLabel;
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var h2 = document.querySelector('.ctrl-panel h2');
+  if (h2) h2.textContent = d.ctrlTitle;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var pb = document.querySelector('.print-btn'); if (pb) pb.textContent = d.printBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2','ctrlL3'].forEach(function(k,i){ if(cls[i] && d[k]) cls[i].textContent = d[k]; });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1'].forEach(function(k,i){ if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k]; });
+  var fu = document.querySelector('.ctrl-file-btn');
+  if (fu && d.ctrlLogoBtn) { for (var _n of fu.childNodes) { if (_n.nodeType === 3) { _n.textContent = d.ctrlLogoBtn; break; } } }
+  var addBtns = document.querySelectorAll('.add-row-btn');
+  if (addBtns.length && d.addRowBtn) addBtns.forEach(function(b){ b.textContent = d.addRowBtn; });
+  // VAT select options
+  if (d.vatOptions) { var sel = document.getElementById('vatToggle'); if (sel) d.vatOptions.forEach(function(t,i){ if(sel.options[i]) sel.options[i].text = t; }); }
 }
 
 // 로고 업로드

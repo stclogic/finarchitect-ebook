@@ -385,7 +385,15 @@ var LANG_DATA_FORM = {
     thSupplier: '공급자 (갑) <span class="sub">SUPPLIER</span>',
     thBuyer: '공급받는자 (을) <span class="sub">CLIENT</span>',
     tableHeaders: ['월일','품목','규격','수량','단가','공급가액','세액','합계','비고'],
-    totalLabel: '합계금액'
+    totalLabel: '합계금액',
+    ctrlBackLink: '← 서식 목록',
+    ctrlTitle: '📄 거래명세서 설정',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장',
+    ctrlLogoBtn: '📎 로고 선택',
+    addRowBtn: '+ 항목 추가',
+    ctrlL0: '로고 업로드', ctrlL1: '문서 번호', ctrlL2: '발행 일자',
+    ctrlP0: 'INV-2024-001', ctrlP1: ''
   },
   en: {
     docTitle: 'INVOICE',
@@ -393,7 +401,15 @@ var LANG_DATA_FORM = {
     thSupplier: 'Supplier (Party A)',
     thBuyer: 'Buyer (Party B)',
     tableHeaders: ['Date','Item','Spec','Qty','Unit Price','Supply Amount','Tax','Total','Remarks'],
-    totalLabel: 'Grand Total'
+    totalLabel: 'Grand Total',
+    ctrlBackLink: '← Back to Forms',
+    ctrlTitle: '📋 Invoice',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF',
+    ctrlLogoBtn: '📎 Select Logo',
+    addRowBtn: '+ Add Row',
+    ctrlL0: 'Company Logo', ctrlL1: 'Document Number', ctrlL2: 'Issue Date',
+    ctrlP0: 'INV-2024-001', ctrlP1: ''
   },
   ja: {
     docTitle: '取 &nbsp; 引 &nbsp; 明 &nbsp; 細 &nbsp; 書',
@@ -401,7 +417,15 @@ var LANG_DATA_FORM = {
     thSupplier: '供給者（甲）',
     thBuyer: '供給受領者（乙）',
     tableHeaders: ['月日','品目','規格','数量','単価','供給価額','税額','合計','備考'],
-    totalLabel: '合計金額'
+    totalLabel: '合計金額',
+    ctrlBackLink: '← 書式一覧',
+    ctrlTitle: '📋 取引明細書作成',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存',
+    ctrlLogoBtn: '📎 ロゴ選択',
+    addRowBtn: '+ 行を追加',
+    ctrlL0: '会社ロゴ', ctrlL1: '文書番号', ctrlL2: '発行日付',
+    ctrlP0: 'INV-2024-001', ctrlP1: ''
   }
 };
 
@@ -420,6 +444,21 @@ function setLang(lang) {
   var ths = document.querySelectorAll('#itemsTable thead th');
   d.tableHeaders.forEach(function(h, i) { if (ths[i]) ths[i].textContent = h; });
   document.getElementById('grandTotalLabel').textContent = d.totalLabel;
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var h2 = document.querySelector('.ctrl-panel h2');
+  if (h2) h2.textContent = d.ctrlTitle;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var pb = document.querySelector('.print-btn'); if (pb) pb.textContent = d.printBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2'].forEach(function(k,i){ if(cls[i] && d[k]) cls[i].textContent = d[k]; });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1'].forEach(function(k,i){ if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k]; });
+  var fu = document.querySelector('.ctrl-file-btn');
+  if (fu && d.ctrlLogoBtn) { for (var _n of fu.childNodes) { if (_n.nodeType === 3) { _n.textContent = d.ctrlLogoBtn; break; } } }
+  var addBtns = document.querySelectorAll('.add-row-btn');
+  if (addBtns.length && d.addRowBtn) addBtns.forEach(function(b){ b.textContent = d.addRowBtn; });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

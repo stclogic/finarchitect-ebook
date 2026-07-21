@@ -483,6 +483,10 @@ function numberToKorean(n) {
 var LANG_DATA = {
   ko: {
     ctrlTitle: '🏗️ 공사도급계약서', printBtn: '🖨️ 인쇄 / PDF 저장',
+    ctrlBackLink: '← 서식 목록', langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.', resetBtn: '↺ 초기화',
+    ctrlL0: '회사 로고 업로드', ctrlL1: '작성일', ctrlL2: '문서 번호', ctrlL3: '총 공사금액 (숫자)', ctrlL4: '하자보수 보증기간',
+    ctrlP0: '예: CON-2025-001',
+    tipBox: '💡 <strong>작성 Tip</strong><br>각 항목을 클릭하면 직접 편집할 수 있습니다. 공사 범위와 금액을 정확히 기재하고 당사자 쌍방이 서명·날인하세요.',
     docTitle: '공  사  도  급  계  약  서', docSub: 'CONSTRUCTION CONTRACT',
     thOwner: '도급인 (甲)', thContractor: '수급인 (乙)',
     sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
@@ -490,6 +494,10 @@ var LANG_DATA = {
   },
   en: {
     ctrlTitle: '🏗️ Construction Contract', printBtn: '🖨 Print / Save as PDF',
+    ctrlBackLink: '← Back to Forms', langNotice: '⚠ Switching language resets all content.', resetBtn: '↺ Reset',
+    ctrlL0: 'Company Logo', ctrlL1: 'Document Date', ctrlL2: 'Document No.', ctrlL3: 'Total Contract Amount (number)', ctrlL4: 'Defect Warranty Period',
+    ctrlP0: 'e.g. CON-2025-001',
+    tipBox: '💡 <strong>Writing Tip</strong><br>Click any field to edit directly. Accurately state the scope of work and amount, and have both parties sign and seal.',
     docTitle: 'CONSTRUCTION CONTRACT', docSub: 'Construction Work Order Agreement',
     thOwner: 'Owner (Party A)', thContractor: 'Contractor (Party B)',
     sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Construction Contract.',
@@ -497,6 +505,10 @@ var LANG_DATA = {
   },
   ja: {
     ctrlTitle: '🏗️ 工事請負契約書', printBtn: '🖨 印刷 / PDF保存',
+    ctrlBackLink: '← 書式一覧', langNotice: '⚠ 言語切替時にすべての内容がリセットされます。', resetBtn: '↺ リセット',
+    ctrlL0: '会社ロゴ', ctrlL1: '作成日', ctrlL2: '文書番号', ctrlL3: '総工事金額（数字）', ctrlL4: '瑕疵担保期間',
+    ctrlP0: '例：CON-2025-001',
+    tipBox: '💡 <strong>作成Tip</strong><br>各項目をクリックして直接編集できます。工事範囲と金額を正確に記載し、当事者双方が署名・押印してください。',
     docTitle: '工事請負契約書', docSub: 'CONSTRUCTION CONTRACT',
     thOwner: '注文者（甲）', thContractor: '請負人（乙）',
     sigPrefix: '上記契約の成立を証明するため、本契約書を作成して記名押印する。',
@@ -519,6 +531,20 @@ function setLang(lang) {
   d.articles.forEach(function(title, i) {
     var el = document.getElementById('at-' + (i+1));
     if (el) el.textContent = title;
+  });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"], .back-link, .ctrl-back-link');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox || '';
+  var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not([for="logoUpload"]):not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2','ctrlL3','ctrlL4','ctrlL5','ctrlL6','ctrlL7'].forEach(function(k,i){
+    if(cls[i] && d[k]) cls[i].textContent = d[k];
+  });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1','ctrlP2','ctrlP3','ctrlP4'].forEach(function(k,i){
+    if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k];
   });
 }
 

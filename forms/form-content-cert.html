@@ -180,14 +180,14 @@
     <a href="../forms.html" class="back-link">← 서식 목록</a>
     <h2>📮 내용증명</h2>
     <div class="ctrl-section">
-      <label>로고 업로드</label>
+      <label id="ctrlLbl0">로고 업로드</label>
       <label style="cursor:pointer;">
         <input type="file" accept="image/*" id="logoInput" style="display:none">
-        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
+        <div id="ctrlLogoDiv" style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
       </label>
     </div>
     <div class="ctrl-section">
-      <label>이행 기한</label>
+      <label id="ctrlLbl1">이행 기한</label>
       <input type="text" id="deadlineInput" placeholder="2026년 8월 1일">
     </div>
     <div class="ctrl-divider"></div>
@@ -330,19 +330,37 @@ var LANG_DATA_FORM = {
     docTitle: '내 &nbsp; 용 &nbsp; 증 &nbsp; 명', docSub: 'CERTIFIED DOCUMENT OF CONTENT',
     senderHeader: '📤 발 신 인', receiverHeader: '📥 수 신 인',
     certBoxText: '위 내용이 발송 문서와 동일함을 증명합니다.',
-    deadlineLabel: '이행 기한:', sigSenderLabel: '발신인:'
+    deadlineLabel: '이행 기한:', sigSenderLabel: '발신인:',
+    ctrlBackLink: '← 서식 목록', ctrlTitle: '📬 내용증명',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
+    tipBox: '📮 내용증명은 우체국에서 발송하면 법적 증거력이 생깁니다. 동일 내용 3부를 작성하세요 (발신인·수신인·우체국 각 1부).',
+    ctrlLogoBtn: '클릭하여 로고 선택',
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '이행 기한'
   },
   en: {
     docTitle: 'CERTIFIED MAIL CONTENT', docSub: 'Certificate of Mailing Content (Registered Mail)',
     senderHeader: '📤 Sender', receiverHeader: '📥 Recipient',
     certBoxText: 'We hereby certify that the above content is identical to the document mailed.',
-    deadlineLabel: 'Compliance Deadline:', sigSenderLabel: 'Sender:'
+    deadlineLabel: 'Compliance Deadline:', sigSenderLabel: 'Sender:',
+    ctrlBackLink: '← Back to Forms', ctrlTitle: '📬 Certified Mail Content',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
+    tipBox: '📮 Sending via registered mail at a post office creates legal evidentiary value. Prepare 3 identical copies (sender, recipient, post office).',
+    ctrlLogoBtn: 'Click to select logo',
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Compliance Deadline'
   },
   ja: {
     docTitle: '内 &nbsp; 容 &nbsp; 証 &nbsp; 明', docSub: '郵便による内容証明（書留郵便）',
     senderHeader: '📤 発 信 人', receiverHeader: '📥 受 信 人',
     certBoxText: '上記内容が発送文書と同一であることを証明します。',
-    deadlineLabel: '履行期限:', sigSenderLabel: '発信人:'
+    deadlineLabel: '履行期限:', sigSenderLabel: '発信人:',
+    ctrlBackLink: '← 書式一覧', ctrlTitle: '📬 内容証明',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
+    tipBox: '📮 郵便局から書留郵便で発送すると法的証拠力が生じます。同一内容3部を作成してください（発信人・受信人・郵便局各1部）。',
+    ctrlLogoBtn: 'ロゴを選択',
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '履行期限'
   }
 };
 function setLang(lang) {
@@ -355,6 +373,25 @@ function setLang(lang) {
   document.getElementById('certBoxText').textContent = d.certBoxText;
   document.getElementById('deadlineLabel').textContent = d.deadlineLabel;
   document.getElementById('sigSenderLabel').textContent = d.sigSenderLabel;
+  // ── 컨트롤 패널 UI ──
+  var backLink = document.querySelector('.back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.textContent = d.tipBox;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var printBtn = document.querySelector('.print-btn');
+  if (printBtn) printBtn.textContent = d.printBtn;
+  var ctrlLogoDiv = document.getElementById('ctrlLogoDiv');
+  if (ctrlLogoDiv) ctrlLogoDiv.textContent = d.ctrlLogoBtn;
+  var ctrlLbl0 = document.getElementById('ctrlLbl0');
+  if (ctrlLbl0) ctrlLbl0.textContent = d.ctrlLbl0;
+  var ctrlLbl1 = document.getElementById('ctrlLbl1');
+  if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
 }
 
 document.getElementById('deadlineInput').addEventListener('input', function(){

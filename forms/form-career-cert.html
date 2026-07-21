@@ -342,7 +342,7 @@
     </div>
     <div class="lang-notice">⚠ 언어 전환 시 내용이 초기화됩니다.</div>
     <div class="ctrl-divider"></div>
-    <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <button class="print-btn" id="print-btn" onclick="window.print()">🖨 인쇄 / PDF 저장</button>
     <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
 
     <div class="tip-box">
@@ -481,25 +481,55 @@ const LANGS = {
     ch:['재직기간','소속부서','직위·직책','담당업무'],
     totalCareerLabel:'총 경력 기간',
     certText:'위 사람의 경력이 사실임을 증명합니다.',
-    purposeLabel:'용    도'
+    purposeLabel:'용    도',
+    ctrlBackLink:'← 서식 목록', ctrlTitle:'📋 경력증명서 작성',
+    ctrlLogoLabel:'로고 업로드', ctrlFileBtn:'🖼 로고 이미지 선택',
+    ctrlLabels:['회사명','대표이사명','성명','문서번호'],
+    ctrlAddRowBtn:'+ 경력 행 추가',
+    ctrlPlaceholders:['예: (주)스타트업','예: 김대표','홍길동','예: 경력-2025-001'],
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    resetBtn:'↺ 초기화',
+    tipBox:'💡 표 안 셀을 클릭하면 직접 수정 가능합니다.<br>"경력 행 추가" 버튼으로 경력을 더 추가할 수 있습니다.<br>행 위에 마우스를 올리면 삭제 버튼이 나타납니다.',
+    printBtn:'🖨 인쇄 / PDF 저장'
   },
   en: {
     docTitle:'CERTIFICATE OF CAREER', docSub:'Employment History Certificate',
     ch:['Period of Employment','Department','Title & Position','Duties & Responsibilities'],
     totalCareerLabel:'Total Career Length',
     certText:'This is to certify that the above employment history is accurate and true.',
-    purposeLabel:'Purpose'
+    purposeLabel:'Purpose',
+    ctrlBackLink:'← Back to Forms', ctrlTitle:'📋 Career Certificate',
+    ctrlLogoLabel:'Logo Upload', ctrlFileBtn:'🖼 Select Logo Image',
+    ctrlLabels:['Company Name','CEO / Director','Full Name','Document No.'],
+    ctrlAddRowBtn:'+ Add Career Row',
+    ctrlPlaceholders:['e.g. Startup Inc.','e.g. John CEO','e.g. Jane Doe','e.g. CAR-2025-001'],
+    langNotice:'⚠ Switching language resets all content.',
+    resetBtn:'↺ Reset',
+    tipBox:'💡 Click any cell in the table to edit it directly.<br>Use "Add Career Row" to add more entries.<br>Hover over a row to reveal the delete button.',
+    printBtn:'🖨 Print / Save as PDF'
   },
   ja: {
     docTitle:'経  歴  証  明  書', docSub:'CERTIFICATE OF CAREER / EMPLOYMENT HISTORY',
     ch:['在職期間','所属部署','役職・職位','担当業務'],
     totalCareerLabel:'総経歴期間',
     certText:'上記の者の経歴が事実であることを証明します。',
-    purposeLabel:'提出用途'
+    purposeLabel:'提出用途',
+    ctrlBackLink:'← 書式一覧', ctrlTitle:'📋 経歴証明書作成',
+    ctrlLogoLabel:'ロゴアップロード', ctrlFileBtn:'🖼 ロゴ画像を選択',
+    ctrlLabels:['会社名','代表取締役名','氏名','文書番号'],
+    ctrlAddRowBtn:'+ 経歴行を追加',
+    ctrlPlaceholders:['例：株式会社スタートアップ','例：田中代表','例：山田太郎','例：経歴-2025-001'],
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    resetBtn:'↺ リセット',
+    tipBox:'💡 表内の各セルをクリックして直接編集できます。<br>「経歴行を追加」ボタンで経歴を追加できます。<br>行にマウスを乗せると削除ボタンが表示されます。',
+    printBtn:'🖨 印刷 / PDF保存'
   }
 };
 
+var _currentLang = 'ko';
 function setLang(lang) {
+  if (_currentLang === lang) return;
+  _currentLang = lang;
   const t = LANGS[lang];
   ['ko','en','ja'].forEach(l => {
     document.getElementById('btn-'+l).classList.toggle('active', l===lang);
@@ -510,6 +540,37 @@ function setLang(lang) {
   document.getElementById('totalCareerLabel').textContent = t.totalCareerLabel;
   document.getElementById('certText').textContent = t.certText;
   document.getElementById('purposeLabel').textContent = t.purposeLabel;
+  // ── ctrl panel UI ──
+  var backLink = document.querySelector('.ctrl-back-link');
+  if (backLink) backLink.textContent = t.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = t.ctrlTitle;
+  var ctrlLabels = document.querySelectorAll('.ctrl-panel .ctrl-section label:not(.ctrl-file-btn)');
+  t.ctrlLabels.forEach(function(txt, i) {
+    if (ctrlLabels[i]) ctrlLabels[i].textContent = txt;
+  });
+  if (ctrlLabels[4]) ctrlLabels[4].textContent = t.ctrlLogoLabel;
+  var fileBtn = document.querySelector('.ctrl-file-btn');
+  if (fileBtn) {
+    var inp = fileBtn.querySelector('input');
+    fileBtn.textContent = t.ctrlFileBtn;
+    if (inp) fileBtn.appendChild(inp);
+  }
+  var addRowBtn = document.querySelector('.add-row-btn');
+  if (addRowBtn) addRowBtn.textContent = t.ctrlAddRowBtn;
+  var ctrlInputs = document.querySelectorAll('.ctrl-panel .ctrl-section input[type=text]');
+  t.ctrlPlaceholders.forEach(function(ph, i) {
+    if (ctrlInputs[i]) ctrlInputs[i].placeholder = ph;
+  });
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = t.langNotice;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = t.resetBtn;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.innerHTML = t.tipBox;
+  var printBtn = document.getElementById('print-btn');
+  if (printBtn) printBtn.textContent = t.printBtn;
+  document.documentElement.lang = lang;
 }
 
 // 오늘 날짜 자동 입력

@@ -182,7 +182,7 @@
       </select>
     </div>
     <div class="ctrl-divider"></div>
-    <div style="font-size:0.78rem; font-weight:700; color:var(--text2); margin-bottom:0.7rem;">빠른 입력</div>
+    <div id="ctrl-quick-label" style="font-size:0.78rem; font-weight:700; color:var(--text2); margin-bottom:0.7rem;">빠른 입력</div>
     <div class="ctrl-section">
       <label>임대인(집주인)명</label>
       <input type="text" placeholder="홍임대" oninput="syncField('.f-lessor', this.value)">
@@ -513,18 +513,42 @@ var LANG_DATA_FORM = {
     thLandlord:'임대인 (갑)', thTenant:'임차인 (을)',
     sigLandlord:'임대인 (갑)', sigTenant:'임차인 (을)',
     clauses:['보증금 및 임료','임대 기간','목적물 인도 및 용도','수선 및 유지 관리','전대 및 권리 양도 금지','보증금 반환 및 연체 이자','임대인의 방문 및 점검','계약 해지 및 위약금','공과금 및 관리비','임대인 변경 및 매매','특약 사항','분쟁 해결'],
+    ctrlBackLink:'← 서식 목록', ctrlTitle:'⚙ 계약서 설정',
+    ctrlLogoLabel:'로고 업로드', ctrlFileBtn:'🏢 로고 선택', ctrlQuickLabel:'빠른 입력',
+    ctrlLabels:['계약 유형','임대인(집주인)명','임차인(세입자)명','소재지','보증금 (원)','월세 (원)','임대 기간'],
+    ctrlSelectOptions:['월세 계약','전세 계약','상가 임대'],
+    ctrlPlaceholders:['홍임대','김임차','서울시 마포구 상암동 123','100,000,000','1,000,000','2026.08.01 ~ 2028.07.31'],
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    resetBtn:'↺ 초기화',
+    tipBox:'💡 이 계약서는 <strong>주택임대차보호법</strong>에 따른 표준 양식입니다. 계약 체결 후 <strong>확정일자</strong> 및 <strong>전입신고</strong>를 반드시 진행하세요.',
     printBtn:'🖨 인쇄 / PDF 저장' },
   en: { docTitle:'LEASE AGREEMENT', docSub:'STANDARD LEASE CONTRACT · Based on Housing Lease Protection Act',
     titleMonthly:'RESIDENTIAL LEASE AGREEMENT', titleJeonse:'JEONSE LEASE AGREEMENT', titleCommercial:'COMMERCIAL LEASE AGREEMENT',
     thLandlord:'Landlord (Party A)', thTenant:'Tenant (Party B)',
     sigLandlord:'Landlord (Party A)', sigTenant:'Tenant (Party B)',
     clauses:['Art.1 — Deposit & Rent','Art.2 — Lease Period','Art.3 — Delivery & Use of Property','Art.4 — Repairs & Maintenance','Art.5 — Prohibition on Sublease & Transfer','Art.6 — Return of Deposit & Default Interest','Art.7 — Landlord Inspection Rights','Art.8 — Termination & Penalty','Art.9 — Utilities & Management Fees','Art.10 — Change of Landlord & Sale','Art.11 — Special Terms','Art.12 — Dispute Resolution'],
+    ctrlBackLink:'← Back to Forms', ctrlTitle:'⚙ Contract Settings',
+    ctrlLogoLabel:'Logo Upload', ctrlFileBtn:'🏢 Select Logo', ctrlQuickLabel:'Quick Fill',
+    ctrlLabels:['Contract Type','Landlord Name','Tenant Name','Property Address','Deposit (KRW)','Monthly Rent (KRW)','Lease Period'],
+    ctrlSelectOptions:['Monthly Rent','Jeonse (Key Money)','Commercial Lease'],
+    ctrlPlaceholders:['e.g. John Smith','e.g. Jane Doe','e.g. 123 Sangam-dong, Mapo-gu','100,000,000','1,000,000','2026.08.01 ~ 2028.07.31'],
+    langNotice:'⚠ Switching language resets all content.',
+    resetBtn:'↺ Reset',
+    tipBox:'💡 This contract follows the <strong>Housing Lease Protection Act</strong> standard. After signing, complete <strong>move-in registration</strong> and obtain a <strong>fixed date stamp</strong>.',
     printBtn:'🖨 Print / Save as PDF' },
   ja: { docTitle:'賃貸借契約書', docSub:'住宅賃貸借保護法に基づく標準契約書',
     titleMonthly:'住宅賃貸借契約書', titleJeonse:'チョンセ賃貸借契約書', titleCommercial:'商業用賃貸借契約書',
     thLandlord:'賃貸人（甲）', thTenant:'賃借人（乙）',
     sigLandlord:'賃貸人（甲）', sigTenant:'賃借人（乙）',
     clauses:['第1条 — 保証金及び賃料','第2条 — 賃貸期間','第3条 — 目的物の引渡し及び用途','第4条 — 修繕及び維持管理','第5条 — 転貸及び権利譲渡の禁止','第6条 — 保証金返還及び遅延損害金','第7条 — 賃貸人の訪問及び点検','第8条 — 契約解除及び違約金','第9条 — 公共料金及び管理費','第10条 — 賃貸人変更及び売買','第11条 — 特約事項','第12条 — 紛争解決'],
+    ctrlBackLink:'← 書式一覧', ctrlTitle:'⚙ 契約書設定',
+    ctrlLogoLabel:'ロゴアップロード', ctrlFileBtn:'🏢 ロゴ選択', ctrlQuickLabel:'クイック入力',
+    ctrlLabels:['契約種別','賃貸人（家主）名','賃借人（入居者）名','所在地','保証金（ウォン）','月額賃料（ウォン）','賃貸期間'],
+    ctrlSelectOptions:['月額賃料','チョンセ（一括保証金）','商業用賃貸'],
+    ctrlPlaceholders:['例：田中太郎','例：山田花子','例：ソウル市麻浦区上岩洞123','100,000,000','1,000,000','2026.08.01 ~ 2028.07.31'],
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    resetBtn:'↺ リセット',
+    tipBox:'💡 この契約書は<strong>住宅賃貸借保護法</strong>の標準様式です。契約後は速やかに<strong>転入届</strong>と<strong>確定日付</strong>を取得してください。',
     printBtn:'🖨 印刷 / PDF保存' }
 };
 
@@ -556,6 +580,46 @@ function setLang(lang) {
   });
   // print button
   document.getElementById('print-btn').textContent = d.printBtn;
+  // ── ctrl panel UI ──
+  var backLink = document.querySelector('.back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  // regular labels (excludes .ctrl-file-btn which contains an input)
+  var ctrlLabels = document.querySelectorAll('.ctrl-panel .ctrl-section label:not(.ctrl-file-btn)');
+  if (ctrlLabels[0]) ctrlLabels[0].textContent = d.ctrlLogoLabel;
+  d.ctrlLabels.forEach(function(txt, i) {
+    if (ctrlLabels[i + 1]) ctrlLabels[i + 1].textContent = txt;
+  });
+  // file button label
+  var fileBtn = document.querySelector('.ctrl-file-btn');
+  if (fileBtn) {
+    var inp = fileBtn.querySelector('input');
+    fileBtn.textContent = d.ctrlFileBtn;
+    if (inp) fileBtn.appendChild(inp);
+  }
+  // quick-fill section heading
+  var quickLabel = document.getElementById('ctrl-quick-label');
+  if (quickLabel) quickLabel.textContent = d.ctrlQuickLabel;
+  // select options (contract type)
+  var sel = document.querySelector('.ctrl-panel .ctrl-section select');
+  if (sel && d.ctrlSelectOptions) {
+    Array.from(sel.options).forEach(function(opt, i) {
+      if (d.ctrlSelectOptions[i]) opt.text = d.ctrlSelectOptions[i];
+    });
+  }
+  // text input placeholders (skip the select)
+  var ctrlInputs = document.querySelectorAll('.ctrl-panel .ctrl-section input[type=text]');
+  d.ctrlPlaceholders.forEach(function(ph, i) {
+    if (ctrlInputs[i]) ctrlInputs[i].placeholder = ph;
+  });
+  // lang notice, reset btn, tip box
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.innerHTML = d.tipBox;
   // html lang
   document.documentElement.lang = lang;
 }

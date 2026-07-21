@@ -515,7 +515,14 @@ const LANGS = {
     fh:['번호','자료명','보관 위치','담당자','비고'],
     sh:['시스템명','계정 (ID)','비밀번호 힌트','관리자 연락처'],
     infoLabel:'인수인계 부서',
-    sig:['인 계 자','인 수 자','확인자 (팀장)']
+    sig:['인 계 자','인 수 자','확인자 (팀장)'],
+    ctrlTitle:'⚙️ 문서 설정', ctrlBackLink:'← 서식 목록',
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn:'🖨 인쇄 / PDF 저장', ctrlLogoBtn:'📎 이미지 선택',
+    addRowBtn:'+ 행 추가',
+    ctrlL0:'문서 번호', ctrlL1:'작성일', ctrlL2:'기관/부서명', ctrlL3:'로고 업로드',
+    ctrlP0:'예) HO-2026-001', ctrlP1:'', ctrlP2:'예) ○○주식회사 기획팀',
+    tipBox:'💡 <strong>작성 안내.</strong> 셀을 클릭하여 바로 편집하세요. 보안 정보 기재 시 실제 비밀번호 대신 힌트만 입력하시기 바랍니다.'
   },
   en: {
     docTitle:'HANDOVER DOCUMENT', docSub:'Job Transition Record',
@@ -524,7 +531,14 @@ const LANGS = {
     fh:['No.','Document Name','Location','Owner','Remarks'],
     sh:['System Name','Account (ID)','Password Hint','Admin Contact'],
     infoLabel:'Department',
-    sig:['Handover Person','Receiving Person','Supervisor']
+    sig:['Handover Person','Receiving Person','Supervisor'],
+    ctrlTitle:'⚙️ Document Settings', ctrlBackLink:'← Back to Forms',
+    langNotice:'⚠ Switching language resets all content.',
+    printBtn:'🖨 Print / Save as PDF', ctrlLogoBtn:'📎 Select Logo',
+    addRowBtn:'+ Add Row',
+    ctrlL0:'Document No.', ctrlL1:'Date', ctrlL2:'Organization / Department', ctrlL3:'Upload Logo',
+    ctrlP0:'e.g. HO-2026-001', ctrlP1:'', ctrlP2:'e.g. ABC Corp. Planning Dept.',
+    tipBox:'💡 Click any cell to edit directly. For security info, enter a hint instead of the actual password.'
   },
   ja: {
     docTitle:'引 継 ぎ 書', docSub:'HANDOVER DOCUMENT',
@@ -533,7 +547,14 @@ const LANGS = {
     fh:['番号','資料名','保管場所','担当者','備考'],
     sh:['システム名','アカウント(ID)','パスワードヒント','管理者連絡先'],
     infoLabel:'引継部署',
-    sig:['引継者','引受者','確認者（チームリーダー）']
+    sig:['引継者','引受者','確認者（チームリーダー）'],
+    ctrlTitle:'⚙️ 文書設定', ctrlBackLink:'← 書式一覧',
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn:'🖨 印刷 / PDF保存', ctrlLogoBtn:'📎 ロゴ選択',
+    addRowBtn:'+ 行を追加',
+    ctrlL0:'文書番号', ctrlL1:'作成日', ctrlL2:'機関・部署名', ctrlL3:'ロゴアップロード',
+    ctrlP0:'例）HO-2026-001', ctrlP1:'', ctrlP2:'例）○○株式会社 企画チーム',
+    tipBox:'💡 セルをクリックして直接編集できます。パスワード欄には実際のパスワードではなくヒントを入力してください。'
   }
 };
 
@@ -556,6 +577,22 @@ function setLang(lang) {
   t.sh.forEach((h,i) => { document.getElementById('sh'+i).textContent = h; });
   // 서명란
   t.sig.forEach((s,i) => { document.getElementById('sig'+i).textContent = s; });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"]');
+  if (bk) bk.textContent = t.ctrlBackLink;
+  var h2 = document.querySelector('.ctrl-panel h2');
+  if (h2) h2.textContent = t.ctrlTitle;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = t.langNotice;
+  var pb = document.querySelector('.print-btn'); if (pb) pb.textContent = t.printBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2','ctrlL3'].forEach(function(k,i){ if(cls[i] && t[k]) cls[i].textContent = t[k]; });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1','ctrlP2'].forEach(function(k,i){ if(inps[i] && t[k]!==undefined) inps[i].placeholder = t[k]; });
+  var fuSpans = document.querySelectorAll('.ctrl-file-btn span');
+  if (fuSpans[1] && t.ctrlLogoBtn) fuSpans[1].textContent = t.ctrlLogoBtn;
+  var addBtns = document.querySelectorAll('.add-row-btn');
+  if (t.addRowBtn) addBtns.forEach(function(b){ b.textContent = t.addRowBtn; });
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = t.tipBox;
 }
 
 // 초기 데이터 삽입

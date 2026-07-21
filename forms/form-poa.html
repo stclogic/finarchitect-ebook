@@ -167,17 +167,17 @@
     <h2>📋 위임장</h2>
 
     <div class="ctrl-section">
-      <label>로고 업로드</label>
+      <label id="ctrlLbl0">로고 업로드</label>
       <label style="cursor:pointer;">
         <input type="file" accept="image/*" id="logoInput" style="display:none">
-        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">
+        <div id="ctrlLogoDiv" style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">
           클릭하여 로고 선택
         </div>
       </label>
     </div>
 
     <div class="ctrl-section">
-      <label>문서번호</label>
+      <label id="ctrlLbl1">문서번호</label>
       <input type="text" id="docNum" placeholder="POA-2026-001">
     </div>
 
@@ -344,21 +344,39 @@ var LANG_DATA_FORM = {
     certText: '본인은 아래 사항에 대하여 위와 같이 권한을 위임합니다.',
     sigPrefix: '위임인',
     agentLabel: '수 임 인', principalLabel: '위 임 인',
-    tableHeaders: ['위임 사항','위임 범위','위임 기간','제한 사항']
+    tableHeaders: ['위임 사항','위임 범위','위임 기간','제한 사항'],
+    ctrlBackLink: '← 서식 목록', ctrlTitle: '📋 위임장',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
+    tipBox: '💡 각 항목을 클릭하여 내용을 직접 수정하세요.',
+    ctrlLogoBtn: '클릭하여 로고 선택',
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호'
   },
   en: {
     docTitle: 'POWER OF ATTORNEY', docSub: 'Authorization Letter',
     certText: 'I hereby authorize the above-named agent to act on my behalf with respect to the matters listed below.',
     sigPrefix: 'Principal (Authorizer)',
     agentLabel: 'Agent (Authorized Person)', principalLabel: 'Principal (Authorizer)',
-    tableHeaders: ['Delegated Matter','Scope of Authority','Period of Delegation','Restrictions']
+    tableHeaders: ['Delegated Matter','Scope of Authority','Period of Delegation','Restrictions'],
+    ctrlBackLink: '← Back to Forms', ctrlTitle: '📋 Power of Attorney',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
+    tipBox: '💡 Click each field to edit the content directly.',
+    ctrlLogoBtn: 'Click to select logo',
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.'
   },
   ja: {
     docTitle: '委 &nbsp; 任 &nbsp; 状', docSub: '',
     certText: '本人は下記の事項について上記のとおり権限を委任します。',
     sigPrefix: '委任者',
     agentLabel: '受 任 者', principalLabel: '委 任 者',
-    tableHeaders: ['委任事項','委任範囲','委任期間','制限事項']
+    tableHeaders: ['委任事項','委任範囲','委任期間','制限事項'],
+    ctrlBackLink: '← 書式一覧', ctrlTitle: '📋 委任状',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
+    tipBox: '💡 各項目をクリックして内容を直接編集してください。',
+    ctrlLogoBtn: 'ロゴを選択',
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号'
   }
 };
 var _pseudoStyle = document.createElement('style');
@@ -372,6 +390,25 @@ function setLang(lang) {
   document.getElementById('sigPrefix').textContent = d.sigPrefix;
   d.tableHeaders.forEach(function(t, i){ var el = document.getElementById('th'+i); if(el) el.textContent = t; });
   _pseudoStyle.textContent = '.recipient-box::before{content:"' + d.agentLabel + '"!important}.delegator-box::before{content:"' + d.principalLabel + '"!important}';
+  // ── 컨트롤 패널 UI ──
+  var backLink = document.querySelector('.back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.textContent = d.tipBox;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var printBtn = document.querySelector('.print-btn');
+  if (printBtn) printBtn.textContent = d.printBtn;
+  var ctrlLogoDiv = document.getElementById('ctrlLogoDiv');
+  if (ctrlLogoDiv) ctrlLogoDiv.textContent = d.ctrlLogoBtn;
+  var ctrlLbl0 = document.getElementById('ctrlLbl0');
+  if (ctrlLbl0) ctrlLbl0.textContent = d.ctrlLbl0;
+  var ctrlLbl1 = document.getElementById('ctrlLbl1');
+  if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
 }
 
 document.getElementById('docNum').addEventListener('input', function(){

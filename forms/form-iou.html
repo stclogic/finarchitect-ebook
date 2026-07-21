@@ -203,7 +203,7 @@
       </label>
     </div>
     <div class="ctrl-divider"></div>
-    <div style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:.7rem;">빠른 입력</div>
+    <div id="ctrl-quick-label" style="font-size:0.78rem;font-weight:700;color:var(--text2);margin-bottom:.7rem;">빠른 입력</div>
     <div class="ctrl-section">
       <label>차용 금액 (숫자)</label>
       <input type="text" placeholder="10,000,000" oninput="updateAmount(this.value)">
@@ -462,18 +462,39 @@ var LANG_DATA_FORM = {
     sigBorrower:'차용인 (을) — 빌린 사람', sigLender:'대여인 (갑) — 빌려준 사람',
     amountLabel:'차 용 금 액',
     clauses:['차용 원금','이자','변제 기일 및 방법','기한 이익 상실','연체 이자','담보 및 연대보증','분쟁 해결'],
+    ctrlBackLink:'← 서식 목록', ctrlTitle:'⚙ 차용증 설정',
+    ctrlLogoLabel:'로고 업로드 (선택)', ctrlFileBtn:'🏢 로고 선택', ctrlQuickLabel:'빠른 입력',
+    ctrlLabels:['차용 금액 (숫자)','차용인 (빌린 사람)','대여인 (빌려준 사람)','이자율 (%/년)','변제 기일'],
+    ctrlPlaceholders:['10,000,000','홍길동','김대여','연 5%','2027년 07월 15일'],
+    langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
+    resetBtn:'↺ 초기화',
+    tipBox:'⚠ <strong>법적 효력 강화 방법</strong><br>① 공증사무소에서 <strong>공증</strong> 받기<br>② 이자 약정 시 <strong>이자제한법</strong> 상한(연 20%) 준수<br>③ 금융거래는 반드시 <strong>계좌이체</strong>로 증거 남기기<br>④ 작성 후 <strong>각 1부씩</strong> 보관',
     printBtn:'🖨 인쇄 / PDF 저장' },
   en: { docTitle:'LOAN AGREEMENT', docSub:'MONETARY LOAN CONTRACT · PROMISSORY NOTE',
     thBorrower:'Borrower (Debtor)', thLender:'Lender (Creditor)',
     sigBorrower:'Borrower (Debtor)', sigLender:'Lender (Creditor)',
     amountLabel:'LOAN AMOUNT',
     clauses:['Art.1 — Principal Amount','Art.2 — Interest','Art.3 — Repayment Date & Method','Art.4 — Acceleration Clause','Art.5 — Default Interest','Art.6 — Collateral & Guarantee','Art.7 — Dispute Resolution'],
+    ctrlBackLink:'← Back to Forms', ctrlTitle:'⚙ IOU Settings',
+    ctrlLogoLabel:'Logo Upload (Optional)', ctrlFileBtn:'🏢 Select Logo', ctrlQuickLabel:'Quick Fill',
+    ctrlLabels:['Loan Amount (Number)','Borrower (Debtor)','Lender (Creditor)','Interest Rate (%/yr)','Repayment Date'],
+    ctrlPlaceholders:['10,000,000','e.g. John Smith','e.g. Jane Doe','5% p.a.','Jul 15, 2027'],
+    langNotice:'⚠ Switching language resets all content.',
+    resetBtn:'↺ Reset',
+    tipBox:'⚠ <strong>Tips to strengthen legal validity</strong><br>① Get <strong>notarization</strong> at a notary office<br>② Keep interest at or below the legal limit (<strong>max 20%/yr</strong>)<br>③ Always transact via <strong>bank transfer</strong> for evidence<br>④ Each party keeps <strong>one copy</strong>',
     printBtn:'🖨 Print / Save as PDF' },
   ja: { docTitle:'金銭消費貸借契約書', docSub:'借用証書 · PROMISSORY NOTE',
     thBorrower:'借主（債務者）', thLender:'貸主（債権者）',
     sigBorrower:'借主（債務者）', sigLender:'貸主（債権者）',
     amountLabel:'借 用 金 額',
     clauses:['第1条 — 借用元金','第2条 — 利息','第3条 — 返済期日及び方法','第4条 — 期限の利益喪失','第5条 — 遅延損害金','第6条 — 担保及び連帯保証','第7条 — 紛争解決'],
+    ctrlBackLink:'← 書式一覧', ctrlTitle:'⚙ 借用証設定',
+    ctrlLogoLabel:'ロゴアップロード（任意）', ctrlFileBtn:'🏢 ロゴ選択', ctrlQuickLabel:'クイック入力',
+    ctrlLabels:['借用金額（数字）','借主（氏名）','貸主（氏名）','利率（%/年）','返済期日'],
+    ctrlPlaceholders:['10,000,000','例：田中太郎','例：山田次郎','年5%','2027年07月15日'],
+    langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
+    resetBtn:'↺ リセット',
+    tipBox:'⚠ <strong>法的効力を高める方法</strong><br>① 公証役場で<strong>公正証書</strong>を作成<br>② 利息は法定上限（年20%）以下に設定<br>③ 金銭授受は<strong>銀行振込</strong>で証拠を残す<br>④ 作成後は<strong>各1通</strong>保管',
     printBtn:'🖨 印刷 / PDF保存' }
 };
 
@@ -506,6 +527,39 @@ function setLang(lang) {
   });
   // print button
   document.getElementById('print-btn').textContent = d.printBtn;
+  // ── ctrl panel UI ──
+  var backLink = document.querySelector('.back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  // regular labels (excludes the styled file-button label)
+  var ctrlLabels = document.querySelectorAll('.ctrl-panel .ctrl-section label:not([style])');
+  if (ctrlLabels[0]) ctrlLabels[0].textContent = d.ctrlLogoLabel;
+  d.ctrlLabels.forEach(function(txt, i) {
+    if (ctrlLabels[i + 1]) ctrlLabels[i + 1].textContent = txt;
+  });
+  // file button label (has inline style, contains a hidden input)
+  var fileLabel = document.querySelector('.ctrl-panel .ctrl-section label[style]');
+  if (fileLabel) {
+    var inp = fileLabel.querySelector('input');
+    fileLabel.textContent = d.ctrlFileBtn;
+    if (inp) fileLabel.appendChild(inp);
+  }
+  // quick-fill section heading
+  var quickLabel = document.getElementById('ctrl-quick-label');
+  if (quickLabel) quickLabel.textContent = d.ctrlQuickLabel;
+  // input placeholders
+  var ctrlInputs = document.querySelectorAll('.ctrl-panel .ctrl-section input[type=text]');
+  d.ctrlPlaceholders.forEach(function(ph, i) {
+    if (ctrlInputs[i]) ctrlInputs[i].placeholder = ph;
+  });
+  // lang notice, reset btn, tip box
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.innerHTML = d.tipBox;
   // html lang
   document.documentElement.lang = lang;
 }

@@ -446,6 +446,10 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
 var LANG_DATA = {
   ko: {
     ctrlTitle: '🤝 동업계약서', printBtn: '🖨️ 인쇄 / PDF 저장',
+    ctrlBackLink: '← 서식 목록', langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.', resetBtn: '↺ 초기화',
+    ctrlL0: '회사 로고 업로드', ctrlL1: '작성일', ctrlL2: '문서 번호', ctrlL3: '상호 (사업체명)', ctrlL4: '총 출자금 (숫자)', ctrlL5: '파트너 수',
+    ctrlP0: '예: PRT-2025-001', ctrlP1: '예: ○○카페',
+    tipBox: '💡 <strong>작성 Tip</strong><br>손익 배분 비율과 탈퇴 조건을 반드시 명확히 기재하세요. 분쟁 예방을 위해 업무 범위도 구체적으로 정하는 것을 권장합니다.',
     docTitle: '동  업  계  약  서', docSub: 'PARTNERSHIP AGREEMENT',
     thA: '甲 — 대표 파트너', thB: '乙 — 파트너',
     sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
@@ -453,6 +457,10 @@ var LANG_DATA = {
   },
   en: {
     ctrlTitle: '🤝 Partnership Agreement', printBtn: '🖨 Print / Save as PDF',
+    ctrlBackLink: '← Back to Forms', langNotice: '⚠ Switching language resets all content.', resetBtn: '↺ Reset',
+    ctrlL0: 'Company Logo', ctrlL1: 'Document Date', ctrlL2: 'Document No.', ctrlL3: 'Business Name', ctrlL4: 'Total Capital (number)', ctrlL5: 'Number of Partners',
+    ctrlP0: 'e.g. PRT-2025-001', ctrlP1: 'e.g. ABC Café',
+    tipBox: '💡 <strong>Writing Tip</strong><br>Clearly specify the profit/loss sharing ratio and withdrawal conditions. It is recommended to define the scope of duties specifically to prevent disputes.',
     docTitle: 'PARTNERSHIP AGREEMENT', docSub: 'Business Partnership Contract',
     thA: 'Party A (Lead Partner)', thB: 'Party B (Partner)',
     sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Partnership Agreement.',
@@ -460,6 +468,10 @@ var LANG_DATA = {
   },
   ja: {
     ctrlTitle: '🤝 共同事業契約書', printBtn: '🖨 印刷 / PDF保存',
+    ctrlBackLink: '← 書式一覧', langNotice: '⚠ 言語切替時にすべての内容がリセットされます。', resetBtn: '↺ リセット',
+    ctrlL0: '会社ロゴ', ctrlL1: '作成日', ctrlL2: '文書番号', ctrlL3: '商号（事業体名）', ctrlL4: '総出資金（数字）', ctrlL5: 'パートナー数',
+    ctrlP0: '例：PRT-2025-001', ctrlP1: '例：○○カフェ',
+    tipBox: '💡 <strong>作成Tip</strong><br>損益配分比率と脱退条件を必ず明確に記載してください。紛争予防のため、業務範囲も具体的に定めることをお勧めします。',
     docTitle: '共同事業契約書', docSub: 'PARTNERSHIP AGREEMENT',
     thA: '甲（代表パートナー）', thB: '乙（パートナー）',
     sigPrefix: '上記契約の成立を証明するため、本契約書を作成して記名押印する。',
@@ -482,6 +494,20 @@ function setLang(lang) {
   d.articles.forEach(function(title, i) {
     var el = document.getElementById('at-' + (i+1));
     if (el) el.textContent = title;
+  });
+  // ── 컨트롤 패널 전체 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"], .back-link, .ctrl-back-link');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox || '';
+  var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
+  var cls = document.querySelectorAll('.ctrl-section label:not([for="logoUpload"]):not(.ctrl-file-btn)');
+  ['ctrlL0','ctrlL1','ctrlL2','ctrlL3','ctrlL4','ctrlL5','ctrlL6','ctrlL7'].forEach(function(k,i){
+    if(cls[i] && d[k]) cls[i].textContent = d[k];
+  });
+  var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
+  ['ctrlP0','ctrlP1','ctrlP2','ctrlP3','ctrlP4'].forEach(function(k,i){
+    if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k];
   });
 }
 

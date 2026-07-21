@@ -576,10 +576,11 @@ var LANG_DATA = {
     thEmployer: '사용자 (갑)', thEmployee: '근로자 (을)',
     sigDatePrefix: '위 계약의 성립을 증명하기 위하여 이 계약서를 작성하고 쌍방이 서명·날인한다.',
     sigTitleA: '사용자 (갑)', sigTitleB: '근로자 (을)',
-    ctrlTitle: '⚙ 계약서 설정', ctrlLogo: '사용자 로고', ctrlQuick: '빠른 입력',
+    ctrlTitle: '📋 고용계약서', ctrlLogo: '사용자 로고', ctrlQuick: '빠른 입력',
     ctrlEmployer: '사용자(사업주)명', ctrlEmployee: '근로자명',
     ctrlStart: '계약 시작일', ctrlSalary: '기본급 (월)',
     ctrlWorkplace: '근무 장소', ctrlPosition: '직무/직책',
+    ctrlBackLink: '← 서식 목록', langNotice: '⚠ 언어 전환 시 편집 내용이 초기화됩니다.', resetBtn: '↺ 초기화',
     printBtn: '🖨 인쇄 / PDF 저장', tip: '💡 좌측 입력 또는 문서를 직접 클릭하여 편집하세요.<br><strong>인쇄 → PDF로 저장</strong>을 선택하면 PDF 파일로 저장됩니다.',
     clauses: [
       { title: '계약 기간', body: '① 근로계약 기간은 <span contenteditable="true" class="field-startDate">2026년 07월 16일</span>부터 기간의 정함이 없는 근로계약(정규직)으로 한다.<br>② 단, 수습 기간 <span contenteditable="true">3개월</span>을 두며, 수습 기간 중 현저한 업무 부적합이 확인될 경우 본 계약을 해지할 수 있다.<br>③ 수습 기간 중 임금은 제5조에서 정한 기본급의 <span contenteditable="true">90</span>%를 지급한다.' },
@@ -604,10 +605,11 @@ var LANG_DATA = {
     thEmployer: 'Employer (Party A)', thEmployee: 'Employee (Party B)',
     sigDatePrefix: 'In witness whereof, the parties hereto have executed this Employment Contract as of the date written below.',
     sigTitleA: 'Employer (Party A)', sigTitleB: 'Employee (Party B)',
-    ctrlTitle: '⚙ Contract Settings', ctrlLogo: 'Company Logo', ctrlQuick: 'Quick Input',
+    ctrlTitle: '📋 Employment Contract', ctrlLogo: 'Company Logo', ctrlQuick: 'Quick Input',
     ctrlEmployer: 'Employer Name', ctrlEmployee: 'Employee Name',
     ctrlStart: 'Start Date', ctrlSalary: 'Base Salary (Monthly)',
     ctrlWorkplace: 'Workplace', ctrlPosition: 'Job Title / Position',
+    ctrlBackLink: '← Back to Forms', langNotice: '⚠ Switching language resets all content.', resetBtn: '↺ Reset',
     printBtn: '🖨 Print / Save as PDF', tip: '💡 Click any field in the document to edit directly.<br>Select <strong>Print → Save as PDF</strong> to export.',
     clauses: [
       { title: 'Article 1 — Contract Period', body: '① This employment contract shall be effective from <span contenteditable="true" class="field-startDate">July 16, 2026</span> as an indefinite-term contract (regular full-time).<br>② A probationary period of <span contenteditable="true">3 months</span> shall apply. If significant unsuitability is found during this period, this contract may be terminated.<br>③ Wages during the probationary period shall be <span contenteditable="true">90</span>% of the base salary stipulated in Article 5.' },
@@ -632,10 +634,11 @@ var LANG_DATA = {
     thEmployer: '使用者（甲）', thEmployee: '労働者（乙）',
     sigDatePrefix: '上記契約の成立を証明するため、本契約書を作成し、双方が署名・押印する。',
     sigTitleA: '使用者（甲）', sigTitleB: '労働者（乙）',
-    ctrlTitle: '⚙ 契約書設定', ctrlLogo: '会社ロゴ', ctrlQuick: '簡単入力',
+    ctrlTitle: '📋 雇用契約書', ctrlLogo: '会社ロゴ', ctrlQuick: '簡単入力',
     ctrlEmployer: '使用者（事業主）名', ctrlEmployee: '労働者名',
     ctrlStart: '契約開始日', ctrlSalary: '基本給（月額）',
     ctrlWorkplace: '勤務場所', ctrlPosition: '職務・職位',
+    ctrlBackLink: '← 書式一覧', langNotice: '⚠ 言語切替時にすべての内容がリセットされます。', resetBtn: '↺ リセット',
     printBtn: '🖨 印刷 / PDF保存', tip: '💡 左側の入力欄または書類を直接クリックして編集できます。<br><strong>印刷 → PDFとして保存</strong>を選択するとPDFファイルに保存されます。',
     clauses: [
       { title: '第1条 — 契約期間', body: '① 雇用契約期間は<span contenteditable="true" class="field-startDate">2026年7月16日</span>から期間の定めのない雇用契約（正規雇用）とする。<br>② ただし、試用期間を<span contenteditable="true">3ヶ月</span>とし、試用期間中に著しい業務不適合が確認された場合は本契約を解除できる。<br>③ 試用期間中の賃金は第5条に定める基本給の<span contenteditable="true">90</span>%を支給する。' },
@@ -708,6 +711,12 @@ function setLang(lang) {
   // 팁 박스
   var tip = document.querySelector('.tip-box');
   if (tip) tip.innerHTML = d.tip;
+
+  // ── 컨트롤 패널 추가 번역 ──
+  var bk = document.querySelector('a[href="../forms.html"], .back-link, .ctrl-back-link');
+  if (bk) bk.textContent = d.ctrlBackLink;
+  var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
+  var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
 
   // 현재 syncField 값 재적용
   ['employer','employee','startDate','salary','workplace','position'].forEach(function(k) {

@@ -153,15 +153,15 @@
     <a href="../forms.html" class="back-link">← 서식 목록</a>
     <h2>✍ 각서</h2>
     <div class="ctrl-section">
-      <label>로고 업로드</label>
+      <label id="ctrlLbl0">로고 업로드</label>
       <label style="cursor:pointer;">
         <input type="file" accept="image/*" id="logoInput" style="display:none">
-        <div style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
+        <div id="ctrlLogoDiv" style="border:1.5px dashed #94a3b8;border-radius:8px;padding:10px;text-align:center;font-size:.78rem;color:#64748b;cursor:pointer;">클릭하여 로고 선택</div>
       </label>
     </div>
     <div class="ctrl-section">
-      <label>서약 항목 추가</label>
-      <button onclick="addItem()" style="width:100%;padding:9px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;font-size:.84rem;color:#1E40AF;cursor:pointer;font-weight:600;">+ 항목 추가</button>
+      <label id="ctrlLbl1">서약 항목 추가</label>
+      <button id="addItemBtn" onclick="addItem()" style="width:100%;padding:9px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;font-size:.84rem;color:#1E40AF;cursor:pointer;font-weight:600;">+ 항목 추가</button>
     </div>
     <div class="ctrl-divider"></div>
     <div style="font-size:0.78rem;font-weight:700;color:var(--text2,#64748b);margin-bottom:0.5rem;">언어 / Language / 言語</div>
@@ -267,17 +267,35 @@ var LANG_DATA_FORM = {
   ko: {
     docTitle: '각 &nbsp;&nbsp; 서', docSub: '',
     lblTo: '수 신:', lblSubject: '제 목:',
-    sigTitle: '서 약 인'
+    sigTitle: '서 약 인',
+    ctrlBackLink: '← 서식 목록', ctrlTitle: '✍ 각서',
+    langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
+    printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
+    tipBox: '⚠ 각서는 법적 효력이 있는 문서입니다. 내용을 정확히 확인 후 서명하세요.',
+    ctrlLogoBtn: '클릭하여 로고 선택',
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '서약 항목 추가', addItemBtn: '+ 항목 추가'
   },
   en: {
     docTitle: 'WRITTEN PLEDGE', docSub: 'Affidavit of Commitment',
     lblTo: 'Addressee:', lblSubject: 'Subject:',
-    sigTitle: 'Pledgor'
+    sigTitle: 'Pledgor',
+    ctrlBackLink: '← Back to Forms', ctrlTitle: '✍ Written Pledge',
+    langNotice: '⚠ Switching language resets all content.',
+    printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
+    tipBox: '⚠ This pledge is a legally binding document. Review all content carefully before signing.',
+    ctrlLogoBtn: 'Click to select logo',
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Add Pledge Item', addItemBtn: '+ Add Item'
   },
   ja: {
     docTitle: '誓 &nbsp;&nbsp; 約 &nbsp;&nbsp; 書', docSub: '',
     lblTo: '宛先:', lblSubject: '件名:',
-    sigTitle: '誓約者'
+    sigTitle: '誓約者',
+    ctrlBackLink: '← 書式一覧', ctrlTitle: '✍ 誓約書',
+    langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
+    printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
+    tipBox: '⚠ 誓約書は法的効力を持つ文書です。内容を十分確認してから署名してください。',
+    ctrlLogoBtn: 'ロゴを選択',
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '誓約項目追加', addItemBtn: '+ 項目追加'
   }
 };
 function setLang(lang) {
@@ -287,6 +305,27 @@ function setLang(lang) {
   document.getElementById('lblTo').textContent = d.lblTo;
   document.getElementById('lblSubject').textContent = d.lblSubject;
   document.getElementById('sigTitle').textContent = d.sigTitle;
+  // ── 컨트롤 패널 UI ──
+  var backLink = document.querySelector('.back-link');
+  if (backLink) backLink.textContent = d.ctrlBackLink;
+  var ctrlH2 = document.querySelector('.ctrl-panel h2');
+  if (ctrlH2) ctrlH2.textContent = d.ctrlTitle;
+  var langNotice = document.querySelector('.lang-notice');
+  if (langNotice) langNotice.textContent = d.langNotice;
+  var tipBox = document.querySelector('.tip-box');
+  if (tipBox) tipBox.textContent = d.tipBox;
+  var resetBtn = document.querySelector('.reset-btn');
+  if (resetBtn) resetBtn.textContent = d.resetBtn;
+  var printBtn = document.querySelector('.print-btn');
+  if (printBtn) printBtn.textContent = d.printBtn;
+  var ctrlLogoDiv = document.getElementById('ctrlLogoDiv');
+  if (ctrlLogoDiv) ctrlLogoDiv.textContent = d.ctrlLogoBtn;
+  var ctrlLbl0 = document.getElementById('ctrlLbl0');
+  if (ctrlLbl0) ctrlLbl0.textContent = d.ctrlLbl0;
+  var ctrlLbl1 = document.getElementById('ctrlLbl1');
+  if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
+  var addItemBtn = document.getElementById('addItemBtn');
+  if (addItemBtn) addItemBtn.textContent = d.addItemBtn;
 }
 
 let itemCount = 3;

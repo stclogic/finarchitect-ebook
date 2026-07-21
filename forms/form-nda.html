@@ -137,25 +137,44 @@
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 /* ── Print ── */
 @media print {
-  .ctrl-panel, nav, footer, .back-link, .doc-wrap > *:not(.doc-page) { display: none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  .form-page-wrap { display: block; padding: 0; }
-  .doc-wrap { background: none; padding: 0; }
-  .doc-page { width: 100%; box-shadow: none; margin: 0; }
-  @page { size: A4; margin: 0; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -433,7 +452,26 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
     tipBox: '💡 파란색 텍스트를 클릭하면 직접 편집할 수 있습니다. 서명란에 당사자 정보를 입력 후 인쇄하세요.',
     ctrlLogoBtn: '클릭하여 로고 선택',
-    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호', ctrlLbl2: '비밀유지 기간 (년)'
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호', ctrlLbl2: '비밀유지 기간 (년)',
+    partyTdRows: [
+      '회 사 명: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp; 대 표 자: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+      '사업자번호: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp; 주&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+    ],
+    sigLabels: ['회사명', '대표자', '주&nbsp;&nbsp;&nbsp;&nbsp;소', '서&nbsp;&nbsp;&nbsp;&nbsp;명'],
+    stampCircle: '인',
+    preamble: '갑과 을(이하 "당사자"라 한다)은 상호 간의 사업 협의 및 협력(이하 "목적"이라 한다)을 위하여 교환되는 비밀정보의 보호를 위해 다음과 같이 비밀유지계약을 체결한다.',
+    clauseBodies: [
+      '본 계약에서 "비밀정보"란 당사자 일방이 상대방에게 구두, 서면, 전자적 방법 등으로 제공하는 일체의 정보로서, 영업비밀, 기술정보, 재무정보, 고객정보, 사업계획, 연구개발 자료, 소프트웨어 및 이에 준하는 모든 정보를 포함한다.',
+      '수령 당사자는 제공 당사자의 사전 서면 동의 없이 비밀정보를 제3자에게 공개, 누설, 제공하거나 목적 이외의 용도로 사용하여서는 아니 된다. 비밀정보에 대한 접근은 업무상 필요한 최소한의 인원으로 제한하여야 한다.',
+      '다음 각 호에 해당하는 정보는 비밀정보에서 제외된다: ① 수령 시점에 이미 공지된 정보, ② 수령 이후 수령자의 귀책 없이 공지된 정보, ③ 수령자가 비밀유지 의무 없이 제3자로부터 합법적으로 취득한 정보, ④ 법원·수사기관의 명령에 의하여 공개가 강제되는 정보 (단, 즉시 통보 의무 있음).',
+      '본 계약이 종료되거나 제공 당사자의 요청이 있는 경우, 수령 당사자는 지체 없이 비밀정보가 담긴 자료(사본 포함)를 반환하거나 완전히 파기하고, 그 결과를 서면으로 확인하여야 한다.',
+      '비밀유지 의무는 본 계약 체결일로부터 <span id="periodDisplay" contenteditable="true">3</span>년간 유효하며, 계약 종료 후에도 동 기간 동안 유지된다.',
+      '본 계약에 따른 비밀정보의 제공은 어떠한 지식재산권의 양도 또는 라이선스를 의미하지 아니하며, 비밀정보에 관한 모든 권리는 제공 당사자에게 귀속된다.',
+      '비밀유지 의무를 위반한 당사자는 상대방에게 이로 인한 모든 손해를 배상하여야 한다. 이 경우 실손해 외에 위약벌로서 금 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>원을 지급하기로 한다.',
+      '본 계약은 체결일로부터 효력이 발생하며, 어느 일방이 서면으로 30일 전 통보 시 해지할 수 있다. 단, 이미 공개된 비밀정보에 대한 보호 의무는 해지 후에도 제5조 기간 동안 존속한다.',
+      '본 계약은 비밀정보의 보호에 관한 당사자 간 완전한 합의를 구성하며, 이에 관한 종전의 구두·서면 합의를 대체한다. 본 계약의 수정은 당사자 쌍방의 서면 합의에 의하여야만 효력이 있다.',
+      '본 계약은 대한민국 법률에 따라 해석·적용된다. 본 계약과 관련된 분쟁은 먼저 협의로 해결하되, 협의가 이루어지지 않을 경우 <span contenteditable="true">서울중앙지방법원</span>을 전속 관할법원으로 한다.'
+    ]
   },
   en: {
     docTitle: 'NON-DISCLOSURE AGREEMENT', docSub: 'Confidentiality Agreement',
@@ -446,7 +484,26 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
     tipBox: '💡 Click blue text to edit directly. Fill in party details in the signature fields, then print.',
     ctrlLogoBtn: 'Click to select logo',
-    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.', ctrlLbl2: 'Confidentiality Period (years)'
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.', ctrlLbl2: 'Confidentiality Period (years)',
+    preamble: 'Party A and Party B (collectively, the "Parties") enter into this Non-Disclosure Agreement to protect Confidential Information exchanged for the purpose of business discussions and cooperation (the "Purpose").',
+    partyTdRows: [
+      'Company: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp; Representative: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+      'Business Reg. No.: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp; Address: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+    ],
+    sigLabels: ['Company', 'Representative', 'Address', 'Signature'],
+    stampCircle: 'SEAL',
+    clauseBodies: [
+      '"Confidential Information" means any and all information disclosed by one Party to the other, whether orally, in writing, or by electronic means, including without limitation trade secrets, technical data, financial information, customer data, business plans, research and development materials, software, and any other information of a similar nature.',
+      'The Receiving Party shall not, without the prior written consent of the Disclosing Party, disclose, reveal, or provide Confidential Information to any third party, nor use it for any purpose other than the Purpose. Access to Confidential Information shall be restricted to the minimum number of personnel who have a legitimate need to know.',
+      'The following information shall be excluded from the definition of Confidential Information: ① information already in the public domain at the time of disclosure; ② information that enters the public domain after disclosure through no fault of the Receiving Party; ③ information lawfully obtained by the Receiving Party from a third party without any obligation of confidentiality; ④ information whose disclosure is compelled by court or governmental order (provided that the Receiving Party shall promptly notify the Disclosing Party).',
+      'Upon termination of this Agreement or upon request by the Disclosing Party, the Receiving Party shall promptly return or completely destroy all materials (including copies) containing Confidential Information and confirm such action in writing.',
+      'The confidentiality obligation shall remain in effect for <span id="periodDisplay" contenteditable="true">3</span> year(s) from the date of execution of this Agreement and shall survive its termination for the same period.',
+      'The disclosure of Confidential Information under this Agreement shall not constitute or imply any assignment of or license to any intellectual property rights. All rights in and to the Confidential Information shall remain vested in the Disclosing Party.',
+      'A Party that breaches its confidentiality obligation shall indemnify the other Party for all resulting damages. In addition to actual damages, the breaching Party shall pay a contractual penalty of KRW <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> as liquidated damages.',
+      'This Agreement shall take effect on the date of execution and may be terminated by either Party upon thirty (30) days prior written notice. However, the obligation to protect Confidential Information already disclosed shall survive termination for the period set forth in Article 5.',
+      'This Agreement constitutes the entire agreement between the Parties with respect to the protection of Confidential Information and supersedes all prior oral or written agreements relating thereto. Any amendment to this Agreement shall be valid only if made in writing and signed by both Parties.',
+      'This Agreement shall be interpreted and governed by the laws of the Republic of Korea. Any dispute arising in connection with this Agreement shall first be resolved through negotiation between the Parties; failing which, the <span contenteditable="true">Seoul Central District Court</span> shall have exclusive jurisdiction.'
+    ]
   },
   ja: {
     docTitle: '秘 密 保 持 契 約 書', docSub: 'Non-Disclosure Agreement',
@@ -459,7 +516,26 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
     tipBox: '💡 青いテキストをクリックして直接編集できます。署名欄に当事者情報を入力後、印刷してください。',
     ctrlLogoBtn: 'ロゴを選択',
-    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号', ctrlLbl2: '秘密保持期間（年）'
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号', ctrlLbl2: '秘密保持期間（年）',
+    preamble: '甲及び乙（以下「当事者」という）は、事業上の協議及び協力（以下「目的」という）のために交換される秘密情報の保護を目的として、次のとおり秘密保持契約を締結する。',
+    partyTdRows: [
+      '会 社 名: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp; 代 表 者: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+      '法人番号: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp; 住　　所: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+    ],
+    sigLabels: ['会社名', '代表者', '住　　所', '署　　名'],
+    stampCircle: '印',
+    clauseBodies: [
+      '本契約において「秘密情報」とは、当事者の一方が相手方に対し、口頭、書面、電子的手段その他の方法により開示するすべての情報をいい、営業秘密、技術情報、財務情報、顧客情報、事業計画、研究開発資料、ソフトウェアおよびこれらに準じる一切の情報を含む。',
+      '情報受領者は、情報開示者の事前の書面による同意なしに、秘密情報を第三者に開示、漏洩もしくは提供し、または目的以外の用途に使用してはならない。秘密情報へのアクセスは、業務上必要な最小限の人員に限定しなければならない。',
+      '次の各号に該当する情報は秘密情報から除外される。① 開示時点ですでに公知となっている情報、② 開示後に受領者の責めに帰さない事由により公知となった情報、③ 受領者が秘密保持義務を負わない第三者から適法に取得した情報、④ 裁判所・捜査機関の命令により開示が強制される情報（ただし、直ちに通知する義務を負う）。',
+      '本契約が終了し、または情報開示者の求めがある場合、情報受領者は遅滞なく秘密情報が含まれる資料（複製物を含む）を返還または完全に廃棄し、その結果を書面で確認しなければならない。',
+      '秘密保持義務は、本契約締結日から <span id="periodDisplay" contenteditable="true">3</span> 年間有効であり、契約終了後も同期間存続する。',
+      '本契約に基づく秘密情報の開示は、いかなる知的財産権の譲渡またはライセンスをも意味せず、秘密情報に関するすべての権利は情報開示者に帰属する。',
+      '秘密保持義務に違反した当事者は、相手方に生じたすべての損害を賠償しなければならない。この場合、実損害に加え、違約罰として金 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> ウォンを支払うものとする。',
+      '本契約は締結日から効力を生じ、いずれか一方が書面により30日前に通知することで解除できる。ただし、すでに開示された秘密情報に対する保護義務は、解除後も第5条所定の期間存続する。',
+      '本契約は秘密情報の保護に関する当事者間の完全な合意を構成し、これに関する従前のすべての口頭・書面による合意に優先する。本契約の変更は、当事者双方の書面による合意によってのみ効力を生じる。',
+      '本契約は大韓民国の法律に従い解釈・適用される。本契約に関する紛争はまず当事者間の協議により解決し、協議が成立しない場合は <span contenteditable="true">ソウル中央地方裁判所</span> を専属的管轄裁判所とする。'
+    ]
   }
 };
 function setLang(lang) {
@@ -498,6 +574,35 @@ function setLang(lang) {
   if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
   var ctrlLbl2 = document.getElementById('ctrlLbl2');
   if (ctrlLbl2) ctrlLbl2.textContent = d.ctrlLbl2;
+  // ── 문서 본문 번역 ──
+  // 서문 단락
+  var _preamble = document.querySelector('.doc-body > p');
+  if (_preamble && d.preamble) _preamble.textContent = d.preamble;
+  // 당사자 테이블 행 내용 (partyTdRows: [row1HTML, row2HTML] — 甲·乙 공통)
+  if (d.partyTdRows) {
+    var _ptds = document.querySelectorAll('.party-table td');
+    // td 0 = 甲 row1, td 1 = 甲 row2, td 2 = 乙 row1, td 3 = 乙 row2
+    [0, 2].forEach(function(i) { if (_ptds[i]) _ptds[i].innerHTML = d.partyTdRows[0]; });
+    [1, 3].forEach(function(i) { if (_ptds[i]) _ptds[i].innerHTML = d.partyTdRows[1]; });
+  }
+  // 서명란 레이블
+  if (d.sigLabels) {
+    var _sigRows = document.querySelectorAll('.sig-row');
+    var _siIdx = 0;
+    _sigRows.forEach(function(row) {
+      var lbl = row.querySelector('.sig-label');
+      if (lbl) { lbl.innerHTML = d.sigLabels[_siIdx % d.sigLabels.length]; _siIdx++; }
+    });
+  }
+  // 도장 원
+  if (d.stampCircle) {
+    document.querySelectorAll('.stamp-circle').forEach(function(el) { el.textContent = d.stampCircle; });
+  }
+  // 조항 본문
+  var _clauseBodies = document.querySelectorAll('.clause-body');
+  if (d.clauseBodies) {
+    d.clauseBodies.forEach(function(html, i) { if (_clauseBodies[i]) _clauseBodies[i].innerHTML = html; });
+  }
 }
 
 // 로고 업로드

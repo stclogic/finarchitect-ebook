@@ -139,26 +139,44 @@
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 
 @media print {
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
   body { background: #fff !important; }
-  .ctrl-panel, .doc-wrap > *:not(.a4-page), .back-link,
-  nav, footer, .site-nav, .site-footer { display: none !important; }
   .form-page-wrap { display: block !important; padding: 0 !important; }
-  .doc-wrap { background: none !important; padding: 0 !important; }
-  .a4-page { width: 100% !important; min-height: unset !important; box-shadow: none !important; padding: 14mm 12mm !important; }
-  [contenteditable="true"] { background: transparent !important; box-shadow: none !important; }
-  .contract-logo-placeholder { display: none !important; }
-  .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-  @page { size: A4; margin: 0; }
-}
-@media (max-width: 900px) {
-  .form-page-wrap { grid-template-columns: 1fr; }
-  .ctrl-panel { position: static; }
-  .a4-page { width: 100%; min-height: unset; font-size: 8pt; }
+
+  /* 서명란은 이전 내용과 함께 유지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -513,6 +531,25 @@ var LANG_DATA_FORM = {
     thLandlord:'임대인 (갑)', thTenant:'임차인 (을)',
     sigLandlord:'임대인 (갑)', sigTenant:'임차인 (을)',
     clauses:['보증금 및 임료','임대 기간','목적물 인도 및 용도','수선 및 유지 관리','전대 및 권리 양도 금지','보증금 반환 및 연체 이자','임대인의 방문 및 점검','계약 해지 및 위약금','공과금 및 관리비','임대인 변경 및 매매','특약 사항','분쟁 해결'],
+    propBoxTitle:'【 임대 목적물의 표시 】',
+    propLabels:['소 재 지','건물 종류','전용 면적','구 조','층 / 호','등기부 지번'],
+    sigDateHTML:'위 계약 내용을 확인하고 계약 당사자가 서명·날인한다.<br><strong><span contenteditable="true">2026</span>년 <span contenteditable="true">07</span>월 <span contenteditable="true">16</span>일</strong>',
+    sigFieldLabels:['성 명','주민번호','연락처','주 소','서 명','성 명','주민번호','연락처','주 소','서 명','사무소명','대표자','등록번호','서 명'],
+    witnessTitle:'[ 개업공인중개사 (해당 시 작성) ]',
+    clauseBodies:[
+      '① 갑과 을은 위 목적물에 대하여 다음과 같이 임대차 계약을 체결한다.<br><div style="margin:3mm 0 3mm 8mm; padding:3mm 5mm; background:#F0FDF4; border-radius:4px;">보증금: <span class="amount-highlight f-deposit" contenteditable="true">금 100,000,000원 (금일억원정)</span><br>월  세: <span class="amount-highlight f-rent" contenteditable="true">금 1,000,000원 (금일백만원정)</span><br><span id="jeonseAmtRow">전세 보증금: 해당 없음 (월세 계약)</span></div>② 보증금은 계약 체결 시 계약금으로 <span contenteditable="true">금 10,000,000원 (금일천만원정)</span>을 지급하고,<br>잔금 <span contenteditable="true">금 90,000,000원 (금구천만원정)</span>은 입주일(<span contenteditable="true">2026년 8월 1일</span>)에 지급한다.<br>③ 월세는 매월 <span contenteditable="true">1</span>일에 갑의 계좌(<span contenteditable="true">국민은행 123-456-789012</span>)로 지급한다.',
+      '① 임대 기간은 <span contenteditable="true" class="f-period">2026년 8월 1일부터 2028년 7월 31일까지 (24개월)</span>로 한다.<br>② 주택임대차보호법 제6조에 따라 갱신 요구권 행사가 가능하며, 만기 6개월 전부터 1개월 전까지 계약 갱신을 청구할 수 있다.<br>③ 계약 갱신 시 임료 증액은 주택임대차보호법 제7조에 따라 5%를 초과할 수 없다.',
+      '① 갑은 을에게 임대 목적물을 <span contenteditable="true">2026년 8월 1일</span>까지 현 상태로 인도한다.<br>② 을은 임대 목적물을 주거 목적으로만 사용하여야 하며, 갑의 서면 동의 없이 구조 변경, 전대(전세 재임대), 권리양도 등을 하여서는 아니 된다.<br>③ 입주 시 하자 발견 시 <span contenteditable="true">7</span>일 이내 갑에게 서면 통보하고, 미통보 시 임차인이 인지하고 인도받은 것으로 본다.',
+      '① 갑은 임대 목적물의 파손·훼손에 대하여 민법 제623조에 따른 수선 의무를 부담한다. 단, <span contenteditable="true">50만원 미만</span>의 소액 수선은 을이 부담한다.<br>② 을의 고의·과실 또는 관리 소홀로 인한 파손은 을이 원상 복구하거나 수선 비용을 부담한다.<br>③ 을은 임차 기간 만료 시 임대 목적물을 원상으로 복구하여 반환하여야 한다. 단, 통상적인 마모·노후화는 제외한다.',
+      '을은 갑의 서면 동의 없이 임대 목적물을 제3자에게 전대하거나 임차권을 양도하지 아니한다. 이를 위반한 경우 갑은 이 계약을 즉시 해지할 수 있으며, 이로 인한 손해를 배상하여야 한다.',
+      '① 갑은 임대 기간 만료 또는 계약 해지 시 목적물 인도 완료와 동시에 보증금 전액을 을에게 반환하여야 한다.<br>② 월세를 <span contenteditable="true">2</span>개월 이상 연체한 경우 갑은 이 계약을 해지하고 즉시 명도를 청구할 수 있다.<br>③ 보증금 반환이 지연되는 경우 연체 기간에 대하여 연 <span contenteditable="true">12</span>%의 이자를 지급한다.<br>④ 을은 주택임대차보호법에 따른 우선변제권 및 대항력을 확보하기 위하여 입주 후 즉시 전입신고 및 확정일자를 받을 것을 권고한다.',
+      '갑은 임대 목적물을 점검·수리할 필요가 있는 경우 <span contenteditable="true">48</span>시간 이전에 을에게 통보한 후 방문할 수 있다. 긴급 수리 등 불가피한 경우에는 즉시 방문 가능하나, 을의 주거 평온을 최대한 존중한다.',
+      '① 을이 중도 해지할 경우: 계약금을 위약금으로 갑에게 지급하고, 잔금 반환 없이 계약을 해지한다.<br>② 갑이 중도 해지할 경우: 계약금의 2배를 위약금으로 을에게 지급하고 계약을 해지한다.<br>③ 다만, 쌍방 합의에 의한 해지, 천재지변, 법령에 의한 불가피한 경우는 위약금 규정을 적용하지 아니한다.',
+      '임대 기간 중 발생하는 전기료, 수도료, 가스료, 통신료 등 개인 사용에 따른 공과금 및 아파트 관리비는 을이 부담한다. 재산세 등 목적물에 부과되는 세금은 갑이 부담한다.',
+      '① 갑이 임대 기간 중 임대 목적물을 매매하거나 담보 제공하는 경우 을에게 사전에 서면 통보하여야 한다.<br>② 새로운 소유자는 본 임대차 계약을 승계하며, 을의 보증금 반환 의무를 부담한다.<br>③ 을이 주택임대차보호법에 따른 대항력을 갖춘 경우, 임대인 변경으로부터 보호된다.',
+      '(특약 사항을 직접 입력하세요)\n예) 인테리어 공사 가능 범위, 반려동물 허용 여부, 주차 공간 지정, 에어컨·가전제품 포함 여부 등',
+      '이 계약과 관련한 분쟁은 주택임대차보호법, 민법 및 관련 법령에 따라 처리하며, 소송이 필요한 경우 임대 목적물 소재지를 관할하는 법원을 제1심 관할 법원으로 한다.'
+    ],
     ctrlBackLink:'← 서식 목록', ctrlTitle:'⚙ 계약서 설정',
     ctrlLogoLabel:'로고 업로드', ctrlFileBtn:'🏢 로고 선택', ctrlQuickLabel:'빠른 입력',
     ctrlLabels:['계약 유형','임대인(집주인)명','임차인(세입자)명','소재지','보증금 (원)','월세 (원)','임대 기간'],
@@ -535,7 +572,26 @@ var LANG_DATA_FORM = {
     langNotice:'⚠ Switching language resets all content.',
     resetBtn:'↺ Reset',
     tipBox:'💡 This contract follows the <strong>Housing Lease Protection Act</strong> standard. After signing, complete <strong>move-in registration</strong> and obtain a <strong>fixed date stamp</strong>.',
-    printBtn:'🖨 Print / Save as PDF' },
+    printBtn:'🖨 Print / Save as PDF',
+    propBoxTitle:'【 Subject Property 】',
+    propLabels:['Location','Building Type','Exclusive Area','Structure','Floor / Unit No.','Registry Lot No.'],
+    sigDateHTML:'The parties confirm the above terms and affix their signatures and seals below.<br><strong><span contenteditable="true">2026</span> / <span contenteditable="true">07</span> / <span contenteditable="true">16</span></strong>',
+    sigFieldLabels:['Name','ID No.','Phone','Address','Signature','Name','ID No.','Phone','Address','Signature','Agency Name','Representative','Registration No.','Signature'],
+    witnessTitle:'[ Licensed Real Estate Agent (if applicable) ]',
+    clauseBodies:[
+      '① Party A and Party B agree to the following lease terms for the above property.<br><div style="margin:3mm 0 3mm 8mm; padding:3mm 5mm; background:#F0FDF4; border-radius:4px;">Security Deposit: <span class="amount-highlight f-deposit" contenteditable="true">KRW 100,000,000 (One Hundred Million Won)</span><br>Monthly Rent: <span class="amount-highlight f-rent" contenteditable="true">KRW 1,000,000 (One Million Won)</span><br><span id="jeonseAmtRow">Jeonse Deposit: N/A (Monthly Rent Contract)</span></div>② The deposit shall be paid as a down payment of <span contenteditable="true">KRW 10,000,000 (Ten Million Won)</span> at signing,<br>with the balance of <span contenteditable="true">KRW 90,000,000 (Ninety Million Won)</span> due on the move-in date (<span contenteditable="true">August 1, 2026</span>).<br>③ Monthly rent shall be paid on the <span contenteditable="true">1</span>st of each month to Landlord\'s account (<span contenteditable="true">Kookmin Bank 123-456-789012</span>).',
+      '① The lease term shall be <span contenteditable="true" class="f-period">August 1, 2026 to July 31, 2028 (24 months)</span>.<br>② Under Article 6 of the Housing Lease Protection Act, Tenant may request renewal between 6 months and 1 month prior to expiration.<br>③ Upon renewal, rent increases shall not exceed 5% per Article 7 of the Housing Lease Protection Act.',
+      '① Landlord shall deliver the property to Tenant in its current condition by <span contenteditable="true">August 1, 2026</span>.<br>② Tenant shall use the property for residential purposes only and shall not alter its structure, sublease, or transfer any rights without Landlord\'s written consent.<br>③ Defects discovered upon move-in must be reported in writing within <span contenteditable="true">7</span> days; failure to do so shall be deemed acceptance of the property\'s condition.',
+      '① Landlord bears repair obligations under Article 623 of the Civil Act. However, minor repairs under <span contenteditable="true">KRW 500,000</span> shall be borne by Tenant.<br>② Damage caused by Tenant\'s intentional or negligent acts shall be repaired or compensated by Tenant.<br>③ Upon expiration, Tenant shall restore the property to its original condition. Normal wear and tear is excluded.',
+      'Tenant shall not sublease the property or transfer any lease rights to a third party without Landlord\'s prior written consent. Violation entitles Landlord to immediately terminate this Agreement, and Tenant shall compensate for any resulting damages.',
+      '① Upon expiration or termination, Landlord shall return the full security deposit simultaneously with delivery of the property.<br>② If monthly rent is <span contenteditable="true">2</span> or more months in arrears, Landlord may terminate this Agreement and demand immediate vacancy.<br>③ Delayed return of the deposit shall incur annual interest of <span contenteditable="true">12</span>%.<br>④ Tenant is advised to complete move-in registration and obtain a fixed-date stamp immediately after move-in to secure priority repayment rights under the Housing Lease Protection Act.',
+      'Landlord may enter the property for inspection or repair after providing <span contenteditable="true">48</span> hours\' prior notice. In cases of emergency, immediate entry is permitted, but Tenant\'s right to peaceful enjoyment shall be respected to the fullest extent possible.',
+      '① If Tenant terminates early: the deposit shall be forfeited to Landlord as a penalty, with no refund of the balance.<br>② If Landlord terminates early: Landlord shall pay double the deposit to Tenant as a penalty.<br>③ These penalty provisions shall not apply to termination by mutual agreement, force majeure, or circumstances made unavoidable by law.',
+      'Utilities incurred during the lease term (electricity, water, gas, telecommunications) and apartment management fees attributable to Tenant\'s personal use shall be borne by Tenant. Property tax and other levies on the property itself shall be borne by Landlord.',
+      '① If Landlord sells or encumbers the property during the lease term, Landlord shall notify Tenant in writing in advance.<br>② The new owner shall succeed to this Agreement and bear the obligation to return the security deposit.<br>③ If Tenant has established opposing power under the Housing Lease Protection Act, Tenant is protected against any change of landlord.',
+      '(Enter special terms here)\ne.g. Permitted renovation scope, pet policy, assigned parking, included appliances, etc.',
+      'Disputes related to this Agreement shall be resolved pursuant to the Housing Lease Protection Act, the Civil Act, and related statutes. If litigation is necessary, the court with jurisdiction over the property\'s location shall serve as the court of first instance.'
+    ] },
   ja: { docTitle:'賃貸借契約書', docSub:'住宅賃貸借保護法に基づく標準契約書',
     titleMonthly:'住宅賃貸借契約書', titleJeonse:'チョンセ賃貸借契約書', titleCommercial:'商業用賃貸借契約書',
     thLandlord:'賃貸人（甲）', thTenant:'賃借人（乙）',
@@ -549,7 +605,26 @@ var LANG_DATA_FORM = {
     langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
     resetBtn:'↺ リセット',
     tipBox:'💡 この契約書は<strong>住宅賃貸借保護法</strong>の標準様式です。契約後は速やかに<strong>転入届</strong>と<strong>確定日付</strong>を取得してください。',
-    printBtn:'🖨 印刷 / PDF保存' }
+    printBtn:'🖨 印刷 / PDF保存',
+    propBoxTitle:'【 賃貸目的物の表示 】',
+    propLabels:['所在地','建物種類','専有面積','構造','階 / 号室','登記簿地番'],
+    sigDateHTML:'上記契約内容を確認し、契約当事者が署名押印する。<br><strong><span contenteditable="true">2026</span>年<span contenteditable="true">07</span>月<span contenteditable="true">16</span>日</strong>',
+    sigFieldLabels:['氏名','住民番号','連絡先','住所','署名','氏名','住民番号','連絡先','住所','署名','事務所名','代表者','登録番号','署名'],
+    witnessTitle:'[ 宅地建物取引業者（該当する場合） ]',
+    clauseBodies:[
+      '① 甲（賃貸人）と乙（賃借人）は、上記目的物について次のとおり賃貸借契約を締結する。<br><div style="margin:3mm 0 3mm 8mm; padding:3mm 5mm; background:#F0FDF4; border-radius:4px;">保証金: <span class="amount-highlight f-deposit" contenteditable="true">金 100,000,000ウォン（金一億ウォン）</span><br>月額賃料: <span class="amount-highlight f-rent" contenteditable="true">金 1,000,000ウォン（金百万ウォン）</span><br><span id="jeonseAmtRow">チョンセ保証金: 該当なし（月額賃料契約）</span></div>② 保証金は契約締結時に手付金として<span contenteditable="true">金 10,000,000ウォン（金一千万ウォン）</span>を支払い、<br>残金<span contenteditable="true">金 90,000,000ウォン（金九千万ウォン）</span>は入居日（<span contenteditable="true">2026年8月1日</span>）に支払う。<br>③ 月額賃料は毎月<span contenteditable="true">1</span>日に甲の口座（<span contenteditable="true">国民銀行 123-456-789012</span>）へ振り込むものとする。',
+      '① 賃貸期間は<span contenteditable="true" class="f-period">2026年8月1日から2028年7月31日まで（24ヶ月）</span>とする。<br>② 住宅賃貸借保護法第6条に基づき、乙は契約満了の6ヶ月前から1ヶ月前までの間に契約更新を請求できる。<br>③ 更新時の賃料増額は、同法第7条に基づき5%を超えることができない。',
+      '① 甲は乙に対し、<span contenteditable="true">2026年8月1日</span>までに目的物を現状のまま引き渡す。<br>② 乙は目的物を居住目的のみに使用し、甲の書面による承諾なく構造変更・転貸・権利譲渡を行ってはならない。<br>③ 入居時に瑕疵を発見した場合、<span contenteditable="true">7</span>日以内に甲へ書面で通知すること。通知がない場合、乙が現状を確認のうえ引渡しを受けたものとみなす。',
+      '① 甲は民法第623条に基づく修繕義務を負う。ただし、<span contenteditable="true">50万ウォン未満</span>の軽微な修繕は乙が負担する。<br>② 乙の故意・過失または管理不備による損傷は、乙が原状回復するか修繕費を負担する。<br>③ 乙は賃貸期間満了時に目的物を原状に回復して返還しなければならない。ただし、通常の損耗・経年劣化は除く。',
+      '乙は甲の書面による事前承諾なく、目的物を第三者に転貸し、または賃借権を譲渡してはならない。違反した場合、甲は本契約を直ちに解除でき、乙はこれにより生じた損害を賠償しなければならない。',
+      '① 甲は賃貸期間満了または契約解除時に、目的物の引渡しと同時に保証金全額を乙に返還しなければならない。<br>② 月額賃料を<span contenteditable="true">2</span>ヶ月以上滞納した場合、甲は本契約を解除し直ちに明渡しを請求できる。<br>③ 保証金返還が遅延した場合、遅延期間につき年率<span contenteditable="true">12</span>%の利息を支払う。<br>④ 乙は住宅賃貸借保護法に基づく優先弁済権及び対抗力を確保するため、入居後速やかに転入届と確定日付を取得することを推奨する。',
+      '甲は目的物を点検・修繕する必要がある場合、<span contenteditable="true">48</span>時間前に乙へ通知したうえで訪問できる。緊急修繕等のやむを得ない場合は即時訪問も可能だが、乙の居住の平穏を最大限尊重するものとする。',
+      '① 乙が中途解約する場合: 手付金を違約金として甲に支払い、残金の返還なしに契約を解除する。<br>② 甲が中途解約する場合: 手付金の2倍を違約金として乙に支払い、契約を解除する。<br>③ ただし、双方合意による解除、天災地変、法令上やむを得ない場合は違約金規定を適用しない。',
+      '賃貸期間中に発生する電気・水道・ガス・通信等の個人使用に係る公共料金およびマンション管理費は乙が負担する。固定資産税等の目的物に賦課される税金は甲が負担する。',
+      '① 甲が賃貸期間中に目的物を売買し、または担保提供する場合、事前に書面で乙へ通知しなければならない。<br>② 新所有者は本賃貸借契約を承継し、乙に対する保証金返還義務を負う。<br>③ 乙が住宅賃貸借保護法に基づく対抗力を有する場合、賃貸人変更から保護される。',
+      '（特約事項を直接入力してください）\n例）内装工事の可能範囲、ペット可否、駐車スペースの指定、エアコン・家電の有無 等',
+      '本契約に関する紛争は、住宅賃貸借保護法・民法および関連法令に従い処理し、訴訟が必要な場合は目的物の所在地を管轄する裁判所を第一審管轄裁判所とする。'
+    ] }
 };
 
 var _currentLang = 'ko';
@@ -620,6 +695,37 @@ function setLang(lang) {
   if (resetBtn) resetBtn.textContent = d.resetBtn;
   var tipBox = document.querySelector('.tip-box');
   if (tipBox) tipBox.innerHTML = d.tipBox;
+  // clause bodies
+  var _bodies = document.querySelectorAll('.clause-body');
+  if (d.clauseBodies) {
+    d.clauseBodies.forEach(function(html, i) {
+      if (_bodies[i]) _bodies[i].innerHTML = html;
+    });
+  }
+  // property box title
+  var propBoxTitle = document.querySelector('.property-box-title');
+  if (propBoxTitle && d.propBoxTitle) propBoxTitle.textContent = d.propBoxTitle;
+  // property table labels
+  if (d.propLabels) {
+    var propRows = document.querySelectorAll('.prop-table tr');
+    if (propRows[0] && propRows[0].cells[0]) propRows[0].cells[0].textContent = d.propLabels[0];
+    if (propRows[1] && propRows[1].cells[0]) propRows[1].cells[0].textContent = d.propLabels[1];
+    if (propRows[1] && propRows[1].cells[2]) propRows[1].cells[2].textContent = d.propLabels[2];
+    if (propRows[2] && propRows[2].cells[0]) propRows[2].cells[0].textContent = d.propLabels[3];
+    if (propRows[2] && propRows[2].cells[2]) propRows[2].cells[2].textContent = d.propLabels[4];
+    if (propRows[3] && propRows[3].cells[0]) propRows[3].cells[0].textContent = d.propLabels[5];
+  }
+  // sig-date confirmation text + date separators
+  var sigDateEl = document.querySelector('.sig-date');
+  if (sigDateEl && d.sigDateHTML) sigDateEl.innerHTML = d.sigDateHTML;
+  // sig field labels
+  if (d.sigFieldLabels) {
+    var sfLabels = document.querySelectorAll('.sig-field-label');
+    d.sigFieldLabels.forEach(function(txt, i) { if (sfLabels[i]) sfLabels[i].textContent = txt; });
+  }
+  // witness section title
+  var witnessTitle = document.querySelector('.witness-title');
+  if (witnessTitle && d.witnessTitle) witnessTitle.textContent = d.witnessTitle;
   // html lang
   document.documentElement.lang = lang;
 }

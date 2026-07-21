@@ -144,25 +144,44 @@
 .lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display: none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  .form-page-wrap { display: block; padding: 0; }
-  .doc-wrap { background: none; padding: 0; }
-  .doc-page { width: 100%; box-shadow: none; margin: 0; }
-  @page { size: A4; margin: 0; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -357,7 +376,19 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
     tipBox: '💡 합의 내용 영역을 클릭하여 구체적인 합의 사항을 입력하세요.',
     ctrlLogoBtn: '클릭하여 로고 선택',
-    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호'
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호',
+    preamble: '갑과 을은 다음 사항에 관하여 원만히 합의하고 이를 성실히 이행할 것을 확약한다.',
+    agreeSectionTitle: '▪ 합의 사항',
+    partyLabels: ['성명','주소','연락처','성명','주소','연락처'],
+    sigLabels: ['성명','주소','서명','성명','주소','서명'],
+    clauseBodies: [
+      '을은 갑에게 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 원(￦&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)을 합의금으로 지급하기로 한다. 상기 금원은 본 합의서 체결일로부터 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;</span>일 이내에 지급한다.',
+      '합의금은 갑이 지정한 아래 계좌로 이체하는 방법으로 지급한다.<br>은행: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; 계좌번호: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; 예금주: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+      '갑과 을은 본 합의서 체결로써 이 사건과 관련한 민사상, 형사상 일체의 이의를 제기하지 아니하기로 하며, 향후 어떠한 소송, 고소, 고발 등 법적 절차를 취하지 아니하기로 한다.',
+      '갑과 을은 본 합의의 내용 및 관련 사항을 제3자에게 공개하지 아니하기로 한다. 단, 법원 명령 또는 법령상 의무에 의한 경우는 예외로 한다.',
+      '당사자 일방이 본 합의 내용을 위반할 경우, 상대방은 본 합의를 해제하고 위약금으로 금 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>원을 청구할 수 있으며, 이와 별도로 실손해에 대한 배상을 청구할 수 있다.',
+      '본 합의서는 갑과 을 쌍방이 서명·날인한 날로부터 효력이 발생하며, 본 합의서는 2부를 작성하여 각 1부씩 보관한다.'
+    ]
   },
   en: {
     docTitle: 'SETTLEMENT AGREEMENT', docSub: 'Mutual Release Agreement',
@@ -370,7 +401,19 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
     tipBox: '💡 Click the agreement content area to enter specific settlement terms.',
     ctrlLogoBtn: 'Click to select logo',
-    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.'
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.',
+    preamble: 'Party A and Party B hereby agree on the following matters and solemnly undertake to faithfully perform them.',
+    agreeSectionTitle: '▪ Settlement Terms',
+    partyLabels: ['Name','Address','Phone','Name','Address','Phone'],
+    sigLabels: ['Name','Address','Signature','Name','Address','Signature'],
+    clauseBodies: [
+      'Party B shall pay Party A <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> won (₩&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) as settlement money. Said amount shall be paid within <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;</span> days from the date of this Agreement.',
+      'The settlement amount shall be paid by wire transfer to the following account designated by Party A.<br>Bank: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; Account No.: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; Account Holder: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+      'Upon execution of this Agreement, both parties waive all civil and criminal claims related to this matter and shall not take any legal action, including lawsuits, complaints, or accusations, in the future.',
+      'Both parties shall not disclose the contents of this Agreement or any related matters to any third party. This shall not apply where disclosure is required by court order or legal obligation.',
+      'If either party violates the terms of this Agreement, the other party may rescind this Agreement and claim a penalty of <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> won, and may additionally claim compensation for actual damages.',
+      'This Agreement shall take effect from the date both parties sign and seal it, and shall be executed in two copies, each party retaining one.'
+    ]
   },
   ja: {
     docTitle: '和 解 合 意 書', docSub: 'SETTLEMENT AGREEMENT',
@@ -383,7 +426,19 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
     tipBox: '💡 合意内容エリアをクリックして具体的な合意事項を入力してください。',
     ctrlLogoBtn: 'ロゴを選択',
-    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号'
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号',
+    preamble: '甲と乙は以下の事項について円満に合意し、誠実に履行することを確約する。',
+    agreeSectionTitle: '▪ 合意事項',
+    partyLabels: ['氏名','住所','連絡先','氏名','住所','連絡先'],
+    sigLabels: ['氏名','住所','署名','氏名','住所','署名'],
+    clauseBodies: [
+      '乙は甲に対し、<span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>ウォン（₩&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;）を和解金として支払う。上記金員は本合意書締結日から<span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;</span>日以内に支払う。',
+      '和解金は甲が指定する下記口座への振込により支払う。<br>銀行: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; 口座番号: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; 口座名義: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+      '甲と乙は本合意書の締結をもって、本件に関する民事上・刑事上一切の異議を申し立てず、今後いかなる訴訟・告訴・告発等の法的手続きも取らないものとする。',
+      '甲と乙は本合意の内容および関連事項を第三者に開示しないものとする。ただし、裁判所命令または法令上の義務による場合はこの限りでない。',
+      '当事者一方が本合意内容に違反した場合、相手方は本合意を解除し、違約金として金<span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>ウォンを請求でき、これとは別に実損害に対する賠償を請求できる。',
+      '本合意書は甲と乙の双方が署名押印した日から効力が生じ、2通を作成して各1通ずつ保管する。'
+    ]
   }
 };
 function setLang(lang) {
@@ -420,6 +475,29 @@ function setLang(lang) {
   if (ctrlLbl0) ctrlLbl0.textContent = d.ctrlLbl0;
   var ctrlLbl1 = document.getElementById('ctrlLbl1');
   if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
+  // preamble
+  var preamble = document.querySelector('.preamble');
+  if (preamble && d.preamble) preamble.textContent = d.preamble;
+  // agreement section title
+  var agreeSectionTitle = document.querySelector('.agreement-section-title');
+  if (agreeSectionTitle && d.agreeSectionTitle) agreeSectionTitle.textContent = d.agreeSectionTitle;
+  // party card labels
+  if (d.partyLabels) {
+    var partyLbls = document.querySelectorAll('.party-lbl');
+    d.partyLabels.forEach(function(txt, i) { if (partyLbls[i]) partyLbls[i].textContent = txt; });
+  }
+  // sig labels
+  if (d.sigLabels) {
+    var sigLbls = document.querySelectorAll('.sig-lbl');
+    d.sigLabels.forEach(function(txt, i) { if (sigLbls[i]) sigLbls[i].textContent = txt; });
+  }
+  // clause bodies
+  var _bodies = document.querySelectorAll('.clause-body');
+  if (d.clauseBodies) {
+    d.clauseBodies.forEach(function(html, i) {
+      if (_bodies[i]) _bodies[i].innerHTML = html;
+    });
+  }
 }
 
 document.getElementById('docNum').addEventListener('input', function(){

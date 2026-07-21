@@ -210,27 +210,44 @@
 
 /* ── 인쇄 ── */
 @media print {
-  .ctrl-panel { display:none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  nav, footer, .back-link-wrap { display:none !important; }
-  .form-page-wrap { display:block; padding:0; }
-  .doc-wrap { background:none; padding:0; border-radius:0; }
-  .a4 { box-shadow:none; width:100%; }
-  @page { size:A4; margin:0; }
-  .add-row-btn { display:none; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -318,7 +335,7 @@
           <td colspan="3" contenteditable="true" style="min-width:60mm"></td>
         </tr>
         <tr>
-          <td class="group-header" colspan="4">인계자 (업무를 넘기는 사람)</td>
+          <td class="group-header" id="gh0" colspan="4">인계자 (업무를 넘기는 사람)</td>
         </tr>
         <tr>
           <th>성명</th>
@@ -333,7 +350,7 @@
           <td contenteditable="true"></td>
         </tr>
         <tr>
-          <td class="group-header" colspan="4">인수자 (업무를 받는 사람)</td>
+          <td class="group-header" id="gh1" colspan="4">인수자 (업무를 받는 사람)</td>
         </tr>
         <tr>
           <th>성명</th>
@@ -386,8 +403,8 @@
       <button class="add-row-btn" onclick="addFileRow()">+ 행 추가</button>
 
       <!-- 계정 및 시스템 -->
-      <div class="sec-head"><span class="sec-num">4</span> <span id="sec4">계정 및 시스템 접근 정보</span> <span class="conf-badge">기밀</span></div>
-      <div class="warn-box">⚠ 본 문서는 기밀이므로 보안에 유의하십시오. 실제 비밀번호 대신 힌트 또는 보관 위치를 기재하시기 바랍니다.</div>
+      <div class="sec-head"><span class="sec-num">4</span> <span id="sec4">계정 및 시스템 접근 정보</span> <span class="conf-badge" id="confBadge">기밀</span></div>
+      <div class="warn-box" id="warnBox">⚠ 본 문서는 기밀이므로 보안에 유의하십시오. 실제 비밀번호 대신 힌트 또는 보관 위치를 기재하시기 바랍니다.</div>
       <table class="work-table" id="sysTable">
         <thead>
           <tr>
@@ -406,7 +423,7 @@
       <div class="ce-block" contenteditable="true" style="min-height:22mm">인계 시 주의해야 할 사항, 미완료 업무, 중요 일정 등을 기재하세요.</div>
 
       <!-- 확인 문구 -->
-      <div class="confirm-line">
+      <div class="confirm-line" id="confirmLine">
         위 내용과 같이 인수인계가 완료되었음을 확인합니다.
       </div>
 
@@ -522,7 +539,12 @@ const LANGS = {
     addRowBtn:'+ 행 추가',
     ctrlL0:'문서 번호', ctrlL1:'작성일', ctrlL2:'기관/부서명', ctrlL3:'로고 업로드',
     ctrlP0:'예) HO-2026-001', ctrlP1:'', ctrlP2:'예) ○○주식회사 기획팀',
-    tipBox:'💡 <strong>작성 안내.</strong> 셀을 클릭하여 바로 편집하세요. 보안 정보 기재 시 실제 비밀번호 대신 힌트만 입력하시기 바랍니다.'
+    tipBox:'💡 <strong>작성 안내.</strong> 셀을 클릭하여 바로 편집하세요. 보안 정보 기재 시 실제 비밀번호 대신 힌트만 입력하시기 바랍니다.',
+    confirmLine:'위 내용과 같이 인수인계가 완료되었음을 확인합니다.',
+    groupHeaders:['인계자 (업무를 넘기는 사람)','인수자 (업무를 받는 사람)'],
+    infoThLabels:['성명','직위','연락처','E-mail','성명','직위','연락처','E-mail','인수인계 일시'],
+    warnText:'⚠ 본 문서는 기밀이므로 보안에 유의하십시오. 실제 비밀번호 대신 힌트 또는 보관 위치를 기재하시기 바랍니다.',
+    confBadge:'기밀'
   },
   en: {
     docTitle:'HANDOVER DOCUMENT', docSub:'Job Transition Record',
@@ -538,7 +560,12 @@ const LANGS = {
     addRowBtn:'+ Add Row',
     ctrlL0:'Document No.', ctrlL1:'Date', ctrlL2:'Organization / Department', ctrlL3:'Upload Logo',
     ctrlP0:'e.g. HO-2026-001', ctrlP1:'', ctrlP2:'e.g. ABC Corp. Planning Dept.',
-    tipBox:'💡 Click any cell to edit directly. For security info, enter a hint instead of the actual password.'
+    tipBox:'💡 Click any cell to edit directly. For security info, enter a hint instead of the actual password.',
+    confirmLine:'I confirm that the above handover has been completed.',
+    groupHeaders:['Handover Person (transferring)','Receiving Person (taking over)'],
+    infoThLabels:['Name','Title','Phone','E-mail','Name','Title','Phone','E-mail','Handover Date'],
+    warnText:'⚠ This document is confidential. Enter password hints instead of actual passwords.',
+    confBadge:'CONFIDENTIAL'
   },
   ja: {
     docTitle:'引 継 ぎ 書', docSub:'HANDOVER DOCUMENT',
@@ -554,7 +581,12 @@ const LANGS = {
     addRowBtn:'+ 行を追加',
     ctrlL0:'文書番号', ctrlL1:'作成日', ctrlL2:'機関・部署名', ctrlL3:'ロゴアップロード',
     ctrlP0:'例）HO-2026-001', ctrlP1:'', ctrlP2:'例）○○株式会社 企画チーム',
-    tipBox:'💡 セルをクリックして直接編集できます。パスワード欄には実際のパスワードではなくヒントを入力してください。'
+    tipBox:'💡 セルをクリックして直接編集できます。パスワード欄には実際のパスワードではなくヒントを入力してください。',
+    confirmLine:'上記内容のとおり引継が完了したことを確認いたします。',
+    groupHeaders:['引継者（業務を引き渡す者）','引受者（業務を引き受ける者）'],
+    infoThLabels:['氏名','役職','連絡先','E-mail','氏名','役職','連絡先','E-mail','引継日時'],
+    warnText:'⚠ この文書は機密です。実際のパスワードの代わりにヒントを入力してください。',
+    confBadge:'機密'
   }
 };
 
@@ -593,6 +625,13 @@ function setLang(lang) {
   var addBtns = document.querySelectorAll('.add-row-btn');
   if (t.addRowBtn) addBtns.forEach(function(b){ b.textContent = t.addRowBtn; });
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = t.tipBox;
+  // ── 문서 내부 고정 텍스트 번역 ──
+  var cl = document.getElementById('confirmLine'); if(cl && t.confirmLine) cl.textContent = t.confirmLine;
+  var gh0 = document.getElementById('gh0'); if(gh0 && t.groupHeaders) gh0.textContent = t.groupHeaders[0];
+  var gh1 = document.getElementById('gh1'); if(gh1 && t.groupHeaders) gh1.textContent = t.groupHeaders[1];
+  if(t.infoThLabels) { var infoThs = document.querySelectorAll('.info-table th:not(#infoLabel0)'); t.infoThLabels.forEach(function(h,i){ if(infoThs[i]) infoThs[i].textContent = h; }); }
+  var wb = document.getElementById('warnBox'); if(wb && t.warnText) wb.textContent = t.warnText;
+  var cb = document.getElementById('confBadge'); if(cb && t.confBadge) cb.textContent = t.confBadge;
 }
 
 // 초기 데이터 삽입

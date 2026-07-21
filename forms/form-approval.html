@@ -140,27 +140,44 @@
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 
 @media print {
-  .ctrl-panel { display:none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  nav, footer { display:none !important; }
-  .form-page-wrap { display:block; padding:0; }
-  .doc-wrap { background:none; padding:0; border-radius:0; }
-  .a4 { box-shadow:none; width:100%; }
-  @page { size:A4; margin:0; }
-  .add-row-btn { display:none; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -309,7 +326,7 @@
         <tbody id="budgetBody"></tbody>
         <tfoot>
           <tr class="total-row">
-            <td colspan="2" style="text-align:center">합 계</td>
+            <td colspan="2" style="text-align:center" id="budgetTotalLabel">합 계</td>
             <td id="totalAmount">0</td>
             <td colspan="2"></td>
           </tr>
@@ -331,11 +348,11 @@
       <!-- 기안자 서명 -->
       <div class="drafter-row">
         <div>
-          <div style="font-size:8.5pt;color:#475569;margin-bottom:1mm">위와 같이 품의하오니 재가하여 주시기 바랍니다.</div>
+          <div id="drafterStatement" style="font-size:8.5pt;color:#475569;margin-bottom:1mm">위와 같이 품의하오니 재가하여 주시기 바랍니다.</div>
           <div style="font-size:8pt;color:#94A3B8">작성일: <span id="signDateOut"></span></div>
         </div>
         <div class="drafter-box">
-          <div class="drafter-label">기 안 자</div>
+          <div class="drafter-label" id="drafterRoleLabel">기 안 자</div>
           <div class="drafter-name" contenteditable="true" style="text-align:center"></div>
           <div class="drafter-sign"></div>
           <div style="font-size:7.5pt;color:#64748B;text-align:center">서명 / 인</div>
@@ -360,7 +377,8 @@ const LANGS = {
     addRowBtn:'+ 행 추가',
     ctrlL0:'문서 번호', ctrlL1:'기안일', ctrlL2:'소속 부서', ctrlL3:'로고 업로드',
     ctrlP0:'예) AP-2026-042', ctrlP1:'', ctrlP2:'예) 전략기획팀',
-    tipBox:'💡 상단 결재란에 결재자 성명을 직접 입력하세요. 결재 도장/서명은 인쇄 후 날인하면 됩니다.'
+    tipBox:'💡 상단 결재란에 결재자 성명을 직접 입력하세요. 결재 도장/서명은 인쇄 후 날인하면 됩니다.',
+    budgetTotal:'합 계', drafterStatement:'위와 같이 품의하오니 재가하여 주시기 바랍니다.', drafterRoleLabel:'기 안 자'
   },
   en: {
     docTitle:'APPROVAL REQUEST', docSub:'Business Proposal Document',
@@ -374,7 +392,8 @@ const LANGS = {
     addRowBtn:'+ Add Row',
     ctrlL0:'Document No.', ctrlL1:'Draft Date', ctrlL2:'Department', ctrlL3:'Upload Logo',
     ctrlP0:'e.g. AP-2026-042', ctrlP1:'', ctrlP2:'e.g. Strategy Planning',
-    tipBox:'💡 Enter approver names directly in the approval boxes at the top. Sign or stamp after printing.'
+    tipBox:'💡 Enter approver names directly in the approval boxes at the top. Sign or stamp after printing.',
+    budgetTotal:'Total', drafterStatement:'Please approve the above proposal.', drafterRoleLabel:'Author'
   },
   ja: {
     docTitle:'稟  議  書', docSub:'決裁文書',
@@ -388,7 +407,8 @@ const LANGS = {
     addRowBtn:'+ 行を追加',
     ctrlL0:'文書番号', ctrlL1:'起案日', ctrlL2:'所属部署', ctrlL3:'ロゴアップロード',
     ctrlP0:'例）AP-2026-042', ctrlP1:'', ctrlP2:'例）戦略企画チーム',
-    tipBox:'💡 上部の決裁欄に承認者名を直接入力してください。押印・署名は印刷後に行ってください。'
+    tipBox:'💡 上部の決裁欄に承認者名を直接入力してください。押印・署名は印刷後に行ってください。',
+    budgetTotal:'合計', drafterStatement:'上記のとおりご承認いただきますようお願いいたします。', drafterRoleLabel:'起案者'
   }
 };
 
@@ -418,6 +438,10 @@ function setLang(lang) {
   if (fuSpans[1] && t.ctrlLogoBtn) fuSpans[1].textContent = t.ctrlLogoBtn;
   document.querySelectorAll('.add-row-btn').forEach(function(b){ if(t.addRowBtn) b.textContent = t.addRowBtn; });
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = t.tipBox;
+  // ── 문서 내부 고정 텍스트 번역 ──
+  var btl = document.getElementById('budgetTotalLabel'); if(btl && t.budgetTotal) btl.textContent = t.budgetTotal;
+  var ds = document.getElementById('drafterStatement'); if(ds && t.drafterStatement) ds.textContent = t.drafterStatement;
+  var drl = document.getElementById('drafterRoleLabel'); if(drl && t.drafterRoleLabel) drl.textContent = t.drafterRoleLabel;
 }
 
 (function(){

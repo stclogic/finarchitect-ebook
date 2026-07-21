@@ -132,28 +132,44 @@
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 
 @media print {
-  .ctrl-panel { display:none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  nav, footer { display:none !important; }
-  .form-page-wrap { display:block; padding:0; }
-  .doc-wrap { background:none; padding:0; border-radius:0; }
-  .a4 { box-shadow:none; width:100%; }
-  @page { size:A4; margin:0; }
-  .add-row-btn { display:none; }
-  .cat-select { -webkit-appearance:none; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -212,7 +228,7 @@
           <div class="doc-subtitle" id="formDocSub">DAILY WORK LOG</div>
         </div>
         <div class="doc-date-big">
-          <span>날짜</span>
+          <span id="dateLabel">날짜</span>
           <span id="dateDisplay"></span>
           <span id="dayDisplay" style="font-size:8.5pt;color:#64748B;font-weight:400"></span>
         </div>
@@ -329,7 +345,9 @@ const LANGS = {
     addRowBtn:'+ 행 추가',
     ctrlL0:'작성 날짜', ctrlL1:'출근 시간', ctrlL2:'퇴근 시간', ctrlL3:'로고 업로드',
     ctrlP1:'09:00', ctrlP2:'18:00',
-    tipBox:'💡 업무 분류 셀을 클릭하면 드롭다운이 나타납니다. 완료율을 입력하면 진행 바가 자동으로 표시됩니다.'
+    tipBox:'💡 업무 분류 셀을 클릭하면 드롭다운이 나타납니다. 완료율을 입력하면 진행 바가 자동으로 표시됩니다.',
+    dateLabel:'날짜',
+    cats:['기획','개발','관리','영업','회의','보고','기타']
   },
   en: {
     docTitle:'DAILY WORK LOG', docSub:'Daily Activity Report',
@@ -343,7 +361,9 @@ const LANGS = {
     addRowBtn:'+ Add Row',
     ctrlL0:'Date', ctrlL1:'Clock In', ctrlL2:'Clock Out', ctrlL3:'Upload Logo',
     ctrlP1:'09:00', ctrlP2:'18:00',
-    tipBox:'💡 Click the work category cell to get a dropdown. Enter completion % to show the progress bar.'
+    tipBox:'💡 Click the work category cell to get a dropdown. Enter completion % to show the progress bar.',
+    dateLabel:'Date',
+    cats:['Planning','Development','Management','Sales','Meeting','Reporting','Other']
   },
   ja: {
     docTitle:'業  務  日  誌', docSub:'DAILY WORK LOG',
@@ -357,7 +377,9 @@ const LANGS = {
     addRowBtn:'+ 行を追加',
     ctrlL0:'作成日', ctrlL1:'出勤時間', ctrlL2:'退勤時間', ctrlL3:'ロゴアップロード',
     ctrlP1:'09:00', ctrlP2:'18:00',
-    tipBox:'💡 業務分類セルをクリックするとドロップダウンが表示されます。完了率を入力すると進捗バーが自動表示されます。'
+    tipBox:'💡 業務分類セルをクリックするとドロップダウンが表示されます。完了率を入力すると進捗バーが自動表示されます。',
+    dateLabel:'日付',
+    cats:['企画','開発','管理','営業','会議','報告','その他']
   }
 };
 
@@ -387,6 +409,18 @@ function setLang(lang) {
   if (fuSpans[1] && t.ctrlLogoBtn) fuSpans[1].textContent = t.ctrlLogoBtn;
   document.querySelectorAll('.add-row-btn').forEach(function(b){ if(t.addRowBtn) b.textContent = t.addRowBtn; });
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = t.tipBox;
+  // ── 문서 내부 고정 텍스트 번역 ──
+  var dl = document.getElementById('dateLabel'); if(dl && t.dateLabel) dl.textContent = t.dateLabel;
+  if(t.cats) {
+    CATS.length = 0;
+    t.cats.forEach(function(c){ CATS.push(c); });
+    document.querySelectorAll('.cat-select').forEach(function(sel){
+      var curIdx = sel.selectedIndex;
+      sel.innerHTML = '';
+      t.cats.forEach(function(c){ var opt = document.createElement('option'); opt.textContent = c; sel.appendChild(opt); });
+      sel.selectedIndex = curIdx >= 0 ? curIdx : 0;
+    });
+  }
 }
 
 const DAYS = ['일','월','화','수','목','금','토'];

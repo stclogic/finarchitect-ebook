@@ -132,26 +132,44 @@
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display:none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  .form-page-wrap { display:block; padding:0; }
-  .doc-wrap { background:none; padding:0; border-radius:0; }
-  .doc-page { width:210mm; box-shadow:none; min-height:auto; }
-  @page { size:A4; margin:0; }
-  body { background:#fff !important; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -501,7 +519,21 @@ var LANG_DATA = {
     docTitle: 'CONSTRUCTION CONTRACT', docSub: 'Construction Work Order Agreement',
     thOwner: 'Owner (Party A)', thContractor: 'Contractor (Party B)',
     sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Construction Contract.',
-    articles: ['Art.1 — Contract Amount','Art.2 — Scope of Work','Art.3 — Construction Period','Art.4 — Design Changes','Art.5 — Defect Liability','Art.6 — Progress & Completion Inspection','Art.7 — Materials & Labor','Art.8 — Safety Management','Art.9 — Insurance','Art.10 — Termination','Art.11 — Dispute Resolution','Art.12 — Miscellaneous']
+    articles: ['Art.1 — Contract Amount','Art.2 — Scope of Work','Art.3 — Construction Period','Art.4 — Design Changes','Art.5 — Defect Liability','Art.6 — Progress & Completion Inspection','Art.7 — Materials & Labor','Art.8 — Safety Management','Art.9 — Insurance','Art.10 — Termination','Art.11 — Dispute Resolution','Art.12 — Miscellaneous'],
+    articleBodies: [
+      'The total contract amount shall be as set forth below, inclusive of value-added tax.<div class="amount-row" style="margin-top:2mm;"><div class="amount-box"><div class="ab-label">Total Contract Amount (numeric)</div><div contenteditable="true" id="dispTotalAmt" style="font-size:11pt; font-weight:700; color:#065F46;">Amount ___________________ (₩ )</div></div></div><div class="amount-box" style="margin-top:2mm;"><div class="ab-label">Amount in Words</div><div contenteditable="true" id="dispTotalAmtKor" style="font-weight:600;">Amount ________________________________</div></div><table class="payment-table" style="margin-top:3mm;"><thead><tr><th>Type</th><th>Amount</th><th>Payment Date</th><th>Payment Method</th></tr></thead><tbody><tr><td contenteditable="true">Deposit</td><td contenteditable="true"></td><td contenteditable="true">Date of Contract</td><td contenteditable="true">Cash / Bank Transfer</td></tr><tr><td contenteditable="true">Progress Payment</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">Cash / Bank Transfer</td></tr><tr><td contenteditable="true">Balance</td><td contenteditable="true"></td><td contenteditable="true">After Completion Inspection</td><td contenteditable="true">Cash / Bank Transfer</td></tr></tbody></table>',
+      'The Contractor shall faithfully perform the construction work in accordance with the Bill of Quantities (attached schedule) as entrusted by the Owner. If any change in the scope of work becomes necessary, Article 4 (Design Changes) shall apply.<br>□ Bill of Quantities attached &nbsp;&nbsp; □ Design drawings attached &nbsp;&nbsp; □ Specifications attached',
+      'The construction period shall run from the commencement date to the scheduled completion date. In the event an extension of time is required due to force majeure or other unavoidable circumstances, prior written approval from the Owner shall be obtained. In the absence of justifiable cause, liquidated damages of 0.1% (one-thousandth) of the total contract amount per day of delay shall be paid by the Contractor to the Owner.',
+      'Design changes shall be carried out through consultation following a written request by the Owner or based on actual site conditions. Any change in the contract amount shall be settled by executing a separate written contract addendum.',
+      'From the date of completion, the Contractor shall bear responsibility for the free repair of any defects in the construction work for a period of <span id="dispWarranty" style="font-weight:700; color:#065F46;">2 years</span>. For structural defects, the warranty period prescribed under the Framework Act on the Construction Industry shall apply.',
+      'The Contractor shall apply for a progress inspection at each stage of construction, and the Owner shall complete such inspection within 7 days. The completion inspection shall be completed within 14 days following project completion, and the balance payment shall be released upon passing.',
+      'The Contractor shall use materials meeting the quality standards prescribed by applicable laws and regulations and shall deploy skilled workers. Any change of materials requires prior written approval from the Owner.',
+      'The Contractor shall comply with the Occupational Safety and Health Act and shall establish and implement a safety management plan. Any accident occurring during construction shall be the responsibility of the Contractor, who shall immediately notify the Owner.',
+      'Prior to commencement of construction, the Contractor shall obtain Construction All-Risk Insurance and Industrial Accident Compensation Insurance and shall submit copies of the relevant policies to the Owner.',
+      'Either party may terminate this contract if the other party breaches any provision of this contract and fails to remedy such breach within 14 days. Upon termination, progress payments shall be settled and costs for completed work shall be duly paid.',
+      'Disputes arising out of or in connection with this contract shall first be submitted to the Construction Dispute Mediation Committee for mediation, or shall be brought before the court having jurisdiction over the location of the construction site as the court of first instance.',
+      'Matters not specified in this contract shall be governed by the Framework Act on the Construction Industry, the Construction Technology Promotion Act, and other applicable laws and regulations, as mutually agreed upon by the parties. Environmental management matters shall be handled in accordance with applicable laws.'
+    ]
   },
   ja: {
     ctrlTitle: '🏗️ 工事請負契約書', printBtn: '🖨 印刷 / PDF保存',
@@ -512,7 +544,21 @@ var LANG_DATA = {
     docTitle: '工事請負契約書', docSub: 'CONSTRUCTION CONTRACT',
     thOwner: '注文者（甲）', thContractor: '請負人（乙）',
     sigPrefix: '上記契約の成立を証明するため、本契約書を作成して記名押印する。',
-    articles: ['第1条 — 請負金額','第2条 — 工事範囲','第3条 — 工事期間','第4条 — 設計変更','第5条 — 瑕疵担保責任','第6条 — 出来高及び竣工検査','第7条 — 材料及び労務','第8条 — 安全管理','第9条 — 保険','第10条 — 契約解除','第11条 — 紛争解決','第12条 — その他']
+    articles: ['第1条 — 請負金額','第2条 — 工事範囲','第3条 — 工事期間','第4条 — 設計変更','第5条 — 瑕疵担保責任','第6条 — 出来高及び竣工検査','第7条 — 材料及び労務','第8条 — 安全管理','第9条 — 保険','第10条 — 契約解除','第11条 — 紛争解決','第12条 — その他'],
+    articleBodies: [
+      '総工事金額は以下のとおりとし、消費税を含む。<div class="amount-row" style="margin-top:2mm;"><div class="amount-box"><div class="ab-label">総工事金額（数字）</div><div contenteditable="true" id="dispTotalAmt" style="font-size:11pt; font-weight:700; color:#065F46;">金額 ___________________ （¥ ）</div></div></div><div class="amount-box" style="margin-top:2mm;"><div class="ab-label">金額（漢字）</div><div contenteditable="true" id="dispTotalAmtKor" style="font-weight:600;">金額 ________________________________</div></div><table class="payment-table" style="margin-top:3mm;"><thead><tr><th>区分</th><th>金額</th><th>支払日</th><th>支払方法</th></tr></thead><tbody><tr><td contenteditable="true">手付金</td><td contenteditable="true"></td><td contenteditable="true">契約締結日</td><td contenteditable="true">現金／振込</td></tr><tr><td contenteditable="true">中間金</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">現金／振込</td></tr><tr><td contenteditable="true">残金</td><td contenteditable="true"></td><td contenteditable="true">竣工検査後</td><td contenteditable="true">現金／振込</td></tr></tbody></table>',
+      '請負人は、注文者から委任された工事内訳書（別添）に従い、誠実に工事を遂行する。工事範囲の変更が必要な場合は、第4条（設計変更）による。<br>□ 工事内訳書添付確認 &nbsp;&nbsp; □ 設計図面添付確認 &nbsp;&nbsp; □ 仕様書添付確認',
+      '着工日から竣工予定日までとし、天災その他不可抗力による工期延長が必要な場合は、注文者の書面による承認を得なければならない。正当な理由なく工期が遅延した場合、遅延損害金として1日当たり総工事金額の0.1%（千分の一）を注文者に支払う。',
+      '設計変更は、注文者の書面による要請又は現場状況に応じて協議の上行い、変更金額については別途契約書を締結して精算する。',
+      '竣工日から<span id="dispWarranty" style="font-weight:700; color:#065F46;">2年</span>間、請負人は工事目的物の瑕疵について無償補修責任を負う。構造的欠陥については、建設業基本法に定める期間による。',
+      '請負人は工事の各段階において出来高検査を申請し、注文者は7日以内に検査を完了する。竣工後14日以内に竣工検査を完了し、合格後に残金を支払う。',
+      '請負人は、関係法令に定める品質基準に適合した材料を使用し、熟練した技能者を投入する。材料を変更する場合は事前に注文者の承認を得なければならない。',
+      '請負人は労働安全衛生法を遵守し、安全管理計画を策定・実施する。工事中に発生した事故は請負人の責任において処理し、注文者に直ちに通知する。',
+      '請負人は着工前に建設工事保険及び労働者災害補償保険に加入し、保険証券の写しを注文者に提出する。',
+      '甲又は乙は、相手方が本契約に違反し、14日以上是正しない場合に契約を解除することができる。解除の際は出来高を精算し、既完成工事に係る費用を支払う。',
+      '本契約に関する紛争は、建設紛争調停委員会の調停を経るか、工事現場の所在地を管轄する裁判所を第一審裁判所とする。',
+      '本契約書に定めのない事項は、建設業基本法、建設技術振興法及び関係法令に従い、双方が協議して決定する。環境管理に関する事項は関係法令を遵守する。'
+    ]
   }
 };
 function setLang(lang) {
@@ -532,6 +578,12 @@ function setLang(lang) {
     var el = document.getElementById('at-' + (i+1));
     if (el) el.textContent = title;
   });
+  if (d.articleBodies) {
+    var bodies = document.querySelectorAll('.article-body');
+    d.articleBodies.forEach(function(html, i) {
+      if (bodies[i]) bodies[i].innerHTML = html;
+    });
+  }
   // ── 컨트롤 패널 전체 번역 ──
   var bk = document.querySelector('a[href="../forms.html"], .back-link, .ctrl-back-link');
   if (bk) bk.textContent = d.ctrlBackLink;

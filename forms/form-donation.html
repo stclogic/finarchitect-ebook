@@ -148,26 +148,44 @@
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display:none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  .form-page-wrap { display:block; padding:0; }
-  .doc-wrap { background:none; padding:0; border-radius:0; }
-  .doc-page { width:210mm; box-shadow:none; min-height:auto; }
-  @page { size:A4; margin:0; }
-  body { background:#fff !important; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -483,7 +501,15 @@ var LANG_DATA = {
     resetBtn: '↺ Reset',
     ctrlL0: 'Organization Logo', ctrlL1: 'Date', ctrlL2: 'Document No.', ctrlL3: 'Donation Amount', ctrlL4: 'Donation Type',
     ctrlP2: 'e.g. DON-2025-001', ctrlP3: 'e.g. 1200000',
-    tipBox: '💡 <strong>Tips</strong><br>Donation receipts can be used for income tax deductions. For designated donations, clearly state the intended purpose for transparent giving.'
+    tipBox: '💡 <strong>Tips</strong><br>Donation receipts can be used for income tax deductions. For designated donations, clearly state the intended purpose for transparent giving.',
+    articleBodies: [
+      'The Organization shall use the donated funds exclusively for the designated purpose specified by the Donor or, in the absence of designation, for the Organization\'s statutory purposes as set out in its articles of association. Donated funds shall not be diverted to any other purpose.',
+      'Upon receipt of the donation, the Organization shall promptly issue an official donation receipt to the Donor in accordance with Article 34 of the Income Tax Act and Article 24 of the Corporate Tax Act.',
+      'The Organization shall report to the Donor at least once per year on the use of donated funds and the outcomes of funded activities. Such reports shall be delivered in writing or by email.',
+      'The Donor may cancel this pledge in writing at any time prior to the transfer of funds. Donations already transferred shall not, as a general rule, be refunded; however, the Donor may demand a refund if the Organization suspends its statutory activities or if misappropriation of funds is confirmed.',
+      'The Donor consents to the Organization\'s collection and use of the Donor\'s personal information for the purposes of issuing donation receipts and providing activity reports. The Organization shall manage the Donor\'s personal information securely in accordance with the Personal Information Protection Act.',
+      'Matters not specified in this pledge agreement shall be governed by the Act on the Collection and Use of Donations and other applicable laws and regulations.'
+    ]
   },
   ja: {
     ctrlTitle: '💜 寄付誓約書', printBtn: '🖨 印刷 / PDF保存',
@@ -497,7 +523,15 @@ var LANG_DATA = {
     resetBtn: '↺ リセット',
     ctrlL0: '団体ロゴアップロード', ctrlL1: '作成日', ctrlL2: '文書番号', ctrlL3: '寄付金額', ctrlL4: '寄付種別',
     ctrlP2: '例：DON-2025-001', ctrlP3: '例：1200000',
-    tipBox: '💡 <strong>作成のヒント</strong><br>寄付金領収書は所得控除に使用できます。指定寄付の場合は使途を明確に記載すると透明性が高まります。'
+    tipBox: '💡 <strong>作成のヒント</strong><br>寄付金領収書は所得控除に使用できます。指定寄付の場合は使途を明確に記載すると透明性が高まります。',
+    articleBodies: [
+      '団体は、寄付者が指定した目的事業、又は指定がない場合は団体の定款上の設立目的事業に寄付金を使用する。寄付金を他の用途に流用してはならない。',
+      '団体は、寄付金の受領後直ちに、所得税法第34条及び法人税法第24条に基づく寄付金領収書を発行して寄付者に交付する。',
+      '団体は、年1回以上、寄付金の使途及び事業成果を寄付者に報告する。報告は書面又は電子メールにより行う。',
+      '寄付者は、寄付金の履行前であればいつでも書面により誓約を取り消すことができる。既に履行された寄付金は原則として返還されないが、団体が目的事業を中止した場合又は不正使用が確認された場合は返還を求めることができる。',
+      '寄付者は、寄付金領収書の発行及び事業報告等のために、団体が本人の個人情報を収集・利用することに同意する。団体は個人情報保護法に従い、寄付者の情報を安全に管理する。',
+      '本誓約書に定めのない事項は、寄付金品の募集及び使用に関する法律その他関係法令による。'
+    ]
   }
 };
 function setLang(lang) {
@@ -518,6 +552,12 @@ function setLang(lang) {
     var el = document.getElementById('at-' + (i+1));
     if (el) el.textContent = title;
   });
+  if (d.articleBodies) {
+    var bodies = document.querySelectorAll('.article-body');
+    d.articleBodies.forEach(function(html, i) {
+      if (bodies[i]) bodies[i].innerHTML = html;
+    });
+  }
   // ── 컨트롤 패널 전체 번역 ──
   var bk = document.querySelector('a[href="../forms.html"]');
   if (bk) bk.textContent = d.ctrlBackLink;

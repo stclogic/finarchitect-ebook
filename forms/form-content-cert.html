@@ -158,17 +158,44 @@
 .lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
-  .ctrl-panel, nav, footer, .back-link, .add-row-btn { display: none !important; }
-  .form-page-wrap { display: block; padding: 0; }
-  .doc-wrap { background: none; padding: 0; }
-  .doc-page { width: 100%; box-shadow: none; margin: 0; }
-  .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-  @page { size: A4; margin: 0; }
+
+  /* 서명란은 이전 내용과 함께 유지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -216,7 +243,7 @@
               <img id="logoImg" class="logo-img" alt="로고">
             </label>
           </div>
-          <div class="postal-badge">우체국 발송용 · CERTIFIED MAIL</div>
+          <div class="postal-badge" id="postalBadge">우체국 발송용 · CERTIFIED MAIL</div>
         </div>
 
         <!-- Title -->
@@ -244,21 +271,21 @@
 
         <!-- Reference -->
         <div class="ref-row">
-          <span class="lbl">제목(건명):</span>
+          <span class="lbl" id="refRowLabel">제목(건명):</span>
           <span class="val" contenteditable="true"></span>
         </div>
 
         <!-- 경위 -->
-        <div class="section-title">1. 경위 설명</div>
-        <div class="section-body" contenteditable="true">본인은 귀하에 대하여 다음과 같은 사유로 본 내용증명을 발송합니다.</div>
+        <div class="section-title" id="sectionTitle1">1. 경위 설명</div>
+        <div class="section-body" id="sectionBody1" contenteditable="true">본인은 귀하에 대하여 다음과 같은 사유로 본 내용증명을 발송합니다.</div>
 
         <!-- 요구 사항 -->
         <div class="demand-section">
-          <div class="section-title">2. 요구 사항</div>
+          <div class="section-title" id="sectionTitle2">2. 요구 사항</div>
           <table class="demand-table" id="demandTable">
             <tr>
-              <th>번호</th>
-              <th style="text-align:left;width:90%;">요구 내용</th>
+              <th id="demandTh1">번호</th>
+              <th id="demandTh2" style="text-align:left;width:90%;">요구 내용</th>
             </tr>
             <tr>
               <td style="text-align:center;font-weight:700;">1</td>
@@ -280,11 +307,11 @@
         <div class="deadline-box">
           <span class="dl-lbl" id="deadlineLabel">이행 기한:</span>
           <span class="dl-val" id="deadlineDisplay" contenteditable="true"></span>
-          <span style="font-size:9pt;color:#64748b;">까지</span>
+          <span id="deadlineSuffix" style="font-size:9pt;color:#64748b;">까지</span>
         </div>
 
         <!-- Warning -->
-        <div class="warning-box">
+        <div class="warning-box" id="warningBox">
           상기 요구 사항을 이행 기한 내에 이행하지 않을 경우, 민사소송 제기, 형사고소 등 가능한 모든 법적 조치를 취할 것임을 통보합니다.
         </div>
 
@@ -294,7 +321,7 @@
           <div class="sig-name">
             <span class="lbl" id="sigSenderLabel">발신인:</span>
             <span class="val" contenteditable="true"></span>
-            <span style="margin-left:3px;font-size:9.5pt;">(서명)</span>
+            <span id="sigSignText" style="margin-left:3px;font-size:9.5pt;">(서명)</span>
           </div>
           <div class="stamp-circle">인</div>
         </div>
@@ -336,7 +363,21 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
     tipBox: '📮 내용증명은 우체국에서 발송하면 법적 증거력이 생깁니다. 동일 내용 3부를 작성하세요 (발신인·수신인·우체국 각 1부).',
     ctrlLogoBtn: '클릭하여 로고 선택',
-    ctrlLbl0: '로고 업로드', ctrlLbl1: '이행 기한'
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '이행 기한',
+    postalBadge: '우체국 발송용 · CERTIFIED MAIL',
+    logoPlaceholder: '로고',
+    refRowLabel: '제목(건명):',
+    sectionTitle1: '1. 경위 설명', sectionTitle2: '2. 요구 사항',
+    sectionBody1: '본인은 귀하에 대하여 다음과 같은 사유로 본 내용증명을 발송합니다.',
+    demandTh1: '번호', demandTh2: '요구 내용',
+    deadlineSuffix: '까지',
+    warningBox: '상기 요구 사항을 이행 기한 내에 이행하지 않을 경우, 민사소송 제기, 형사고소 등 가능한 모든 법적 조치를 취할 것임을 통보합니다.',
+    certTitle: '[ 우체국 증명 ]',
+    certPostmaster: '발송일: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 우체국명: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+    certStampLine: '우체국장 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (인)',
+    stampCircle: '인',
+    sigSignText: '(서명)',
+    infoLabels: ['성명','주소','연락처']
   },
   en: {
     docTitle: 'CERTIFIED MAIL CONTENT', docSub: 'Certificate of Mailing Content (Registered Mail)',
@@ -348,7 +389,21 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
     tipBox: '📮 Sending via registered mail at a post office creates legal evidentiary value. Prepare 3 identical copies (sender, recipient, post office).',
     ctrlLogoBtn: 'Click to select logo',
-    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Compliance Deadline'
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Compliance Deadline',
+    postalBadge: 'Post Office Dispatch · CERTIFIED MAIL',
+    logoPlaceholder: 'Logo',
+    refRowLabel: 'Subject:',
+    sectionTitle1: '1. Background & Circumstances', sectionTitle2: '2. Demands',
+    sectionBody1: 'I hereby send this certified mail to you for the following reasons.',
+    demandTh1: 'No.', demandTh2: 'Demand',
+    deadlineSuffix: '.',
+    warningBox: 'Please be advised that if the above demands are not fulfilled by the deadline, all available legal measures, including civil litigation and criminal complaint, will be pursued.',
+    certTitle: '[ POST OFFICE CERTIFICATION ]',
+    certPostmaster: 'Date of Dispatch: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Post Office Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+    certStampLine: 'Postmaster &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SEAL)',
+    stampCircle: 'SEAL',
+    sigSignText: '(Signature)',
+    infoLabels: ['Name','Address','Contact']
   },
   ja: {
     docTitle: '内 &nbsp; 容 &nbsp; 証 &nbsp; 明', docSub: '郵便による内容証明（書留郵便）',
@@ -360,7 +415,21 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
     tipBox: '📮 郵便局から書留郵便で発送すると法的証拠力が生じます。同一内容3部を作成してください（発信人・受信人・郵便局各1部）。',
     ctrlLogoBtn: 'ロゴを選択',
-    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '履行期限'
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '履行期限',
+    postalBadge: '郵便局送付用 · 内容証明郵便',
+    logoPlaceholder: 'ロゴ',
+    refRowLabel: '件名：',
+    sectionTitle1: '1. 経緯の説明', sectionTitle2: '2. 要求事項',
+    sectionBody1: '本人は、貴殿に対して以下の理由により本内容証明を発送します。',
+    demandTh1: '番号', demandTh2: '要求内容',
+    deadlineSuffix: 'まで',
+    warningBox: '上記要求事項を履行期限内に履行されない場合、民事訴訟の提起、刑事告訴等、可能なすべての法的措置を取ることをお知らせします。',
+    certTitle: '【 郵便局証明 】',
+    certPostmaster: '発送日：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 郵便局名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+    certStampLine: '郵便局長 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; （印）',
+    stampCircle: '印',
+    sigSignText: '（署名）',
+    infoLabels: ['氏名','住所','連絡先']
   }
 };
 function setLang(lang) {
@@ -392,6 +461,44 @@ function setLang(lang) {
   if (ctrlLbl0) ctrlLbl0.textContent = d.ctrlLbl0;
   var ctrlLbl1 = document.getElementById('ctrlLbl1');
   if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
+
+  // ── 구조 레이블 번역 ──
+  var postalBadge = document.getElementById('postalBadge');
+  if (postalBadge && d.postalBadge) postalBadge.textContent = d.postalBadge;
+  var logoPlaceholder = document.getElementById('logoPlaceholder');
+  if (logoPlaceholder && d.logoPlaceholder) logoPlaceholder.textContent = d.logoPlaceholder;
+  var refRowLabel = document.getElementById('refRowLabel');
+  if (refRowLabel && d.refRowLabel) refRowLabel.textContent = d.refRowLabel;
+  var st1 = document.getElementById('sectionTitle1');
+  if (st1 && d.sectionTitle1) st1.textContent = d.sectionTitle1;
+  var st2 = document.getElementById('sectionTitle2');
+  if (st2 && d.sectionTitle2) st2.textContent = d.sectionTitle2;
+  var sb1 = document.getElementById('sectionBody1');
+  if (sb1 && d.sectionBody1) sb1.textContent = d.sectionBody1;
+  var dth1 = document.getElementById('demandTh1');
+  if (dth1 && d.demandTh1) dth1.textContent = d.demandTh1;
+  var dth2 = document.getElementById('demandTh2');
+  if (dth2 && d.demandTh2) dth2.textContent = d.demandTh2;
+  var dlSuffix = document.getElementById('deadlineSuffix');
+  if (dlSuffix && d.deadlineSuffix) dlSuffix.textContent = d.deadlineSuffix;
+  var warnBox = document.getElementById('warningBox');
+  if (warnBox && d.warningBox) warnBox.textContent = d.warningBox;
+  var certTitle = document.querySelector('.cert-title');
+  if (certTitle && d.certTitle) certTitle.textContent = d.certTitle;
+  var certPostmaster = document.querySelector('.cert-postmaster');
+  if (certPostmaster && d.certPostmaster) certPostmaster.innerHTML = d.certPostmaster;
+  var certStampLine = certPostmaster ? certPostmaster.nextElementSibling : null;
+  if (certStampLine && d.certStampLine) certStampLine.innerHTML = d.certStampLine;
+  var stampCircle = document.querySelector('.stamp-circle');
+  if (stampCircle && d.stampCircle) stampCircle.textContent = d.stampCircle;
+  var sigSignText = document.getElementById('sigSignText');
+  if (sigSignText && d.sigSignText) sigSignText.textContent = d.sigSignText;
+  if (d.infoLabels) {
+    var infoLbls = document.querySelectorAll('.info-lbl');
+    infoLbls.forEach(function(el, i) {
+      el.textContent = d.infoLabels[i % d.infoLabels.length];
+    });
+  }
 }
 
 document.getElementById('deadlineInput').addEventListener('input', function(){

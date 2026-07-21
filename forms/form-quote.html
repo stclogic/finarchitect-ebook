@@ -332,23 +332,45 @@ body { background: var(--amber-bg); }
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 /* ── 인쇄 ── */
 @media print {
-  body { background: #fff; }
-  .ctrl-panel, nav, footer, .back-link, .add-row-btn, .doc-bg { display: block !important; background: none !important; padding: 0 !important; border: none !important; box-shadow: none !important; }
-  .ctrl-panel { display: none !important; }
-  nav, footer { display: none !important; }
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
   .form-page-wrap { display: block !important; padding: 0 !important; }
-  .doc-bg { padding: 0 !important; }
-  .a4-page { box-shadow: none !important; margin: 0 !important; width: 100% !important; }
-  .add-row-btn { display: none !important; }
-  .logo-placeholder { border: none !important; }
-}
-.clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-  @page { size: A4; margin: 0; }
+
+  /* 서명란은 이전 내용과 함께 유지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
+}
 </style>
 </head>
 <body>
@@ -426,8 +448,8 @@ body { background: var(--amber-bg); }
         <div class="doc-title-block">
           <div class="doc-title" id="formDocTitle">견 &nbsp; 적 &nbsp; 서</div>
           <div class="doc-meta">
-            견적번호: <span id="dispQuoteNo" contenteditable="true">Q-2024-001</span><br>
-            견적일자: <span id="dispDate" contenteditable="true"></span>
+            <span id="quoteMetaLabel0">견적번호</span>: <span id="dispQuoteNo" contenteditable="true">Q-2024-001</span><br>
+            <span id="quoteMetaLabel1">견적일자</span>: <span id="dispDate" contenteditable="true"></span>
           </div>
         </div>
       </div>
@@ -490,7 +512,7 @@ body { background: var(--amber-bg); }
         </div>
       </div>
       <div class="amount-in-words">
-        합계금액 (한글): <span id="amountWords">영 원정</span>
+        <span id="quoteAmtLabel">합계금액 (한글)</span>: <span id="amountWords">영 원정</span>
       </div>
 
       <!-- 특기사항 -->
@@ -507,7 +529,7 @@ body { background: var(--amber-bg); }
 
       <!-- 푸터 -->
       <div class="doc-footer">
-        <div class="footer-text">위와 같이 견적을 제출합니다.</div>
+        <div class="footer-text" id="quoteFooterText">위와 같이 견적을 제출합니다.</div>
         <div class="footer-sig">
           <span id="footerDate"></span><br>
           <div class="sig-box">
@@ -642,7 +664,14 @@ var LANG_DATA_FORM = {
     addRowBtn: '+ 항목 추가',
     ctrlL0: '회사 로고 업로드', ctrlL1: '견적서 번호', ctrlL2: '견적 일자', ctrlL3: '부가세 포함/제외',
     ctrlP0: 'Q-2024-001', ctrlP1: '',
-    vatOptions: ['부가세 포함 (10%)', '부가세 제외']
+    vatOptions: ['부가세 포함 (10%)', '부가세 제외'],
+    infoBoxTitles: ['📋 수신처 정보','📌 견적 조건'],
+    allInfoLabels: ['사업자번호','주   소','전   화','이메일','수   신','담 당 자','연락처','이메일','유효기간','납품조건','결제조건','납품장소'],
+    bankLabels: ['은행명','계좌번호','예금주'],
+    footerText: '위와 같이 견적을 제출합니다.',
+    sigLabel: '대표이사',
+    quoteMetaLabels: ['견적번호','견적일자'],
+    amtLabel: '합계금액 (한글)'
   },
   en: {
     docTitle: 'QUOTATION',
@@ -658,7 +687,14 @@ var LANG_DATA_FORM = {
     addRowBtn: '+ Add Row',
     ctrlL0: 'Company Logo', ctrlL1: 'Quote Number', ctrlL2: 'Quote Date', ctrlL3: 'VAT Setting',
     ctrlP0: 'Q-2024-001', ctrlP1: '',
-    vatOptions: ['Include VAT (10%)', 'Exclude VAT']
+    vatOptions: ['Include VAT (10%)', 'Exclude VAT'],
+    infoBoxTitles: ['📋 Bill To','📌 Quote Terms'],
+    allInfoLabels: ['Business Reg. No.','Address','Phone','Email','Bill To','Contact Person','Phone','Email','Validity','Delivery Terms','Payment Terms','Delivery Location'],
+    bankLabels: ['Bank Name','Account No.','Account Holder'],
+    footerText: 'We hereby submit the above quotation.',
+    sigLabel: 'CEO',
+    quoteMetaLabels: ['Quote No.','Quote Date'],
+    amtLabel: 'Amount in Words'
   },
   ja: {
     docTitle: '見 &nbsp; 積 &nbsp; 書',
@@ -674,7 +710,14 @@ var LANG_DATA_FORM = {
     addRowBtn: '+ 行を追加',
     ctrlL0: '会社ロゴ', ctrlL1: '見積番号', ctrlL2: '見積日付', ctrlL3: '消費税設定',
     ctrlP0: 'Q-2024-001', ctrlP1: '',
-    vatOptions: ['消費税込み (10%)', '消費税なし']
+    vatOptions: ['消費税込み (10%)', '消費税なし'],
+    infoBoxTitles: ['📋 宛先情報','📌 見積条件'],
+    allInfoLabels: ['事業者番号','住所','電話','メール','宛先','担当者','電話','メール','有効期間','納品条件','支払条件','納品場所'],
+    bankLabels: ['銀行名','口座番号','口座名義'],
+    footerText: '上記のとおりお見積り申し上げます。',
+    sigLabel: '代表取締役',
+    quoteMetaLabels: ['見積番号','見積日付'],
+    amtLabel: '合計金額（読み方）'
   }
 };
 
@@ -715,6 +758,15 @@ function setLang(lang) {
   if (addBtns.length && d.addRowBtn) addBtns.forEach(function(b){ b.textContent = d.addRowBtn; });
   // VAT select options
   if (d.vatOptions) { var sel = document.getElementById('vatToggle'); if (sel) d.vatOptions.forEach(function(t,i){ if(sel.options[i]) sel.options[i].text = t; }); }
+  // ── 문서 내부 고정 텍스트 번역 ──
+  if(d.infoBoxTitles) { var ibt = document.querySelectorAll('.info-box-title'); d.infoBoxTitles.forEach(function(t,i){ if(ibt[i]) ibt[i].textContent = t; }); }
+  if(d.allInfoLabels) { var ils = document.querySelectorAll('.info-label'); d.allInfoLabels.forEach(function(t,i){ if(ils[i]) ils[i].textContent = t; }); }
+  if(d.bankLabels) { var bls = document.querySelectorAll('.bl'); d.bankLabels.forEach(function(t,i){ if(bls[i]) bls[i].textContent = t; }); }
+  var ft = document.getElementById('quoteFooterText'); if(ft && d.footerText) ft.textContent = d.footerText;
+  var sl = document.querySelector('.sig-label'); if(sl && d.sigLabel) sl.textContent = d.sigLabel;
+  var qml0 = document.getElementById('quoteMetaLabel0'); if(qml0 && d.quoteMetaLabels) qml0.textContent = d.quoteMetaLabels[0];
+  var qml1 = document.getElementById('quoteMetaLabel1'); if(qml1 && d.quoteMetaLabels) qml1.textContent = d.quoteMetaLabels[1];
+  var qal = document.getElementById('quoteAmtLabel'); if(qal && d.amtLabel) qal.textContent = d.amtLabel;
 }
 
 // 로고 업로드

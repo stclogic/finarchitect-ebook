@@ -95,19 +95,45 @@ body { background: var(--amber-bg); }
 .lang-btn.active { background:#B45309; border-color:#B45309; color:#fff; }
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display: none !important; }
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
   body { background: #fff !important; }
   .form-page-wrap { display: block !important; padding: 0 !important; }
-  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; }
-  .a4-page { box-shadow: none !important; width: 100% !important; }
-}
-.clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-  @page { size: A4; margin: 0; }
+
+  /* 서명란은 이전 내용과 함께 유지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
+}
 </style>
 </head>
 <body>
@@ -346,7 +372,38 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 인쇄 / PDF 저장',
     tipBox: '⚠️ 이 서식은 참고용 템플릿입니다. 실제 계약 체결 전에는 반드시 법률 전문가의 검토를 받으시기 바랍니다.',
     ctrlL0: '회사명', ctrlL1: '계약 일자',
-    ctrlP0: '(주)회사명', ctrlP1: ''
+    ctrlP0: '(주)회사명', ctrlP1: '',
+    docIntroHTML: '<span id="dispCompany" contenteditable="true">(주)회사명</span> (이하 "회사")의 주주들은 주주간의 권리·의무 관계를 명확히 하고 회사의 건전한 발전을 도모하기 위하여 <span id="dispDate" contenteditable="true"></span> 다음과 같이 주주간계약을 체결한다.',
+    partyHeaders: ['구분','성명 / 법인명','주민번호 / 사업자번호','주소','보유 주식 수','지분율'],
+    partyLabels: ['갑','을','병'],
+    sigCardHeads: ['갑 (대표주주)','을 (주주)','병 (주주)'],
+    sigLabels: ['성명','주민번호','주소'],
+    stampText: '인',
+    clauseBodies: [
+      '"주식"이란 회사가 발행한 보통주식 및 기타 종류 주식을 의미한다.',
+      '"이사회"란 상법 및 정관에 따라 구성된 회사의 이사회를 의미한다.',
+      '"매각"이란 주식의 양도, 질권 설정, 신탁, 그 밖에 이에 준하는 일체의 처분 행위를 의미한다.',
+      '각 주주는 다른 주주 전원의 서면 동의 없이 보유 주식의 전부 또는 일부를 제3자에게 양도할 수 없다.',
+      '주식을 양도하고자 하는 주주(이하 "양도인")는 다른 주주에게 우선매수권을 제공하여야 한다. 우선매수권의 행사기간은 통보일로부터 30일로 한다.',
+      '양도인이 제3자와 매각 조건에 합의한 경우, 다른 주주들은 동반매각권(Tag-Along Right)을 행사하여 동일한 조건으로 자신의 주식을 함께 매각할 수 있다.',
+      '과반수 주주가 제3자에게 주식을 매각하는 경우, 해당 제3자의 요청이 있으면 소수 주주에게 동일한 조건으로 주식을 매각할 것을 요구할 수 있다(강제매각권, Drag-Along Right).',
+      '이사회는 각 주주가 합의하는 방식으로 구성하되, 갑은 대표이사 1인을 포함하여 이사 2인을 지명할 권리를 가진다.',
+      '을 및 병은 각 1인의 이사를 지명할 권리를 가진다. 단, 지분율이 10% 미만으로 감소한 경우 해당 권리는 소멸한다.',
+      '다음 사항은 주주 전원의 동의를 요하는 중요 사항으로 한다: (i) 정관 변경, (ii) 합병·분할·해산, (iii) 신주 발행, (iv) 자본금 변경, (v) 주요 자산 처분.',
+      '회사는 당기순이익의 일정 비율 이상을 배당 재원으로 적립하도록 노력한다.',
+      '배당금은 지분율에 비례하여 분배하며, 구체적인 배당 시기 및 금액은 이사회 결의로 결정한다.',
+      '추가 자금 조달이 필요한 경우, 기존 주주들은 지분율에 비례하여 신주 인수 우선권을 가진다.',
+      '외부 투자자 유치 시 투자 조건 및 밸류에이션은 이사회 결의를 통해 결정하며, 기존 주주의 지분 희석을 최소화하도록 노력한다.',
+      '주주가 회사의 업무 수행 중 개발한 일체의 지식재산권(특허, 저작권, 영업비밀 포함)은 회사에 귀속된다. 주주는 이에 필요한 서류에 협조할 의무를 진다.',
+      '각 주주는 계약 기간 중 회사와 동종 사업을 영위하거나 경쟁 업체에 참여할 수 없다.',
+      '경업금지 의무는 주주가 회사를 퇴사하거나 주식을 전량 처분한 날로부터 2년간 존속한다.',
+      '각 주주는 본 계약 및 회사의 영업비밀, 기술정보, 고객정보 등 일체의 기밀 정보를 제3자에게 누설하거나 허가 없이 사용할 수 없다. 비밀유지 의무는 본 계약 종료 후 5년간 유효하다.',
+      '다음 각 호에 해당하는 경우, 다른 주주들의 동의로 본 계약을 해지하거나 해당 주주를 계약에서 제외할 수 있다: (i) 중대한 계약 위반, (ii) 파산 또는 회생 신청, (iii) 금고 이상의 형사 처벌 확정.',
+      '각 주주는 본 계약 체결일 기준으로 (i) 본 계약의 체결 및 이행에 법적 제한이 없고, (ii) 자신의 주식에 제3자의 권리가 설정되지 않았으며, (iii) 법령 및 정관을 위반하는 사항이 없음을 진술하고 보장한다.',
+      '본 계약을 위반한 주주는 이로 인해 다른 주주 또는 회사에 발생한 일체의 손해를 배상할 책임을 진다. 손해배상액의 예정 또는 위약벌이 적용되는 경우 해당 금액은 별첨으로 정한다.',
+      '본 계약은 대한민국 법률에 따라 해석·적용된다.',
+      '본 계약과 관련된 분쟁은 당사자 간 협의를 통해 해결함을 원칙으로 하며, 협의가 이루어지지 않을 경우 서울중앙지방법원을 전속 관할 법원으로 한다.'
+    ]
   },
   en: {
     docTitle: 'SHAREHOLDERS AGREEMENT',
@@ -359,7 +416,38 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 Print / Save as PDF',
     tipBox: '⚠️ This is a reference template only. Please consult a legal professional before executing any actual agreement.',
     ctrlL0: 'Company Name', ctrlL1: 'Contract Date',
-    ctrlP0: 'Company Name, Inc.', ctrlP1: ''
+    ctrlP0: 'Company Name, Inc.', ctrlP1: '',
+    docIntroHTML: '<span id="dispCompany" contenteditable="true">Company Name, Inc.</span> (hereinafter the "Company") and its shareholders enter into this Shareholders Agreement on <span id="dispDate" contenteditable="true"></span> to clarify their mutual rights and obligations and promote the sound development of the Company.',
+    partyHeaders: ['No.','Name / Entity Name','ID No. / Registration No.','Address','Shares Held','Ownership (%)'],
+    partyLabels: ['A','B','C'],
+    sigCardHeads: ['Party A (Lead Shareholder)','Party B (Shareholder)','Party C (Shareholder)'],
+    sigLabels: ['Name','ID No.','Address'],
+    stampText: 'SEAL',
+    clauseBodies: [
+      '"Shares" means ordinary shares and any other class of shares issued by the Company.',
+      '"Board of Directors" means the board of directors of the Company constituted in accordance with the Commercial Act and the Articles of Incorporation.',
+      '"Transfer" means any transfer, pledge, trust arrangement, or any other similar disposition of shares.',
+      'No Shareholder may transfer all or any part of their shares to a third party without the prior written consent of all other Shareholders.',
+      'A Shareholder wishing to transfer shares (the "Transferor") shall provide a right of first refusal to the other Shareholders. The right of first refusal may be exercised within 30 days from the date of notice.',
+      'If the Transferor agrees on sale terms with a third party, the other Shareholders may exercise a Tag-Along Right to sell their shares under the same terms and conditions.',
+      'If a majority Shareholder sells shares to a third party, such third party may, upon request, require minority Shareholders to sell their shares under the same terms and conditions (Drag-Along Right).',
+      'The Board of Directors shall be constituted as agreed by all Shareholders; Party A shall have the right to appoint two directors, including one Representative Director.',
+      'Parties B and C shall each have the right to appoint one director, provided that such right shall lapse if their shareholding falls below 10%.',
+      'The following matters shall require the unanimous consent of all Shareholders: (i) amendment to the Articles of Incorporation; (ii) merger, demerger, or dissolution; (iii) issuance of new shares; (iv) change in capital; (v) disposal of material assets.',
+      'The Company shall endeavor to set aside a portion of its net profit as a dividend reserve.',
+      'Dividends shall be distributed in proportion to each Shareholder\'s ownership ratio; the specific timing and amount shall be determined by resolution of the Board.',
+      'In the event additional funding is required, existing Shareholders shall have a preemptive right to subscribe for new shares in proportion to their shareholding.',
+      'Terms and valuation for attracting external investors shall be determined by board resolution, with efforts to minimize dilution of existing shareholders\' interests.',
+      'All intellectual property rights (including patents, copyrights, and trade secrets) developed by Shareholders in the course of the Company\'s business shall vest in the Company. Shareholders shall cooperate in executing all necessary documentation.',
+      'During the term of this Agreement, no Shareholder may engage in any business of the same type as the Company or participate in a competing enterprise.',
+      'The non-competition obligation shall remain in effect for two (2) years from the date a Shareholder resigns from the Company or disposes of all their shares.',
+      'Each Shareholder shall not disclose to any third party or use without authorization any confidential information, including trade secrets, technical information, or customer data of the Company. The confidentiality obligation shall remain effective for five (5) years after termination of this Agreement.',
+      'In any of the following events, the other Shareholders may, by mutual agreement, terminate this Agreement or exclude the relevant Shareholder: (i) material breach of this Agreement; (ii) filing for bankruptcy or corporate rehabilitation; (iii) a final criminal conviction with a sentence of imprisonment or greater.',
+      'Each Shareholder represents and warrants as of the date of this Agreement that: (i) there are no legal restrictions on the execution and performance of this Agreement; (ii) no third-party rights have been established over their shares; and (iii) there are no violations of applicable laws or the Articles of Incorporation.',
+      'A Shareholder who breaches this Agreement shall be liable for all damages suffered by any other Shareholder or the Company. Where liquidated damages or penalties are applicable, such amounts shall be specified in an exhibit hereto.',
+      'This Agreement shall be governed by and construed in accordance with the laws of the Republic of Korea.',
+      'Disputes arising out of or in connection with this Agreement shall be resolved through good-faith negotiations; if no resolution is reached, the Seoul Central District Court shall have exclusive jurisdiction.'
+    ]
   },
   ja: {
     docTitle: '株 主 間 契 約 書',
@@ -372,7 +460,38 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 印刷 / PDF保存',
     tipBox: '⚠️ このフォームは参考用テンプレートです。実際の契約締結前に必ず法律の専門家にご確認ください。',
     ctrlL0: '会社名', ctrlL1: '契約日付',
-    ctrlP0: '株式会社○○', ctrlP1: ''
+    ctrlP0: '株式会社○○', ctrlP1: '',
+    docIntroHTML: '<span id="dispCompany" contenteditable="true">株式会社○○</span>（以下「会社」）の株主は、株主間の権利義務関係を明確にし、会社の健全な発展を促進するため、<span id="dispDate" contenteditable="true"></span>、以下のとおり株主間契約を締結する。',
+    partyHeaders: ['区分','氏名／法人名','住民番号／登録番号','住所','保有株式数','持株比率'],
+    partyLabels: ['甲','乙','丙'],
+    sigCardHeads: ['甲（代表株主）','乙（株主）','丙（株主）'],
+    sigLabels: ['氏名','住民番号','住所'],
+    stampText: '印',
+    clauseBodies: [
+      '「株式」とは、会社が発行した普通株式及びその他の種類の株式をいう。',
+      '「取締役会」とは、会社法及び定款に従い構成された会社の取締役会をいう。',
+      '「売却」とは、株式の譲渡、質権設定、信託その他これに準ずる一切の処分行為をいう。',
+      '各株主は、他の全株主の書面による同意なく、保有株式の全部又は一部を第三者に譲渡することができない。',
+      '株式を譲渡しようとする株主（以下「譲渡人」）は、他の株主に先買権を付与しなければならない。先買権の行使期間は通知日から30日とする。',
+      '譲渡人が第三者と売却条件に合意した場合、他の株主はタグ・アロング権（Tag-Along Right）を行使して同一条件で自己の株式を共に売却することができる。',
+      '過半数株主が第三者に株式を売却する場合、当該第三者の要求があれば少数株主に同一条件で株式を売却することを要求できる（ドラッグ・アロング権、Drag-Along Right）。',
+      '取締役会は各株主が合意する方法で構成し、甲は代表取締役1名を含む取締役2名を指名する権利を有する。',
+      '乙及び丙は各1名の取締役を指名する権利を有する。ただし、持株比率が10%未満に減少した場合、当該権利は消滅する。',
+      '以下の事項は全株主の同意を要する重要事項とする：（ⅰ）定款変更、（ⅱ）合併・分割・解散、（ⅲ）新株発行、（ⅳ）資本金変更、（ⅴ）主要資産の処分。',
+      '会社は当期純利益の一定比率以上を配当原資として積み立てるよう努める。',
+      '配当金は持株比率に比例して分配し、具体的な配当時期及び金額は取締役会決議で決定する。',
+      '追加資金調達が必要な場合、既存株主は持株比率に比例して新株の優先引受権を有する。',
+      '外部投資家の誘致に際し、投資条件及びバリュエーションは取締役会決議により決定し、既存株主の持株希薄化を最小限に抑えるよう努める。',
+      '株主が会社の業務遂行中に開発した一切の知的財産権（特許、著作権、営業秘密を含む）は会社に帰属する。株主はこれに必要な書類の作成に協力する義務を負う。',
+      '各株主は、契約期間中、会社と同種の事業を営み、又は競合他社に参加することができない。',
+      '競業禁止義務は、株主が会社を退社し、又は株式を全量処分した日から2年間存続する。',
+      '各株主は、本契約及び会社の営業秘密、技術情報、顧客情報等一切の機密情報を第三者に漏洩し、又は許可なく使用することができない。秘密保持義務は本契約終了後5年間有効とする。',
+      '以下の各号に該当する場合、他の株主の同意により本契約を解除し、又は当該株主を契約から除外することができる：（ⅰ）重大な契約違反、（ⅱ）破産又は再生申請、（ⅲ）禁錮以上の刑事処罰の確定。',
+      '各株主は、本契約締結日現在、（ⅰ）本契約の締結及び履行に法的制限がなく、（ⅱ）自己の株式に第三者の権利が設定されておらず、（ⅲ）法令及び定款に違反する事項がないことを表明し保証する。',
+      '本契約に違反した株主は、これにより他の株主又は会社に生じた一切の損害を賠償する責任を負う。損害賠償額の予定又は違約罰が適用される場合、当該金額は別紙に定める。',
+      '本契約は大韓民国の法律に従い解釈・適用される。',
+      '本契約に関する紛争は当事者間の協議による解決を原則とし、協議が整わない場合はソウル中央地方法院を専属管轄裁判所とする。'
+    ]
   }
 };
 
@@ -387,17 +506,69 @@ function setLang(lang) {
   document.getElementById('formDocTitle').textContent = d.docTitle;
   document.getElementById('formDocSub').textContent = d.docSub;
   document.getElementById('sigPrefix').textContent = d.sigPrefix;
-  // article-title: <span class="art-no">제 N 조</span> + text node
+
+  // ── 도입부 번역 (회사명·날짜 값 보존) ──
+  var savedCompany = (document.getElementById('dispCompany') || {}).textContent || '';
+  var savedDate = (document.getElementById('dispDate') || {}).textContent || '';
+  var introEl = document.querySelector('.doc-intro');
+  if (introEl && d.docIntroHTML) {
+    introEl.innerHTML = d.docIntroHTML;
+    var cEl = document.getElementById('dispCompany');
+    if (cEl && savedCompany) cEl.textContent = savedCompany;
+    var dEl = document.getElementById('dispDate');
+    if (dEl && savedDate) dEl.textContent = savedDate;
+  }
+
+  // ── 조항 본문 번역 ──
+  if (d.clauseBodies) {
+    var clauseTexts = document.querySelectorAll('.clause-text');
+    d.clauseBodies.forEach(function(text, i) {
+      if (clauseTexts[i]) clauseTexts[i].textContent = text;
+    });
+  }
+
+  // ── 당사자 테이블 헤더 번역 ──
+  if (d.partyHeaders) {
+    var ths = document.querySelectorAll('.party-table thead th');
+    d.partyHeaders.forEach(function(txt, i) { if (ths[i]) ths[i].textContent = txt; });
+  }
+
+  // ── 당사자 구분 레이블 번역 ──
+  if (d.partyLabels) {
+    var firstCols = document.querySelectorAll('.party-table tbody tr td:first-child');
+    d.partyLabels.forEach(function(txt, i) { if (firstCols[i]) firstCols[i].textContent = txt; });
+  }
+
+  // ── 서명 카드 헤드 번역 ──
+  if (d.sigCardHeads) {
+    var heads = document.querySelectorAll('.sig-card-head');
+    d.sigCardHeads.forEach(function(txt, i) { if (heads[i]) heads[i].textContent = txt; });
+  }
+
+  // ── 서명 레이블 번역 (성명/주민번호/주소, 카드 3개) ──
+  if (d.sigLabels) {
+    var labels = document.querySelectorAll('.sig-label2');
+    for (var i = 0; i < labels.length; i++) {
+      labels[i].textContent = d.sigLabels[i % d.sigLabels.length];
+    }
+  }
+
+  // ── 도장 텍스트 번역 ──
+  if (d.stampText) {
+    document.querySelectorAll('.stamp-circle').forEach(function(el) { el.textContent = d.stampText; });
+  }
+
+  // ── 조항 제목 번역 ──
   var articleTitles = document.querySelectorAll('.article-title');
   articleTitles.forEach(function(el, i) {
     if (!d.clauseTitles[i]) return;
     var artNo = el.querySelector('.art-no');
-    // remove all child nodes except .art-no
     while (el.lastChild && el.lastChild !== artNo) el.removeChild(el.lastChild);
     if (artNo && artNo !== el.firstChild) { el.insertBefore(artNo, el.firstChild); }
     el.appendChild(document.createTextNode(' ' + d.clauseTitles[i]));
   });
-  // ── 컨트롤 패널 전체 번역 ──
+
+  // ── 컨트롤 패널 번역 ──
   var bk = document.querySelector('a[href="../forms.html"]');
   if (bk) bk.textContent = d.ctrlBackLink;
   var h2 = document.querySelector('.ctrl-panel h2');

@@ -132,26 +132,44 @@
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display:none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  .form-page-wrap { display:block; padding:0; }
-  .doc-wrap { background:none; padding:0; border-radius:0; }
-  .doc-page { width:210mm; box-shadow:none; min-height:auto; }
-  @page { size:A4; margin:0; }
-  body { background:#fff !important; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -226,7 +244,7 @@
         <div class="doc-title">
           <h1 id="formDocTitle">동&nbsp;&nbsp;업&nbsp;&nbsp;계&nbsp;&nbsp;약&nbsp;&nbsp;서</h1>
           <div class="en" id="docSubTitle">PARTNERSHIP AGREEMENT</div>
-          <div class="subtitle">아래 당사자들은 동업에 관하여 다음과 같이 계약을 체결한다.</div>
+          <div class="subtitle" id="docSubtitle">아래 당사자들은 동업에 관하여 다음과 같이 계약을 체결한다.</div>
         </div>
         <div class="doc-divider"></div>
 
@@ -453,7 +471,33 @@ var LANG_DATA = {
     docTitle: '동  업  계  약  서', docSub: 'PARTNERSHIP AGREEMENT',
     thA: '甲 — 대표 파트너', thB: '乙 — 파트너',
     sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
-    articles: ['목적 및 사업 내용','출자 및 지분','손익 배분','업무 집행','경비 처리','사업 계좌 관리','경업 금지','신규 파트너 추가','파트너 탈퇴','동업 해소','기밀 유지','분쟁 해결','기타']
+    articles: ['목적 및 사업 내용','출자 및 지분','손익 배분','업무 집행','경비 처리','사업 계좌 관리','경업 금지','신규 파트너 추가','파트너 탈퇴','동업 해소','기밀 유지','분쟁 해결','기타'],
+    docIntro: '아래 당사자들은 동업에 관하여 다음과 같이 계약을 체결한다.',
+    bizBoxTitle: '▌ 사업 기본 사항',
+    pbLabels: ['상호', '사업 내용', '사업장 소재지', '사업 개시일'],
+    pcLabels: ['성명', '생년월일', '주소', '연락처', '성명', '생년월일', '주소', '연락처'],
+    sectionBadge: '▌ 출자금 및 지분',
+    tableHeaders: ['파트너', '출자 형태', '출자금액', '지분 비율', '비고'],
+    totalLabel: '합계',
+    stampTitles: ['甲 — 대표 파트너', '乙 — 파트너', '丙 — 파트너'],
+    sInfo: '성명:<br>주소:<br>연락처:',
+    stampSeal: '인',
+    capitalPrefill: ['甲 (대표파트너)', '현금', '乙 (파트너)', '현금'],
+    articleBodies: [
+      '본 계약의 목적은 당사자들이 공동으로 사업을 영위하여 그 수익을 나누는 데 있다. 사업 내용은 위 사업 기본 사항에 명시된 바와 같으며, 변경 시 전원 합의로 한다.',
+      '각 파트너의 출자금 및 지분 비율은 위 출자금 표와 같다. 추가 출자가 필요한 경우 전원 합의 후 지분 비율에 따라 부담한다.',
+      '순이익 및 손실은 위 지분 비율에 따라 배분한다. 손익 정산은 분기별(3월, 6월, 9월, 12월 말)로 실시하며, 정산 후 30일 이내에 배분금을 지급한다.',
+      '갑이 대표 파트너로서 일상적인 업무를 집행한다. 주요 의사결정(500만 원 이상 지출, 계약 체결 등)은 파트너 전원의 서면 합의로 한다.',
+      '업무상 발생한 비용은 사업 계좌에서 지출한다. 개인 비용은 사전 합의 없이 사업 비용으로 처리할 수 없다. 월 ______만 원을 초과하는 지출은 전원 합의가 필요하다.',
+      '사업 공동 계좌를 개설하고 모든 수입·지출은 해당 계좌를 통한다. 계좌 인출 권한은 갑 단독 또는 갑·을 공동으로 한다(중복 선택 가능). 월 정산 내역서를 전원에게 공유한다.',
+      '각 파트너는 계약 기간 중 및 탈퇴·해소 후 __년간, 본 사업장 반경 __km 이내에서 동종 업종을 영위하지 않는다.',
+      '신규 파트너의 가입은 기존 파트너 전원의 서면 동의가 있어야 하며, 가입 시 기존 지분 비율에 따라 지분이 조정된다. 별도 추가계약서를 작성한다.',
+      '탈퇴를 원하는 파트너는 탈퇴 희망일 3개월 전에 서면으로 통보하여야 한다. 탈퇴 시 탈퇴일 기준 지분 평가액을 60일 이내에 정산·지급한다. 탈퇴 파트너의 지분은 잔류 파트너가 합의하에 인수한다.',
+      '동업 해소는 파트너 전원의 서면 합의로 한다. 해소 시 채무 변제 후 잔여 자산을 지분 비율에 따라 분배한다. 청산은 파트너 전원이 참여하여 진행한다.',
+      '각 파트너는 사업과 관련하여 알게 된 거래처 정보, 영업 비밀 및 재무 정보를 제3자에게 누설하지 않는다. 이 의무는 계약 종료 후 __년간 지속된다.',
+      '본 계약에 관한 분쟁은 우선 파트너 간 협의로 해결한다. 협의가 불가한 경우 사업장 소재지를 관할하는 법원을 제1심 법원으로 한다.',
+      '본 계약서에 명시되지 않은 사항은 「민법」, 「상법」 및 관계 법령과 상관습에 따르며, 파트너 전원의 합의로 결정한다.'
+    ]
   },
   en: {
     ctrlTitle: '🤝 Partnership Agreement', printBtn: '🖨 Print / Save as PDF',
@@ -464,7 +508,33 @@ var LANG_DATA = {
     docTitle: 'PARTNERSHIP AGREEMENT', docSub: 'Business Partnership Contract',
     thA: 'Party A (Lead Partner)', thB: 'Party B (Partner)',
     sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Partnership Agreement.',
-    articles: ['Art.1 — Purpose & Business Scope','Art.2 — Capital Contribution & Equity','Art.3 — Profit & Loss Sharing','Art.4 — Business Management','Art.5 — Expense Treatment','Art.6 — Business Account Management','Art.7 — Non-Competition','Art.8 — New Partners','Art.9 — Partner Withdrawal','Art.10 — Dissolution','Art.11 — Confidentiality','Art.12 — Dispute Resolution','Art.13 — Miscellaneous']
+    articles: ['Art.1 — Purpose & Business Scope','Art.2 — Capital Contribution & Equity','Art.3 — Profit & Loss Sharing','Art.4 — Business Management','Art.5 — Expense Treatment','Art.6 — Business Account Management','Art.7 — Non-Competition','Art.8 — New Partners','Art.9 — Partner Withdrawal','Art.10 — Dissolution','Art.11 — Confidentiality','Art.12 — Dispute Resolution','Art.13 — Miscellaneous'],
+    docIntro: 'The parties named below enter into this Partnership Agreement as follows.',
+    bizBoxTitle: '▌ Business Information',
+    pbLabels: ['Business Name', 'Nature of Business', 'Business Address', 'Commencement Date'],
+    pcLabels: ['Name', 'Date of Birth', 'Address', 'Contact', 'Name', 'Date of Birth', 'Address', 'Contact'],
+    sectionBadge: '▌ Capital Contributions & Equity',
+    tableHeaders: ['Partner', 'Type', 'Amount', 'Equity %', 'Remarks'],
+    totalLabel: 'Total',
+    stampTitles: ['Party A (Lead Partner)', 'Party B (Partner)', 'Party C (Partner)'],
+    sInfo: 'Name:<br>Address:<br>Contact:',
+    stampSeal: 'SEAL',
+    capitalPrefill: ['Party A (Lead Partner)', 'Cash', 'Party B (Partner)', 'Cash'],
+    articleBodies: [
+      'The purpose of this Agreement is to jointly operate a business and to share the profits therefrom. The scope of business shall be as set forth in the Business Information section above and may be amended only by unanimous written consent of all Partners.',
+      'Each Partner\'s capital contribution and equity ratio shall be as set forth in the Capital Contribution table above. Should additional capital be required, all Partners shall contribute in proportion to their equity ratios upon unanimous consent.',
+      'Net profits and losses shall be allocated in proportion to each Partner\'s equity ratio. Quarterly settlements shall be conducted (at the end of March, June, September, and December), and distributions shall be paid within 30 days of each settlement.',
+      'Party A, as the Lead Partner, shall manage the day-to-day operations of the business. Major decisions (expenditures of KRW 5,000,000 or more, execution of contracts, etc.) shall require the written consent of all Partners.',
+      'Business expenses shall be paid from the joint business account. No personal expenses may be charged to the business without prior unanimous consent. Any single expenditure exceeding KRW _______ shall require unanimous approval.',
+      'A joint business bank account shall be opened, and all income and expenditures shall be processed through that account. Withdrawal authority shall vest in Party A alone, or jointly in Party A and Party B (multiple selections permitted). Monthly account statements shall be shared with all Partners.',
+      'Each Partner shall not engage in any business of the same kind within __ km of the business premises during the term of this Agreement and for __ year(s) following withdrawal or dissolution.',
+      'The admission of a new Partner shall require the written consent of all existing Partners. Upon admission, equity ratios shall be adjusted in proportion to existing equity interests. A separate addendum shall be executed.',
+      'A Partner wishing to withdraw shall provide written notice at least three (3) months prior to the intended withdrawal date. The withdrawing Partner\'s equity value as of the withdrawal date shall be settled and paid within 60 days. The withdrawing Partner\'s equity interest shall be assumed by the remaining Partners by mutual agreement.',
+      'Dissolution of the partnership shall require the written consent of all Partners. Upon dissolution, remaining assets after satisfaction of all debts shall be distributed in proportion to each Partner\'s equity ratio. All Partners shall participate in the liquidation process.',
+      'Each Partner shall not disclose to any third party any client information, trade secrets, or financial information acquired in connection with the business. This obligation shall survive for __ year(s) after termination of this Agreement.',
+      'Disputes arising under this Agreement shall first be resolved through negotiation among the Partners. If no resolution is reached, the court having jurisdiction over the business premises shall serve as the court of first instance.',
+      'Matters not addressed in this Agreement shall be governed by the Civil Act, the Commercial Act, and other applicable laws and regulations, and shall be determined by unanimous consent of all Partners.'
+    ]
   },
   ja: {
     ctrlTitle: '🤝 共同事業契約書', printBtn: '🖨 印刷 / PDF保存',
@@ -475,7 +545,33 @@ var LANG_DATA = {
     docTitle: '共同事業契約書', docSub: 'PARTNERSHIP AGREEMENT',
     thA: '甲（代表パートナー）', thB: '乙（パートナー）',
     sigPrefix: '上記契約の成立を証明するため、本契約書を作成して記名押印する。',
-    articles: ['第1条 — 目的及び事業内容','第2条 — 出資及び持分','第3条 — 損益配分','第4条 — 業務執行','第5条 — 経費処理','第6条 — 事業口座管理','第7条 — 競業禁止','第8条 — 新規パートナー','第9条 — パートナー脱退','第10条 — 共同事業解消','第11条 — 機密保持','第12条 — 紛争解決','第13条 — その他']
+    articles: ['第1条 — 目的及び事業内容','第2条 — 出資及び持分','第3条 — 損益配分','第4条 — 業務執行','第5条 — 経費処理','第6条 — 事業口座管理','第7条 — 競業禁止','第8条 — 新規パートナー','第9条 — パートナー脱退','第10条 — 共同事業解消','第11条 — 機密保持','第12条 — 紛争解決','第13条 — その他'],
+    docIntro: '以下の当事者は、共同事業に関して次のとおり契約を締結する。',
+    bizBoxTitle: '▌ 事業基本事項',
+    pbLabels: ['商号', '事業内容', '事業所所在地', '事業開始日'],
+    pcLabels: ['氏名', '生年月日', '住所', '連絡先', '氏名', '生年月日', '住所', '連絡先'],
+    sectionBadge: '▌ 出資金・持分',
+    tableHeaders: ['パートナー', '出資形態', '出資金額', '持分比率', '備考'],
+    totalLabel: '合計',
+    stampTitles: ['甲（代表パートナー）', '乙（パートナー）', '丙（パートナー）'],
+    sInfo: '氏名：<br>住所：<br>連絡先：',
+    stampSeal: '印',
+    capitalPrefill: ['甲（代表パートナー）', '現金', '乙（パートナー）', '現金'],
+    articleBodies: [
+      '本契約の目的は、当事者が共同して事業を営み、その収益を分配することにある。事業内容は上記事業基本事項に定めるとおりとし、変更は全員の合意によるものとする。',
+      '各パートナーの出資金額および持分比率は、上記出資金表のとおりとする。追加出資が必要な場合は、全員合意の上、持分比率に応じて負担する。',
+      '純利益および損失は、各パートナーの持分比率に従い配分する。損益精算は四半期ごと（3月・6月・9月・12月末）に行い、精算後30日以内に配分金を支払う。',
+      '甲が代表パートナーとして日常的な業務を執行する。重要事項（500万ウォン以上の支出、契約締結等）はパートナー全員の書面による合意を要する。',
+      '業務上生じた費用は事業口座より支出する。個人的費用は事前合意なしに事業費用として処理できない。月___万ウォンを超える支出は全員合意が必要とする。',
+      '事業共同口座を開設し、すべての収支は同口座を通じて処理する。口座引出権限は甲単独または甲・乙の共同とする（複数選択可）。月次精算明細書を全員で共有する。',
+      '各パートナーは、契約期間中および脱退・解消後__年間、本事業所半径__km以内において同種事業を営まないものとする。',
+      '新規パートナーの加入には既存パートナー全員の書面による同意が必要であり、加入時は既存持分比率に応じて持分が調整される。別途追加契約書を作成する。',
+      '脱退を希望するパートナーは、脱退希望日の3か月前に書面で通知しなければならない。脱退時は脱退日基準の持分評価額を60日以内に精算・支払う。脱退パートナーの持分は残留パートナーが合意の上で引き受ける。',
+      '共同事業の解消はパートナー全員の書面による合意によるものとする。解消時は債務弁済後の残余資産を持分比率に従い分配する。清算はパートナー全員が参加して進める。',
+      '各パートナーは事業に関して知り得た取引先情報、営業秘密および財務情報を第三者に漏洩してはならない。この義務は契約終了後__年間存続する。',
+      '本契約に関する紛争はまずパートナー間の協議により解決する。協議が不調の場合は、事業所所在地を管轄する裁判所を第一審の管轄裁判所とする。',
+      '本契約書に明示されない事項は「民法」「商法」および関係法令と商慣習に従い、パートナー全員の合意をもって決定する。'
+    ]
   }
 };
 function setLang(lang) {
@@ -509,6 +605,44 @@ function setLang(lang) {
   ['ctrlP0','ctrlP1','ctrlP2','ctrlP3','ctrlP4'].forEach(function(k,i){
     if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k];
   });
+  // ── 문서 본문 번역 ──
+  // 서문
+  var _intro = document.getElementById('docSubtitle');
+  if (_intro && d.docIntro) _intro.textContent = d.docIntro;
+  // 사업 기본 사항 제목
+  var _bizTitle = document.querySelector('.biz-box-title');
+  if (_bizTitle && d.bizBoxTitle) _bizTitle.textContent = d.bizBoxTitle;
+  // 사업 정보 행 레이블
+  var _pbLabels = document.querySelectorAll('.pb-label');
+  if (d.pbLabels) { d.pbLabels.forEach(function(txt, i) { if (_pbLabels[i]) _pbLabels[i].textContent = txt; }); }
+  // 당사자 카드 행 레이블
+  var _pcLabels = document.querySelectorAll('.pc-label');
+  if (d.pcLabels) { d.pcLabels.forEach(function(txt, i) { if (_pcLabels[i]) _pcLabels[i].textContent = txt; }); }
+  // 출자금 섹션 배지
+  var _badge = document.querySelector('.section-badge');
+  if (_badge && d.sectionBadge) _badge.textContent = d.sectionBadge;
+  // 출자 테이블 헤더
+  var _ths = document.querySelectorAll('.capital-table thead th');
+  if (d.tableHeaders) { d.tableHeaders.forEach(function(txt, i) { if (_ths[i]) _ths[i].textContent = txt; }); }
+  // 출자 테이블 사전 입력 셀
+  if (d.capitalPrefill) {
+    var _trows = document.querySelectorAll('.capital-table tbody tr');
+    if (_trows[0]) { var _c0 = _trows[0].querySelectorAll('td'); if (_c0[0]) _c0[0].textContent = d.capitalPrefill[0]; if (_c0[1]) _c0[1].textContent = d.capitalPrefill[1]; }
+    if (_trows[1]) { var _c1 = _trows[1].querySelectorAll('td'); if (_c1[0]) _c1[0].textContent = d.capitalPrefill[2]; if (_c1[1]) _c1[1].textContent = d.capitalPrefill[3]; }
+  }
+  // 합계 레이블
+  var _tfootCell = document.querySelector('.capital-table tfoot td');
+  if (_tfootCell && d.totalLabel) _tfootCell.textContent = d.totalLabel;
+  // 조항 본문
+  var _bodies = document.querySelectorAll('.article-body');
+  if (d.articleBodies) { d.articleBodies.forEach(function(html, i) { if (_bodies[i]) _bodies[i].innerHTML = html; }); }
+  // 서명 블록
+  var _stampTitles = document.querySelectorAll('.stamp-block .s-title');
+  if (d.stampTitles) { d.stampTitles.forEach(function(txt, i) { if (_stampTitles[i]) _stampTitles[i].textContent = txt; }); }
+  var _sInfos = document.querySelectorAll('.s-info');
+  if (d.sInfo) { _sInfos.forEach(function(el) { el.innerHTML = d.sInfo; }); }
+  var _seals = document.querySelectorAll('.stamp-box');
+  if (d.stampSeal) { _seals.forEach(function(el) { el.textContent = d.stampSeal; }); }
 }
 
 function resetDoc() {

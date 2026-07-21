@@ -139,19 +139,45 @@ body { background: var(--amber-bg); }
 .lang-btn.active { background:#B45309; border-color:#B45309; color:#fff; }
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display: none !important; }
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
   body { background: #fff !important; }
   .form-page-wrap { display: block !important; padding: 0 !important; }
-  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; }
-  .a4-page { box-shadow: none !important; width: 100% !important; }
-}
-.clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-  @page { size: A4; margin: 0; }
+
+  /* 서명란은 이전 내용과 함께 유지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
+}
 </style>
 </head>
 <body>
@@ -214,9 +240,9 @@ body { background: var(--amber-bg); }
       </table>
 
       <!-- 출석 현황 -->
-      <div class="sec-heading">출석 현황</div>
+      <div class="sec-heading" id="secAttend">출석 현황</div>
       <table class="attend-table">
-        <thead><tr><th>직위</th><th>성명</th><th>출석 여부</th><th>비고</th></tr></thead>
+        <thead><tr><th id="ath0">직위</th><th id="ath1">성명</th><th id="ath2">출석 여부</th><th id="ath3">비고</th></tr></thead>
         <tbody id="attendBody">
           <tr>
             <td contenteditable="true">이사장</td>
@@ -258,9 +284,9 @@ body { background: var(--amber-bg); }
       </table>
 
       <!-- 안건 목록 -->
-      <div class="sec-heading">안건 목록</div>
+      <div class="sec-heading" id="secAgenda">안건 목록</div>
       <table class="agenda-table">
-        <thead><tr><th style="width:50px">안건번호</th><th>안건명</th><th style="width:90px">심의결과</th></tr></thead>
+        <thead><tr><th style="width:50px" id="agth0">안건번호</th><th id="agth1">안건명</th><th style="width:90px" id="agth2">심의결과</th></tr></thead>
         <tbody>
           <tr>
             <td>제1호</td>
@@ -284,10 +310,10 @@ body { background: var(--amber-bg); }
       <div class="agenda-detail">
         <div class="agenda-detail-head">제1호 안건: 2024년도 사업계획 및 예산 승인의 건</div>
 
-        <div style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【안건 내용】</div>
+        <div class="agenda-sub-label" data-key="agendaContent" style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【안건 내용】</div>
         <div class="content-area" contenteditable="true">2024년도 사업계획(매출 목표, 주요 사업 방향 등) 및 이에 따른 예산안을 이사회의 심의·의결을 거쳐 확정한다. 사업계획의 주요 내용은 배포된 자료를 참조한다.</div>
 
-        <div style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【심의 내용】</div>
+        <div class="agenda-sub-label" data-key="agendaDiscuss" style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【심의 내용】</div>
         <table class="discuss-table">
           <thead><tr><th>발언자</th><th>발언 내용</th></tr></thead>
           <tbody>
@@ -304,16 +330,16 @@ body { background: var(--amber-bg); }
             <div class="vote-item"><span class="vote-name">반대</span><span class="vote-num" contenteditable="true">0</span><span style="font-size:8.5pt">명</span></div>
             <div class="vote-item"><span class="vote-name">기권</span><span class="vote-num" contenteditable="true">0</span><span style="font-size:8.5pt">명</span></div>
           </div>
-          <span style="font-weight:700;color:#065F46;background:#D1FAE5;padding:2px 10px;border-radius:20px;font-size:8.5pt;margin-left:auto">원안 가결</span>
+          <span class="vote-verdict" style="font-weight:700;color:#065F46;background:#D1FAE5;padding:2px 10px;border-radius:20px;font-size:8.5pt;margin-left:auto">원안 가결</span>
         </div>
       </div>
 
       <!-- 안건 2 상세 -->
       <div class="agenda-detail">
         <div class="agenda-detail-head">제2호 안건: 임원 보수 한도 결정의 건</div>
-        <div style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【안건 내용】</div>
+        <div class="agenda-sub-label" data-key="agendaContent" style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【안건 내용】</div>
         <div class="content-area" contenteditable="true">2024년도 등기 임원 전원에 대한 보수 한도를 결정한다. 보수 한도는 연 ○○억 원으로 하며, 구체적인 지급 기준 및 방법은 대표이사에게 위임한다.</div>
-        <div style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【심의 내용】</div>
+        <div class="agenda-sub-label" data-key="agendaDiscuss" style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【심의 내용】</div>
         <table class="discuss-table">
           <thead><tr><th>발언자</th><th>발언 내용</th></tr></thead>
           <tbody>
@@ -328,16 +354,16 @@ body { background: var(--amber-bg); }
             <div class="vote-item"><span class="vote-name">반대</span><span class="vote-num" contenteditable="true">0</span><span style="font-size:8.5pt">명</span></div>
             <div class="vote-item"><span class="vote-name">기권</span><span class="vote-num" contenteditable="true">0</span><span style="font-size:8.5pt">명</span></div>
           </div>
-          <span style="font-weight:700;color:#065F46;background:#D1FAE5;padding:2px 10px;border-radius:20px;font-size:8.5pt;margin-left:auto">원안 가결</span>
+          <span class="vote-verdict" style="font-weight:700;color:#065F46;background:#D1FAE5;padding:2px 10px;border-radius:20px;font-size:8.5pt;margin-left:auto">원안 가결</span>
         </div>
       </div>
 
       <!-- 안건 3 상세 -->
       <div class="agenda-detail">
         <div class="agenda-detail-head">제3호 안건: 신규 투자 집행 승인의 건</div>
-        <div style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【안건 내용】</div>
+        <div class="agenda-sub-label" data-key="agendaContent" style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【안건 내용】</div>
         <div class="content-area" contenteditable="true">신규 사업 분야에 대한 투자 집행(금액: ○○억 원)을 승인한다. 투자 대상, 규모, 시기 등 세부사항은 첨부 자료를 참조한다.</div>
-        <div style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【심의 내용】</div>
+        <div class="agenda-sub-label" data-key="agendaDiscuss" style="font-size:8.5pt;color:#555;margin-bottom:2mm;font-weight:600">【심의 내용】</div>
         <table class="discuss-table">
           <thead><tr><th>발언자</th><th>발언 내용</th></tr></thead>
           <tbody>
@@ -353,7 +379,7 @@ body { background: var(--amber-bg); }
             <div class="vote-item"><span class="vote-name">반대</span><span class="vote-num" contenteditable="true">1</span><span style="font-size:8.5pt">명</span></div>
             <div class="vote-item"><span class="vote-name">기권</span><span class="vote-num" contenteditable="true">0</span><span style="font-size:8.5pt">명</span></div>
           </div>
-          <span style="font-weight:700;color:#78350F;background:#FEF3C7;padding:2px 10px;border-radius:20px;font-size:8.5pt;margin-left:auto;border:1px solid #F59E0B">수정 가결</span>
+          <span class="vote-verdict vote-verdict-modify" style="font-weight:700;color:#78350F;background:#FEF3C7;padding:2px 10px;border-radius:20px;font-size:8.5pt;margin-left:auto;border:1px solid #F59E0B">수정 가결</span>
         </div>
       </div>
 
@@ -365,7 +391,7 @@ body { background: var(--amber-bg); }
 
       <!-- 서명 -->
       <div class="sig-section">
-        <div class="sig-section-title">출석 이사 및 감사 서명</div>
+        <div class="sig-section-title" id="sigSectionTitle">출석 이사 및 감사 서명</div>
         <div class="sig-grid">
           <div class="sig-card">
             <div class="sig-card-role">이사장</div>
@@ -417,7 +443,19 @@ var LANG_DATA_FORM = {
     langNotice: '⚠ 언어 전환 시 내용이 초기화됩니다.',
     printBtn: '🖨 인쇄 / PDF 저장',
     ctrlL0: '회사명', ctrlL1: '개최 일시', ctrlL2: '개최 장소',
-    ctrlP0: '(주)회사명', ctrlP1: '', ctrlP2: '본사 3층 회의실'
+    ctrlP0: '(주)회사명', ctrlP1: '', ctrlP2: '본사 3층 회의실',
+    secAttend: '출석 현황', secAgenda: '안건 목록',
+    attendHeaders: ['직위','성명','출석 여부','비고'],
+    agendaHeaders: ['안건번호','안건명','심의결과'],
+    discussHeaders: ['발언자','발언 내용'],
+    voteLabel: '의결 결과',
+    voteNames: ['찬성','반대','기권'], voteUnit: '명',
+    verdictPass: '원안 가결', verdictModify: '수정 가결',
+    agendaContent: '【안건 내용】', agendaDiscuss: '【심의 내용】',
+    sigSectionTitle: '출석 이사 및 감사 서명',
+    sigCardRoles: ['이사장','이사','이사','이사','이사 (불참)','감사'],
+    attendYes: '출석', attendNo: '불참',
+    resultText: {pass:'원안가결', modify:'수정가결', fail:'부결', hold:'보류'}
   },
   en: {
     docTitle: 'BOARD OF DIRECTORS MEETING MINUTES',
@@ -429,7 +467,19 @@ var LANG_DATA_FORM = {
     langNotice: '⚠ Switching language resets all content.',
     printBtn: '🖨 Print / Save as PDF',
     ctrlL0: 'Company Name', ctrlL1: 'Date & Time', ctrlL2: 'Venue',
-    ctrlP0: 'Company Name, Inc.', ctrlP1: '', ctrlP2: 'HQ 3F Conference Room'
+    ctrlP0: 'Company Name, Inc.', ctrlP1: '', ctrlP2: 'HQ 3F Conference Room',
+    secAttend: 'Attendance', secAgenda: 'Agenda Items',
+    attendHeaders: ['Position','Name','Attendance','Notes'],
+    agendaHeaders: ['Item No.','Agenda','Resolution'],
+    discussHeaders: ['Speaker','Discussion'],
+    voteLabel: 'Vote Result',
+    voteNames: ['For','Against','Abstain'], voteUnit: '',
+    verdictPass: 'Approved as Proposed', verdictModify: 'Approved with Amendment',
+    agendaContent: '【Agenda Content】', agendaDiscuss: '【Discussion】',
+    sigSectionTitle: 'Signatures of Attending Directors & Auditor',
+    sigCardRoles: ['Chairperson','Director','Director','Director','Director (Absent)','Auditor'],
+    attendYes: 'Present', attendNo: 'Absent',
+    resultText: {pass:'Approved', modify:'Amended', fail:'Rejected', hold:'Deferred'}
   },
   ja: {
     docTitle: '取 締 役 会 議 事 録',
@@ -441,7 +491,19 @@ var LANG_DATA_FORM = {
     langNotice: '⚠ 言語切替時にすべての内容がリセットされます。',
     printBtn: '🖨 印刷 / PDF保存',
     ctrlL0: '会社名', ctrlL1: '開催日時', ctrlL2: '開催場所',
-    ctrlP0: '株式会社○○', ctrlP1: '', ctrlP2: '本社3階会議室'
+    ctrlP0: '株式会社○○', ctrlP1: '', ctrlP2: '本社3階会議室',
+    secAttend: '出席状況', secAgenda: '議案一覧',
+    attendHeaders: ['役職','氏名','出欠','備考'],
+    agendaHeaders: ['議案番号','議案名','審議結果'],
+    discussHeaders: ['発言者','発言内容'],
+    voteLabel: '議決結果',
+    voteNames: ['賛成','反対','棄権'], voteUnit: '名',
+    verdictPass: '原案可決', verdictModify: '修正可決',
+    agendaContent: '【議案内容】', agendaDiscuss: '【審議内容】',
+    sigSectionTitle: '出席取締役及び監査役署名',
+    sigCardRoles: ['取締役会長','取締役','取締役','取締役','取締役（欠席）','監査役'],
+    attendYes: '出席', attendNo: '欠席',
+    resultText: {pass:'原案可決', modify:'修正可決', fail:'否決', hold:'保留'}
   }
 };
 
@@ -471,23 +533,52 @@ function setLang(lang) {
   ['ctrlL0','ctrlL1','ctrlL2'].forEach(function(k,i){ if(cls[i] && d[k]) cls[i].textContent = d[k]; });
   var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
   ['ctrlP0','ctrlP1','ctrlP2'].forEach(function(k,i){ if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k]; });
+  // ── 문서 본문 번역 ──
+  var secAttendEl = document.getElementById('secAttend'); if(secAttendEl) secAttendEl.textContent = d.secAttend;
+  var secAgendaEl = document.getElementById('secAgenda'); if(secAgendaEl) secAgendaEl.textContent = d.secAgenda;
+  d.attendHeaders.forEach(function(h,i){ var el=document.getElementById('ath'+i); if(el) el.textContent=h; });
+  d.agendaHeaders.forEach(function(h,i){ var el=document.getElementById('agth'+i); if(el) el.textContent=h; });
+  var discThs = document.querySelectorAll('.discuss-table th');
+  for(var i=0;i<discThs.length;i++){ discThs[i].textContent = d.discussHeaders[i%2]; }
+  document.querySelectorAll('.vote-label').forEach(function(el){ el.textContent=d.voteLabel; });
+  var vnames = document.querySelectorAll('.vote-name');
+  for(var i=0;i<vnames.length;i++){ vnames[i].textContent=d.voteNames[i%3]; }
+  document.querySelectorAll('.vote-item > span:last-child').forEach(function(el){ if(el.style&&el.style.fontSize) el.textContent=d.voteUnit; });
+  document.querySelectorAll('.vote-verdict:not(.vote-verdict-modify)').forEach(function(el){ el.textContent=d.verdictPass; });
+  document.querySelectorAll('.vote-verdict-modify').forEach(function(el){ el.textContent=d.verdictModify; });
+  document.querySelectorAll('.agenda-sub-label[data-key="agendaContent"]').forEach(function(el){ el.textContent=d.agendaContent; });
+  document.querySelectorAll('.agenda-sub-label[data-key="agendaDiscuss"]').forEach(function(el){ el.textContent=d.agendaDiscuss; });
+  var sigSecTitle = document.getElementById('sigSectionTitle'); if(sigSecTitle) sigSecTitle.textContent=d.sigSectionTitle;
+  var sigRoles = document.querySelectorAll('.sig-card-role');
+  d.sigCardRoles.forEach(function(r,i){ if(sigRoles[i]) sigRoles[i].textContent=r; });
+  // update existing attend badges and result badges to current lang
+  document.querySelectorAll('.attend-badge.yes').forEach(function(el){ el.textContent=d.attendYes; });
+  document.querySelectorAll('.attend-badge.no').forEach(function(el){ el.textContent=d.attendNo; });
+  var rCycle = ['pass','modify','fail','hold'];
+  document.querySelectorAll('.result-badge').forEach(function(el){
+    var state = rCycle.find(function(c){ return el.classList.contains(c); });
+    if(state && d.resultText[state]) el.textContent=d.resultText[state];
+  });
 }
 
 function toggleAttend(el) {
+  var d = LANG_DATA_FORM[_currentLang];
   if (el.classList.contains('yes')) {
-    el.classList.remove('yes'); el.classList.add('no'); el.textContent = '불참';
+    el.classList.remove('yes'); el.classList.add('no'); el.textContent = d ? d.attendNo : '불참';
   } else {
-    el.classList.remove('no'); el.classList.add('yes'); el.textContent = '출석';
+    el.classList.remove('no'); el.classList.add('yes'); el.textContent = d ? d.attendYes : '출석';
   }
 }
 
 const resultCycle = ['pass','modify','fail','hold'];
 const resultText = { pass:'원안가결', modify:'수정가결', fail:'부결', hold:'보류' };
 function cycleResult(el) {
+  var d = LANG_DATA_FORM[_currentLang];
+  var rt = (d && d.resultText) ? d.resultText : resultText;
   let idx = resultCycle.indexOf([...el.classList].find(c => resultCycle.includes(c)));
   idx = (idx + 1) % resultCycle.length;
   el.className = 'result-badge ' + resultCycle[idx];
-  el.textContent = resultText[resultCycle[idx]];
+  el.textContent = rt[resultCycle[idx]];
 }
 
 document.addEventListener('DOMContentLoaded', () => {

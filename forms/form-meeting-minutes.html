@@ -141,27 +141,44 @@
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 
 @media print {
-  .ctrl-panel { display:none !important; 
-  /* 페이지 구분 제어 */
-  .clause, .article, .section-block, .sig-section, .parties-table,
-  .info-table, .items-table, .agenda-item, .handover-row,
-  .section-box, .article-block, .cert-table, .poa-table,
-  .budget-table, .schedule-row, .pledge-content, .action-table { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  /* 테이블 행 보호 */
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  /* 서명란 분리 방지 */
+
+  /* 서명란은 이전 내용과 함께 유지 */
   .sig-section, .sig-wrap, .signature-area, .sig-final,
-  .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-}
-  nav, footer { display:none !important; }
-  .form-page-wrap { display:block; padding:0; }
-  .doc-wrap { background:none; padding:0; border-radius:0; }
-  .a4 { box-shadow:none; width:100%; }
-  @page { size:A4; margin:0; }
-  .add-row-btn, .add-agenda-btn { display:none; }
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -342,7 +359,8 @@ const LANGS = {
     addRowBtn:'+ 행 추가', addAgendaBtn:'+ 안건 추가',
     ctrlL0:'문서 번호', ctrlL1:'회의 일시', ctrlL2:'로고 업로드',
     ctrlP0:'예) MM-2026-001',
-    tipBox:'💡 안건 추가 버튼으로 의제를 자유롭게 늘릴 수 있습니다. 회의 유형 버튼은 클릭하여 선택하세요.'
+    tipBox:'💡 안건 추가 버튼으로 의제를 자유롭게 늘릴 수 있습니다. 회의 유형 버튼은 클릭하여 선택하세요.',
+    apprTitles:['팀 장','부 장','임 원'], writerLabel:'작성자 정보', mtypeBtns:['정기','임시','긴급']
   },
   en: {
     docTitle:'MEETING MINUTES', docSub:'Minutes of Meeting',
@@ -356,7 +374,8 @@ const LANGS = {
     addRowBtn:'+ Add Row', addAgendaBtn:'+ Add Agenda',
     ctrlL0:'Document No.', ctrlL1:'Meeting Date', ctrlL2:'Upload Logo',
     ctrlP0:'e.g. MM-2026-001',
-    tipBox:'💡 Use the Add Agenda button to add more topics. Click the meeting type buttons to select.'
+    tipBox:'💡 Use the Add Agenda button to add more topics. Click the meeting type buttons to select.',
+    apprTitles:['Team Lead','Manager','Executive'], writerLabel:'Author Info', mtypeBtns:['Regular','Special','Emergency']
   },
   ja: {
     docTitle:'会  議  録', docSub:'MEETING MINUTES',
@@ -370,7 +389,8 @@ const LANGS = {
     addRowBtn:'+ 行を追加', addAgendaBtn:'+ 議題を追加',
     ctrlL0:'文書番号', ctrlL1:'会議日時', ctrlL2:'ロゴアップロード',
     ctrlP0:'例）MM-2026-001',
-    tipBox:'💡 議題追加ボタンで議題を増やせます。会議種別ボタンをクリックして選択してください。'
+    tipBox:'💡 議題追加ボタンで議題を増やせます。会議種別ボタンをクリックして選択してください。',
+    apprTitles:['チームリーダー','部長','役員'], writerLabel:'作成者情報', mtypeBtns:['定例','臨時','緊急']
   }
 };
 
@@ -401,6 +421,10 @@ function setLang(lang) {
   document.querySelectorAll('.add-row-btn').forEach(function(b){ if(t.addRowBtn) b.textContent = t.addRowBtn; });
   document.querySelectorAll('.add-agenda-btn').forEach(function(b){ if(t.addAgendaBtn) b.textContent = t.addAgendaBtn; });
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = t.tipBox;
+  // ── 문서 내부 고정 텍스트 번역 ──
+  document.querySelectorAll('.appr-title').forEach(function(el,i){ if(t.apprTitles && t.apprTitles[i]) el.textContent = t.apprTitles[i]; });
+  var wl = document.querySelector('.writer-label'); if(wl && t.writerLabel) wl.textContent = t.writerLabel;
+  document.querySelectorAll('.mtype-btn').forEach(function(el,i){ if(t.mtypeBtns && t.mtypeBtns[i]) el.textContent = t.mtypeBtns[i]; });
 }
 
 (function(){

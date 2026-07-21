@@ -171,19 +171,45 @@ body { background: var(--amber-bg); }
 .lang-btn.active { background:#B45309; border-color:#B45309; color:#fff; }
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display: none !important; }
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
   body { background: #fff !important; }
   .form-page-wrap { display: block !important; padding: 0 !important; }
-  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; }
-  .a4-page { box-shadow: none !important; width: 100% !important; }
-}
-.clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-  @page { size: A4; margin: 0; }
+
+  /* 서명란은 이전 내용과 함께 유지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
+}
 </style>
 </head>
 <body>
@@ -228,10 +254,10 @@ body { background: var(--amber-bg); }
         </div>
         <div class="cover-main-title" id="formDocTitle">사업<span class="cover-accent">계획</span>서</div>
         <div class="cover-meta">
-          <div class="cover-meta-row"><strong>제출일</strong><span class="cover-meta-val" id="dispDate" contenteditable="true"></span></div>
-          <div class="cover-meta-row"><strong>제출처</strong><span class="cover-meta-val" id="dispTarget" contenteditable="true">기관명 / 투자자</span></div>
-          <div class="cover-meta-row"><strong>작성자</strong><span class="cover-meta-val" contenteditable="true">대표자명</span></div>
-          <div class="cover-meta-row"><strong>연락처</strong><span class="cover-meta-val" contenteditable="true">010-0000-0000</span></div>
+          <div class="cover-meta-row"><strong id="covLbl0">제출일</strong><span class="cover-meta-val" id="dispDate" contenteditable="true"></span></div>
+          <div class="cover-meta-row"><strong id="covLbl1">제출처</strong><span class="cover-meta-val" id="dispTarget" contenteditable="true">기관명 / 투자자</span></div>
+          <div class="cover-meta-row"><strong id="covLbl2">작성자</strong><span class="cover-meta-val" contenteditable="true">대표자명</span></div>
+          <div class="cover-meta-row"><strong id="covLbl3">연락처</strong><span class="cover-meta-val" contenteditable="true">010-0000-0000</span></div>
         </div>
         <div class="cover-bottom-bar"></div>
       </div>
@@ -240,7 +266,7 @@ body { background: var(--amber-bg); }
 
         <!-- 목차 -->
         <div class="toc-box">
-          <div class="toc-title">목 차</div>
+          <div class="toc-title" id="tocTitle">목 차</div>
           <ol class="toc-list">
             <li><span>1.</span><span id="toc1" contenteditable="true">사업 개요</span></li>
             <li><span>2.</span><span id="toc2" contenteditable="true">제품·서비스</span></li>
@@ -379,7 +405,18 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 인쇄 / PDF 저장',
     ctrlLogoBtn: '📎 로고 선택',
     ctrlL0: '회사 로고 업로드', ctrlL1: '제출 일자', ctrlL2: '제출처',
-    ctrlP0: '', ctrlP1: '기관명 또는 투자자'
+    ctrlP0: '', ctrlP1: '기관명 또는 투자자',
+    tocTitle: '목 차',
+    covLabels: ['제출일','제출처','작성자','연락처'],
+    flLabels: ['사업명','사업 유형','대표자','자본금','사업장 주소','설립 예정일','목표 시장','시장 규모','손익분기점'],
+    compHeaders: ['경쟁사','강점','약점','당사 차별점'],
+    mktHeaders: ['구분','내용'],
+    finHeaders: ['항목','1년차','2년차','3년차'],
+    finRowLabels: ['매출액','매출원가','매출총이익','판관비','영업이익'],
+    fundLabels: ['총 소요자금','자기자본','외부 조달'],
+    fundUnits: ['원','원 (33%)','원 (67%)'],
+    sigText: '위 사업계획서의 내용이 사실임을 확인하고 제출합니다.',
+    sigRole: '대표자'
   },
   en: {
     docTitle: 'BUSINESS PLAN',
@@ -390,7 +427,18 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 Print / Save as PDF',
     ctrlLogoBtn: '📎 Select Logo',
     ctrlL0: 'Company Logo', ctrlL1: 'Submission Date', ctrlL2: 'Submit To',
-    ctrlP0: '', ctrlP1: 'Organization or Investor'
+    ctrlP0: '', ctrlP1: 'Organization or Investor',
+    tocTitle: 'Contents',
+    covLabels: ['Date','Submit To','Prepared By','Contact'],
+    flLabels: ['Business Name','Type','Representative','Capital','Address','Est. Date','Target Market','Market Size','Break-even Point'],
+    compHeaders: ['Competitor','Strengths','Weaknesses','Our Advantage'],
+    mktHeaders: ['Category','Content'],
+    finHeaders: ['Item','Year 1','Year 2','Year 3'],
+    finRowLabels: ['Revenue','COGS','Gross Profit','SG&A','Operating Income'],
+    fundLabels: ['Total Required','Equity','External Funding'],
+    fundUnits: ['KRW','KRW (33%)','KRW (67%)'],
+    sigText: 'I hereby confirm that the above business plan is accurate.',
+    sigRole: 'Representative'
   },
   ja: {
     docTitle: '事業<span class="cover-accent">計画</span>書',
@@ -401,7 +449,18 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 印刷 / PDF保存',
     ctrlLogoBtn: '📎 ロゴ選択',
     ctrlL0: '会社ロゴ', ctrlL1: '提出日', ctrlL2: '提出先',
-    ctrlP0: '', ctrlP1: '機関名または投資家'
+    ctrlP0: '', ctrlP1: '機関名または投資家',
+    tocTitle: '目 次',
+    covLabels: ['提出日','提出先','作成者','連絡先'],
+    flLabels: ['事業名','事業種別','代表者','資本金','事業所住所','設立予定日','目標市場','市場規模','損益分岐点'],
+    compHeaders: ['競合他社','強み','弱み','当社の差別化'],
+    mktHeaders: ['区分','内容'],
+    finHeaders: ['項目','1年目','2年目','3年目'],
+    finRowLabels: ['売上高','売上原価','売上総利益','販管費','営業利益'],
+    fundLabels: ['総必要資金','自己資本','外部調達'],
+    fundUnits: ['円','円 (33%)','円 (67%)'],
+    sigText: '以上の内容が事実であることを確認し提出いたします。',
+    sigRole: '代表者'
   }
 };
 
@@ -434,6 +493,24 @@ function setLang(lang) {
   ['ctrlP0','ctrlP1'].forEach(function(k,i){ if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k]; });
   var fu = document.querySelector('.ctrl-file-btn');
   if (fu && d.ctrlLogoBtn) { for (var _n of fu.childNodes) { if (_n.nodeType === 3) { _n.textContent = d.ctrlLogoBtn; break; } } }
+  // ── 문서 본문 번역 ──
+  var tocTitleEl = document.getElementById('tocTitle'); if (tocTitleEl) tocTitleEl.textContent = d.tocTitle;
+  var covLbls = ['covLbl0','covLbl1','covLbl2','covLbl3'];
+  d.covLabels.forEach(function(l,i){ var el = document.getElementById(covLbls[i]); if(el) el.textContent = l; });
+  var flEls = document.querySelectorAll('.fl');
+  d.flLabels.forEach(function(l,i){ if(flEls[i]) flEls[i].textContent = l; });
+  var planTbls = document.querySelectorAll('.plan-table');
+  if(planTbls[0]){ var ths=planTbls[0].querySelectorAll('th'); d.compHeaders.forEach(function(h,i){ if(ths[i]) ths[i].textContent=h; }); }
+  if(planTbls[1]){ var ths2=planTbls[1].querySelectorAll('th'); d.mktHeaders.forEach(function(h,i){ if(ths2[i]) ths2[i].textContent=h; }); }
+  var finTbl = document.querySelector('.fin-table');
+  if(finTbl){
+    var fths = finTbl.querySelectorAll('th'); d.finHeaders.forEach(function(h,i){ if(fths[i]) fths[i].textContent=h; });
+    var ftds = finTbl.querySelectorAll('tbody tr td:first-child'); d.finRowLabels.forEach(function(l,i){ if(ftds[i]) ftds[i].textContent=l; });
+  }
+  var fundLbls = document.querySelectorAll('.fund-label'); d.fundLabels.forEach(function(l,i){ if(fundLbls[i]) fundLbls[i].textContent=l; });
+  var fundUnits = document.querySelectorAll('.fund-card > div:not(.fund-label)'); d.fundUnits.forEach(function(u,i){ if(fundUnits[i]) fundUnits[i].textContent=u; });
+  var sigDiv = document.querySelector('.sig-footer > div:first-child'); if(sigDiv) sigDiv.textContent = d.sigText;
+  var sigLblEl = document.querySelector('.sig-lbl'); if(sigLblEl) sigLblEl.textContent = d.sigRole;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

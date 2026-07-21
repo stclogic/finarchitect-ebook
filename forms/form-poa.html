@@ -144,17 +144,44 @@
 .lang-btn.active { background:#1E2B4A; border-color:#1E2B4A; color:#fff; }
 .lang-notice { font-size:0.68rem; color:#9CA3AF; margin-top:4px; line-height:1.4; }
 @media print {
-  .ctrl-panel, nav, footer, .back-link { display: none !important; }
-  .form-page-wrap { display: block; padding: 0; }
-  .doc-wrap { background: none; padding: 0; }
-  .doc-page { width: 100%; box-shadow: none; margin: 0; }
-  .clause, .article, .section-block, .cv-section, .sig-section, .parties-table, .info-table, .items-table, .agenda-item, .handover-row { break-inside: avoid; page-break-inside: avoid; }
-  .clause-title, .article-title, .section-title-doc, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  .ctrl-panel, nav, footer, .back-link, .lang-btns, .lang-notice { display: none !important; }
+  body { background: #fff !important; }
+  .form-page-wrap { display: block !important; padding: 0 !important; }
+  .doc-bg { background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+  /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
+  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+
+  /* 섹션 단위 페이지 안 끊김 방지 */
+  .clause, .article, .section-block, .cv-section,
+  .parties-table, .info-table, .items-table,
+  .agenda-item, .handover-row, .bp-section, .section-wrap,
+  .minutes-item, .agenda-block, .approval-row { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+  }
+
+  /* 제목 뒤에서 페이지 끊김 방지 (제목만 남고 내용이 다음 페이지로 가는 현상 방지) */
+  .clause-title, .article-title, .section-title-doc,
+  .bp-section-title, h2, h3, h4 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+  /* 테이블 행 끊김 방지 */
   tr { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
-  .sig-section, .sig-wrap, .signature-area, .sig-final, .sig-area, .sig-box, .parties-sig { break-inside: avoid; page-break-inside: avoid; break-before: avoid; page-break-before: avoid; }
-  @page { size: A4; margin: 0; }
+
+  /* 서명란은 이전 내용과 함께 유지 */
+  .sig-section, .sig-wrap, .signature-area, .sig-final,
+  .sig-area, .sig-box, .parties-sig { 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    break-before: avoid; 
+    page-break-before: avoid; 
+  }
 }
 </style>
 </head>
@@ -304,14 +331,14 @@
         <div class="sig-name-block">
           <span id="sigPrefix">위임인</span>&nbsp;:&nbsp;
           <span style="border-bottom:1px solid #94a3b8;min-width:50mm;display:inline-block;" contenteditable="true"></span>
-          &nbsp;(서명)
+          &nbsp;<span id="sigSuffix">(서명)</span>
         </div>
         <div class="stamp-circle">인</div>
       </div>
 
       <!-- Attachments -->
       <div class="attach-box">
-        <div class="attach-title">첨 부 서 류</div>
+        <div class="attach-title" id="attachTitle">첨 부 서 류</div>
         <div class="attach-item">
           <input type="checkbox"> 위임인 신분증 사본 1통
         </div>
@@ -350,7 +377,16 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 인쇄 / PDF 저장', resetBtn: '초기화',
     tipBox: '💡 각 항목을 클릭하여 내용을 직접 수정하세요.',
     ctrlLogoBtn: '클릭하여 로고 선택',
-    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호'
+    ctrlLbl0: '로고 업로드', ctrlLbl1: '문서번호',
+    recipLabels: ['성    명','생년월일','주민번호','연락처','주    소','성    명','주민번호','연락처','주    소'],
+    sigSuffix: '(서명)',
+    stampText: '인',
+    attachTitle: '첨 부 서 류',
+    attachItems: [
+      '<input type="checkbox"> 위임인 신분증 사본 1통',
+      '<input type="checkbox"> 인감증명서 1통',
+      '<input type="checkbox"> 기타: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+    ]
   },
   en: {
     docTitle: 'POWER OF ATTORNEY', docSub: 'Authorization Letter',
@@ -363,7 +399,16 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 Print / Save as PDF', resetBtn: 'Reset',
     tipBox: '💡 Click each field to edit the content directly.',
     ctrlLogoBtn: 'Click to select logo',
-    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.'
+    ctrlLbl0: 'Logo Upload', ctrlLbl1: 'Document No.',
+    recipLabels: ['Name','Date of Birth','ID No.','Phone','Address','Name','ID No.','Phone','Address'],
+    sigSuffix: '(Signature)',
+    stampText: 'SEAL',
+    attachTitle: 'Attachments',
+    attachItems: [
+      '<input type="checkbox"> Copy of Principal\'s ID (1 copy)',
+      '<input type="checkbox"> Certificate of Seal Impression (1 copy)',
+      '<input type="checkbox"> Other: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+    ]
   },
   ja: {
     docTitle: '委 &nbsp; 任 &nbsp; 状', docSub: '',
@@ -376,7 +421,16 @@ var LANG_DATA_FORM = {
     printBtn: '🖨 印刷 / PDF保存', resetBtn: 'リセット',
     tipBox: '💡 各項目をクリックして内容を直接編集してください。',
     ctrlLogoBtn: 'ロゴを選択',
-    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号'
+    ctrlLbl0: 'ロゴアップロード', ctrlLbl1: '文書番号',
+    recipLabels: ['氏　　名','生年月日','住民番号','連絡先','住　　所','氏　　名','住民番号','連絡先','住　　所'],
+    sigSuffix: '（署名）',
+    stampText: '印',
+    attachTitle: '添付書類',
+    attachItems: [
+      '<input type="checkbox"> 委任者の身分証明書（写し）1通',
+      '<input type="checkbox"> 印鑑証明書 1通',
+      '<input type="checkbox"> その他: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+    ]
   }
 };
 var _pseudoStyle = document.createElement('style');
@@ -409,6 +463,25 @@ function setLang(lang) {
   if (ctrlLbl0) ctrlLbl0.textContent = d.ctrlLbl0;
   var ctrlLbl1 = document.getElementById('ctrlLbl1');
   if (ctrlLbl1) ctrlLbl1.textContent = d.ctrlLbl1;
+  // recipient/delegator field labels
+  if (d.recipLabels) {
+    var recipLbls = document.querySelectorAll('.recip-lbl');
+    d.recipLabels.forEach(function(txt, i) { if (recipLbls[i]) recipLbls[i].textContent = txt; });
+  }
+  // sig suffix "(서명)"
+  var sigSuffixEl = document.getElementById('sigSuffix');
+  if (sigSuffixEl && d.sigSuffix) sigSuffixEl.textContent = d.sigSuffix;
+  // stamp circles
+  if (d.stampText) {
+    document.querySelectorAll('.stamp-circle').forEach(function(el) { el.textContent = d.stampText; });
+  }
+  // attachments
+  var attachTitleEl = document.getElementById('attachTitle');
+  if (attachTitleEl && d.attachTitle) attachTitleEl.textContent = d.attachTitle;
+  if (d.attachItems) {
+    var attachEls = document.querySelectorAll('.attach-item');
+    d.attachItems.forEach(function(html, i) { if (attachEls[i]) attachEls[i].innerHTML = html; });
+  }
 }
 
 document.getElementById('docNum').addEventListener('input', function(){

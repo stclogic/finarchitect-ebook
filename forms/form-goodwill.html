@@ -426,8 +426,8 @@
 
         <!-- 임대인 동의 서명 -->
         <div style="border:1.5px dashed #14B8A6; border-radius:8px; padding:3mm 4mm; margin-top:3mm;">
-          <div style="font-size:8.5pt; font-weight:700; color:#0F766E; margin-bottom:2mm;">▌ 임대인 동의 서명란</div>
-          <div style="font-size:8pt; color:#555; margin-bottom:2mm;">본인(임대인)은 위 권리금계약의 내용을 확인하고 신규 임차인(을)과의 임대차계약 체결에 동의합니다.</div>
+          <div id="landlordConsentTitle" style="font-size:8.5pt; font-weight:700; color:#0F766E; margin-bottom:2mm;">▌ 임대인 동의 서명란</div>
+          <div id="landlordConsentBody" style="font-size:8pt; color:#555; margin-bottom:2mm;">본인(임대인)은 위 권리금계약의 내용을 확인하고 신규 임차인(을)과의 임대차계약 체결에 동의합니다.</div>
           <div class="stamp-row" style="margin:2mm 0;">
             <div class="stamp-block">
               <div class="s-title">임대인</div>
@@ -521,6 +521,10 @@ var LANG_DATA = {
     tipBox: '💡 <strong>작성 Tip</strong><br>상가임대차보호법 제10조의4에 따라 임대인은 권리금 회수를 방해할 수 없습니다. 임대인 동의란도 반드시 받으세요.',
     docTitle: '권  리  금  계  약  서', docSub: 'GOODWILL TRANSFER AGREEMENT',
     thSeller: '양도인 (甲) — 현 임차인', thBuyer: '양수인 (乙) — 신규 임차인',
+    stampTitles: ['양도인 (甲) — 현 임차인','양수인 (乙) — 신규 임차인','임대인'],
+    sInfos: ['성명:<br>주소:<br>연락처:','성명:<br>주소:<br>연락처:','성명:<br>주소:<br>연락처:'],
+    landlordConsentTitle: '▌ 임대인 동의 서명란',
+    landlordConsentBody: '본인(임대인)은 위 권리금계약의 내용을 확인하고 신규 임차인(을)과의 임대차계약 체결에 동의합니다.',
     sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
     articles: ['권리금','계약금 및 잔금 지급 일정','임대인 동의','인수 범위 — 시설물 목록','명도 및 인수인계 일자','영업 비밀 이전','영업 방해 금지','임대인의 계약 갱신 거절 시 손실 처리','계약 해지 및 위약금','분쟁 해결'],
     dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
@@ -533,6 +537,10 @@ var LANG_DATA = {
     tipBox: '💡 <strong>Writing Tip</strong><br>Under Art. 10-4 of the Commercial Building Lease Protection Act, the landlord may not interfere with goodwill recovery. Be sure to obtain the landlord\'s consent.',
     docTitle: 'GOODWILL TRANSFER AGREEMENT', docSub: 'Business Goodwill Transfer Contract',
     thSeller: 'Transferor (Party A, Current Tenant)', thBuyer: 'Transferee (Party B, New Tenant)',
+    stampTitles: ['Transferor (Party A)','Transferee (Party B)','Landlord'],
+    sInfos: ['Name:<br>Address:<br>Contact:','Name:<br>Address:<br>Contact:','Name:<br>Address:<br>Contact:'],
+    landlordConsentTitle: '▌ Landlord Consent Signature',
+    landlordConsentBody: 'I (the Landlord) confirm the above Goodwill Transfer Agreement and consent to executing a new lease with the Transferee (Party B).',
     sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Goodwill Transfer Agreement.',
     articles: ['Art.1 — Goodwill Amount','Art.2 — Deposit & Balance Payment','Art.3 — Landlord Consent','Art.4 — Scope of Transfer','Art.5 — Handover & Possession','Art.6 — Transfer of Trade Secrets','Art.7 — Non-Interference','Art.8 — Lease Renewal Refusal','Art.9 — Termination & Penalty','Art.10 — Dispute Resolution'],
     articleBodies: [
@@ -557,6 +565,10 @@ var LANG_DATA = {
     tipBox: '💡 <strong>作成Tip</strong><br>商業用建物賃貸借保護法第10条の4に基づき、賃貸人は権利金回収を妨害できません。賃貸人同意欄も必ず取得してください。',
     docTitle: '営業権譲渡契約書', docSub: 'GOODWILL TRANSFER AGREEMENT',
     thSeller: '譲渡人（甲、現賃借人）', thBuyer: '譲受人（乙、新賃借人）',
+    stampTitles: ['譲渡人（甲、現賃借人）','譲受人（乙、新賃借人）','賃貸人'],
+    sInfos: ['氏名：<br>住所：<br>連絡先：','氏名：<br>住所：<br>連絡先：','氏名：<br>住所：<br>連絡先：'],
+    landlordConsentTitle: '▌ 賃貸人同意署名欄',
+    landlordConsentBody: '本人（賃貸人）は上記の営業権譲渡契約の内容を確認し、新規賃借人（乙）との賃貸借契約の締結に同意します。',
     sigPrefix: '上記契約の成立を証明するため、本契約書を作成して記名押印する。',
     articles: ['第1条 — 権利金','第2条 — 手付金及び残金','第3条 — 賃貸人の同意','第4条 — 引受範囲','第5条 — 明渡及び引継','第6条 — 営業秘密の移転','第7条 — 営業妨害禁止','第8条 — 賃貸借更新拒絶','第9条 — 解除及び違約金','第10条 — 紛争解決'],
     articleBodies: [
@@ -624,6 +636,18 @@ function setLang(lang) {
     if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k];
   });
 
+  if (d.stampTitles) {
+    var stEls = document.querySelectorAll('.stamp-block .s-title');
+    d.stampTitles.forEach(function(txt, i) { if (stEls[i]) stEls[i].textContent = txt; });
+  }
+  if (d.sInfos) {
+    var siEls = document.querySelectorAll('.stamp-block .s-info');
+    d.sInfos.forEach(function(html, i) { if (siEls[i]) siEls[i].innerHTML = html; });
+  }
+  if (d.landlordConsentTitle) {
+    var lct = document.getElementById('landlordConsentTitle'); if (lct) lct.textContent = d.landlordConsentTitle;
+    var lcb = document.getElementById('landlordConsentBody'); if (lcb) lcb.textContent = d.landlordConsentBody;
+  }
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

@@ -528,6 +528,11 @@ var LANG_DATA = {
     thOwner: '도급인 (甲)', thContractor: '수급인 (乙)',
     sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
     articles: ['도급 금액','공사 범위','공사 기간','설계 변경','하자 담보 책임','기성 검사 및 준공 검사','재료 및 노무','안전 관리','보험','계약 해지','분쟁 해결','기타'],
+    pbTitle: '▌ 공사 기본 사항',
+    pbLabels: ['공 사 명','공사 장소','착 공 일','준공 예정일'],
+    partyLabels: ['상호/성명','대표자','사업자번호','면허번호','주소','연락처'],
+    stampTitles: ['도급인 (甲)','수급인 (乙)','현장 감독관'],
+    sInfos: ['상호:<br>대표자:<br>주소:','상호:<br>대표자:<br>주소:','성명:<br>소속:<br>연락처:'],
     dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
@@ -540,6 +545,11 @@ var LANG_DATA = {
     thOwner: 'Owner (Party A)', thContractor: 'Contractor (Party B)',
     sigPrefix: 'IN WITNESS WHEREOF, the parties have executed this Construction Contract.',
     articles: ['Art.1 — Contract Amount','Art.2 — Scope of Work','Art.3 — Construction Period','Art.4 — Design Changes','Art.5 — Defect Liability','Art.6 — Progress & Completion Inspection','Art.7 — Materials & Labor','Art.8 — Safety Management','Art.9 — Insurance','Art.10 — Termination','Art.11 — Dispute Resolution','Art.12 — Miscellaneous'],
+    pbTitle: '▌ Project Overview',
+    pbLabels: ['Project Name','Project Location','Start Date','Scheduled Completion'],
+    partyLabels: ['Name / Trade Name','Representative','Business Reg. No.','License No.','Address','Phone'],
+    stampTitles: ['Owner (Party A)','Contractor (Party B)','Site Supervisor'],
+    sInfos: ['Trade Name:<br>Representative:<br>Address:','Trade Name:<br>Representative:<br>Address:','Name:<br>Affiliation:<br>Phone:'],
     articleBodies: [
       'The total contract amount shall be as set forth below, inclusive of value-added tax.<div class="amount-row" style="margin-top:2mm;"><div class="amount-box"><div class="ab-label">Total Contract Amount (numeric)</div><div contenteditable="true" id="dispTotalAmt" style="font-size:11pt; font-weight:700; color:#065F46;">Amount ___________________ (₩ )</div></div></div><div class="amount-box" style="margin-top:2mm;"><div class="ab-label">Amount in Words</div><div contenteditable="true" id="dispTotalAmtKor" style="font-weight:600;">Amount ________________________________</div></div><table class="payment-table" style="margin-top:3mm;"><thead><tr><th>Type</th><th>Amount</th><th>Payment Date</th><th>Payment Method</th></tr></thead><tbody><tr><td contenteditable="true">Deposit</td><td contenteditable="true"></td><td contenteditable="true">Date of Contract</td><td contenteditable="true">Cash / Bank Transfer</td></tr><tr><td contenteditable="true">Progress Payment</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">Cash / Bank Transfer</td></tr><tr><td contenteditable="true">Balance</td><td contenteditable="true"></td><td contenteditable="true">After Completion Inspection</td><td contenteditable="true">Cash / Bank Transfer</td></tr></tbody></table>',
       'The Contractor shall faithfully perform the construction work in accordance with the Bill of Quantities (attached schedule) as entrusted by the Owner. If any change in the scope of work becomes necessary, Article 4 (Design Changes) shall apply.<br>□ Bill of Quantities attached &nbsp;&nbsp; □ Design drawings attached &nbsp;&nbsp; □ Specifications attached',
@@ -566,6 +576,11 @@ var LANG_DATA = {
     thOwner: '注文者（甲）', thContractor: '請負人（乙）',
     sigPrefix: '上記契約の成立を証明するため、本契約書を作成して記名押印する。',
     articles: ['第1条 — 請負金額','第2条 — 工事範囲','第3条 — 工事期間','第4条 — 設計変更','第5条 — 瑕疵担保責任','第6条 — 出来高及び竣工検査','第7条 — 材料及び労務','第8条 — 安全管理','第9条 — 保険','第10条 — 契約解除','第11条 — 紛争解決','第12条 — その他'],
+    pbTitle: '▌ 工事基本事項',
+    pbLabels: ['工事名','工事場所','着工日','竣工予定日'],
+    partyLabels: ['商号/氏名','代表者','事業者番号','許可番号','住所','連絡先'],
+    stampTitles: ['注文者（甲）','請負人（乙）','現場監督'],
+    sInfos: ['商号：<br>代表者：<br>住所：','商号：<br>代表者：<br>住所：','氏名：<br>所属：<br>連絡先：'],
     articleBodies: [
       '総工事金額は以下のとおりとし、消費税を含む。<div class="amount-row" style="margin-top:2mm;"><div class="amount-box"><div class="ab-label">総工事金額（数字）</div><div contenteditable="true" id="dispTotalAmt" style="font-size:11pt; font-weight:700; color:#065F46;">金額 ___________________ （¥ ）</div></div></div><div class="amount-box" style="margin-top:2mm;"><div class="ab-label">金額（漢字）</div><div contenteditable="true" id="dispTotalAmtKor" style="font-weight:600;">金額 ________________________________</div></div><table class="payment-table" style="margin-top:3mm;"><thead><tr><th>区分</th><th>金額</th><th>支払日</th><th>支払方法</th></tr></thead><tbody><tr><td contenteditable="true">手付金</td><td contenteditable="true"></td><td contenteditable="true">契約締結日</td><td contenteditable="true">現金／振込</td></tr><tr><td contenteditable="true">中間金</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">現金／振込</td></tr><tr><td contenteditable="true">残金</td><td contenteditable="true"></td><td contenteditable="true">竣工検査後</td><td contenteditable="true">現金／振込</td></tr></tbody></table>',
       '請負人は、注文者から委任された工事内訳書（別添）に従い、誠実に工事を遂行する。工事範囲の変更が必要な場合は、第4条（設計変更）による。<br>□ 工事内訳書添付確認 &nbsp;&nbsp; □ 設計図面添付確認 &nbsp;&nbsp; □ 仕様書添付確認',
@@ -633,6 +648,22 @@ function setLang(lang) {
     if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k];
   });
 
+  if (d.pbLabels) {
+    var pbEls = document.querySelectorAll('.property-box .pb-label');
+    d.pbLabels.forEach(function(txt, i) { if (pbEls[i]) pbEls[i].textContent = txt; });
+  }
+  if (d.partyLabels) {
+    var plEls = document.querySelectorAll('.party-table .party-label');
+    d.partyLabels.forEach(function(txt, i) { if (plEls[i]) plEls[i].textContent = txt; });
+  }
+  if (d.stampTitles) {
+    var stEls = document.querySelectorAll('.stamp-block .s-title');
+    d.stampTitles.forEach(function(txt, i) { if (stEls[i]) stEls[i].textContent = txt; });
+  }
+  if (d.sInfos) {
+    var siEls = document.querySelectorAll('.stamp-block .s-info');
+    d.sInfos.forEach(function(html, i) { if (siEls[i]) siEls[i].innerHTML = html; });
+  }
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

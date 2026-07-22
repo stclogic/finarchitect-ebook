@@ -428,7 +428,7 @@
         </div>
         <div class="cl-sign-area">
           <div class="cl-sign-label">위 내용은 사실과 다름이 없습니다.</div>
-          성명: <span class="cl-sign-line" contenteditable="true" style="min-width:60px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span id="signNameLabel">성명</span>: <span class="cl-sign-line" contenteditable="true" style="min-width:60px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <span style="margin-left:6px;font-size:8.5pt;color:#6366F1">(서명)</span>
         </div>
       </div>
@@ -505,7 +505,7 @@ var LANG_DATA_FORM = {
       '해당 기업과 직무에 지원하게 된 구체적인 이유를 기술해 주세요. 기업 연구 내용과 본인의 역량 연결점을 명확히 제시해 주세요.',
       '입사 후 단기·장기적으로 이루고 싶은 목표와 기여 방향을 구체적으로 기술해 주세요.'
     ],
-    metaCompany:'🏢 지원회사', metaJob:'💼 지원직무', metaName:'👤 성명',
+    metaCompany:'🏢 지원회사', metaJob:'💼 지원직무', metaName:'👤 성명', signNameLabel:'성명',
     footerDateLabel:'작성일',
     footerCert:'위 내용은 사실과 다름이 없습니다.',
     footerSign:'(서명)',
@@ -533,7 +533,7 @@ var LANG_DATA_FORM = {
       'Explain specifically why you are applying to this company and role. Connect your research to your strengths.',
       'Describe your short- and long-term goals after joining the company and how you plan to contribute.'
     ],
-    metaCompany:'🏢 Company', metaJob:'💼 Position', metaName:'👤 Name',
+    metaCompany:'🏢 Company', metaJob:'💼 Position', metaName:'👤 Name', signNameLabel:'Name',
     footerDateLabel:'Date',
     footerCert:'I hereby certify that the above information is true and accurate.',
     footerSign:'(Signature)',
@@ -561,7 +561,7 @@ var LANG_DATA_FORM = {
       'この企業と職種に応募した具体的な理由を記述してください。企業研究の内容と自分の強みとの接点を明確に示してください。',
       '入社後、短期・長期的に達成したい目標と貢献の方向性を具体的に記述してください。'
     ],
-    metaCompany:'🏢 志望企業', metaJob:'💼 志望職種', metaName:'👤 氏名',
+    metaCompany:'🏢 志望企業', metaJob:'💼 志望職種', metaName:'👤 氏名', signNameLabel:'氏名',
     footerDateLabel:'作成日',
     footerCert:'上記の内容は事実と相違ありません。',
     footerSign:'（署名）',
@@ -621,6 +621,7 @@ function setLang(lang) {
   }
   // 푸터
   document.querySelector('.cl-sign-label').textContent = d.footerCert;
+  var snl = document.getElementById('signNameLabel'); if (snl && d.signNameLabel) snl.textContent = d.signNameLabel;
   document.querySelector('.cl-footer-left').innerHTML = d.footerDateLabel + ': <span id="footer-date" contenteditable="true">' + document.getElementById('footer-date').textContent + '</span>';
   document.querySelector('.cl-footer-right span[style]').textContent = d.footerSign;
   // 글자수

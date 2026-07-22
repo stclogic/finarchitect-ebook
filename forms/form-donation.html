@@ -304,18 +304,18 @@
         <div class="doc-divider-thin"></div>
 
         <!-- 기부 상세 내용 -->
-        <div class="section-badge">▌ 기부 상세 내용</div>
+        <div class="section-badge" id="badgeDetail">▌ 기부 상세 내용</div>
         <table class="donation-detail-table">
           <tbody>
             <tr>
-              <th>기부 금액</th>
+              <th id="thAmt">기부 금액</th>
               <td>
                 <div id="dispDonationAmt" contenteditable="true" style="font-size:10.5pt;font-weight:700;color:#7C3AED;">금 _______________ 원 (₩ )</div>
                 <div id="dispDonationAmtKor" contenteditable="true" style="font-size:8.5pt;color:#555;margin-top:1mm;">금 ___________________________ 원정</div>
               </td>
             </tr>
             <tr>
-              <th>기부 방법</th>
+              <th id="thMethod">기부 방법</th>
               <td>
                 <div class="check-group">
                   <label class="check-item"><input type="checkbox"> 현금</label>
@@ -327,7 +327,7 @@
               </td>
             </tr>
             <tr>
-              <th>기부 유형</th>
+              <th id="thType">기부 유형</th>
               <td>
                 <div class="check-group">
                   <label class="check-item"><input type="checkbox" id="chkOnce"> 일시 기부</label>
@@ -336,11 +336,11 @@
               </td>
             </tr>
             <tr>
-              <th>기부 일시</th>
+              <th id="thDate">기부 일시</th>
               <td contenteditable="true"></td>
             </tr>
             <tr id="regularRow">
-              <th>정기 기부 조건</th>
+              <th id="thRecurring">정기 기부 조건</th>
               <td>
                 주기:
                 <div class="check-group" style="display:inline-flex;">
@@ -353,7 +353,7 @@
               </td>
             </tr>
             <tr>
-              <th>목적 지정 여부</th>
+              <th id="thDesignate">목적 지정 여부</th>
               <td>
                 <div class="check-group">
                   <label class="check-item"><input type="checkbox"> 지정 기부</label>
@@ -362,7 +362,7 @@
               </td>
             </tr>
             <tr>
-              <th>지정 사용 목적</th>
+              <th id="thPurpose">지정 사용 목적</th>
               <td contenteditable="true">비지정 기부의 경우 단체의 설립 목적 사업에 사용</td>
             </tr>
           </tbody>
@@ -371,7 +371,7 @@
         <div class="doc-divider-thin"></div>
 
         <!-- 약정 조항 -->
-        <div class="section-badge">▌ 약정 조항</div>
+        <div class="section-badge" id="badgeArticles">▌ 약정 조항</div>
 
         <div class="article-section">
           <div class="article-title"><span class="article-num">1</span><span id="at-1">기부금 사용</span></div>
@@ -507,6 +507,10 @@ var LANG_DATA = {
     ctrlL0: '단체 로고 업로드', ctrlL1: '작성일', ctrlL2: '문서 번호', ctrlL3: '기부 금액 (숫자)', ctrlL4: '기부 유형',
     ctrlP2: '예: DON-2025-001', ctrlP3: '예: 1200000',
     tipBox: '💡 <strong>작성 Tip</strong><br>기부금 영수증은 소득공제에 활용됩니다. 지정기부 시 사용 목적을 명확히 기재하면 투명한 나눔이 됩니다.',
+    pbLabels: ['단 체 명','대 표 자','사업자번호','설립 목적','주소','연 락 처','이메일','성명/법인명','생년월일/사번','연락처','주소','이메일'],
+    sInfos: ['성명:<br>주소:<br>연락처:','단체명:<br>대표자:<br>연락처:'],
+    badgeDetail: '▌ 기부 상세 내용', badgeArticles: '▌ 약정 조항',
+    detailLabels: {amt:'기부 금액',method:'기부 방법',type:'기부 유형',date:'기부 일시',recurring:'정기 기부 조건',designate:'목적 지정 여부',purpose:'지정 사용 목적'},
     dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
@@ -522,6 +526,11 @@ var LANG_DATA = {
     ctrlL0: 'Organization Logo', ctrlL1: 'Date', ctrlL2: 'Document No.', ctrlL3: 'Donation Amount', ctrlL4: 'Donation Type',
     ctrlP2: 'e.g. DON-2025-001', ctrlP3: 'e.g. 1200000',
     tipBox: '💡 <strong>Tips</strong><br>Donation receipts can be used for income tax deductions. For designated donations, clearly state the intended purpose for transparent giving.',
+
+    pbLabels: ['Organization Name','Representative','Business Reg. No.','Purpose','Address','Phone','Email','Name / Corp. Name','DOB / Staff No.','Phone','Address','Email'],
+    sInfos: ['Name:<br>Address:<br>Contact:','Organization:<br>Representative:<br>Contact:'],
+    badgeDetail: '▌ Donation Details', badgeArticles: '▌ Pledge Terms',
+    detailLabels: {amt:'Donation Amount',method:'Donation Method',type:'Donation Type',date:'Donation Date',recurring:'Recurring Conditions',designate:'Designated Use',purpose:'Designated Purpose'},
     articleBodies: [
       'The Organization shall use the donated funds exclusively for the designated purpose specified by the Donor or, in the absence of designation, for the Organization\'s statutory purposes as set out in its articles of association. Donated funds shall not be diverted to any other purpose.',
       'Upon receipt of the donation, the Organization shall promptly issue an official donation receipt to the Donor in accordance with Article 34 of the Income Tax Act and Article 24 of the Corporate Tax Act.',
@@ -545,6 +554,10 @@ var LANG_DATA = {
     ctrlL0: '団体ロゴアップロード', ctrlL1: '作成日', ctrlL2: '文書番号', ctrlL3: '寄付金額', ctrlL4: '寄付種別',
     ctrlP2: '例：DON-2025-001', ctrlP3: '例：1200000',
     tipBox: '💡 <strong>作成のヒント</strong><br>寄付金領収書は所得控除に使用できます。指定寄付の場合は使途を明確に記載すると透明性が高まります。',
+    pbLabels: ['団体名','代表者','事業者番号','設立目的','住所','連絡先','メール','氏名/法人名','生年月日/社員番号','連絡先','住所','メール'],
+    sInfos: ['氏名：<br>住所：<br>連絡先：','団体名：<br>代表者：<br>連絡先：'],
+    badgeDetail: '▌ 寄付詳細', badgeArticles: '▌ 約定条項',
+    detailLabels: {amt:'寄付金額',method:'寄付方法',type:'寄付種別',date:'寄付日',recurring:'定期寄付条件',designate:'指定有無',purpose:'指定使用目的'},
     articleBodies: [
       '団体は、寄付者が指定した目的事業、又は指定がない場合は団体の定款上の設立目的事業に寄付金を使用する。寄付金を他の用途に流用してはならない。',
       '団体は、寄付金の受領後直ちに、所得税法第34条及び法人税法第24条に基づく寄付金領収書を発行して寄付者に交付する。',
@@ -605,6 +618,29 @@ function setLang(lang) {
   if (amtInp && d.ctrlP3 !== undefined) amtInp.placeholder = d.ctrlP3;
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
 
+  if (d.pbLabels) {
+    var pbEls = document.querySelectorAll('.pb-label');
+    d.pbLabels.forEach(function(txt, i) { if (pbEls[i]) pbEls[i].textContent = txt; });
+  }
+  if (d.sInfos) {
+    var siEls = document.querySelectorAll('.stamp-block .s-info');
+    d.sInfos.forEach(function(html, i) { if (siEls[i]) siEls[i].innerHTML = html; });
+  }
+  if (d.badgeDetail) {
+    var bd = document.getElementById('badgeDetail'); if (bd) bd.textContent = d.badgeDetail;
+    var ba = document.getElementById('badgeArticles'); if (ba) ba.textContent = d.badgeArticles;
+  }
+  if (d.detailLabels) {
+    var dl = d.detailLabels;
+    var _el; 
+    _el = document.getElementById('thAmt'); if (_el) _el.textContent = dl.amt;
+    _el = document.getElementById('thMethod'); if (_el) _el.textContent = dl.method;
+    _el = document.getElementById('thType'); if (_el) _el.textContent = dl.type;
+    _el = document.getElementById('thDate'); if (_el) _el.textContent = dl.date;
+    _el = document.getElementById('thRecurring'); if (_el) _el.textContent = dl.recurring;
+    _el = document.getElementById('thDesignate'); if (_el) _el.textContent = dl.designate;
+    _el = document.getElementById('thPurpose'); if (_el) _el.textContent = dl.purpose;
+  }
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

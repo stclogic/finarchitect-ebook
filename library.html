@@ -380,7 +380,7 @@
 <!-- 무료 도서 섹션 -->
 <section class="lib-section" id="freeSection">
   <div class="lib-section-label">
-    🎁 무료 도서
+    <span data-i18n="library.section.free">🎁 무료 도서</span>
     <span id="freeCount">1</span>
   </div>
   <div class="book-grid" id="freeGrid"></div>
@@ -700,7 +700,7 @@ function renderFree() {
       </div>
     `;
   }).join('');
-  document.getElementById('freeCount').textContent = FREE_BOOKS.length;
+  document.getElementById('freeCount').textContent = FREE_BOOKS.length + BOOKS.filter(b => b.is_free).length;
 }
 
 function openFreeBook(bookId) {

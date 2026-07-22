@@ -573,6 +573,7 @@ var LANG_DATA = {
       '본 회사 설립 시 발기인의 성명, 주민등록번호 및 주소는 다음과 같다.<br>성명: ___________&nbsp;&nbsp; 주민번호: _______________&nbsp;&nbsp; 주소: ___________________'
     ],
     stampTitles: ['발기인 대표','발기인','발기인'],
+    sInfos: ['성명:<br>주소:','성명:<br>주소:','성명:<br>주소:'],
     stampBoxText: '인',
     logoPlaceholder: '로고<br>업로드',
     dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
@@ -624,6 +625,7 @@ var LANG_DATA = {
       'The names, resident registration numbers, and addresses of the incorporators at the time of incorporation of the Company are as follows:<br>Name: ___________&nbsp;&nbsp; ID No.: _______________&nbsp;&nbsp; Address: ___________________'
     ],
     stampTitles: ['Lead Incorporator','Incorporator','Incorporator'],
+    sInfos: ['Name:<br>Address:','Name:<br>Address:','Name:<br>Address:'],
     stampBoxText: 'SEAL',
     logoPlaceholder: 'Logo<br>Upload',
     dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
@@ -675,6 +677,7 @@ var LANG_DATA = {
       '当会社設立時における発起人の氏名、住民登録番号及び住所は次のとおりである。<br>氏名：___________&nbsp;&nbsp; 住民番号：_______________&nbsp;&nbsp; 住所：___________________'
     ],
     stampTitles: ['発起人代表','発起人','発起人'],
+    sInfos: ['氏名：<br>住所：','氏名：<br>住所：','氏名：<br>住所：'],
     stampBoxText: '印',
     logoPlaceholder: 'ロゴ<br>アップ',
     dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
@@ -762,6 +765,10 @@ function setLang(lang) {
   if (d.stampTitles) {
     var sTitles = document.querySelectorAll('.stamp-block .s-title');
     d.stampTitles.forEach(function(t, i) { if (sTitles[i]) sTitles[i].textContent = t; });
+  }
+  if (d.sInfos) {
+    var siEls = document.querySelectorAll('.stamp-block .s-info');
+    d.sInfos.forEach(function(html, i) { if (siEls[i]) siEls[i].innerHTML = html; });
   }
   if (d.stampBoxText) {
     document.querySelectorAll('.stamp-box').forEach(function(el) { el.textContent = d.stampBoxText; });

@@ -19,6 +19,7 @@ const SITE_I18N = {
     'library.filter.finance': '금융·투자',
     'library.filter.law': '법률·계약',
     'library.filter.tax': '세무·회계',
+    'library.section.free': '🎁 무료 도서',
     'library.section.published': '출판 완료',
     'library.section.soon': '출판 예정',
     'library.modal.label': '읽을 언어를 선택하세요',
@@ -219,6 +220,7 @@ const SITE_I18N = {
     'library.filter.finance': 'Finance & Investment',
     'library.filter.law': 'Law & Contracts',
     'library.filter.tax': 'Tax & Accounting',
+    'library.section.free': '🎁 Free Books',
     'library.section.published': 'Published',
     'library.section.soon': 'Coming Soon',
 
@@ -407,6 +409,7 @@ const SITE_I18N = {
     'library.filter.finance': '金融·投資',
     'library.filter.law': '法律·契約',
     'library.filter.tax': '税務·会計',
+    'library.section.free': '🎁 無料書籍',
     'library.section.published': '出版済み',
     'library.section.soon': '出版予定',
     'library.modal.label': '読む言語を選択してください',

@@ -313,19 +313,19 @@
         <tr>
           <th>임대인 (갑)</th>
           <td>
-            <div>성명: <span contenteditable="true" class="f-lessor">홍임대</span> &nbsp;&nbsp; 생년월일: <span contenteditable="true">1965. 03. 15.</span></div>
-            <div>주민번호 앞자리: <span contenteditable="true">650315-1</span>●●●●●●</div>
-            <div>주소: <span contenteditable="true">서울특별시 강남구 도곡동 789</span></div>
-            <div>연락처: <span contenteditable="true">010-1234-5678</span></div>
+            <div><span class="pi-label">성명:</span> <span contenteditable="true" class="f-lessor">홍임대</span> &nbsp;&nbsp; <span class="pi-label">생년월일:</span> <span contenteditable="true">1965. 03. 15.</span></div>
+            <div><span class="pi-label">주민번호 앞자리:</span> <span contenteditable="true">650315-1</span>●●●●●●</div>
+            <div><span class="pi-label">주소:</span> <span contenteditable="true">서울특별시 강남구 도곡동 789</span></div>
+            <div><span class="pi-label">연락처:</span> <span contenteditable="true">010-1234-5678</span></div>
           </td>
         </tr>
         <tr>
           <th>임차인 (을)</th>
           <td>
-            <div>성명: <span contenteditable="true" class="f-lessee">김임차</span> &nbsp;&nbsp; 생년월일: <span contenteditable="true">1992. 07. 20.</span></div>
-            <div>주민번호 앞자리: <span contenteditable="true">920720-1</span>●●●●●●</div>
-            <div>주소: <span contenteditable="true">서울특별시 서대문구 현재 거주지</span></div>
-            <div>연락처: <span contenteditable="true">010-9876-5432</span></div>
+            <div><span class="pi-label">성명:</span> <span contenteditable="true" class="f-lessee">김임차</span> &nbsp;&nbsp; <span class="pi-label">생년월일:</span> <span contenteditable="true">1992. 07. 20.</span></div>
+            <div><span class="pi-label">주민번호 앞자리:</span> <span contenteditable="true">920720-1</span>●●●●●●</div>
+            <div><span class="pi-label">주소:</span> <span contenteditable="true">서울특별시 서대문구 현재 거주지</span></div>
+            <div><span class="pi-label">연락처:</span> <span contenteditable="true">010-9876-5432</span></div>
           </td>
         </tr>
       </table>
@@ -555,6 +555,7 @@ var LANG_DATA_FORM = {
     sigDateHTML:'위 계약 내용을 확인하고 계약 당사자가 서명·날인한다.<br><strong><span contenteditable="true">2026</span>년 <span contenteditable="true">07</span>월 <span contenteditable="true">16</span>일</strong>',
     sigFieldLabels:['성 명','주민번호','연락처','주 소','서 명','성 명','주민번호','연락처','주 소','서 명','사무소명','대표자','등록번호','서 명'],
     witnessTitle:'[ 개업공인중개사 (해당 시 작성) ]',
+    partyInfoLabels:['성명:', '생년월일:', '주민번호 앞자리:', '주소:', '연락처:'],
     clauseBodies:[
       '① 갑과 을은 위 목적물에 대하여 다음과 같이 임대차 계약을 체결한다.<br><div style="margin:3mm 0 3mm 8mm; padding:3mm 5mm; background:#F0FDF4; border-radius:4px;">보증금: <span class="amount-highlight f-deposit" contenteditable="true">금 100,000,000원 (금일억원정)</span><br>월  세: <span class="amount-highlight f-rent" contenteditable="true">금 1,000,000원 (금일백만원정)</span><br><span id="jeonseAmtRow">전세 보증금: 해당 없음 (월세 계약)</span></div>② 보증금은 계약 체결 시 계약금으로 <span contenteditable="true">금 10,000,000원 (금일천만원정)</span>을 지급하고,<br>잔금 <span contenteditable="true">금 90,000,000원 (금구천만원정)</span>은 입주일(<span contenteditable="true">2026년 8월 1일</span>)에 지급한다.<br>③ 월세는 매월 <span contenteditable="true">1</span>일에 갑의 계좌(<span contenteditable="true">국민은행 123-456-789012</span>)로 지급한다.',
       '① 임대 기간은 <span contenteditable="true" class="f-period">2026년 8월 1일부터 2028년 7월 31일까지 (24개월)</span>로 한다.<br>② 주택임대차보호법 제6조에 따라 갱신 요구권 행사가 가능하며, 만기 6개월 전부터 1개월 전까지 계약 갱신을 청구할 수 있다.<br>③ 계약 갱신 시 임료 증액은 주택임대차보호법 제7조에 따라 5%를 초과할 수 없다.',
@@ -599,6 +600,7 @@ var LANG_DATA_FORM = {
     sigDateHTML:'The parties confirm the above terms and affix their signatures and seals below.<br><strong><span contenteditable="true">2026</span> / <span contenteditable="true">07</span> / <span contenteditable="true">16</span></strong>',
     sigFieldLabels:['Name','ID No.','Phone','Address','Signature','Name','ID No.','Phone','Address','Signature','Agency Name','Representative','Registration No.','Signature'],
     witnessTitle:'[ Licensed Real Estate Agent (if applicable) ]',
+    partyInfoLabels:['Name:', 'Date of Birth:', 'ID No. (Front):', 'Address:', 'Phone:'],
     clauseBodies:[
       '① Party A and Party B agree to the following lease terms for the above property.<br><div style="margin:3mm 0 3mm 8mm; padding:3mm 5mm; background:#F0FDF4; border-radius:4px;">Security Deposit: <span class="amount-highlight f-deposit" contenteditable="true">KRW 100,000,000 (One Hundred Million Won)</span><br>Monthly Rent: <span class="amount-highlight f-rent" contenteditable="true">KRW 1,000,000 (One Million Won)</span><br><span id="jeonseAmtRow">Jeonse Deposit: N/A (Monthly Rent Contract)</span></div>② The deposit shall be paid as a down payment of <span contenteditable="true">KRW 10,000,000 (Ten Million Won)</span> at signing,<br>with the balance of <span contenteditable="true">KRW 90,000,000 (Ninety Million Won)</span> due on the move-in date (<span contenteditable="true">August 1, 2026</span>).<br>③ Monthly rent shall be paid on the <span contenteditable="true">1</span>st of each month to Landlord\'s account (<span contenteditable="true">Kookmin Bank 123-456-789012</span>).',
       '① The lease term shall be <span contenteditable="true" class="f-period">August 1, 2026 to July 31, 2028 (24 months)</span>.<br>② Under Article 6 of the Housing Lease Protection Act, Tenant may request renewal between 6 months and 1 month prior to expiration.<br>③ Upon renewal, rent increases shall not exceed 5% per Article 7 of the Housing Lease Protection Act.',
@@ -634,6 +636,7 @@ var LANG_DATA_FORM = {
     sigDateHTML:'上記契約内容を確認し、契約当事者が署名押印する。<br><strong><span contenteditable="true">2026</span>年<span contenteditable="true">07</span>月<span contenteditable="true">16</span>日</strong>',
     sigFieldLabels:['氏名','住民番号','連絡先','住所','署名','氏名','住民番号','連絡先','住所','署名','事務所名','代表者','登録番号','署名'],
     witnessTitle:'[ 宅地建物取引業者（該当する場合） ]',
+    partyInfoLabels:['氏名：', '生年月日：', '住民番号（前部）：', '住所：', '連絡先：'],
     clauseBodies:[
       '① 甲（賃貸人）と乙（賃借人）は、上記目的物について次のとおり賃貸借契約を締結する。<br><div style="margin:3mm 0 3mm 8mm; padding:3mm 5mm; background:#F0FDF4; border-radius:4px;">保証金: <span class="amount-highlight f-deposit" contenteditable="true">金 100,000,000ウォン（金一億ウォン）</span><br>月額賃料: <span class="amount-highlight f-rent" contenteditable="true">金 1,000,000ウォン（金百万ウォン）</span><br><span id="jeonseAmtRow">チョンセ保証金: 該当なし（月額賃料契約）</span></div>② 保証金は契約締結時に手付金として<span contenteditable="true">金 10,000,000ウォン（金一千万ウォン）</span>を支払い、<br>残金<span contenteditable="true">金 90,000,000ウォン（金九千万ウォン）</span>は入居日（<span contenteditable="true">2026年8月1日</span>）に支払う。<br>③ 月額賃料は毎月<span contenteditable="true">1</span>日に甲の口座（<span contenteditable="true">国民銀行 123-456-789012</span>）へ振り込むものとする。',
       '① 賃貸期間は<span contenteditable="true" class="f-period">2026年8月1日から2028年7月31日まで（24ヶ月）</span>とする。<br>② 住宅賃貸借保護法第6条に基づき、乙は契約満了の6ヶ月前から1ヶ月前までの間に契約更新を請求できる。<br>③ 更新時の賃料増額は、同法第7条に基づき5%を超えることができない。',
@@ -761,6 +764,11 @@ function setLang(lang) {
   // witness section title
   var witnessTitle = document.querySelector('.witness-title');
   if (witnessTitle && d.witnessTitle) witnessTitle.textContent = d.witnessTitle;
+  // party info labels
+  if (d.partyInfoLabels) {
+    var piLabels = document.querySelectorAll('.pi-label');
+    piLabels.forEach(function(el, i) { el.textContent = d.partyInfoLabels[i % d.partyInfoLabels.length]; });
+  }
   // html lang
   document.documentElement.lang = lang;
   

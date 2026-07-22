@@ -345,19 +345,19 @@
         <tr>
           <th id="thEmployer">사용자 (갑)</th>
           <td>
-            <div>상호/법인명: <span contenteditable="true" class="field-employer">(주)ABC기업</span></div>
-            <div>대표자: <span contenteditable="true">김대표</span> &nbsp;&nbsp; 사업자등록번호: <span contenteditable="true">000-00-00000</span></div>
-            <div>주소: <span contenteditable="true">서울특별시 강남구 테헤란로 123</span></div>
-            <div>연락처: <span contenteditable="true">02-000-0000</span></div>
+            <div><span class="pi-label">상호/법인명:</span> <span contenteditable="true" class="field-employer">(주)ABC기업</span></div>
+            <div><span class="pi-label">대표자:</span> <span contenteditable="true">김대표</span> &nbsp;&nbsp; <span class="pi-label">사업자등록번호:</span> <span contenteditable="true">000-00-00000</span></div>
+            <div><span class="pi-label">주소:</span> <span contenteditable="true">서울특별시 강남구 테헤란로 123</span></div>
+            <div><span class="pi-label">연락처:</span> <span contenteditable="true">02-000-0000</span></div>
           </td>
         </tr>
         <tr>
           <th id="thEmployee">근로자 (을)</th>
           <td>
-            <div>성명: <span contenteditable="true" class="field-employee">홍길동</span> &nbsp;&nbsp; 생년월일: <span contenteditable="true">1990. 01. 01.</span></div>
-            <div>주민등록번호 앞자리: <span contenteditable="true">900101-1</span>●●●●●●</div>
-            <div>주소: <span contenteditable="true">서울특별시 서초구 서초대로 456</span></div>
-            <div>연락처: <span contenteditable="true">010-0000-0000</span></div>
+            <div><span class="pi-label">성명:</span> <span contenteditable="true" class="field-employee">홍길동</span> &nbsp;&nbsp; <span class="pi-label">생년월일:</span> <span contenteditable="true">1990. 01. 01.</span></div>
+            <div><span class="pi-label">주민등록번호 앞자리:</span> <span contenteditable="true">900101-1</span>●●●●●●</div>
+            <div><span class="pi-label">주소:</span> <span contenteditable="true">서울특별시 서초구 서초대로 456</span></div>
+            <div><span class="pi-label">연락처:</span> <span contenteditable="true">010-0000-0000</span></div>
           </td>
         </tr>
       </table>
@@ -611,6 +611,7 @@ var LANG_DATA = {
     subtitle: '표준 근로계약서 · 근로기준법 기반',
     preamble: '사용자(이하 "갑")와 근로자(이하 "을")은 <strong>근로기준법</strong> 및 관계 법령의 규정에 따라 다음과 같이 근로계약을 체결하고, 이를 성실히 이행할 것을 확약한다.',
     thEmployer: '사용자 (갑)', thEmployee: '근로자 (을)',
+    partyInfoLabels: ['상호/법인명:', '대표자:', '사업자등록번호:', '주소:', '연락처:', '성명:', '생년월일:', '주민등록번호 앞자리:', '주소:', '연락처:'],
     sigDatePrefix: '위 계약의 성립을 증명하기 위하여 이 계약서를 작성하고 쌍방이 서명·날인한다.',
     sigTitleA: '사용자 (갑)', sigTitleB: '근로자 (을)',
     ctrlTitle: '📋 고용계약서', ctrlLogo: '사용자 로고', ctrlQuick: '빠른 입력',
@@ -641,6 +642,7 @@ var LANG_DATA = {
     subtitle: 'Standard Form · Based on Korean Labor Standards Act',
     preamble: 'The Employer (hereinafter "Party A") and the Employee (hereinafter "Party B") hereby enter into the following employment contract in accordance with the <strong>Labor Standards Act</strong> and relevant laws, and both parties pledge to faithfully perform the obligations herein.',
     thEmployer: 'Employer (Party A)', thEmployee: 'Employee (Party B)',
+    partyInfoLabels: ['Trade Name:', 'Representative:', 'Business Reg. No.:', 'Address:', 'Phone:', 'Name:', 'Date of Birth:', 'ID No. (Front):', 'Address:', 'Phone:'],
     sigDatePrefix: 'In witness whereof, the parties hereto have executed this Employment Contract as of the date written below.',
     sigTitleA: 'Employer (Party A)', sigTitleB: 'Employee (Party B)',
     ctrlTitle: '📋 Employment Contract', ctrlLogo: 'Company Logo', ctrlQuick: 'Quick Input',
@@ -671,6 +673,7 @@ var LANG_DATA = {
     subtitle: '標準雇用契約書 · 韓国労働基準法に基づく',
     preamble: '使用者（以下「甲」）と労働者（以下「乙」）は、<strong>労働基準法</strong>および関係法令の規定に基づき、以下のとおり雇用契約を締結し、これを誠実に履行することを確約する。',
     thEmployer: '使用者（甲）', thEmployee: '労働者（乙）',
+    partyInfoLabels: ['商号/法人名：', '代表者：', '事業者登録番号：', '住所：', '連絡先：', '氏名：', '生年月日：', '住民登録番号（前部）：', '住所：', '連絡先：'],
     sigDatePrefix: '上記契約の成立を証明するため、本契約書を作成し、双方が署名・押印する。',
     sigTitleA: '使用者（甲）', sigTitleB: '労働者（乙）',
     ctrlTitle: '📋 雇用契約書', ctrlLogo: '会社ロゴ', ctrlQuick: '簡単入力',
@@ -775,6 +778,10 @@ function setLang(lang) {
     if (inp && inp.value) syncField(k, inp.value);
   });
 
+  if (d.partyInfoLabels) {
+    var piLabels = document.querySelectorAll('.pi-label');
+    d.partyInfoLabels.forEach(function(txt, i) { if (piLabels[i]) piLabels[i].textContent = txt; });
+  }
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

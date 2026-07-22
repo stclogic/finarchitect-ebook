@@ -788,6 +788,22 @@ function setLang(lang) {
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
   _updateFormDate();
 
+  // __ls_samples_done__
+  // ── Lease: 샘플 텍스트 / 플레이스홀더 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { lessor:'홍임대', lessee:'김임차', addr:'서울시 마포구 상암동 123' },
+      en: { lessor:'John Lessor', lessee:'Jane Tenant', addr:'123 Main Street, Seoul' },
+      ja: { lessor:'山田貸主', lessee:'田中借主', addr:'ソウル市麻浦区上岩洞123' }
+    }[lang] || {};
+    var inps = document.querySelectorAll('.ctrl-panel input[type="text"]');
+    inps.forEach(function(inp){
+      if(inp.placeholder && inp.placeholder.match(/홍임대|lessor/i)) inp.placeholder = _ph.lessor||'';
+      if(inp.placeholder && inp.placeholder.match(/김임차|lessee/i)) inp.placeholder = _ph.lessee||'';
+      if(inp.placeholder && inp.placeholder.match(/상암동|address/i)) inp.placeholder = _ph.addr||'';
+    });
+  })();
+
   localStorage.setItem('site-lang', lang);
 }
 

@@ -513,7 +513,7 @@ function setLang(lang) {
     if (secEl) secEl.textContent = title;
   });
   // ── 컨트롤 패널 전체 번역 ──
-  var bk = document.querySelector('a[href="../forms.html"]');
+  var bk = document.querySelector('.back-link, .ctrl-back-link');
   if (bk) bk.textContent = d.ctrlBackLink;
   var h2 = document.querySelector('.ctrl-panel h2');
   if (h2) h2.textContent = d.ctrlTitle;
@@ -544,6 +544,94 @@ function setLang(lang) {
   var sigDiv = document.querySelector('.sig-footer > div:first-child'); if(sigDiv) sigDiv.textContent = d.sigText;
   var sigLblEl = document.querySelector('.sig-lbl'); if(sigLblEl) sigLblEl.textContent = d.sigRole;
 
+  // __bp_samples_done__
+  // ── Business Plan: 샘플 텍스트 초기화 ──
+  (function(){
+    var _bp = {
+      ko: {
+        cn:'회사명을 입력하세요', mt:'기관명 / 투자자', ma:'대표자명', mc:'010-0000-0000',
+        bn:'사업명을 입력하세요', bt:'IT서비스 / SaaS', rn:'홍길동',
+        cap:'100,000,000 원', addr:'서울특별시 강남구 테헤란로 000', est:'2024년 01월 01일',
+        ov:'사업 비전 및 미션을 기재하세요. 이 사업이 해결하는 핵심 문제와 우리 기업의 존재 이유를 한두 단락으로 설명합니다.',
+        pd:'주요 제품 및 서비스의 내용과 차별점을 기재하세요.',
+        vt:['혁신성','고객 가치','경쟁 우위'],
+        vd:['기존 시장 대비 차별화된 혁신 포인트를 설명하세요.','고객이 얻는 핵심 가치와 편익을 설명하세요.','지속 가능한 경쟁 우위 요소를 설명하세요.'],
+        tm:'B2B SaaS 시장', ms:'약 5,000억 원 (국내 기준)',
+        comp:[['경쟁사 A','브랜드 인지도','높은 가격','합리적 가격'],['경쟁사 B','기능 다양성','복잡한 UI','직관적 UX'],['경쟁사 C','넓은 유통망','느린 개발속도','빠른 업데이트']],
+        mkt:['핵심 제품/서비스 구성 및 기능 로드맵을 기재하세요.','가격 전략 및 요금 체계를 기재하세요.','유통 채널 및 판매 방식을 기재하세요.','마케팅 홍보 전략을 기재하세요.'],
+        bep:'월 매출 ○○○만 원 달성 시'
+      },
+      en: {
+        cn:'Enter Company Name', mt:'Organization or Investor', ma:'Representative Name', mc:'000-0000-0000',
+        bn:'Enter Business Name', bt:'SaaS / IT Services', rn:'John Smith',
+        cap:'100,000,000', addr:'123 Main Street, City', est:'January 01, 2024',
+        ov:'Describe the business vision and mission. Explain the core problem this business solves and the reason for its existence in one or two paragraphs.',
+        pd:'Describe your main products/services and their key differentiators.',
+        vt:['Innovation','Customer Value','Competitive Edge'],
+        vd:['Explain how your offering is differentiated from existing market solutions.','Describe the core value and benefits your customers gain.','Explain your sustainable competitive advantages.'],
+        tm:'B2B SaaS Market', ms:'Approx. $500M (domestic)',
+        comp:[['Competitor A','Brand Recognition','High Price','Competitive Pricing'],['Competitor B','Feature Variety','Complex UI','Intuitive UX'],['Competitor C','Wide Distribution','Slow Dev Cycle','Fast Updates']],
+        mkt:['Describe core product/service composition and feature roadmap.','Describe pricing strategy and rate structure (e.g. subscription, usage-based).','Describe distribution channels and sales methods (e.g. direct sales, partner channels).','Describe your marketing and promotion strategy (e.g. content marketing, SNS, events).'],
+        bep:'Target: monthly revenue of $___'
+      },
+      ja: {
+        cn:'会社名を入力してください', mt:'機関名または投資家', ma:'代表者名', mc:'000-0000-0000',
+        bn:'事業名を入力してください', bt:'SaaS / ITサービス', rn:'山田太郎',
+        cap:'100,000,000', addr:'○○都○○区○○町123', est:'2024年01月01日',
+        ov:'事業のビジョンとミッションを記載してください。この事業が解決する核心的な問題と企業の存在理由を1〜2段落で説明してください。',
+        pd:'主要製品・サービスの内容と差別化ポイントを記載してください。',
+        vt:['革新性','顧客価値','競争優位性'],
+        vd:['既存市場と比較した差別化ポイントを説明してください。','顧客が得られる核心的な価値と便益を説明してください。','持続可能な競争優位性の要素を説明してください。'],
+        tm:'B2B SaaS市場', ms:'約500億円（国内基準）',
+        comp:[['競合A','ブランド認知度','価格が高い','競争力ある価格'],['競合B','機能の多様性','複雑なUI','直感的なUX'],['競合C','広い流通網','開発速度が遅い','迅速なアップデート']],
+        mkt:['製品・サービスの構成と機能ロードマップを記載してください。','価格戦略と料金体系を記載してください（例：サブスクリプション型）。','流通チャネルと販売方法を記載してください（例：直接販売）。','マーケティング戦略を記載してください（例：コンテンツマーケティング）。'],
+        bep:'月次売上目標：○○○万円'
+      }
+    }[lang] || {};
+    var cn = document.querySelector('.cover-company-name'); if(cn) cn.textContent = _bp.cn||'';
+    var mvals = document.querySelectorAll('.cover-meta-val');
+    if(mvals[1] && !mvals[1].id) mvals[1].textContent = _bp.mt||'';
+    if(mvals[2] && !mvals[2].id) mvals[2].textContent = _bp.ma||'';
+    if(mvals[3] && !mvals[3].id) mvals[3].textContent = _bp.mc||'';
+    var fvs = document.querySelectorAll('.fv');
+    var fvKeys = ['bn','bt','rn','cap','addr','est','tm','ms'];
+    fvKeys.forEach(function(k,i){ if(fvs[i]) fvs[i].textContent = _bp[k]||''; });
+    var cpas = document.querySelectorAll('.content-para');
+    if(cpas[0]) cpas[0].textContent = _bp.ov||'';
+    if(cpas[1]) cpas[1].textContent = _bp.pd||'';
+    var vtEls = document.querySelectorAll('.val-card-title');
+    (_bp.vt||[]).forEach(function(v,i){ if(vtEls[i]) vtEls[i].textContent = v; });
+    var vdEls = document.querySelectorAll('.val-card-desc');
+    (_bp.vd||[]).forEach(function(v,i){ if(vdEls[i]) vdEls[i].textContent = v; });
+    var planTbls = document.querySelectorAll('.plan-table');
+    if(planTbls[0] && _bp.comp){
+      var rows = planTbls[0].querySelectorAll('tbody tr');
+      _bp.comp.forEach(function(row,ri){
+        if(rows[ri]){ var tds=rows[ri].querySelectorAll('td'); row.forEach(function(v,ci){ if(tds[ci]) tds[ci].textContent=v; }); }
+      });
+    }
+    if(planTbls[1] && _bp.mkt){
+      var rows2 = planTbls[1].querySelectorAll('tbody tr td[contenteditable]');
+      _bp.mkt.forEach(function(v,i){ if(rows2[i]) rows2[i].textContent=v; });
+    }
+    var bepEl = document.querySelector('.fund-card .fund-bep, #bepVal');
+    if(bepEl && _bp.bep) bepEl.textContent = _bp.bep;
+    // ctrl panel placeholder
+    var ctrlTarget = document.getElementById('ctrlTarget');
+    if(ctrlTarget) ctrlTarget.placeholder = _bp.mt||'';
+  })();
+
+  // Fix date format on language switch
+  (function(){
+    var today = new Date();
+    var _d = LANG_DATA_FORM[lang];
+    if(_d && _d.dateFormatter) {
+      var ds = _d.dateFormatter(today.getFullYear(), today.getMonth()+1, today.getDate());
+      var ctrlDate = document.getElementById('ctrlDate');
+      if(ctrlDate) ctrlDate.value = ds;
+    }
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();
@@ -573,8 +661,8 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

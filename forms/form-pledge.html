@@ -414,6 +414,18 @@ function setLang(lang) {
     d.sigFieldLabels.forEach(function(txt, i) { if (sigLbls[i]) sigLbls[i].textContent = txt; });
   }
 
+  // __pledge_samples_done__
+  // ── Pledge: 샘플 초기화 ──
+  (function(){
+    var _d = {
+      ko: '본인 [성명]은(는) [사안]과 관련하여 향후 일체의 이의를 제기하지 아니하며, 위반 시 민·형사상의 책임을 감수할 것을 엄숙히 서약합니다.',
+      en: 'I, [Name], hereby solemnly pledge that I will not raise any future objections regarding [Matter], and that I will accept civil and criminal liability in the event of a violation.',
+      ja: '私、[氏名]は、[事案]に関して今後一切の異議申し立てを行わず、違反した場合は民事・刑事上の責任を負うことを厳粛に誓約します。'
+    }[lang] || '';
+    var bodyEl = document.querySelector('.pledge-body[contenteditable], .content-para[contenteditable]');
+    if(bodyEl) bodyEl.textContent = _d;
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

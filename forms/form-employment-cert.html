@@ -659,6 +659,22 @@ function setLang(lang) {
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
   _updateFormDate();
 
+  // __empcert_samples_done__
+  // ── Employment Cert: 플레이스홀더 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { company:'예: (주)스타트업', ceo:'예: 김대표', name:'홍길동', dept:'예: 개발팀', pos:'예: 과장', docno:'예: 재직-2025-001' },
+      en: { company:'e.g. ABC Corp.', ceo:'e.g. John CEO', name:'John Smith', dept:'e.g. Development Team', pos:'e.g. Manager', docno:'e.g. EMP-2025-001' },
+      ja: { company:'例: ○○株式会社', ceo:'例: 山田社長', name:'山田太郎', dept:'例: 開発チーム', pos:'例: 課長', docno:'例: 在職-2025-001' }
+    }[lang] || {};
+    var cc = document.getElementById('ctrl-company'); if(cc) cc.placeholder = _ph.company||'';
+    var cceo = document.getElementById('ctrl-ceo'); if(cceo) cceo.placeholder = _ph.ceo||'';
+    var cn = document.getElementById('ctrl-name'); if(cn) cn.placeholder = _ph.name||'';
+    var cd = document.getElementById('ctrl-dept'); if(cd) cd.placeholder = _ph.dept||'';
+    var cp = document.getElementById('ctrl-pos'); if(cp) cp.placeholder = _ph.pos||'';
+    var cdo = document.getElementById('ctrl-docno'); if(cdo) cdo.placeholder = _ph.docno||'';
+  })();
+
   localStorage.setItem('site-lang', lang);
 }
 

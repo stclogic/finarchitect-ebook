@@ -689,6 +689,41 @@ function setLang(lang) {
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
   _updateFormDate();
 
+  // __cl_samples_done__
+  // ── Cover Letter: 플레이스홀더 초기화 ──
+  (function(){
+    var _ph = {
+      ko: {
+        company:'예: 삼성전자', job:'예: 소프트웨어 엔지니어', name:'홍길동',
+        growth:'어떤 환경에서 성장하였고, 그 과정에서 어떤 가치관과 역량을 형성하게 되었는지 구체적으로 기술해 주세요.',
+        personality:'본인의 성격 중 강점과 보완해야 할 점을 솔직하고 구체적으로 기술해 주세요.',
+        motive:'해당 기업과 직무에 지원하게 된 구체적인 이유를 기술해 주세요.',
+        future:'입사 후 단기·장기적으로 이루고 싶은 목표와 기여 방향을 구체적으로 기술해 주세요.'
+      },
+      en: {
+        company:'e.g. Samsung Electronics', job:'e.g. Software Engineer', name:'John Smith',
+        growth:'Describe how you grew, and what values and competencies you developed in the process.',
+        personality:'Honestly describe your strengths and areas for improvement.',
+        motive:'Describe why you are applying to this company and this specific role.',
+        future:'Describe your short and long-term goals and how you plan to contribute after joining.'
+      },
+      ja: {
+        company:'例: サムスン電子', job:'例: ソフトウェアエンジニア', name:'山田太郎',
+        growth:'どのような環境で成長し、どのような価値観と能力を身につけたかを具体的に記述してください。',
+        personality:'自分の性格の強みと改善すべき点を誠実かつ具体的に記述してください。',
+        motive:'その企業と職務に応募した具体的な理由を記述してください。',
+        future:'入社後に短期・長期的に達成したい目標と貢献の方向性を具体的に記述してください。'
+      }
+    }[lang] || {};
+    var cc = document.getElementById('ctrl-company'); if(cc) cc.placeholder = _ph.company||'';
+    var cj = document.getElementById('ctrl-job'); if(cj) cj.placeholder = _ph.job||'';
+    var cn = document.getElementById('ctrl-name'); if(cn) cn.placeholder = _ph.name||'';
+    // Update data-placeholder on content blocks
+    var blocks = document.querySelectorAll('[data-placeholder]');
+    var phKeys = ['growth','personality','motive','future'];
+    blocks.forEach(function(b,i){ if(phKeys[i] && _ph[phKeys[i]]) b.dataset.placeholder = _ph[phKeys[i]]; });
+  })();
+
   localStorage.setItem('site-lang', lang);
 }
 

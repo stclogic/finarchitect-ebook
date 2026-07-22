@@ -636,6 +636,15 @@ function setLang(lang) {
     d.clauseBodies.forEach(function(html, i) { if (_clauseBodies[i]) _clauseBodies[i].innerHTML = html; });
   }
 
+  // __nda_samples_done__
+  // ── NDA: 법원명 초기화 ──
+  (function(){
+    var _court = {ko:'서울중앙지방법원', en:'Seoul Central District Court', ja:'ソウル中央地方裁判所'}[lang]||'';
+    document.querySelectorAll('[contenteditable="true"]').forEach(function(el){
+      if(el.textContent.trim() === '서울중앙지방법원') el.textContent = _court;
+    });
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

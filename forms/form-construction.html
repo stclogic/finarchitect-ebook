@@ -664,6 +664,44 @@ function setLang(lang) {
     var siEls = document.querySelectorAll('.stamp-block .s-info');
     d.sInfos.forEach(function(html, i) { if (siEls[i]) siEls[i].innerHTML = html; });
   }
+  // __con_samples_done__
+  // ── Construction: 샘플 텍스트 초기화 ──
+  (function(){
+    var _d = {
+      ko: {
+        payLabels:['계약금','계약 체결일','현금/계좌이체','중도금','현금/계좌이체','잔 금','준공 검사 후','현금/계좌이체'],
+        workItems:['기초 공사','골조 공사','마감 공사','설비 공사','전기 공사'],
+        changeClause:'설계 변경은 갑의 서면 요청 또는 현장 여건에 따라 협의 후 진행하며, 변경 금액은 별도 계약서를 체결하여 정산한다.',
+        none:'해당없음'
+      },
+      en: {
+        payLabels:['Down Payment','Upon contract signing','Cash / Bank transfer','Interim Payment','Cash / Bank transfer','Final Payment','After completion inspection','Cash / Bank transfer'],
+        workItems:['Foundation Work','Structural Work','Finishing Work','Mechanical / Plumbing','Electrical Work'],
+        changeClause:'Design changes shall be negotiated upon written request from Party A or based on site conditions. Any changes in amount shall be settled through a separate contract.',
+        none:'N/A'
+      },
+      ja: {
+        payLabels:['契約金','契約締結日','現金/振込','中間金','現金/振込','残金','竣工検査後','現金/振込'],
+        workItems:['基礎工事','躯体工事','仕上工事','設備工事','電気工事'],
+        changeClause:'設計変更は甲の書面による要請または現場条件に基づき協議の上で行い、変更金額は別途契約書を締結して精算します。',
+        none:'該当なし'
+      }
+    }[lang] || {};
+    // Payment schedule table cells
+    var payEls = document.querySelectorAll('.pay-table td[contenteditable], .payment-table td[contenteditable]');
+    (_d.payLabels||[]).forEach(function(v,i){ if(payEls[i]) payEls[i].textContent = v; });
+    // Work items
+    var workEls = document.querySelectorAll('.work-item[contenteditable], .scope-item[contenteditable]');
+    (_d.workItems||[]).forEach(function(v,i){ if(workEls[i]) workEls[i].textContent = v; });
+    // Change clause
+    var changeEl = document.querySelector('.change-clause[contenteditable], .clause-body[contenteditable]');
+    if(changeEl && _d.changeClause) changeEl.textContent = _d.changeClause;
+    // "해당없음" cells
+    document.querySelectorAll('[contenteditable="true"]').forEach(function(el){
+      if(el.textContent.trim() === '해당없음' && _d.none) el.textContent = _d.none;
+    });
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();
@@ -681,8 +719,8 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

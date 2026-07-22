@@ -687,6 +687,23 @@ function setLang(lang) {
   var _sigDate = document.querySelector('.iou-sig-date');
   if (_sigDate && d.sigDateHTML) _sigDate.innerHTML = d.sigDateHTML;
 
+  // __iou_samples_done__
+  // ── IOU: 플레이스홀더 + 샘플 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { borrower:'홍길동', lender:'김대여', rate:'연 5%', duedate:'2027년 07월 15일' },
+      en: { borrower:'John Borrower', lender:'Jane Lender', rate:'5% per annum', duedate:'July 15, 2027' },
+      ja: { borrower:'山田借主', lender:'鈴木貸主', rate:'年利5%', duedate:'2027年07月15日' }
+    }[lang] || {};
+    var inps = document.querySelectorAll('.ctrl-panel input[type="text"]');
+    inps.forEach(function(inp){
+      if(inp.placeholder && inp.placeholder.match(/홍길동|borrower/i)) inp.placeholder = _ph.borrower||'';
+      if(inp.placeholder && inp.placeholder.match(/김대여|lender/i)) inp.placeholder = _ph.lender||'';
+      if(inp.placeholder && inp.placeholder.match(/연 5%|rate/i)) inp.placeholder = _ph.rate||'';
+      if(inp.placeholder && inp.placeholder.match(/2027|duedate/i)) inp.placeholder = _ph.duedate||'';
+    });
+  })();
+
   localStorage.setItem('site-lang', lang);
 }
 

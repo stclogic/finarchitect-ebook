@@ -524,7 +524,7 @@ function setLang(lang) {
   d.tableHeaders.forEach(function(h, i) { if (ths[i]) ths[i].textContent = h; });
   document.getElementById('grandTotalLabel').textContent = d.totalLabel;
   // ── 컨트롤 패널 전체 번역 ──
-  var bk = document.querySelector('a[href="../forms.html"]');
+  var bk = document.querySelector('.back-link, .ctrl-back-link');
   if (bk) bk.textContent = d.ctrlBackLink;
   var h2 = document.querySelector('.ctrl-panel h2');
   if (h2) h2.textContent = d.ctrlTitle;
@@ -549,6 +549,46 @@ function setLang(lang) {
   var ibbh1 = document.getElementById('invBbh1'); if(ibbh1 && d.bottomBoxHeads) ibbh1.textContent = d.bottomBoxHeads[1];
   var is0 = document.getElementById('invSig0'); if(is0 && d.sigLabels) is0.textContent = d.sigLabels[0];
   var is1 = document.getElementById('invSig1'); if(is1 && d.sigLabels) is1.textContent = d.sigLabels[1];
+
+  // __inv_samples_done__
+  // ── Invoice: 샘플 텍스트 초기화 ──
+  (function(){
+    var _inv = {
+      ko: {
+        pvs:['공급자 회사명','대표자명','000-00-00000','주소를 입력하세요','서비스업 / IT서비스','02-0000-0000','공급받는자 회사명','대표자명','000-00-00000','주소를 입력하세요','제조업 / 전자제품','02-0000-0000'],
+        periods:['2024년 01월 01일','2024년 12월 31일'],
+        bbs:['납품 조건 및 배송 방법을 기재하세요.','결제 방법 및 기한을 기재하세요.'],
+        sigs:['홍길동','김철수'],
+        tdef:[['01/05','서비스 A','식',2,500000],['01/10','제품 B','EA',5,120000],['01/15','컨설팅','시간',8,200000],['01/20','유지보수','월',1,300000],['01/25','기타','식',1,50000],['02/03','추가 서비스 A','식',1,400000],['02/10','추가 제품 B','EA',3,80000],['02/20','추가 비용','식',1,150000]]
+      },
+      en: {
+        pvs:['Supplier Company','Representative','000-00-00000','Enter Address','Services / IT','000-0000-0000','Buyer Company','Representative','000-00-00000','Enter Address','Manufacturing / Electronics','000-0000-0000'],
+        periods:['Jan 01, 2024','Dec 31, 2024'],
+        bbs:['Enter delivery conditions and shipping method.','Enter payment method and due date.'],
+        sigs:['John Smith','Jane Doe'],
+        tdef:[['01/05','Service A','unit',2,500000],['01/10','Product B','EA',5,120000],['01/15','Consulting','hr',8,200000],['01/20','Maintenance','mo',1,300000],['01/25','Other','unit',1,50000],['02/03','Service A-2','unit',1,400000],['02/10','Product B-2','EA',3,80000],['02/20','Extra Charge','unit',1,150000]]
+      },
+      ja: {
+        pvs:['供給者会社名','代表者名','000-00-00000','住所を入力','サービス業/IT','000-0000-0000','受領者会社名','代表者名','000-00-00000','住所を入力','製造業/電子製品','000-0000-0000'],
+        periods:['2024年01月01日','2024年12月31日'],
+        bbs:['納品条件および配送方法を記入してください。','支払方法と期限を記入してください。'],
+        sigs:['山田太郎','鈴木花子'],
+        tdef:[['01/05','サービスA','式',2,500000],['01/10','製品B','EA',5,120000],['01/15','コンサルティング','時間',8,200000],['01/20','保守','月',1,300000],['01/25','その他','式',1,50000],['02/03','サービスA-2','式',1,400000],['02/10','製品B-2','EA',3,80000],['02/20','追加費用','式',1,150000]]
+      }
+    }[lang] || {};
+    var pvs = document.querySelectorAll('.pv');
+    (_inv.pvs||[]).forEach(function(v,i){ if(pvs[i]) pvs[i].textContent = v; });
+    var periods = document.querySelectorAll('.period-val');
+    (_inv.periods||[]).forEach(function(v,i){ if(periods[i]) periods[i].textContent = v; });
+    var bbs = document.querySelectorAll('.bottom-box-body');
+    (_inv.bbs||[]).forEach(function(v,i){ if(bbs[i]) bbs[i].textContent = v; });
+    var sns = document.querySelectorAll('.sn[contenteditable]');
+    (_inv.sigs||[]).forEach(function(v,i){ if(sns[i]) sns[i].textContent = v; });
+    if(_inv.tdef && typeof addRow === 'function'){
+      var tbody = document.getElementById('itemsBody');
+      if(tbody){ tbody.innerHTML=''; _inv.tdef.forEach(function(r){ addRow(r); }); }
+    }
+  })();
 
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
@@ -593,8 +633,8 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

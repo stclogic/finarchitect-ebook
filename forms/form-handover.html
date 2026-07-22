@@ -643,7 +643,7 @@ function setLang(lang) {
   // 서명란
   t.sig.forEach((s,i) => { document.getElementById('sig'+i).textContent = s; });
   // ── 컨트롤 패널 전체 번역 ──
-  var bk = document.querySelector('a[href="../forms.html"]');
+  var bk = document.querySelector('.back-link, .ctrl-back-link');
   if (bk) bk.textContent = t.ctrlBackLink;
   var h2 = document.querySelector('.ctrl-panel h2');
   if (h2) h2.textContent = t.ctrlTitle;
@@ -665,6 +665,18 @@ function setLang(lang) {
   if(t.infoThLabels) { var infoThs = document.querySelectorAll('.info-table th:not(#infoLabel0)'); t.infoThLabels.forEach(function(h,i){ if(infoThs[i]) infoThs[i].textContent = h; }); }
   var wb = document.getElementById('warnBox'); if(wb && t.warnText) wb.textContent = t.warnText;
   var cb = document.getElementById('confBadge'); if(cb && t.confBadge) cb.textContent = t.confBadge;
+
+  // __ho_samples_done__
+  // ── Handover: 플레이스홀더 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { docno:'예) HO-2026-001', org:'예) ○○주식회사 기획팀' },
+      en: { docno:'e.g. HO-2026-001', org:'e.g. ABC Corp. Planning Team' },
+      ja: { docno:'例) HO-2026-001', org:'例) ○○株式会社 企画チーム' }
+    }[lang] || {};
+    var dn = document.getElementById('docNo'); if(dn) dn.placeholder = _ph.docno||'';
+    var on_ = document.getElementById('orgName'); if(on_) on_.placeholder = _ph.org||'';
+  })();
 
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
@@ -696,8 +708,8 @@ fileDefaults.forEach(r => addFileRow(r[0], r[1], r[2], r[3]||''));
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

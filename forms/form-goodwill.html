@@ -648,6 +648,27 @@ function setLang(lang) {
     var lct = document.getElementById('landlordConsentTitle'); if (lct) lct.textContent = d.landlordConsentTitle;
     var lcb = document.getElementById('landlordConsentBody'); if (lcb) lcb.textContent = d.landlordConsentBody;
   }
+  // __gw_samples_done__
+  // ── Goodwill: 샘플 텍스트 초기화 ──
+  (function(){
+    var _d = {
+      ko: {
+        consent:'임대인은 신규 임차인(을)과의 임대차계약 체결을 거절하지 않으며, 을의 권리금 수수를 방해하지 않는다.',
+        items:[['인테리어 시설','일식','양호'],['냉난방기','','양호'],['주방기기','','']]
+      },
+      en: {
+        consent:'The landlord shall not refuse to enter into a lease agreement with the new tenant (Party B) and shall not interfere with Party B's receipt of key money.',
+        items:[['Interior Fixtures','Japanese cuisine','Good'],['HVAC','','Good'],['Kitchen Equipment','','']]
+      },
+      ja: {
+        consent:'賃貸人は新規賃借人（乙）との賃貸借契約締結を拒否せず、乙の権利金の授受を妨げないものとします。',
+        items:[['内装設備','日本食','良好'],['冷暖房機器','','良好'],['厨房機器','','']]
+      }
+    }[lang] || {};
+    var consentEl = document.querySelector('.landlord-consent-body[contenteditable], .content-para[contenteditable]');
+    if(consentEl && _d.consent) consentEl.textContent = _d.consent;
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();
@@ -660,8 +681,8 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

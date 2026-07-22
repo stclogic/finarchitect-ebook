@@ -775,7 +775,7 @@ function setLang(lang) {
   if (secLabels[0]) secLabels[0].textContent = d.termsLabel;
   if (secLabels[1]) secLabels[1].textContent = d.bankLabel;
   // ── 컨트롤 패널 전체 번역 ──
-  var bk = document.querySelector('a[href="../forms.html"]');
+  var bk = document.querySelector('.back-link, .ctrl-back-link');
   if (bk) bk.textContent = d.ctrlBackLink;
   var h2 = document.querySelector('.ctrl-panel h2');
   if (h2) h2.textContent = d.ctrlTitle;
@@ -801,6 +801,37 @@ function setLang(lang) {
   var qml1 = document.getElementById('quoteMetaLabel1'); if(qml1 && d.quoteMetaLabels) qml1.textContent = d.quoteMetaLabels[1];
   var qal = document.getElementById('quoteAmtLabel'); if(qal && d.amtLabel) qal.textContent = d.amtLabel;
 
+  // __qt_samples_done__
+  // ── Quote: 샘플 텍스트 초기화 ──
+  (function(){
+    var _qt = {
+      ko: {
+        cn:'회사명을 입력하세요', addr:'주소를 입력하세요', client:'거래처명', mgr:'담당자명',
+        valid:'견적일로부터 30일', delivery:'계약 후 14일 이내', payment:'계산서 발행 후 30일', place:'수신처 지정 장소',
+        notes:'특기사항 및 계약 조건을 기재하세요.', bank:'○○은행', acct:'회사명', sig:'홍길동'
+      },
+      en: {
+        cn:'Enter Company Name', addr:'Enter Address', client:'Client Name', mgr:'Contact Person',
+        valid:'Valid for 30 days from quote date', delivery:'Within 14 days after contract', payment:'30 days after invoice', place:'Designated delivery location',
+        notes:'Enter special terms and contract conditions.', bank:'Bank Name', acct:'Account Holder', sig:'John Smith'
+      },
+      ja: {
+        cn:'会社名を入力してください', addr:'住所を入力してください', client:'取引先名', mgr:'担当者名',
+        valid:'見積日より30日間有効', delivery:'契約後14日以内', payment:'請求書発行後30日', place:'受取人指定場所',
+        notes:'特記事項および契約条件を記入してください。', bank:'○○銀行', acct:'会社名', sig:'山田太郎'
+      }
+    }[lang] || {};
+    var cnEl = document.querySelector('.company-name-doc'); if(cnEl) cnEl.textContent = _qt.cn||'';
+    var infoVals = document.querySelectorAll('.info-val[contenteditable]');
+    var infoKeys = ['addr','','','client','mgr','valid','delivery','payment','place'];
+    infoVals.forEach(function(el,i){ if(infoKeys[i] && _qt[infoKeys[i]]) el.textContent = _qt[infoKeys[i]]; });
+    var notes = document.querySelector('.notes-area[contenteditable]'); if(notes) notes.textContent = _qt.notes||'';
+    var bankVals = document.querySelectorAll('.bank-val[contenteditable]');
+    if(bankVals[0]) bankVals[0].textContent = _qt.bank||'';
+    if(bankVals[1]) bankVals[1].textContent = _qt.acct||'';
+    var sigName = document.querySelector('.sig-name[contenteditable]'); if(sigName) sigName.textContent = _qt.sig||'';
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();
@@ -820,8 +851,8 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

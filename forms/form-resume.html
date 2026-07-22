@@ -800,6 +800,52 @@ function setLang(lang) {
   var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
 
+  // __rs_samples_done__
+  // ── Resume: 샘플 텍스트 초기화 ──
+  (function(){
+    var _rs = {
+      ko: {
+        name:'홍 길 동',
+        addr:'서울시 강남구',
+        skills:['프로젝트 관리','데이터 분석','팀 리더십','커뮤니케이션'],
+        langs:[['한국어',''],['영어','비즈니스']],
+        cert:'정보처리기사 (2022)',
+        mil:'병역필 (육군 만기전역)',
+        summary:'10년간 B2B SaaS 제품 기획 및 개발을 이끌어 온 PM입니다. 데이터 기반 의사결정과 크로스펑셔널 팀 협업에 강점이 있으며, 고객 중심 사고를 바탕으로 실질적인 비즈니스 성과를 만들어 왔습니다.'
+      },
+      en: {
+        name:'John Smith',
+        addr:'City, Country',
+        skills:['Project Management','Data Analysis','Team Leadership','Communication'],
+        langs:[['Korean','Native'],['English','Business']],
+        cert:'Engineer Information Processing (2022)',
+        mil:'Military service completed',
+        summary:'PM with 10 years of experience leading B2B SaaS product planning and development. Strong in data-driven decision making, cross-functional team collaboration, and customer-centric thinking.'
+      },
+      ja: {
+        name:'山田 太郎',
+        addr:'○○都○○区',
+        skills:['プロジェクト管理','データ分析','チームリーダーシップ','コミュニケーション'],
+        langs:[['日本語','母語'],['英語','ビジネス']],
+        cert:'情報処理技術者試験（2022年）',
+        mil:'兵役完了',
+        summary:'10年間B2B SaaS製品の企画・開発をリードしてきたPMです。データ駆動の意思決定とクロスファンクショナルチームの協力に強みがあります。'
+      }
+    }[lang] || {};
+    // Update name
+    var nameEl = document.querySelector('.cv-name[contenteditable], .rs-name[contenteditable]');
+    if(nameEl) nameEl.textContent = _rs.name||'';
+    // address
+    var addrEl = document.querySelector('.cv-addr[contenteditable], .rs-addr[contenteditable]');
+    if(addrEl) addrEl.textContent = _rs.addr||'';
+    // summary
+    var sumEl = document.querySelector('.cv-summary[contenteditable], .rs-summary[contenteditable]');
+    if(sumEl) sumEl.textContent = _rs.summary||'';
+    // skills
+    var skillEls = document.querySelectorAll('.skill-item[contenteditable], .cv-skill[contenteditable]');
+    (_rs.skills||[]).forEach(function(s,i){ if(skillEls[i]) skillEls[i].textContent = s; });
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

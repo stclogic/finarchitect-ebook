@@ -538,6 +538,19 @@ function setLang(lang) {
     });
   }
 
+  // __cc_samples_done__
+  // ── Content Cert: 샘플 초기화 ──
+  (function(){
+    var _d = {
+      ko: { deadline:'2026년 8월 1일', body:'본인은 귀하에 대하여 다음과 같은 사유로 본 내용증명을 발송합니다.' },
+      en: { deadline:'August 1, 2026', body:'I am sending this certified notice to you for the following reason.' },
+      ja: { deadline:'2026年8月1日', body:'以下の理由により、本内容証明を送付いたします。' }
+    }[lang] || {};
+    var dl = document.getElementById('deadlineInput'); if(dl) dl.placeholder = _d.deadline||'';
+    var bodyEl = document.querySelector('.cert-body[contenteditable]');
+    if(bodyEl) bodyEl.textContent = _d.body||'';
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

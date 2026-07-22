@@ -782,6 +782,20 @@ function setLang(lang) {
     var piLabels = document.querySelectorAll('.pi-label');
     d.partyInfoLabels.forEach(function(txt, i) { if (piLabels[i]) piLabels[i].textContent = txt; });
   }
+  // __ec_samples_done__
+  // ── Employment Contract: 플레이스홀더 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { employer:'(주)ABC기업', employee:'홍길동', workplace:'서울시 강남구 본사', position:'마케팅 팀장' },
+      en: { employer:'ABC Corp.', employee:'John Smith', workplace:'HQ, Gangnam, Seoul', position:'Marketing Team Leader' },
+      ja: { employer:'ABC株式会社', employee:'山田太郎', workplace:'本社（ソウル江南）', position:'マーケティングチームリーダー' }
+    }[lang] || {};
+    var qEmp = document.getElementById('q_employer'); if(qEmp) qEmp.placeholder = _ph.employer||'';
+    var qEe = document.getElementById('q_employee'); if(qEe) qEe.placeholder = _ph.employee||'';
+    var qWp = document.getElementById('q_workplace'); if(qWp) qWp.placeholder = _ph.workplace||'';
+    var qPos = document.getElementById('q_position'); if(qPos) qPos.placeholder = _ph.position||'';
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

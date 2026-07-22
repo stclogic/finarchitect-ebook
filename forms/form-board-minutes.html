@@ -556,7 +556,7 @@ function setLang(lang) {
     if (el) el.textContent = lbl;
   });
   // ── 컨트롤 패널 전체 번역 ──
-  var bk = document.querySelector('a[href="../forms.html"]');
+  var bk = document.querySelector('.back-link, .ctrl-back-link');
   if (bk) bk.textContent = d.ctrlBackLink;
   var h2 = document.querySelector('.ctrl-panel h2');
   if (h2) h2.textContent = d.ctrlTitle;
@@ -592,6 +592,50 @@ function setLang(lang) {
     var state = rCycle.find(function(c){ return el.classList.contains(c); });
     if(state && d.resultText[state]) el.textContent=d.resultText[state];
   });
+
+  // __bm_samples_done__
+  // ── Board Minutes: 샘플 텍스트 초기화 ──
+  (function(){
+    var _bm = {
+      ko: {
+        company:'(주)회사명', place:'본사 3층 회의실',
+        quorum1:'이사 총 5인 중 4인 출석 (과반수 충족)',
+        quorum2:'출석 이사 과반수의 찬성 (과반수 충족)',
+        chairRole:'이사장', chairName:'홍길동', presRole:'의장',
+        dirs:[['이사','김철수'],['이사','이영희'],['이사','박민준'],['이사','최지수'],['해외 출장','']],
+        auditor:'감사', audName:'정도현',
+        agendas:['2024년도 사업계획 및 예산 승인의 건','임원 보수 한도 결정의 건']
+      },
+      en: {
+        company:'ABC Corporation', place:'3rd Floor Conference Room, HQ',
+        quorum1:'4 of 5 directors present (quorum met)',
+        quorum2:'Majority of directors present voted in favor',
+        chairRole:'Chairman', chairName:'John Smith', presRole:'Presiding Director',
+        dirs:[['Director','James Kim'],['Director','Emily Lee'],['Director','Mike Park'],['Director','Jane Choi'],['On business trip','']],
+        auditor:'Auditor', audName:'Tom Jung',
+        agendas:['Approval of 2024 Business Plan and Budget','Resolution on Executive Compensation Limits']
+      },
+      ja: {
+        company:'○○株式会社', place:'本社3階会議室',
+        quorum1:'取締役5名中4名出席（定足数充足）',
+        quorum2:'出席取締役の過半数の賛成',
+        chairRole:'議長', chairName:'山田太郎', presRole:'議長',
+        dirs:[['取締役','金철수'],['取締役','李英姫'],['取締役','朴民俊'],['取締役','崔知秀'],['出張中','']],
+        auditor:'監査役', audName:'鄭道鉉',
+        agendas:['2024年度事業計画および予算承認の件','役員報酬限度額決定の件']
+      }
+    }[lang] || {};
+    var cpEl = document.querySelector('.company-name[contenteditable], [contenteditable]');
+    var allEditable = document.querySelectorAll('[contenteditable="true"]');
+    // Map by order - first find company/place inputs
+    var compEl = document.getElementById('companyNameOut') || document.querySelector('.company-name-big');
+    if(compEl) compEl.textContent = _bm.company||'';
+    var placeEl = document.getElementById('meetingPlaceOut');
+    if(placeEl) placeEl.textContent = _bm.place||'';
+    // ctrl inputs
+    var ctrlComp = document.getElementById('ctrlCompany'); if(ctrlComp) ctrlComp.placeholder = _bm.company||'';
+    var ctrlPlace = document.getElementById('ctrlPlace'); if(ctrlPlace) ctrlPlace.placeholder = _bm.place||'';
+  })();
 
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
@@ -639,8 +683,8 @@ document.getElementById('ctrlPlace').addEventListener('input', function() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

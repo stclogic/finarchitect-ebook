@@ -678,6 +678,28 @@ function setLang(lang) {
   var _seals = document.querySelectorAll('.stamp-box');
   if (d.stampSeal) { _seals.forEach(function(el) { el.textContent = d.stampSeal; }); }
 
+  // __part_samples_done__
+  // ── Partnership: 플레이스홀더 + 조항 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { docno:'예: PRT-2025-001', biz:'예: ○○카페' },
+      en: { docno:'e.g. PRT-2025-001', biz:'e.g. ABC Café' },
+      ja: { docno:'例: PRT-2025-001', biz:'例: ○○カフェ' }
+    }[lang] || {};
+    var dn = document.getElementById('docNum'); if(dn) dn.placeholder = _ph.docno||'';
+    var bn = document.getElementById('bizName'); if(bn) bn.placeholder = _ph.biz||'';
+    // Clause bodies - replace long Korean with instructional text
+    var _clauses = {
+      ko: null, // keep Korean
+      en: ['The purpose of this agreement is for the parties to jointly operate a business and share profits. The scope of business is as specified above.','Each partner's capital contribution and equity ratio are as specified in the contribution table above.','Net profits and losses shall be distributed according to equity ratios. Settlement shall be conducted quarterly.','Party A (Lead Partner) shall manage day-to-day operations. Major decisions require written agreement of all partners.','Business expenses shall be disbursed from the business account. Personal expenses may not be charged without prior agreement.','A joint business account shall be established. All income and expenses shall pass through this account.','During the contract period and for __ years after withdrawal/dissolution, each partner shall not operate a competing business within __ km.','New partners may join only with written consent of all existing partners. A separate addendum shall be prepared.','A partner wishing to withdraw must notify others in writing 3 months in advance. Equity value as of withdrawal date shall be settled within 60 days.','Dissolution requires written agreement of all partners. Remaining assets after debt repayment shall be distributed according to equity ratios.','Each partner shall not disclose client information, trade secrets, or financial information to third parties. This obligation continues for __ years after termination.'],
+      ja: ['本契約の目的は、当事者が共同で事業を営み、その収益を分配することにあります。','各パートナーの出資金および持分比率は上記の出資金表の通りとします。','純利益および損失は持分比率に従って分配します。精算は四半期ごとに行います。','甲（代表パートナー）が日常業務を執行します。主要な意思決定には全パートナーの書面合意が必要です。','業務上の費用は事業口座から支出します。個人費用は事前合意なしに事業費用として処理できません。','共同事業口座を開設し、すべての収入・支出はその口座を通じます。','契約期間中および脱退・解散後__年間、各パートナーは__km以内で同業を営まないものとします。','新規パートナーの加入には既存パートナー全員の書面同意が必要です。','脱退を希望するパートナーは3ヶ月前に書面で通知する必要があります。脱退日基準の持分評価額を60日以内に精算します。','解散には全パートナーの書面合意が必要です。債務弁済後の残余資産は持分比率に従って分配します。','各パートナーは取引先情報・営業秘密・財務情報を第三者に漏洩しません。この義務は契約終了後__年間継続します。']
+    };
+    if(lang !== 'ko' && _clauses[lang]){
+      var cbodies = document.querySelectorAll('.clause-body[contenteditable], .article-body[contenteditable], .content-para[contenteditable]');
+      _clauses[lang].forEach(function(text,i){ if(cbodies[i]) cbodies[i].textContent = text; });
+    }
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();
@@ -690,8 +712,8 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

@@ -606,7 +606,7 @@ function setLang(lang) {
     });
   }
   // ── 컨트롤 패널 전체 번역 ──
-  var bk = document.querySelector('a[href="../forms.html"]');
+  var bk = document.querySelector('.back-link, .ctrl-back-link');
   if (bk) bk.textContent = d.ctrlBackLink;
   var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
   var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
@@ -641,6 +641,40 @@ function setLang(lang) {
     _el = document.getElementById('thDesignate'); if (_el) _el.textContent = dl.designate;
     _el = document.getElementById('thPurpose'); if (_el) _el.textContent = dl.purpose;
   }
+  // __don_samples_done__
+  // ── Donation: 샘플 텍스트 초기화 ──
+  (function(){
+    var _clauses = {
+      ko: null,
+      en: [
+        'In the case of non-designated donations, funds shall be used for the purpose of the organization.',
+        'The organization shall use the donated funds for the designated purpose. Funds shall not be diverted to other uses.',
+        'The organization shall issue a donation receipt in accordance with applicable tax law upon receiving the donation.',
+        'The organization shall report the use of donated funds and business results to the donor at least once a year.',
+        'The donor may cancel the pledge in writing before the donation is fulfilled. Donations already made are generally non-refundable.',
+        'The donor consents to the organization collecting and using their personal information for issuing receipts and reporting purposes.',
+        'Matters not specified in this agreement shall be governed by the relevant laws and regulations.'
+      ],
+      ja: [
+        '指定なし寄付の場合、団体の設立目的事業に使用します。',
+        '団体は寄付者が指定した目的事業または定款上の設立目的事業に寄付金を使用します。他の目的に流用しません。',
+        '団体は寄付金受領後、適用税法に従い寄付金領収書を発行します。',
+        '団体は年1回以上、寄付金使用内訳と事業成果を寄付者に報告します。',
+        '寄付者は寄付金履行前に書面で約定を取り消すことができます。',
+        '寄付者は領収書発行および事業報告のため、団体が個人情報を収集・使用することに同意します。',
+        '本約定書に明示されていない事項は、関係法令に従います。'
+      ]
+    };
+    if(lang !== 'ko' && _clauses[lang]){
+      var cbodies = document.querySelectorAll('.clause-body[contenteditable], .article-body[contenteditable], .content-para[contenteditable]');
+      _clauses[lang].forEach(function(text,i){ if(cbodies[i]) cbodies[i].textContent = text; });
+    }
+    // Stamp sig labels
+    var _sigLabels = {ko:['성명:','단체명:'], en:['Name:','Organization:'], ja:['氏名：','団体名：']}[lang]||[];
+    var sigEls = document.querySelectorAll('.stamp-block .s-info[contenteditable]');
+    // These are already handled by sInfos in the previous fix
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();
@@ -658,8 +692,8 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

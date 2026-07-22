@@ -678,6 +678,24 @@ function setLang(lang) {
 
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
 
+  // __rsgn_samples_done__
+  // ── Resignation: 플레이스홀더 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { company:'예: (주)스타트업', ceo:'예: 김대표', dept:'예: 개발팀', pos:'예: 과장', name:'홍길동', rdate:'예: 2025년 3월 31일', reason:'사직 사유를 상세히 기재해 주세요.' },
+      en: { company:'e.g. ABC Corp.', ceo:'e.g. John CEO', dept:'e.g. Development Team', pos:'e.g. Manager', name:'John Smith', rdate:'e.g. March 31, 2025', reason:'Please describe your reason for resignation in detail.' },
+      ja: { company:'例: ○○株式会社', ceo:'例: 山田社長', dept:'例: 開発チーム', pos:'例: 課長', name:'山田太郎', rdate:'例: 2025年3月31日', reason:'退職理由を詳しく記入してください。' }
+    }[lang] || {};
+    var cc = document.getElementById('ctrl-company'); if(cc) cc.placeholder = _ph.company||'';
+    var cceo = document.getElementById('ctrl-ceo'); if(cceo) cceo.placeholder = _ph.ceo||'';
+    var cd = document.getElementById('ctrl-dept'); if(cd) cd.placeholder = _ph.dept||'';
+    var cp = document.getElementById('ctrl-position'); if(cp) cp.placeholder = _ph.pos||'';
+    var cn = document.getElementById('ctrl-name'); if(cn) cn.placeholder = _ph.name||'';
+    var cr = document.getElementById('ctrl-resign-date'); if(cr) cr.placeholder = _ph.rdate||'';
+    var reasonBox = document.querySelector('.rs-reason-box[contenteditable]');
+    if(reasonBox && reasonBox.dataset) reasonBox.dataset.placeholder = _ph.reason||'';
+  })();
+
   localStorage.setItem('site-lang', lang);
   _updateFormDate();
 }

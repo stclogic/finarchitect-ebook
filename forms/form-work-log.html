@@ -427,7 +427,7 @@ function setLang(lang) {
   t.wh.forEach((h,i) => { const el = document.getElementById('wh'+i); if(el) el.textContent = h; });
   t.sig.forEach((s,i) => { const el = document.getElementById('sig'+i); if(el) el.textContent = s; });
   // ── 컨트롤 패널 전체 번역 ──
-  var bk = document.querySelector('a[href="../forms.html"]');
+  var bk = document.querySelector('.back-link, .ctrl-back-link');
   if (bk) bk.textContent = t.ctrlBackLink;
   var h2 = document.querySelector('.ctrl-panel h2');
   if (h2) h2.textContent = t.ctrlTitle;
@@ -453,6 +453,40 @@ function setLang(lang) {
       sel.selectedIndex = curIdx >= 0 ? curIdx : 0;
     });
   }
+
+  // __wl_samples_done__
+  // ── Work Log: 샘플 텍스트 초기화 ──
+  (function(){
+    var _wl = {
+      ko: {
+        goal:'오늘의 주요 목표를 입력하세요',
+        plan:'내일 최우선 업무를 입력하세요',
+        done:'오늘 완료한 주요 업무 및 성과를 요약하세요.',
+        pend:'미완료 업무 내용과 사유, 조치 계획을 기재하세요.',
+        memo:'팀장에게 보고할 사항, 필요한 지원, 기타 메모를 입력하세요.'
+      },
+      en: {
+        goal:"Enter today's main goals",
+        plan:"Enter tomorrow's top priority task",
+        done:'Summarize completed tasks and achievements for today.',
+        pend:'Describe incomplete tasks, reasons, and action plans.',
+        memo:'Enter items to report to manager, support needed, or other notes.'
+      },
+      ja: {
+        goal:'本日の主な目標を入力してください',
+        plan:'明日の最優先業務を入力してください',
+        done:'本日完了した主な業務と成果を要約してください。',
+        pend:'未完了業務の内容・理由・対策計画を記入してください。',
+        memo:'上司への報告事項、必要なサポート、その他のメモを入力してください。'
+      }
+    }[lang] || {};
+    var goalText = document.querySelector('.goal-text[contenteditable]'); if(goalText) goalText.textContent = _wl.goal||'';
+    var planText = document.querySelector('.plan-text[contenteditable]'); if(planText) planText.textContent = _wl.plan||'';
+    var cbs = document.querySelectorAll('.content-block[contenteditable]');
+    if(cbs[0]) cbs[0].textContent = _wl.done||'';
+    if(cbs[1]) cbs[1].textContent = _wl.pend||'';
+    if(cbs[2]) cbs[2].textContent = _wl.memo||'';
+  })();
 
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
@@ -533,8 +567,8 @@ function updateBar(input) {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

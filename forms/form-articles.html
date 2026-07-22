@@ -780,6 +780,67 @@ function setLang(lang) {
     if (lh) lh.innerHTML = d.logoPlaceholder;
   }
 
+  // __art_samples_done__
+  // ── Articles: 플레이스홀더 + 샘플 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { corp:'예: 주식회사 ○○', shares:'예: 10,000,000주', par:'예: 500원', company:'주식회사 ○○○' },
+      en: { corp:'e.g. ABC Corporation', shares:'e.g. 10,000,000 shares', par:'e.g. $0.50 per share', company:'ABC Corporation' },
+      ja: { corp:'例: ○○株式会社', shares:'例: 10,000,000株', par:'例: 500円', company:'○○株式会社' }
+    }[lang] || {};
+    var ci = document.getElementById('corpName'); if(ci) ci.placeholder = _ph.corp||'';
+    var ts = document.getElementById('totalShares'); if(ts) ts.placeholder = _ph.shares||'';
+    var pv = document.getElementById('parValue'); if(pv) pv.placeholder = _ph.par||'';
+    var compEl = document.querySelector('[contenteditable="true"]');
+    if(compEl && (compEl.textContent === '주식회사 ○○○' || compEl.textContent === _ph.company))
+      compEl.textContent = _ph.company||'';
+    // Article clause bodies
+    var _arts = {
+      ko: null,
+      en: [
+        'This company shall be incorporated under the name [Company Name].',
+        'This company shall be incorporated for the following purposes.',
+        'The principal office of the company shall be located at [Address]. Branches and offices may be established domestically and internationally as needed.',
+        'Public notices of the company shall be posted on the company's website (www.___.com).',
+        'The total number of shares to be issued upon incorporation shall be ___ shares.',
+        'Share certificates shall be issued in denominations of 1, 5, 10, 50, 100, 500, 1,000 and 10,000 shares.',
+        'A shareholder wishing to transfer shares must obtain approval from the Board of Directors.',
+        'The annual general meeting shall be held within 3 months after the end of each fiscal year.',
+        'Extraordinary general meetings shall be convened by resolution of the Board of Directors as required.',
+        'Notice of general meetings shall be given to each shareholder in writing or electronically at least 2 weeks prior to the meeting.',
+        'Each shareholder shall have one vote per share held.',
+        'Ordinary resolutions shall require a majority of votes cast, being at least one quarter of total issued shares. Special resolutions shall require two-thirds of votes cast, being at least one-third of total issued shares.',
+        'The company shall have not fewer than 1 and not more than 15 directors.',
+        'The term of office of directors shall be 3 years. However, the term may be extended until the conclusion of the annual general meeting related to the final settlement period before the end of their term.'
+      ],
+      ja: [
+        '本会社は、[会社名]という商号で設立します。',
+        '本会社は次の事業を目的とします。',
+        '本会社の本店は[住所]に置き、必要に応じて国内外に支店および事務所を設置することができます。',
+        '本会社の公告は会社のウェブサイト（www.___.com）に掲載します。',
+        '会社設立時に発行する株式の総数は___株とします。',
+        '株券は1株券、5株券、10株券、50株券、100株券、500株券、1,000株券および10,000株券の8種類とします。',
+        '株式を譲渡しようとする株主は取締役会の承認を得なければなりません。',
+        '定時株主総会は毎事業年度終了後3ヶ月以内に開催します。',
+        '臨時株主総会は必要に応じて取締役会の決議により召集します。',
+        '株主総会の召集は会議日の2週間前に各株主に書面または電子文書で通知します。',
+        '株主は保有株式1株につき1個の議決権を有します。',
+        '普通決議は出席株主の議決権の過半数かつ発行済株式総数の4分の1以上とします。特別決議は出席株主の議決権の3分の2以上かつ発行済株式総数の3分の1以上とします。',
+        '本会社の取締役は1名以上15名以下とします。',
+        '取締役の任期は3年とします。ただし、任期満了前の最終決算期に関する定時株主総会がその任期中に終了しない場合は、その総会の終結まで任期を延長します。'
+      ]
+    };
+    if(lang !== 'ko' && _arts[lang]){
+      var artEls = document.querySelectorAll('.article-body[contenteditable], .clause-body[contenteditable], [contenteditable="true"]');
+      var artIdx = 0;
+      artEls.forEach(function(el){
+        if(artIdx < _arts[lang].length && el.textContent.trim().length > 10) {
+          el.textContent = _arts[lang][artIdx++];
+        }
+      });
+    }
+  })();
+
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();
@@ -792,8 +853,8 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

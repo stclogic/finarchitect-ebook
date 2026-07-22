@@ -439,7 +439,7 @@ function setLang(lang) {
   t.ah.forEach((h,i) => { const el = document.getElementById('ah'+i); if(el) el.textContent = h; });
   t.nh.forEach((h,i) => { const el = document.getElementById('nh'+i); if(el) el.textContent = h; });
   // ── 컨트롤 패널 전체 번역 ──
-  var bk = document.querySelector('a[href="../forms.html"]');
+  var bk = document.querySelector('.back-link, .ctrl-back-link');
   if (bk) bk.textContent = t.ctrlBackLink;
   var h2 = document.querySelector('.ctrl-panel h2');
   if (h2) h2.textContent = t.ctrlTitle;
@@ -458,6 +458,17 @@ function setLang(lang) {
   document.querySelectorAll('.appr-title').forEach(function(el,i){ if(t.apprTitles && t.apprTitles[i]) el.textContent = t.apprTitles[i]; });
   var wl = document.querySelector('.writer-label'); if(wl && t.writerLabel) wl.textContent = t.writerLabel;
   document.querySelectorAll('.mtype-btn').forEach(function(el,i){ if(t.mtypeBtns && t.mtypeBtns[i]) el.textContent = t.mtypeBtns[i]; });
+
+  // __mm_samples_done__
+  // ── Meeting Minutes: 플레이스홀더 초기화 ──
+  (function(){
+    var _ph = {
+      ko: { docno:'예) MM-2026-001' },
+      en: { docno:'e.g. MM-2026-001' },
+      ja: { docno:'例) MM-2026-001' }
+    }[lang] || {};
+    var dn = document.getElementById('docNo'); if(dn) dn.placeholder = _ph.docno||'';
+  })();
 
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
@@ -554,8 +565,8 @@ addAgenda('사무실 이전 관련 사항','임차 계약 만료에 따른 이�
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js">
-// 페이지 로드 시 저장 언어 자동 적용
+<script src="../assets/js/footer-inject.js"></script>
+<script>
 (function() {
   var saved = localStorage.getItem('site-lang') || 'ko';
   if (saved !== 'ko') setLang(saved);

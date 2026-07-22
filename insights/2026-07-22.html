@@ -1,0 +1,400 @@
+<!-- 주간 금융 인사이트 4호 — 대통령 아파트 매매 근저당 구조 분석, 셀러파이낸싱 자산이전 리스크 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대통령 아파트 매매에서 발견한 '역근저당' 구조 | 트렌드 × 구조 Vol.004 — Book Coupling</title>
+  <meta name="description" content="이재명 대통령이 분당 아파트를 팔면서 남긴 17억7천만 원 근저당. 합법 구조지만 가족 간 자산 이전에 악용될 경우 실질 증여가 된다. 셀러 파이낸싱의 구조와 세무 리스크를 분석한다.">
+  <meta name="keywords" content="근저당설정, 셀러파이낸싱, 매도인담보, 자산이전, 아파트매매, 증여세우회, 재건축아파트, 분당아파트, 이재명아파트, 부동산절세, 세무리스크, 상속증여구조">
+  <meta property="og:title" content="대통령 아파트 매매에서 발견한 '역근저당' 구조 — 새로운 자산 이전의 신호탄인가">
+  <meta property="og:description" content="매도자가 채권자가 되는 구조. 합법이지만 가족 간 거래에 쓰이면 사실상 증여다.">
+  <meta property="og:type" content="article">
+  <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9744071365591766"
+     crossorigin="anonymous"></script>
+  <style>
+    .insight-hero {
+      background: linear-gradient(135deg, #0C0A1E 0%, #1A1040 55%, #0F1F3D 100%);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .insight-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 60%, rgba(239,68,68,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 35%, rgba(245,158,11,0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 95%, rgba(99,91,255,0.08) 0%, transparent 45%);
+    }
+    .insight-hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
+    .insight-badge {
+      display: inline-block;
+      background: rgba(239,68,68,0.18);
+      border: 1px solid rgba(239,68,68,0.45);
+      color: #FCA5A5;
+      font-size: 0.75rem; font-weight: 700;
+      padding: 5px 14px; border-radius: 999px;
+      letter-spacing: 0.08em; margin-bottom: 1.2rem;
+    }
+    .insight-hero h1 {
+      font-size: clamp(1.55rem, 4vw, 2.6rem);
+      font-weight: 900; color: #fff;
+      line-height: 1.22; margin-bottom: 1rem;
+    }
+    .insight-hero h1 em { color: #F59E0B; font-style: normal; }
+    .insight-hero h1 span.red { color: #FC8181; }
+    .insight-hero-sub {
+      font-size: 1rem; color: rgba(255,255,255,0.58);
+      line-height: 1.75; margin-bottom: 1.6rem;
+      max-width: 620px; margin-left: auto; margin-right: auto;
+    }
+    .insight-meta {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.5rem; flex-wrap: wrap;
+      font-size: 0.78rem; color: rgba(255,255,255,0.38);
+    }
+    .insight-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+    .insight-body {
+      max-width: 780px; margin: 0 auto;
+      padding: 3.5rem 2rem 5rem;
+    }
+    .insight-body h2 {
+      font-size: 1.3rem; font-weight: 900;
+      color: var(--dark); margin: 3rem 0 1rem;
+      padding-left: 0.8rem;
+      border-left: 4px solid #EF4444;
+      line-height: 1.4;
+    }
+    .insight-body h3 {
+      font-size: 1.05rem; font-weight: 800;
+      color: var(--dark); margin: 2rem 0 0.6rem;
+    }
+    .insight-body p {
+      font-size: 0.96rem; color: var(--text);
+      line-height: 1.95; margin-bottom: 1.1rem;
+    }
+    .insight-body strong { color: var(--dark); }
+
+    .fact-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-left: 4px solid #EF4444;
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+      margin: 1.8rem 0;
+      font-size: 0.93rem;
+      line-height: 1.85;
+      color: var(--text);
+    }
+    .fact-box .fact-title {
+      font-size: 0.72rem; font-weight: 800;
+      color: #EF4444; letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+    }
+
+    .structure-box {
+      background: #0C0A1E;
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      margin: 1.8rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      color: #A5F3FC;
+      line-height: 2;
+    }
+    .structure-box .s-label {
+      font-size: 0.7rem; font-weight: 700;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .structure-box .s-highlight { color: #FCD34D; font-weight: 700; }
+    .structure-box .s-red { color: #FCA5A5; }
+
+    .risk-table {
+      width: 100%; border-collapse: collapse;
+      margin: 1.6rem 0; font-size: 0.9rem;
+    }
+    .risk-table th {
+      background: #1A1040; color: #fff;
+      padding: 0.7rem 1rem; text-align: left;
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .risk-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #E2E8F0;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .risk-table tr:last-child td { border-bottom: none; }
+    .risk-table .danger { color: #EF4444; font-weight: 700; }
+    .risk-table .safe { color: #059669; font-weight: 700; }
+
+    .scenario-box {
+      background: linear-gradient(135deg, #FFF7ED, #FFFBEB);
+      border: 1px solid #FDE68A;
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      margin: 1.8rem 0;
+    }
+    .scenario-box .sc-title {
+      font-size: 0.75rem; font-weight: 800;
+      color: #D97706; letter-spacing: 0.08em;
+      margin-bottom: 1rem; text-transform: uppercase;
+    }
+    .scenario-box ol {
+      padding-left: 1.2rem;
+      font-size: 0.93rem;
+      line-height: 2;
+      color: #78350F;
+      margin: 0;
+    }
+    .scenario-box ol li { margin-bottom: 0.2rem; }
+    .scenario-box .sc-result {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #FDE68A;
+      font-size: 0.88rem;
+      color: #92400E;
+      font-weight: 700;
+    }
+
+    .signal-box {
+      background: linear-gradient(135deg, #0C0A1E, #1A1040);
+      border-radius: 14px;
+      padding: 2rem 2.2rem;
+      margin: 2.5rem 0;
+      color: #fff;
+    }
+    .signal-box .sig-label {
+      font-size: 0.72rem; font-weight: 800;
+      color: #FCD34D; letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+    }
+    .signal-box blockquote {
+      font-size: 1.1rem; font-weight: 700;
+      line-height: 1.7; color: #F1F5F9;
+      margin: 0 0 1rem;
+      padding: 0;
+      border: none;
+    }
+    .signal-box p {
+      font-size: 0.88rem; color: rgba(255,255,255,0.6);
+      line-height: 1.7; margin: 0;
+    }
+
+    .disclaimer {
+      margin-top: 3rem;
+      padding: 1.2rem 1.5rem;
+      background: #F8FAFC;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: #94A3B8;
+      line-height: 1.7;
+    }
+
+    .source-list {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E2E8F0;
+      font-size: 0.8rem;
+      color: #94A3B8;
+    }
+    .source-list a {
+      color: #6366F1;
+      text-decoration: none;
+    }
+    .source-list a:hover { text-decoration: underline; }
+
+    .nav-prev-next {
+      display: flex; justify-content: space-between;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #E2E8F0;
+      font-size: 0.85rem;
+    }
+    .nav-prev-next a {
+      color: #6366F1; text-decoration: none;
+      font-weight: 700;
+    }
+    .nav-prev-next a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .insight-body { padding: 2rem 1.2rem 4rem; }
+      .structure-box { font-size: 0.78rem; padding: 1.2rem; }
+      .risk-table { font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<script src="../nav-inject.js"></script>
+
+<!-- Hero -->
+<section class="insight-hero">
+  <div class="insight-hero-inner">
+    <div class="insight-badge">트렌드 × 구조 — Vol.004 · 2026년 7월 4주차</div>
+    <h1>
+      대통령 아파트 매매에서 발견한<br>
+      <em>'역근저당' 구조</em> —<br>
+      <span class="red">새로운 자산 이전의 신호탄인가</span>
+    </h1>
+    <p class="insight-hero-sub">
+      이재명 대통령이 분당 아파트를 팔면서 남긴 17억7천만 원짜리 근저당.<br>
+      합법적 구조지만, 이 패턴이 가족 간 거래에 적용되면 이야기가 달라진다.
+    </p>
+    <div class="insight-meta">
+      <span>📅 2026년 7월 22일</span>
+      <span>✍️ Book Coupling 리서치</span>
+      <span>⏱ 읽는 시간 약 5분</span>
+    </div>
+  </div>
+</section>
+
+<!-- Body -->
+<article class="insight-body">
+
+  <h2>사건의 팩트</h2>
+
+  <p>2026년 7월, 이재명 대통령 부부는 경기 성남시 분당구 양지마을 아파트(164㎡)를 <strong>29억 원</strong>에 매각했다. 이 거래에서 눈에 띄는 것은 숫자가 아니라 <strong>구조</strong>다.</p>
+
+  <div class="fact-box">
+    <div class="fact-title">공개 보도 기반 거래 구조</div>
+    매수자는 계약금 3억 + 중도금 11억을 지급하고 <strong>소유권을 먼저 이전받았다.</strong><br>
+    잔금 약 15억은 2026년 10월에 지급하기로 했다.<br>
+    그리고 이 대통령 부부가 <strong>채권최고액 17억7천만 원의 근저당권자</strong>로 등기됐다.<br><br>
+    쉽게 말하면, 집은 넘겼는데 돈은 아직 못 받았으니 담보를 잡은 것이다.
+  </div>
+
+  <p>국민의힘은 이를 <strong>"꼼수 매매"</strong>로 비판했다. 청와대는 "시세보다 낮게 팔았으며 부동산 정책 의지를 보인 것"이라고 반박했다. 정치적 판단은 독자의 몫이다. 이 글은 <strong>거래 구조 자체</strong>를 읽는다.</p>
+
+  <h2>이 구조가 왜 특이한가</h2>
+
+  <p>일반적인 부동산 거래에서 근저당권자는 <strong>은행</strong>이다. 매수자가 대출받고, 은행이 담보를 잡는다. 그런데 이번 거래는 다르다. <strong>매도자(이 대통령 부부)가 직접 근저당권자</strong>가 됐다.</p>
+
+  <p>이것을 업계에서는 <strong>'매도인 담보부 할부 매매'</strong> 또는 <strong>'셀러 파이낸싱(Seller Financing)'</strong>이라 부른다.</p>
+
+  <div class="structure-box">
+    <span class="s-label">거래 구조 비교</span>
+    <span class="s-red">일반 거래:</span>  매수자 → 은행 대출 → 잔금 일시불 납부<br>
+    <span class="s-highlight">이번 거래:</span>  매수자 → 소유권 먼저 취득<br>
+              → <span class="s-highlight">매도자가 근저당 설정 (채권자 = 이 대통령 부부)</span><br>
+              → 잔금 2026년 10월 분할 납부 후 근저당 말소
+  </div>
+
+  <h2>재건축 타이밍도 주목받았다</h2>
+
+  <p>양지마을은 <strong>2025년 11월 재건축 선도지구</strong>로 지정됐다. 재건축 조합 설립 이후에는 투기과열지구 내 조합원 지위 양도가 원칙적으로 금지된다.</p>
+
+  <p>이 대통령 부부는 계약 후 <strong>단 2일 만에 소유권 이전 등기</strong>를 완료했다. 조합 설립 전 타이밍을 정확히 포착한 구조다. 법적으로 문제가 없다. 그러나 일반 매도자가 이 타이밍을 이렇게 정밀하게 잡기는 쉽지 않다.</p>
+
+  <h2>진짜 문제: 이 구조가 가족 간 거래에 적용되면</h2>
+
+  <div class="scenario-box">
+    <div class="sc-title">시나리오 — 부모 → 자녀 아파트 이전</div>
+    <ol>
+      <li>부모가 자녀에게 아파트를 시세(10억)로 '매매' 계약 체결</li>
+      <li>자녀는 계약금 1억만 내고 소유권 이전 등기</li>
+      <li>부모가 9억 근저당권자로 등기 (잔금 담보)</li>
+      <li>잔금 9억은 10~20년 분할 지급 → 사실상 무이자 장기 할부</li>
+      <li>중간에 부모 사망 시 근저당 채권이 상속 재산에 포함되나 <strong>실질 회수는 불투명</strong></li>
+    </ol>
+    <div class="sc-result">
+      결과: 자녀는 1억으로 10억 아파트 취득. 증여세는? <strong>형식이 '매매'이므로 발생하지 않는다.</strong>
+    </div>
+  </div>
+
+  <h2>세무당국이 주목하는 포인트</h2>
+
+  <p>국세청은 이런 거래를 <strong>'저가 양도 또는 우회 증여'</strong>로 볼 수 있다. 판단 기준은 세 가지다.</p>
+
+  <table class="risk-table">
+    <thead>
+      <tr>
+        <th>체크 항목</th>
+        <th>위험 신호</th>
+        <th>판단</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>이자 수취 여부</td>
+        <td>무이자 또는 시중금리 미만</td>
+        <td class="danger">위험</td>
+      </tr>
+      <tr>
+        <td>잔금 실제 납부</td>
+        <td>장기 미납 또는 소멸시효 도래</td>
+        <td class="danger">위험</td>
+      </tr>
+      <tr>
+        <td>거래 당사자 관계</td>
+        <td>특수관계인(가족) 여부</td>
+        <td class="danger">위험</td>
+      </tr>
+      <tr>
+        <td>시세 대비 거래가</td>
+        <td>시세의 70% 미만</td>
+        <td class="danger">위험</td>
+      </tr>
+      <tr>
+        <td>매수자의 자력</td>
+        <td>소득 대비 거래금액 과다</td>
+        <td class="danger">위험</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>세 가지 이상 해당하면 국세청은 이를 <strong>사실상 증여</strong>로 간주하고 증여세를 추징할 수 있다. 이 대통령의 거래는 제3자 간 거래이므로 이 문제와 무관하다. 하지만 <strong>이 구조를 가족 간 거래에 그대로 복사하면 리스크가 전혀 다르다.</strong></p>
+
+  <h2>앞으로 어떻게 될 것인가</h2>
+
+  <div class="signal-box">
+    <div class="sig-label">이번 주 부의 신호</div>
+    <blockquote>'셀러 파이낸싱'은 앞으로 자산가 가족 간 이전 수단으로 급속히 확산될 수 있다.</blockquote>
+    <p>고금리 시대, 은행 대출이 막힌 상황에서 부모가 직접 금융을 제공하는 구조는 경제적으로 합리적이다. 그러나 장기 미납·무이자로 설계될 경우 실질적 증여의 우회로가 된다. 국세청이 이 패턴에 본격적으로 메스를 댈 가능성이 높다. 2027년 세법 개정 논의에서 <strong>'특수관계인 간 할부 매매 과세 강화'</strong> 이슈가 수면 위로 올라올 수 있다.</p>
+  </div>
+
+  <h3>이 글을 읽는 당신이 지금 확인해야 할 것</h3>
+
+  <p>가족 간 부동산 거래를 계획 중이라면 세 가지를 반드시 점검하라.</p>
+
+  <p><strong>① 적정 이자를 설정하라.</strong> 무이자 할부는 세법상 이자 상당액을 증여로 본다. 현재 법정 이자율(연 4.6%)을 기준으로 이자를 수취해야 한다.</p>
+
+  <p><strong>② 잔금 납부 계획을 구체적으로 서면화하라.</strong> "나중에 줄게"는 증여의 증거가 된다. 공증 각서 또는 금전소비대차 계약서로 명문화하라.</p>
+
+  <p><strong>③ 거래가는 시세의 70% 이상이어야 한다.</strong> 그 미만이면 차액에 대한 증여세가 자동으로 부과된다.</p>
+
+  <div class="nav-prev-next">
+    <a href="2026-07-16.html">← Vol.003 환율 1,400원 시대</a>
+    <a href="../forms.html">무료 서식 라이브러리 →</a>
+  </div>
+
+  <div class="disclaimer">
+    본 인사이트는 공개 보도를 기반으로 거래 구조를 분석한 것입니다. 특정 거래의 위법성을 주장하지 않으며 금융·세무 교육 목적으로 작성됩니다. 실제 거래 전 세무사·법무사 전문 상담을 권드립니다.
+  </div>
+
+  <div class="source-list">
+    <strong>출처</strong><br>
+    · <a href="https://www.newspim.com/news/view/20260720000964" target="_blank" rel="noopener">이 대통령 분당 아파트 29억에 매각…17.7억 근저당 이유는 — 뉴스핌</a><br>
+    · <a href="https://www.khan.co.kr/article/202607201837001" target="_blank" rel="noopener">이 대통령 분당 아파트, 29억에 팔렸다 — 경향신문</a><br>
+    · <a href="https://www.sedaily.com/article/20069541" target="_blank" rel="noopener">李 대통령, 분당 아파트 팔며 근저당 설정…10월 잔금 후 말소 — 서울경제</a><br>
+    · <a href="https://view.asiae.co.kr/article/2026072017421092795" target="_blank" rel="noopener">'무주택자' 된 李대통령, 근저당 끼고 분당 자택 29억 매각 완료 — 아시아경제</a><br>
+    · <a href="https://imnews.imbc.com/news/2026/politics/article/6838689_36911.html" target="_blank" rel="noopener">국힘 "이재명 대통령 아파트 '꼼수 매매'" — MBC 뉴스</a>
+  </div>
+
+</article>
+
+<footer style="background:#0C0A1E;color:rgba(255,255,255,0.4);text-align:center;padding:2rem;font-size:0.8rem;">
+  © 2026 Book Coupling · 트렌드 × 구조 주간 금융 인사이트
+</footer>
+</body>
+</html>

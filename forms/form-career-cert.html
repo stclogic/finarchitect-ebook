@@ -280,7 +280,23 @@
   .a4-page { box-shadow: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
 
   /* A4 여백 — 상단 25mm로 새 페이지 시작 후 공간 확보 */
-  @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+  @page { size: A4; margin: 15mm; }
+  /* 서명란 인쇄 최적화: 줄바꿈 허용, 간격 축소 */
+  .sig-row, .sign-row, .rs-sign-row, .party-sig-row,
+  .sig-wrap, .sig-grid { 
+    flex-wrap: wrap !important; 
+    gap: 5mm !important; 
+  }
+  .sig-field, .rs-sign-item-field, .sign-field,
+  .sig-name, .sig-line { 
+    min-width: 30mm !important; 
+  }
+  /* 수신처/서명란 페이지 분리 방지 */
+  .rs-addressee, .doc-addressee, .addressee-block,
+  .sig-footer, .doc-footer-sig { 
+    break-before: avoid !important; 
+    page-break-before: avoid !important;
+  }
 
   /* 섹션 단위 페이지 안 끊김 방지 */
   .clause, .article, .section-block, .cv-section,

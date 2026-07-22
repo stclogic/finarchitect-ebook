@@ -544,7 +544,8 @@ const LANGS = {
     groupHeaders:['인계자 (업무를 넘기는 사람)','인수자 (업무를 받는 사람)'],
     infoThLabels:['성명','직위','연락처','E-mail','성명','직위','연락처','E-mail','인수인계 일시'],
     warnText:'⚠ 본 문서는 기밀이므로 보안에 유의하십시오. 실제 비밀번호 대신 힌트 또는 보관 위치를 기재하시기 바랍니다.',
-    confBadge:'기밀'
+    confBadge:'기밀',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle:'HANDOVER DOCUMENT', docSub:'Job Transition Record',
@@ -565,7 +566,8 @@ const LANGS = {
     groupHeaders:['Handover Person (transferring)','Receiving Person (taking over)'],
     infoThLabels:['Name','Title','Phone','E-mail','Name','Title','Phone','E-mail','Handover Date'],
     warnText:'⚠ This document is confidential. Enter password hints instead of actual passwords.',
-    confBadge:'CONFIDENTIAL'
+    confBadge:'CONFIDENTIAL',
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle:'引 継 ぎ 書', docSub:'HANDOVER DOCUMENT',
@@ -586,11 +588,23 @@ const LANGS = {
     groupHeaders:['引継者（業務を引き渡す者）','引受者（業務を引き受ける者）'],
     infoThLabels:['氏名','役職','連絡先','E-mail','氏名','役職','連絡先','E-mail','引継日時'],
     warnText:'⚠ この文書は機密です。実際のパスワードの代わりにヒントを入力してください。',
-    confBadge:'機密'
+    confBadge:'機密',
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANGS[_activeLang] || LANGS.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('docDateOut'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('docDate'); if (_el1) _el1.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   const t = LANGS[lang];
   // 버튼 active
   ['ko','en','ja'].forEach(l => {
@@ -659,6 +673,12 @@ fileDefaults.forEach(r => addFileRow(r[0], r[1], r[2], r[3]||''));
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

@@ -416,7 +416,8 @@ var LANG_DATA_FORM = {
     fundLabels: ['총 소요자금','자기자본','외부 조달'],
     fundUnits: ['원','원 (33%)','원 (67%)'],
     sigText: '위 사업계획서의 내용이 사실임을 확인하고 제출합니다.',
-    sigRole: '대표자'
+    sigRole: '대표자',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'BUSINESS PLAN',
@@ -438,7 +439,8 @@ var LANG_DATA_FORM = {
     fundLabels: ['Total Required','Equity','External Funding'],
     fundUnits: ['KRW','KRW (33%)','KRW (67%)'],
     sigText: 'I hereby confirm that the above business plan is accurate.',
-    sigRole: 'Representative'
+    sigRole: 'Representative',
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '事業<span class="cover-accent">計画</span>書',
@@ -460,12 +462,23 @@ var LANG_DATA_FORM = {
     fundLabels: ['総必要資金','自己資本','外部調達'],
     fundUnits: ['円','円 (33%)','円 (67%)'],
     sigText: '以上の内容が事実であることを確認し提出いたします。',
-    sigRole: '代表者'
+    sigRole: '代表者',
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('dispDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -537,6 +550,12 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

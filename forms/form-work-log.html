@@ -347,7 +347,8 @@ const LANGS = {
     ctrlP1:'09:00', ctrlP2:'18:00',
     tipBox:'💡 업무 분류 셀을 클릭하면 드롭다운이 나타납니다. 완료율을 입력하면 진행 바가 자동으로 표시됩니다.',
     dateLabel:'날짜',
-    cats:['기획','개발','관리','영업','회의','보고','기타']
+    cats:['기획','개발','관리','영업','회의','보고','기타'],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle:'DAILY WORK LOG', docSub:'Daily Activity Report',
@@ -363,7 +364,8 @@ const LANGS = {
     ctrlP1:'09:00', ctrlP2:'18:00',
     tipBox:'💡 Click the work category cell to get a dropdown. Enter completion % to show the progress bar.',
     dateLabel:'Date',
-    cats:['Planning','Development','Management','Sales','Meeting','Reporting','Other']
+    cats:['Planning','Development','Management','Sales','Meeting','Reporting','Other'],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle:'業  務  日  誌', docSub:'DAILY WORK LOG',
@@ -379,11 +381,22 @@ const LANGS = {
     ctrlP1:'09:00', ctrlP2:'18:00',
     tipBox:'💡 業務分類セルをクリックするとドロップダウンが表示されます。完了率を入力すると進捗バーが自動表示されます。',
     dateLabel:'日付',
-    cats:['企画','開発','管理','営業','会議','報告','その他']
+    cats:['企画','開発','管理','営業','会議','報告','その他'],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANGS[_activeLang] || LANGS.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('dateDisplay'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   const t = LANGS[lang];
   ['ko','en','ja'].forEach(l => {
     document.getElementById('btn-'+l).classList.toggle('active', l===lang);
@@ -497,6 +510,12 @@ function updateBar(input) {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

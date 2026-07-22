@@ -471,7 +471,8 @@ var LANG_DATA_FORM = {
       '본 계약은 체결일로부터 효력이 발생하며, 어느 일방이 서면으로 30일 전 통보 시 해지할 수 있다. 단, 이미 공개된 비밀정보에 대한 보호 의무는 해지 후에도 제5조 기간 동안 존속한다.',
       '본 계약은 비밀정보의 보호에 관한 당사자 간 완전한 합의를 구성하며, 이에 관한 종전의 구두·서면 합의를 대체한다. 본 계약의 수정은 당사자 쌍방의 서면 합의에 의하여야만 효력이 있다.',
       '본 계약은 대한민국 법률에 따라 해석·적용된다. 본 계약과 관련된 분쟁은 먼저 협의로 해결하되, 협의가 이루어지지 않을 경우 <span contenteditable="true">서울중앙지방법원</span>을 전속 관할법원으로 한다.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'NON-DISCLOSURE AGREEMENT', docSub: 'Confidentiality Agreement',
@@ -503,7 +504,8 @@ var LANG_DATA_FORM = {
       'This Agreement shall take effect on the date of execution and may be terminated by either Party upon thirty (30) days prior written notice. However, the obligation to protect Confidential Information already disclosed shall survive termination for the period set forth in Article 5.',
       'This Agreement constitutes the entire agreement between the Parties with respect to the protection of Confidential Information and supersedes all prior oral or written agreements relating thereto. Any amendment to this Agreement shall be valid only if made in writing and signed by both Parties.',
       'This Agreement shall be interpreted and governed by the laws of the Republic of Korea. Any dispute arising in connection with this Agreement shall first be resolved through negotiation between the Parties; failing which, the <span contenteditable="true">Seoul Central District Court</span> shall have exclusive jurisdiction.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '秘 密 保 持 契 約 書', docSub: 'Non-Disclosure Agreement',
@@ -535,10 +537,21 @@ var LANG_DATA_FORM = {
       '本契約は締結日から効力を生じ、いずれか一方が書面により30日前に通知することで解除できる。ただし、すでに開示された秘密情報に対する保護義務は、解除後も第5条所定の期間存続する。',
       '本契約は秘密情報の保護に関する当事者間の完全な合意を構成し、これに関する従前のすべての口頭・書面による合意に優先する。本契約の変更は、当事者双方の書面による合意によってのみ効力を生じる。',
       '本契約は大韓民国の法律に従い解釈・適用される。本契約に関する紛争はまず当事者間の協議により解決し、協議が成立しない場合は <span contenteditable="true">ソウル中央地方裁判所</span> を専属的管轄裁判所とする。'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('sigDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA_FORM[lang];
   ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
   document.getElementById('formDocTitle').textContent = d.docTitle;
@@ -618,6 +631,12 @@ document.getElementById('logoInput').addEventListener('change', function(e){
   };
   reader.readAsDataURL(file);
 });
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

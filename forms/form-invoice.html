@@ -426,7 +426,8 @@ var LANG_DATA_FORM = {
     subtotalLabel: '합 계',
     amtLabel: '합계금액 (한글)',
     bottomBoxHeads: ['배송 / 납품 조건','결제 조건'],
-    sigLabels: ['공급자 확인','공급받는자 확인']
+    sigLabels: ['공급자 확인','공급받는자 확인'],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'INVOICE',
@@ -449,7 +450,8 @@ var LANG_DATA_FORM = {
     subtotalLabel: 'Subtotal',
     amtLabel: 'Amount in Words',
     bottomBoxHeads: ['Delivery / Supply Terms','Payment Terms'],
-    sigLabels: ['Supplier Confirmation','Buyer Confirmation']
+    sigLabels: ['Supplier Confirmation','Buyer Confirmation'],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '取 &nbsp; 引 &nbsp; 明 &nbsp; 細 &nbsp; 書',
@@ -472,12 +474,23 @@ var LANG_DATA_FORM = {
     subtotalLabel: '小計',
     amtLabel: '合計金額（読み方）',
     bottomBoxHeads: ['納品・配送条件','支払条件'],
-    sigLabels: ['供給者確認','受領者確認']
+    sigLabels: ['供給者確認','受領者確認'],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('dispDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -557,6 +570,12 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

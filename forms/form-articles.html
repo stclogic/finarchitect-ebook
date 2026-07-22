@@ -555,7 +555,8 @@ var LANG_DATA = {
     ],
     stampTitles: ['발기인 대표','발기인','발기인'],
     stampBoxText: '인',
-    logoPlaceholder: '로고<br>업로드'
+    logoPlaceholder: '로고<br>업로드',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     ctrlTitle: '🏛️ Articles of Incorporation', printBtn: '🖨 Print / Save as PDF',
@@ -605,7 +606,8 @@ var LANG_DATA = {
     ],
     stampTitles: ['Lead Incorporator','Incorporator','Incorporator'],
     stampBoxText: 'SEAL',
-    logoPlaceholder: 'Logo<br>Upload'
+    logoPlaceholder: 'Logo<br>Upload',
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     ctrlTitle: '🏛️ 定款', printBtn: '🖨 印刷 / PDF保存',
@@ -655,10 +657,23 @@ var LANG_DATA = {
     ],
     stampTitles: ['発起人代表','発起人','発起人'],
     stampBoxText: '印',
-    logoPlaceholder: 'ロゴ<br>アップ'
+    logoPlaceholder: 'ロゴ<br>アップ',
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA[_activeLang] || LANG_DATA.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('docDate'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('dispDate'); if (_el1) _el1.textContent = ymd;
+  var _el2 = document.getElementById('sigDate'); if (_el2) _el2.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA[lang];
   if (!d) return;
   ['ko','en','ja'].forEach(function(l) {
@@ -747,6 +762,12 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

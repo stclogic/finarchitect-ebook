@@ -386,7 +386,8 @@ var LANG_DATA_FORM = {
       '<input type="checkbox"> 위임인 신분증 사본 1통',
       '<input type="checkbox"> 인감증명서 1통',
       '<input type="checkbox"> 기타: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'POWER OF ATTORNEY', docSub: 'Authorization Letter',
@@ -408,7 +409,8 @@ var LANG_DATA_FORM = {
       '<input type="checkbox"> Copy of Principal\'s ID (1 copy)',
       '<input type="checkbox"> Certificate of Seal Impression (1 copy)',
       '<input type="checkbox"> Other: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '委 &nbsp; 任 &nbsp; 状', docSub: '',
@@ -430,12 +432,23 @@ var LANG_DATA_FORM = {
       '<input type="checkbox"> 委任者の身分証明書（写し）1通',
       '<input type="checkbox"> 印鑑証明書 1通',
       '<input type="checkbox"> その他: <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 var _pseudoStyle = document.createElement('style');
 document.head.appendChild(_pseudoStyle);
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('sigDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA_FORM[lang];
   ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
   document.getElementById('formDocTitle').innerHTML = d.docTitle;
@@ -498,6 +511,12 @@ document.getElementById('logoInput').addEventListener('change', function(e){
   };
   reader.readAsDataURL(file);
 });
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

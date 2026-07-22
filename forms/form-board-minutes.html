@@ -455,7 +455,8 @@ var LANG_DATA_FORM = {
     sigSectionTitle: '출석 이사 및 감사 서명',
     sigCardRoles: ['이사장','이사','이사','이사','이사 (불참)','감사'],
     attendYes: '출석', attendNo: '불참',
-    resultText: {pass:'원안가결', modify:'수정가결', fail:'부결', hold:'보류'}
+    resultText: {pass:'원안가결', modify:'수정가결', fail:'부결', hold:'보류'},
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'BOARD OF DIRECTORS MEETING MINUTES',
@@ -479,7 +480,8 @@ var LANG_DATA_FORM = {
     sigSectionTitle: 'Signatures of Attending Directors & Auditor',
     sigCardRoles: ['Chairperson','Director','Director','Director','Director (Absent)','Auditor'],
     attendYes: 'Present', attendNo: 'Absent',
-    resultText: {pass:'Approved', modify:'Amended', fail:'Rejected', hold:'Deferred'}
+    resultText: {pass:'Approved', modify:'Amended', fail:'Rejected', hold:'Deferred'},
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '取 締 役 会 議 事 録',
@@ -503,12 +505,24 @@ var LANG_DATA_FORM = {
     sigSectionTitle: '出席取締役及び監査役署名',
     sigCardRoles: ['取締役会長','取締役','取締役','取締役','取締役（欠席）','監査役'],
     attendYes: '出席', attendNo: '欠席',
-    resultText: {pass:'原案可決', modify:'修正可決', fail:'否決', hold:'保留'}
+    resultText: {pass:'原案可決', modify:'修正可決', fail:'否決', hold:'保留'},
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('dispDate'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('closingDate'); if (_el1) _el1.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -602,6 +616,12 @@ document.getElementById('ctrlPlace').addEventListener('input', function() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

@@ -497,7 +497,8 @@ var LANG_DATA = {
       '각 파트너는 사업과 관련하여 알게 된 거래처 정보, 영업 비밀 및 재무 정보를 제3자에게 누설하지 않는다. 이 의무는 계약 종료 후 __년간 지속된다.',
       '본 계약에 관한 분쟁은 우선 파트너 간 협의로 해결한다. 협의가 불가한 경우 사업장 소재지를 관할하는 법원을 제1심 법원으로 한다.',
       '본 계약서에 명시되지 않은 사항은 「민법」, 「상법」 및 관계 법령과 상관습에 따르며, 파트너 전원의 합의로 결정한다.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     ctrlTitle: '🤝 Partnership Agreement', printBtn: '🖨 Print / Save as PDF',
@@ -534,7 +535,8 @@ var LANG_DATA = {
       'Each Partner shall not disclose to any third party any client information, trade secrets, or financial information acquired in connection with the business. This obligation shall survive for __ year(s) after termination of this Agreement.',
       'Disputes arising under this Agreement shall first be resolved through negotiation among the Partners. If no resolution is reached, the court having jurisdiction over the business premises shall serve as the court of first instance.',
       'Matters not addressed in this Agreement shall be governed by the Civil Act, the Commercial Act, and other applicable laws and regulations, and shall be determined by unanimous consent of all Partners.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     ctrlTitle: '🤝 共同事業契約書', printBtn: '🖨 印刷 / PDF保存',
@@ -571,10 +573,23 @@ var LANG_DATA = {
       '各パートナーは事業に関して知り得た取引先情報、営業秘密および財務情報を第三者に漏洩してはならない。この義務は契約終了後__年間存続する。',
       '本契約に関する紛争はまずパートナー間の協議により解決する。協議が不調の場合は、事業所所在地を管轄する裁判所を第一審の管轄裁判所とする。',
       '本契約書に明示されない事項は「民法」「商法」および関係法令と商慣習に従い、パートナー全員の合意をもって決定する。'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA[_activeLang] || LANG_DATA.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('docDate'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('dispDate'); if (_el1) _el1.textContent = ymd;
+  var _el2 = document.getElementById('sigDate'); if (_el2) _el2.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA[lang];
   if (!d) return;
   ['ko','en','ja'].forEach(function(l) {
@@ -652,6 +667,12 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

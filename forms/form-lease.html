@@ -558,7 +558,9 @@ var LANG_DATA_FORM = {
     langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
     resetBtn:'↺ 초기화',
     tipBox:'💡 이 계약서는 <strong>주택임대차보호법</strong>에 따른 표준 양식입니다. 계약 체결 후 <strong>확정일자</strong> 및 <strong>전입신고</strong>를 반드시 진행하세요.',
-    printBtn:'🖨 인쇄 / PDF 저장' },
+    printBtn:'🖨 인쇄 / PDF 저장',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
+  },
   en: { docTitle:'LEASE AGREEMENT', docSub:'STANDARD LEASE CONTRACT · Based on Housing Lease Protection Act',
     titleMonthly:'RESIDENTIAL LEASE AGREEMENT', titleJeonse:'JEONSE LEASE AGREEMENT', titleCommercial:'COMMERCIAL LEASE AGREEMENT',
     thLandlord:'Landlord (Party A)', thTenant:'Tenant (Party B)',
@@ -591,7 +593,9 @@ var LANG_DATA_FORM = {
       '① If Landlord sells or encumbers the property during the lease term, Landlord shall notify Tenant in writing in advance.<br>② The new owner shall succeed to this Agreement and bear the obligation to return the security deposit.<br>③ If Tenant has established opposing power under the Housing Lease Protection Act, Tenant is protected against any change of landlord.',
       '(Enter special terms here)\ne.g. Permitted renovation scope, pet policy, assigned parking, included appliances, etc.',
       'Disputes related to this Agreement shall be resolved pursuant to the Housing Lease Protection Act, the Civil Act, and related statutes. If litigation is necessary, the court with jurisdiction over the property\'s location shall serve as the court of first instance.'
-    ] },
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
+  },
   ja: { docTitle:'賃貸借契約書', docSub:'住宅賃貸借保護法に基づく標準契約書',
     titleMonthly:'住宅賃貸借契約書', titleJeonse:'チョンセ賃貸借契約書', titleCommercial:'商業用賃貸借契約書',
     thLandlord:'賃貸人（甲）', thTenant:'賃借人（乙）',
@@ -624,11 +628,23 @@ var LANG_DATA_FORM = {
       '① 甲が賃貸期間中に目的物を売買し、または担保提供する場合、事前に書面で乙へ通知しなければならない。<br>② 新所有者は本賃貸借契約を承継し、乙に対する保証金返還義務を負う。<br>③ 乙が住宅賃貸借保護法に基づく対抗力を有する場合、賃貸人変更から保護される。',
       '（特約事項を直接入力してください）\n例）内装工事の可能範囲、ペット可否、駐車スペースの指定、エアコン・家電の有無 等',
       '本契約に関する紛争は、住宅賃貸借保護法・民法および関連法令に従い処理し、訴訟が必要な場合は目的物の所在地を管轄する裁判所を第一審管轄裁判所とする。'
-    ] }
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
+  }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('docDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -728,7 +744,29 @@ function setLang(lang) {
   if (witnessTitle && d.witnessTitle) witnessTitle.textContent = d.witnessTitle;
   // html lang
   document.documentElement.lang = lang;
+  
+  // 부동산 기본값 번역
+  var _lsDef = {
+    ko: {type:'아파트', struct:'철근콘크리트', landlord:'홍임대'},
+    en: {type:'Apartment', struct:'Reinforced Concrete', landlord:'Landlord Name'},
+    ja: {type:'アパート', struct:'鉄筋コンクリート', landlord:'貸主名'}
+  };
+  var _ls = _lsDef[lang] || _lsDef.ko;
+  document.querySelectorAll('[contenteditable]').forEach(function(el) {
+    var t = el.textContent.trim();
+    if (['아파트','Apartment','アパート'].includes(t)) el.textContent = _ls.type;
+    if (['철근콘크리트','Reinforced Concrete','鉄筋コンクリート'].includes(t)) el.textContent = _ls.struct;
+    if (['홍임대','Landlord Name','貸主名'].includes(t)) el.textContent = _ls.landlord;
+  });
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+  _updateFormDate();
 }
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

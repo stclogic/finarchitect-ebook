@@ -304,7 +304,8 @@ var LANG_DATA_FORM = {
     pledgeAreaText: '본인 [성명]은(는) [사안]과 관련하여 향후 일체의 이의를 제기하지 아니하며, 위반 시 민·형사상의 책임을 감수할 것을 엄숙히 서약합니다.\n\n만일 위 서약을 어길 경우 어떠한 법적 제재도 감수하겠습니다.',
     honorific: '귀중',
     itemsTableHeaders: ['번호', '서약 내용'],
-    sigFieldLabels: ['성    명', '생년월일', '주    소', '연락처', '서    명']
+    sigFieldLabels: ['성    명', '생년월일', '주    소', '연락처', '서    명'],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'WRITTEN PLEDGE', docSub: 'Affidavit of Commitment',
@@ -319,7 +320,8 @@ var LANG_DATA_FORM = {
     pledgeAreaText: 'I, [Full Name], hereby solemnly pledge that in connection with [Matter], I will raise no objection whatsoever in the future and that I will accept all civil and criminal liability in the event of any violation.\n\nShould I breach the above pledge, I will accept any and all legal sanctions.',
     honorific: 'Respectfully',
     itemsTableHeaders: ['No.', 'Pledge Items'],
-    sigFieldLabels: ['Full Name', 'Date of Birth', 'Address', 'Phone', 'Signature']
+    sigFieldLabels: ['Full Name', 'Date of Birth', 'Address', 'Phone', 'Signature'],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '誓 &nbsp;&nbsp; 約 &nbsp;&nbsp; 書', docSub: '',
@@ -334,10 +336,21 @@ var LANG_DATA_FORM = {
     pledgeAreaText: '本人【氏名】は、【事案】に関し、今後一切の異議を申し立てず、違反した場合には民事上・刑事上の責任を甘受することを厳粛に誓約いたします。\n\n上記の誓約に違反した場合、いかなる法的制裁も甘受いたします。',
     honorific: '殿',
     itemsTableHeaders: ['番号', '誓約内容'],
-    sigFieldLabels: ['氏　　名', '生年月日', '住　　所', '連絡先', '署　　名']
+    sigFieldLabels: ['氏　　名', '生年月日', '住　　所', '連絡先', '署　　名'],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('sigDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA_FORM[lang];
   ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
   document.getElementById('formDocTitle').innerHTML = d.docTitle;
@@ -403,6 +416,12 @@ document.getElementById('logoInput').addEventListener('change', function(e){
   };
   reader.readAsDataURL(file);
 });
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

@@ -508,7 +508,8 @@ var LANG_DATA = {
     docTitle: '공  사  도  급  계  약  서', docSub: 'CONSTRUCTION CONTRACT',
     thOwner: '도급인 (甲)', thContractor: '수급인 (乙)',
     sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
-    articles: ['도급 금액','공사 범위','공사 기간','설계 변경','하자 담보 책임','기성 검사 및 준공 검사','재료 및 노무','안전 관리','보험','계약 해지','분쟁 해결','기타']
+    articles: ['도급 금액','공사 범위','공사 기간','설계 변경','하자 담보 책임','기성 검사 및 준공 검사','재료 및 노무','안전 관리','보험','계약 해지','분쟁 해결','기타'],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     ctrlTitle: '🏗️ Construction Contract', printBtn: '🖨 Print / Save as PDF',
@@ -533,7 +534,8 @@ var LANG_DATA = {
       'Either party may terminate this contract if the other party breaches any provision of this contract and fails to remedy such breach within 14 days. Upon termination, progress payments shall be settled and costs for completed work shall be duly paid.',
       'Disputes arising out of or in connection with this contract shall first be submitted to the Construction Dispute Mediation Committee for mediation, or shall be brought before the court having jurisdiction over the location of the construction site as the court of first instance.',
       'Matters not specified in this contract shall be governed by the Framework Act on the Construction Industry, the Construction Technology Promotion Act, and other applicable laws and regulations, as mutually agreed upon by the parties. Environmental management matters shall be handled in accordance with applicable laws.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     ctrlTitle: '🏗️ 工事請負契約書', printBtn: '🖨 印刷 / PDF保存',
@@ -558,10 +560,23 @@ var LANG_DATA = {
       '甲又は乙は、相手方が本契約に違反し、14日以上是正しない場合に契約を解除することができる。解除の際は出来高を精算し、既完成工事に係る費用を支払う。',
       '本契約に関する紛争は、建設紛争調停委員会の調停を経るか、工事現場の所在地を管轄する裁判所を第一審裁判所とする。',
       '本契約書に定めのない事項は、建設業基本法、建設技術振興法及び関係法令に従い、双方が協議して決定する。環境管理に関する事項は関係法令を遵守する。'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA[_activeLang] || LANG_DATA.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('docDate'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('dispDate'); if (_el1) _el1.textContent = ymd;
+  var _el2 = document.getElementById('sigDate'); if (_el2) _el2.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA[lang];
   if (!d) return;
   ['ko','en','ja'].forEach(function(l) {
@@ -612,6 +627,12 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

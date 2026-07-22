@@ -403,7 +403,8 @@ var LANG_DATA_FORM = {
       '본 계약을 위반한 주주는 이로 인해 다른 주주 또는 회사에 발생한 일체의 손해를 배상할 책임을 진다. 손해배상액의 예정 또는 위약벌이 적용되는 경우 해당 금액은 별첨으로 정한다.',
       '본 계약은 대한민국 법률에 따라 해석·적용된다.',
       '본 계약과 관련된 분쟁은 당사자 간 협의를 통해 해결함을 원칙으로 하며, 협의가 이루어지지 않을 경우 서울중앙지방법원을 전속 관할 법원으로 한다.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'SHAREHOLDERS AGREEMENT',
@@ -447,7 +448,8 @@ var LANG_DATA_FORM = {
       'A Shareholder who breaches this Agreement shall be liable for all damages suffered by any other Shareholder or the Company. Where liquidated damages or penalties are applicable, such amounts shall be specified in an exhibit hereto.',
       'This Agreement shall be governed by and construed in accordance with the laws of the Republic of Korea.',
       'Disputes arising out of or in connection with this Agreement shall be resolved through good-faith negotiations; if no resolution is reached, the Seoul Central District Court shall have exclusive jurisdiction.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '株 主 間 契 約 書',
@@ -491,12 +493,23 @@ var LANG_DATA_FORM = {
       '本契約に違反した株主は、これにより他の株主又は会社に生じた一切の損害を賠償する責任を負う。損害賠償額の予定又は違約罰が適用される場合、当該金額は別紙に定める。',
       '本契約は大韓民国の法律に従い解釈・適用される。',
       '本契約に関する紛争は当事者間の協議による解決を原則とし、協議が整わない場合はソウル中央地方法院を専属管轄裁判所とする。'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('dispDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -599,6 +612,12 @@ document.getElementById('ctrlCompany').addEventListener('input', function() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

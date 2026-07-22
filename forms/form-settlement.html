@@ -388,7 +388,8 @@ var LANG_DATA_FORM = {
       '갑과 을은 본 합의의 내용 및 관련 사항을 제3자에게 공개하지 아니하기로 한다. 단, 법원 명령 또는 법령상 의무에 의한 경우는 예외로 한다.',
       '당사자 일방이 본 합의 내용을 위반할 경우, 상대방은 본 합의를 해제하고 위약금으로 금 <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>원을 청구할 수 있으며, 이와 별도로 실손해에 대한 배상을 청구할 수 있다.',
       '본 합의서는 갑과 을 쌍방이 서명·날인한 날로부터 효력이 발생하며, 본 합의서는 2부를 작성하여 각 1부씩 보관한다.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'SETTLEMENT AGREEMENT', docSub: 'Mutual Release Agreement',
@@ -413,7 +414,8 @@ var LANG_DATA_FORM = {
       'Both parties shall not disclose the contents of this Agreement or any related matters to any third party. This shall not apply where disclosure is required by court order or legal obligation.',
       'If either party violates the terms of this Agreement, the other party may rescind this Agreement and claim a penalty of <span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> won, and may additionally claim compensation for actual damages.',
       'This Agreement shall take effect from the date both parties sign and seal it, and shall be executed in two copies, each party retaining one.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '和 解 合 意 書', docSub: 'SETTLEMENT AGREEMENT',
@@ -438,10 +440,21 @@ var LANG_DATA_FORM = {
       '甲と乙は本合意の内容および関連事項を第三者に開示しないものとする。ただし、裁判所命令または法令上の義務による場合はこの限りでない。',
       '当事者一方が本合意内容に違反した場合、相手方は本合意を解除し、違約金として金<span contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>ウォンを請求でき、これとは別に実損害に対する賠償を請求できる。',
       '本合意書は甲と乙の双方が署名押印した日から効力が生じ、2通を作成して各1通ずつ保管する。'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('sigDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA_FORM[lang];
   ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
   document.getElementById('formDocTitle').innerHTML = d.docTitle;
@@ -513,6 +526,12 @@ document.getElementById('logoInput').addEventListener('change', function(e){
   };
   reader.readAsDataURL(file);
 });
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

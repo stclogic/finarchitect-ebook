@@ -501,7 +501,8 @@ var LANG_DATA_FORM = {
     resetBtn:'↺ 초기화',
     tipBox:'💡 각 항목 클릭 후 직접 입력하세요.<br>권장 분량: 항목당 500자 내외<br>PDF 저장: 인쇄 → "PDF로 저장"',
     resetConfirm:'모든 내용을 초기화할까요?',
-    syncDefaults:{company:'회사명', job:'지원직무', name:'이름'}
+    syncDefaults:{company:'회사명', job:'지원직무', name:'이름'},
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle:'PERSONAL STATEMENT', docSub:'Cover Letter',
@@ -528,7 +529,8 @@ var LANG_DATA_FORM = {
     resetBtn:'↺ Reset',
     tipBox:'💡 Click each section to type directly.<br>Recommended: ~500 chars per section<br>Save as PDF: Print → "Save as PDF"',
     resetConfirm:'Reset all content?',
-    syncDefaults:{company:'Company Name', job:'Position', name:'Your Name'}
+    syncDefaults:{company:'Company Name', job:'Position', name:'Your Name'},
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle:'自 己 紹 介 書', docSub:'エントリーシート',
@@ -555,12 +557,24 @@ var LANG_DATA_FORM = {
     resetBtn:'↺ リセット',
     tipBox:'💡 各項目をクリックして直接入力してください。<br>推奨文字数：各項目500文字程度<br>PDF保存：印刷→「PDFとして保存」',
     resetConfirm:'すべての内容をリセットしますか？',
-    syncDefaults:{company:'会社名', job:'志望職種', name:'氏名'}
+    syncDefaults:{company:'会社名', job:'志望職種', name:'氏名'},
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('doc-date'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('footer-date'); if (_el1) _el1.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -618,7 +632,49 @@ function setLang(lang) {
   // 팁박스
   document.querySelector('.tip-box').innerHTML = d.tipBox;
   document.documentElement.lang = lang;
+  
+  // 섹션 placeholder 번역
+  var _phMap = {
+    ko: ['어떤 환경에서 성장하였고, 그 과정에서 어떤 가치관과 역량을 형성하게 되었는지 구체적으로 기술해 주세요.',
+         '본인의 성격 중 강점과 보완해야 할 점을 솔직하고 구체적으로 기술해 주세요.',
+         '이 직무와 회사를 선택한 이유, 어떤 기여를 할 수 있는지 구체적으로 서술하세요.',
+         '입사 후 단기 및 장기 목표, 회사와 함께 성장하려는 포부를 기술하세요.'],
+    en: ['Describe the environment you grew up in and how it shaped your values and strengths.',
+         'Describe your key strengths and areas for improvement honestly and specifically.',
+         'Explain why you chose this role and company, and how you can contribute.',
+         'Describe your short- and long-term goals and your aspirations to grow with the company.'],
+    ja: ['どのような環境で育ち、その過程でどのような価値観や能力を培ったか具体的に記述してください。',
+         'あなたの性格の強みと改善すべき点を率直かつ具体的に記述してください。',
+         'この職務と会社を選んだ理由、どのような貢献ができるかを具体的に述べてください。',
+         '入社後の短期・長期目標と、会社とともに成長したいという抱負を記述してください。']
+  };
+  var _phs = _phMap[lang] || _phMap.ko;
+  document.querySelectorAll('.section-body[data-placeholder]').forEach(function(el, i) {
+    if (_phs[i]) el.setAttribute('data-placeholder', _phs[i]);
+  });
+  
+  // 헤더 기본값 번역
+  var _clDefaults = {
+    ko: {company:'회사명', job:'지원직무', name:'이름'},
+    en: {company:'Company Name', job:'Position Applied', name:'Full Name'},
+    ja: {company:'会社名', job:'応募職種', name:'氏名'}
+  };
+  var _cld = _clDefaults[lang] || _clDefaults.ko;
+  var _compEl = document.getElementById('disp-company');
+  if (_compEl && (!_compEl.textContent.trim() || ['회사명','Company Name','会社名'].includes(_compEl.textContent.trim()))) _compEl.textContent = _cld.company;
+  var _jobEl = document.getElementById('disp-job');
+  if (_jobEl && (!_jobEl.textContent.trim() || ['지원직무','Position Applied','応募職種'].includes(_jobEl.textContent.trim()))) _jobEl.textContent = _cld.job;
+  var _nameEl = document.getElementById('disp-name');
+  if (_nameEl && (!_nameEl.textContent.trim() || ['이름','Full Name','氏名'].includes(_nameEl.textContent.trim()))) _nameEl.textContent = _cld.name;
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+  _updateFormDate();
 }
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

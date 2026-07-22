@@ -500,7 +500,9 @@ var LANG_DATA_FORM = {
       '을이 원금 또는 이자를 변제 기일까지 지급하지 아니한 경우, 연체된 금액에 대하여 연체 기간 동안 연 <span contenteditable="true">20</span>%(이자제한법 상한)의 연체 이자를 지급한다.',
       '담보 제공 여부: <span contenteditable="true">해당 없음 (신용 대여) / 또는 아래 담보 내용 기재</span><br>담보 내용: <span contenteditable="true">&nbsp;</span><br>연대보증인: <span contenteditable="true">해당 없음 / 또는 성명·주민번호·주소 기재</span>',
       '이 차용증과 관련한 분쟁은 대한민국 법률에 따르며, 소송 시 갑의 주소지를 관할하는 법원을 제1심 관할 법원으로 한다. 갑은 을의 변제 불이행 시 이 차용증에 기하여 강제집행 절차를 밟을 수 있다.'
-    ] },
+    ],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
+  },
   en: { docTitle:'LOAN AGREEMENT', docSub:'MONETARY LOAN CONTRACT · PROMISSORY NOTE',
     thBorrower:'Borrower (Debtor)', thLender:'Lender (Creditor)',
     sigBorrower:'Borrower (Debtor)', sigLender:'Lender (Creditor)',
@@ -526,7 +528,9 @@ var LANG_DATA_FORM = {
       'If Borrower fails to pay principal or interest by the due date, default interest at <span contenteditable="true">20</span>% per annum (statutory maximum) shall accrue on the overdue amount for the duration of the delay.',
       'Collateral: <span contenteditable="true">None (unsecured loan) / or specify collateral details below</span><br>Collateral Details: <span contenteditable="true">&nbsp;</span><br>Joint Guarantor: <span contenteditable="true">None / or provide name, ID number, and address</span>',
       'This Agreement shall be governed by the laws of the Republic of Korea. In the event of litigation, the court having jurisdiction over Lender\'s domicile shall serve as the court of first instance. Lender may initiate enforcement proceedings under this Agreement upon Borrower\'s default.'
-    ] },
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
+  },
   ja: { docTitle:'金銭消費貸借契約書', docSub:'借用証書 · PROMISSORY NOTE',
     thBorrower:'借主（債務者）', thLender:'貸主（債権者）',
     sigBorrower:'借主（債務者）', sigLender:'貸主（債権者）',
@@ -552,11 +556,23 @@ var LANG_DATA_FORM = {
       '借主が期日までに元金または利息を支払わない場合、延滞金額に対して延滞期間中、年 <span contenteditable="true">20</span>%（法定上限）の遅延損害金を支払う。',
       '担保の有無: <span contenteditable="true">なし（信用貸付）/ または下記に担保内容を記載</span><br>担保内容: <span contenteditable="true">&nbsp;</span><br>連帯保証人: <span contenteditable="true">なし / または氏名・生年月日・住所を記載</span>',
       '本借用証書に関する紛争は大韓民国の法律に準拠し、訴訟の場合は貸主の住所地を管轄する裁判所を第一審の管轄裁判所とする。借主が返済義務を履行しない場合、貸主は本借用証書に基づき強制執行手続をとることができる。'
-    ] }
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
+  }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('docDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -619,6 +635,15 @@ function setLang(lang) {
   if (tipBox) tipBox.innerHTML = d.tipBox;
   // html lang
   document.documentElement.lang = lang;
+  
+  // 이름/주소 기본값 번역
+  document.querySelectorAll('[contenteditable]').forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t === '홍길동' || t === 'Borrower Name' || t === '借主名') el.textContent = lang==='en'?'Borrower Name':lang==='ja'?'借主名':'홍길동';
+    if (t === '김대여' || t === 'Lender Name' || t === '貸主名') el.textContent = lang==='en'?'Lender Name':lang==='ja'?'貸主名':'김대여';
+  });
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+  _updateFormDate();
   // ── 조항 본문 번역 ──
   var _bodies = document.querySelectorAll('.iou-body');
   if (d.clauseBodies) {
@@ -643,6 +668,12 @@ function setLang(lang) {
   var _sigDate = document.querySelector('.iou-sig-date');
   if (_sigDate && d.sigDateHTML) _sigDate.innerHTML = d.sigDateHTML;
 }
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

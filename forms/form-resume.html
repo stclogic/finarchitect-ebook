@@ -721,7 +721,8 @@ var LANG_DATA = {
     sbContact: '연락처', sbSkills: '핵심 역량', sbLang: '언어',
     sbCert: '자격증', sbInfo: '기본 정보',
     mainSummary: '✦ 자기소개', mainExp: '💼 경력사항',
-    mainEdu: '🎓 학력사항', mainAward: '🏆 수상 및 활동'
+    mainEdu: '🎓 학력사항', mainAward: '🏆 수상 및 활동',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     ctrlTitle: '🎨 Resume Settings',
@@ -734,7 +735,8 @@ var LANG_DATA = {
     sbContact: 'Contact', sbSkills: 'Core Competencies', sbLang: 'Languages',
     sbCert: 'Certifications', sbInfo: 'Personal Info',
     mainSummary: '✦ Profile / Summary', mainExp: '💼 Work Experience',
-    mainEdu: '🎓 Education', mainAward: '🏆 Awards & Activities'
+    mainEdu: '🎓 Education', mainAward: '🏆 Awards & Activities',
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     ctrlTitle: '🎨 履歴書設定',
@@ -747,10 +749,13 @@ var LANG_DATA = {
     sbContact: '連絡先', sbSkills: '主要スキル', sbLang: '言語',
     sbCert: '資格・免許', sbInfo: '基本情報',
     mainSummary: '✦ 自己PR', mainExp: '💼 職務経歴',
-    mainEdu: '🎓 学歴', mainAward: '🏆 受賞・活動'
+    mainEdu: '🎓 学歴', mainAward: '🏆 受賞・活動',
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA[lang];
   if (!d) return;
   ['ko','en','ja'].forEach(function(l) {
@@ -776,6 +781,12 @@ function setLang(lang) {
   var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
 }
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

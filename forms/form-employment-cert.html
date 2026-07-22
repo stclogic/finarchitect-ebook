@@ -525,7 +525,9 @@ var LANG_DATA_FORM = {
     langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
     resetBtn:'↺ 초기화',
     tipBox:'💡 표 안 각 셀을 클릭하면 직접 수정할 수 있습니다.<br>직인란은 실제 도장 날인 후 스캔하거나, PDF로 출력 후 날인하세요.',
-    printBtn:'🖨 인쇄 / PDF 저장' },
+    printBtn:'🖨 인쇄 / PDF 저장',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
+  },
   en: { docTitle:'CERTIFICATE&nbsp;OF&nbsp;EMPLOYMENT', docSub:'재직증명서',
     certText:'This is to certify that the above-named individual is currently employed at our company.',
     certTextEn:'위 사람은 현재 당사에 재직 중임을 증명합니다.',
@@ -541,7 +543,9 @@ var LANG_DATA_FORM = {
     langNotice:'⚠ Switching language resets all content.',
     resetBtn:'↺ Reset',
     tipBox:'💡 Click any cell in the table to edit it directly.<br>For the seal field, affix a physical stamp or print the PDF and stamp it.',
-    printBtn:'🖨 Print / Save as PDF' },
+    printBtn:'🖨 Print / Save as PDF',
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
+  },
   ja: { docTitle:'在&nbsp;&nbsp;職&nbsp;&nbsp;証&nbsp;&nbsp;明&nbsp;&nbsp;書', docSub:'CERTIFICATE OF EMPLOYMENT',
     certText:'上記の者が現在弊社に在職していることを証明します。',
     certTextEn:'This is to certify that the above person is currently employed at our company.',
@@ -557,11 +561,23 @@ var LANG_DATA_FORM = {
     langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
     resetBtn:'↺ リセット',
     tipBox:'💡 表内の各セルをクリックして直接編集できます。<br>押印欄には実印を押すか、PDF印刷後に押印してください。',
-    printBtn:'🖨 印刷 / PDF保存' }
+    printBtn:'🖨 印刷 / PDF保存',
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
+  }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('issue-date-text'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -613,7 +629,23 @@ function setLang(lang) {
   var tipBox = document.querySelector('.tip-box');
   if (tipBox) tipBox.innerHTML = d.tipBox;
   document.documentElement.lang = lang;
+  
+  // 인증서 기본값 번역
+  document.querySelectorAll('[contenteditable]').forEach(function(el) {
+    var t = el.textContent.trim();
+    if (['홍길동','Full Name','氏名'].includes(t)) el.textContent = lang==='en'?'Full Name':lang==='ja'?'氏名':'홍길동';
+    if (['____년 __월 __일','e.g. Jan 1, 2020','例：2020年1月1日'].includes(t)) el.textContent = lang==='en'?'e.g. Jan 1, 2020':lang==='ja'?'例：2020年1月1日':'____년 __월 __일';
+    if (['정규직','Full-time','正社員'].includes(t)) el.textContent = lang==='en'?'Full-time':lang==='ja'?'正社員':'정규직';
+  });
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+  _updateFormDate();
 }
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

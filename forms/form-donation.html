@@ -487,7 +487,8 @@ var LANG_DATA = {
     resetBtn: '↺ 초기화',
     ctrlL0: '단체 로고 업로드', ctrlL1: '작성일', ctrlL2: '문서 번호', ctrlL3: '기부 금액 (숫자)', ctrlL4: '기부 유형',
     ctrlP2: '예: DON-2025-001', ctrlP3: '예: 1200000',
-    tipBox: '💡 <strong>작성 Tip</strong><br>기부금 영수증은 소득공제에 활용됩니다. 지정기부 시 사용 목적을 명확히 기재하면 투명한 나눔이 됩니다.'
+    tipBox: '💡 <strong>작성 Tip</strong><br>기부금 영수증은 소득공제에 활용됩니다. 지정기부 시 사용 목적을 명확히 기재하면 투명한 나눔이 됩니다.',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     ctrlTitle: '💜 Donation Pledge', printBtn: '🖨 Print / Save as PDF',
@@ -509,7 +510,8 @@ var LANG_DATA = {
       'The Donor may cancel this pledge in writing at any time prior to the transfer of funds. Donations already transferred shall not, as a general rule, be refunded; however, the Donor may demand a refund if the Organization suspends its statutory activities or if misappropriation of funds is confirmed.',
       'The Donor consents to the Organization\'s collection and use of the Donor\'s personal information for the purposes of issuing donation receipts and providing activity reports. The Organization shall manage the Donor\'s personal information securely in accordance with the Personal Information Protection Act.',
       'Matters not specified in this pledge agreement shall be governed by the Act on the Collection and Use of Donations and other applicable laws and regulations.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     ctrlTitle: '💜 寄付誓約書', printBtn: '🖨 印刷 / PDF保存',
@@ -531,10 +533,23 @@ var LANG_DATA = {
       '寄付者は、寄付金の履行前であればいつでも書面により誓約を取り消すことができる。既に履行された寄付金は原則として返還されないが、団体が目的事業を中止した場合又は不正使用が確認された場合は返還を求めることができる。',
       '寄付者は、寄付金領収書の発行及び事業報告等のために、団体が本人の個人情報を収集・利用することに同意する。団体は個人情報保護法に従い、寄付者の情報を安全に管理する。',
       '本誓約書に定めのない事項は、寄付金品の募集及び使用に関する法律その他関係法令による。'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA[_activeLang] || LANG_DATA.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('docDate'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('dispDate'); if (_el1) _el1.textContent = ymd;
+  var _el2 = document.getElementById('sigDate'); if (_el2) _el2.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA[lang];
   if (!d) return;
   ['ko','en','ja'].forEach(function(l) {
@@ -584,6 +599,12 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

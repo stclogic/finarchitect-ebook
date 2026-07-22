@@ -345,10 +345,16 @@
 <script src="auth.js" defer></script>
 <script src="footer-inject.js" defer></script>
 <script>
+var _currentLang = 'ko';
+function _formatDate(d, lang) {
+  var y = d.getFullYear(), m = d.getMonth()+1, day = d.getDate();
+  if (lang === 'en') return ['January','February','March','April','May','June','July','August','September','October','November','December'][m-1]+' '+day+', '+y;
+  if (lang === 'ja') return y+'年'+m+'月'+day+'日';
+  return y+'년 '+m+'월 '+day+'일';
+}
+var _certDate = new Date();
 (function(){
-  const d = new Date();
-  document.getElementById('sigDate').textContent =
-    d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일';
+  document.getElementById('sigDate').textContent = _formatDate(_certDate, 'ko');
 })();
 
 // 언어 전환
@@ -377,7 +383,8 @@ var LANG_DATA_FORM = {
     certStampLine: '우체국장 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (인)',
     stampCircle: '인',
     sigSignText: '(서명)',
-    infoLabels: ['성명','주소','연락처']
+    infoLabels: ['성명','주소','연락처'],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'CERTIFIED MAIL CONTENT', docSub: 'Certificate of Mailing Content (Registered Mail)',
@@ -403,7 +410,8 @@ var LANG_DATA_FORM = {
     certStampLine: 'Postmaster &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SEAL)',
     stampCircle: 'SEAL',
     sigSignText: '(Signature)',
-    infoLabels: ['Name','Address','Contact']
+    infoLabels: ['Name','Address','Contact'],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '内 &nbsp; 容 &nbsp; 証 &nbsp; 明', docSub: '郵便による内容証明（書留郵便）',
@@ -429,10 +437,21 @@ var LANG_DATA_FORM = {
     certStampLine: '郵便局長 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; （印）',
     stampCircle: '印',
     sigSignText: '（署名）',
-    infoLabels: ['氏名','住所','連絡先']
+    infoLabels: ['氏名','住所','連絡先'],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('sigDate'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA_FORM[lang];
   ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
   document.getElementById('formDocTitle').innerHTML = d.docTitle;
@@ -525,6 +544,12 @@ function addDemand(){
   tr.innerHTML = '<td style="text-align:center;font-weight:700;border:1px solid #fca5a5;">' + demandCount + '</td><td contenteditable="true" style="border:1px solid #fca5a5;padding:2.5mm 3mm;"></td>';
   table.appendChild(tr);
 }
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

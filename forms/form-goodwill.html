@@ -503,7 +503,8 @@ var LANG_DATA = {
     docTitle: '권  리  금  계  약  서', docSub: 'GOODWILL TRANSFER AGREEMENT',
     thSeller: '양도인 (甲) — 현 임차인', thBuyer: '양수인 (乙) — 신규 임차인',
     sigPrefix: '위 계약 내용을 확인하고 각자 서명·날인한다.',
-    articles: ['권리금','계약금 및 잔금 지급 일정','임대인 동의','인수 범위 — 시설물 목록','명도 및 인수인계 일자','영업 비밀 이전','영업 방해 금지','임대인의 계약 갱신 거절 시 손실 처리','계약 해지 및 위약금','분쟁 해결']
+    articles: ['권리금','계약금 및 잔금 지급 일정','임대인 동의','인수 범위 — 시설물 목록','명도 및 인수인계 일자','영업 비밀 이전','영업 방해 금지','임대인의 계약 갱신 거절 시 손실 처리','계약 해지 및 위약금','분쟁 해결'],
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     ctrlTitle: '🏪 Goodwill Transfer Agreement', printBtn: '🖨 Print / Save as PDF',
@@ -526,7 +527,8 @@ var LANG_DATA = {
       'If the Landlord refuses without justifiable cause to renew the lease with Party B and Party B suffers losses as a result, the Landlord shall compensate for such losses in accordance with the Commercial Building Lease Protection Act.',
       'If the contract is terminated due to a breach by Party A, Party A shall refund twice the amount of the deposit to Party B. If Party B breaches the contract, Party B shall forfeit the deposit.',
       'Disputes arising out of or in connection with this contract shall be submitted to the court having jurisdiction over the location of the premises as the court of first instance.'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     ctrlTitle: '🏪 営業権譲渡契約書', printBtn: '🖨 印刷 / PDF保存',
@@ -549,10 +551,23 @@ var LANG_DATA = {
       '賃貸人が正当な理由なく乙との賃貸借契約の更新を拒絶して乙が損害を被った場合、賃貸人は商業用建物賃貸借保護法に従い損害を賠償する。',
       '甲の契約違反により契約が解除された場合、甲は乙に手付金の2倍を返還する。乙が契約に違反した場合、乙は手付金を放棄する。',
       '本契約に関する紛争は、店舗所在地を管轄する裁判所を第一審裁判所とする。'
-    ]
+    ],
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA[_activeLang] || LANG_DATA.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('docDate'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('dispDate'); if (_el1) _el1.textContent = ymd;
+  var _el2 = document.getElementById('sigDate'); if (_el2) _el2.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   var d = LANG_DATA[lang];
   if (!d) return;
   ['ko','en','ja'].forEach(function(l) {
@@ -598,6 +613,12 @@ function resetDoc() {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

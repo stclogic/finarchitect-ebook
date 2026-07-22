@@ -511,7 +511,8 @@ const LANGS = {
     langNotice:'⚠ 언어 전환 시 내용이 초기화됩니다.',
     resetBtn:'↺ 초기화',
     tipBox:'💡 표 안 셀을 클릭하면 직접 수정 가능합니다.<br>"경력 행 추가" 버튼으로 경력을 더 추가할 수 있습니다.<br>행 위에 마우스를 올리면 삭제 버튼이 나타납니다.',
-    printBtn:'🖨 인쇄 / PDF 저장'
+    printBtn:'🖨 인쇄 / PDF 저장',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle:'CERTIFICATE OF CAREER', docSub:'Employment History Certificate',
@@ -527,7 +528,8 @@ const LANGS = {
     langNotice:'⚠ Switching language resets all content.',
     resetBtn:'↺ Reset',
     tipBox:'💡 Click any cell in the table to edit it directly.<br>Use "Add Career Row" to add more entries.<br>Hover over a row to reveal the delete button.',
-    printBtn:'🖨 Print / Save as PDF'
+    printBtn:'🖨 Print / Save as PDF',
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle:'経  歴  証  明  書', docSub:'CERTIFICATE OF CAREER / EMPLOYMENT HISTORY',
@@ -543,12 +545,23 @@ const LANGS = {
     langNotice:'⚠ 言語切替時にすべての内容がリセットされます。',
     resetBtn:'↺ リセット',
     tipBox:'💡 表内の各セルをクリックして直接編集できます。<br>「経歴行を追加」ボタンで経歴を追加できます。<br>行にマウスを乗せると削除ボタンが表示されます。',
-    printBtn:'🖨 印刷 / PDF保存'
+    printBtn:'🖨 印刷 / PDF保存',
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANGS[_activeLang] || LANGS.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('issue-date-text'); if (_el0) _el0.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   const t = LANGS[lang];
@@ -592,6 +605,16 @@ function setLang(lang) {
   var printBtn = document.getElementById('print-btn');
   if (printBtn) printBtn.textContent = t.printBtn;
   document.documentElement.lang = lang;
+  
+  // 인증서 기본값 번역
+  document.querySelectorAll('[contenteditable]').forEach(function(el) {
+    var t = el.textContent.trim();
+    if (['홍길동','Full Name','氏名'].includes(t)) el.textContent = lang==='en'?'Full Name':lang==='ja'?'氏名':'홍길동';
+    if (['____년 __월 __일','e.g. Jan 1, 2020','例：2020年1月1日'].includes(t)) el.textContent = lang==='en'?'e.g. Jan 1, 2020':lang==='ja'?'例：2020年1月1日':'____년 __월 __일';
+    if (['______','______','______'].includes(t)) el.textContent = lang==='en'?'______':lang==='ja'?'______':'______';
+  });
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 // 오늘 날짜 자동 입력
@@ -672,6 +695,12 @@ function resetForm() {
     tbody.appendChild(tr);
   }
 }
+
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
 </script>
 </body>
 </html>

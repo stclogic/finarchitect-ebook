@@ -671,7 +671,8 @@ var LANG_DATA_FORM = {
     footerText: '위와 같이 견적을 제출합니다.',
     sigLabel: '대표이사',
     quoteMetaLabels: ['견적번호','견적일자'],
-    amtLabel: '합계금액 (한글)'
+    amtLabel: '합계금액 (한글)',
+    dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
     docTitle: 'QUOTATION',
@@ -694,7 +695,8 @@ var LANG_DATA_FORM = {
     footerText: 'We hereby submit the above quotation.',
     sigLabel: 'CEO',
     quoteMetaLabels: ['Quote No.','Quote Date'],
-    amtLabel: 'Amount in Words'
+    amtLabel: 'Amount in Words',
+    dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
     docTitle: '見 &nbsp; 積 &nbsp; 書',
@@ -717,12 +719,24 @@ var LANG_DATA_FORM = {
     footerText: '上記のとおりお見積り申し上げます。',
     sigLabel: '代表取締役',
     quoteMetaLabels: ['見積番号','見積日付'],
-    amtLabel: '合計金額（読み方）'
+    amtLabel: '合計金額（読み方）',
+    dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
 
 var _currentLang = 'ko';
+
+function _updateFormDate() {
+  var _t = new Date();
+  var _d = (LANG_DATA_FORM[_activeLang] || LANG_DATA_FORM.ko);
+  if (!_d || !_d.dateFormatter) return;
+  var ymd = _d.dateFormatter(_t.getFullYear(), _t.getMonth()+1, _t.getDate());
+  var _el0 = document.getElementById('dispDate'); if (_el0) _el0.textContent = ymd;
+  var _el1 = document.getElementById('footerDate'); if (_el1) _el1.textContent = ymd;
+}
+var _activeLang = 'ko';
 function setLang(lang) {
+  _activeLang = lang;
   if (_currentLang === lang) return;
   _currentLang = lang;
   var d = LANG_DATA_FORM[lang];
@@ -783,6 +797,12 @@ document.getElementById('logoUpload').addEventListener('change', function(e) {
 </script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer-inject.js"></script>
+<script src="../assets/js/footer-inject.js">
+// 페이지 로드 시 저장 언어 자동 적용
+(function() {
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
 </body>
 </html>

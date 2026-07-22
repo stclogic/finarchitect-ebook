@@ -232,6 +232,14 @@
       .structure-box { font-size: 0.78rem; padding: 1.2rem; }
       .risk-table { font-size: 0.82rem; }
     }
+
+    /* ── 언어 탭 ── */
+    .il-tabs { display:flex; gap:8px; margin:0 0 2rem; padding:1rem 0 0; border-bottom:2px solid #E2E8F0; }
+    .il-tab { padding:6px 18px; border-radius:20px; border:1.5px solid transparent; font-size:0.82rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#64748B; transition:all .18s; }
+    .il-tab:hover { background:#E0E7FF; color:#4F46E5; }
+    .il-tab.active { background:#6366F1; color:#fff; border-color:#4F46E5; }
+    .il { display:none; }
+    .il.active { display:block; }
   </style>
 </head>
 <body>
@@ -259,6 +267,15 @@
 
 <!-- Body -->
 <article class="insight-body">
+
+
+  <div class="il-tabs">
+    <button class="il-tab active" data-l="ko" onclick="setInsightLang('ko')">한국어</button>
+    <button class="il-tab" data-l="en" onclick="setInsightLang('en')">English</button>
+    <button class="il-tab" data-l="ja" onclick="setInsightLang('ja')">日本語</button>
+  </div>
+
+  <div class="il lang-ko active">
 
   <h2>사건의 팩트</h2>
 
@@ -389,6 +406,273 @@
     · <a href="https://imnews.imbc.com/news/2026/politics/article/6838689_36911.html" target="_blank" rel="noopener">국힘 "이재명 대통령 아파트 '꼼수 매매'" — MBC 뉴스</a>
   </div>
 
+
+  </div><!-- /lang-ko -->
+
+  <div class="il lang-en">
+
+  <h2>The Transaction Facts</h2>
+
+  <p>In July 2026, President Lee Jae-myung and his spouse sold their apartment in Bundang, Seongnam (164㎡) for <strong>₩2.9 billion (~$2.1M USD)</strong>. The price itself is not the story. The <strong>structure</strong> is.</p>
+
+  <div class="fact-box">
+    <div class="fact-title">Transaction Structure (Based on Public Reports)</div>
+    The buyer paid a down payment of ₩300M + interim payment of ₩1.1B, then <strong>received title transfer before full payment.</strong><br>
+    The remaining balance (~₩1.5B) was due in October 2026.<br>
+    President Lee and spouse registered as <strong>creditors with a maximum lien of ₩1.77B (근저당권).</strong><br><br>
+    In plain terms: title was transferred, but since payment wasn't complete, the sellers took a lien as security.
+  </div>
+
+  <p>The opposition criticized this as a <strong>"tricky deal."</strong> The presidential office countered that the sale was below market value, demonstrating commitment to real estate policy. Political judgments are the reader's to make. This article reads the <strong>transaction structure itself.</strong></p>
+
+  <h2>Why This Structure Is Unusual</h2>
+
+  <p>In a typical Korean real estate transaction, the lien holder is the <strong>bank</strong>. The buyer takes a loan, and the bank holds the security. This transaction was different: the <strong>seller (the President's family) became the lien holder directly.</strong></p>
+
+  <p>This is known in the industry as <strong>"Seller Financing"</strong> or "Vendor Mortgage" — the seller acts as the lender.</p>
+
+  <div class="structure-box">
+    <span class="s-label">TRANSACTION STRUCTURE COMPARISON</span>
+    <span class="s-red">Standard:</span>  Buyer → Bank loan → Lump-sum balance payment<br>
+    <span class="s-highlight">This deal:</span>  Buyer → Receives title first<br>
+              → <span class="s-highlight">Seller registers lien (Creditor = President's family)</span><br>
+              → Balance paid in installments by Oct 2026, then lien released
+  </div>
+
+  <h2>The Reconstruction Timing</h2>
+
+  <p>Yangjimaeul complex was designated a <strong>priority reconstruction zone in November 2025.</strong> Once a reconstruction association is formed, member status cannot be transferred in speculative hot zones.</p>
+
+  <p>The President's family completed title registration just <strong>2 days after contract signing</strong> — perfectly timed before association formation. Legally unproblematic. But this precision is not easy for an ordinary seller to achieve.</p>
+
+  <h2>The Real Issue: When This Structure Is Used Between Family Members</h2>
+
+  <div class="scenario-box">
+    <div class="sc-title">Scenario — Parent-to-Child Apartment Transfer</div>
+    <ol>
+      <li>Parent sells apartment (market value: ₩1B) to child on paper</li>
+      <li>Child pays ₩100M down payment, receives full title</li>
+      <li>Parent registers ₩900M lien as creditor (balance security)</li>
+      <li>Balance paid in installments over 10–20 years — effectively zero-interest long-term financing</li>
+      <li>If parent dies mid-way, the lien debt becomes part of the estate — but <strong>actual recovery is uncertain</strong></li>
+    </ol>
+    <div class="sc-result">
+      Result: Child acquires a ₩1B apartment for ₩100M. Gift tax? <strong>The form is "sale," so none applies — on paper.</strong>
+    </div>
+  </div>
+
+  <h2>What the Tax Authority Watches For</h2>
+
+  <p>Korea's National Tax Service (NTS) can reclassify such transactions as <strong>"below-market transfers or disguised gifts."</strong> Three criteria trigger scrutiny:</p>
+
+  <table class="risk-table">
+    <thead>
+      <tr>
+        <th>Check Point</th>
+        <th>Red Flag</th>
+        <th>Risk</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Interest collected</td>
+        <td>Zero interest or below market rate</td>
+        <td class="danger">HIGH</td>
+      </tr>
+      <tr>
+        <td>Actual balance payment</td>
+        <td>Long-term unpaid or statute of limitations reached</td>
+        <td class="danger">HIGH</td>
+      </tr>
+      <tr>
+        <td>Relationship of parties</td>
+        <td>Related parties (family)</td>
+        <td class="danger">HIGH</td>
+      </tr>
+      <tr>
+        <td>Price vs. market value</td>
+        <td>Below 70% of market value</td>
+        <td class="danger">HIGH</td>
+      </tr>
+      <tr>
+        <td>Buyer's financial capacity</td>
+        <td>Purchase price far exceeds income</td>
+        <td class="danger">HIGH</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>If three or more apply, the NTS can treat the transaction as <strong>a de facto gift</strong> and assess gift tax. President Lee's deal involved a third party — this analysis does not apply to it. But <strong>copying this structure for a family transaction carries a completely different risk profile.</strong></p>
+
+  <h2>What Comes Next</h2>
+
+  <div class="signal-box">
+    <div class="sig-label">THIS WEEK'S WEALTH SIGNAL</div>
+    <blockquote>'Seller Financing' may rapidly spread as a tool for intra-family asset transfers among the wealthy.</blockquote>
+    <p>In a high-rate environment where bank loans are constrained, a structure where parents provide financing directly is economically rational. But when designed with long-term non-payment and zero interest, it becomes a workaround for gift tax. The NTS is increasingly scrutinizing this pattern. <strong>'Tightening taxation on related-party installment sales'</strong> is likely to surface in the 2027 tax reform discussions.</p>
+  </div>
+
+  <h3>Three Things to Check Now</h3>
+
+  <p>If you are planning an intra-family real estate transaction, confirm these three things:</p>
+
+  <p><strong>① Set a proper interest rate.</strong> Zero-interest installment plans are treated as gifts under Korean tax law. Use at least the statutory rate (currently 4.6% p.a.).</p>
+
+  <p><strong>② Document the payment schedule explicitly.</strong> "Pay later" is evidence of a gift. Notarize an installment agreement or formal loan contract.</p>
+
+  <p><strong>③ The transaction price must be at least 70% of market value.</strong> Below that threshold, gift tax is automatically assessed on the difference.</p>
+
+  <div class="nav-prev-next">
+    <a href="2026-07-16.html">← Vol.003 The 1,400 Won Era</a>
+    <a href="../forms.html">Free Document Library →</a>
+  </div>
+
+  <div class="disclaimer">
+    This analysis is based on publicly reported information and is intended for financial education purposes. It does not allege illegality in any specific transaction. Consult a licensed tax accountant or legal professional before making real estate or tax decisions.
+  </div>
+
+  <div class="source-list">
+    <strong>Sources</strong><br>
+    · <a href="https://www.newspim.com/news/view/20260720000964" target="_blank" rel="noopener">President Lee sells Bundang apartment for ₩2.9B — why the ₩1.77B lien? — Newspim</a><br>
+    · <a href="https://www.khan.co.kr/article/202607201837001" target="_blank" rel="noopener">President Lee's Bundang apartment sold for ₩2.9B — Kyunghyang Shinmun</a><br>
+    · <a href="https://www.sedaily.com/article/20069541" target="_blank" rel="noopener">President Lee sells with lien; release scheduled after October balance — Seoul Economy</a><br>
+    · <a href="https://view.asiae.co.kr/article/2026072017421092795" target="_blank" rel="noopener">Now homeless, President Lee sells Bundang home for ₩2.9B with lien — Asia Economy</a><br>
+    · <a href="https://imnews.imbc.com/news/2026/politics/article/6838689_36911.html" target="_blank" rel="noopener">PPP: President Lee's apartment deal is a "trick sale" — MBC News</a>
+  </div>
+
+  </div><!-- /lang-en -->
+
+  <div class="il lang-ja">
+
+  <h2>取引の事実</h2>
+
+  <p>2026年7月、李在明（イ・ジェミョン）大統領夫妻は、城南市盆唐区の楊地マウルアパート（164㎡）を<strong>29億ウォン（約3,200万円相当）</strong>で売却した。注目すべきは価格ではなく、<strong>構造</strong>だ。</p>
+
+  <div class="fact-box">
+    <div class="fact-title">公開報道に基づく取引構造</div>
+    買主は手付金3億ウォン＋中間金11億ウォンを支払い、<strong>先に所有権移転登記を完了。</strong><br>
+    残代金約15億ウォンは2026年10月に支払予定。<br>
+    李大統領夫妻が<strong>債権最高額17億7千万ウォンの根抵当権者</strong>として登記された。<br><br>
+    平たく言えば、物件は引き渡したが代金の一部未回収のため、担保として抵当権を設定した。
+  </div>
+
+  <p>野党は「脱法的な売買」と批判。大統領府は「市場価格より低く売り、不動産政策への意志を示した」と反論した。政治的判断は読者に委ねる。この記事は<strong>取引構造そのもの</strong>を読む。</p>
+
+  <h2>なぜこの構造が珍しいのか</h2>
+
+  <p>一般的な韓国の不動産取引では、根抵当権者は<strong>銀行</strong>だ。買主がローンを組み、銀行が担保を取る。今回は異なる。<strong>売主（李大統領夫妻）が直接根抵当権者</strong>になった。</p>
+
+  <p>業界では<strong>「売主担保付き割賦販売」</strong>または<strong>「セラー・ファイナンシング（Seller Financing）」</strong>と呼ばれる手法だ。</p>
+
+  <div class="structure-box">
+    <span class="s-label">取引構造の比較</span>
+    <span class="s-red">通常取引：</span>  買主 → 銀行融資 → 残代金一括支払<br>
+    <span class="s-highlight">今回の取引：</span>  買主 → 先に所有権取得<br>
+              → <span class="s-highlight">売主が根抵当権設定（債権者＝李大統領夫妻）</span><br>
+              → 2026年10月に残代金支払後、根抵当権抹消
+  </div>
+
+  <h2>再建築のタイミングも注目される</h2>
+
+  <p>楊地マウルは<strong>2025年11月に再建築優先地区</strong>として指定された。組合設立後は投機過熱地区内の組合員地位の譲渡が原則禁止となる。</p>
+
+  <p>李大統領夫妻は契約後<strong>わずか2日で所有権移転登記</strong>を完了した。組合設立前のタイミングを正確に捉えた構造だ。法的には問題ない。しかし一般の売主がこれほど精密にタイミングを合わせることは容易ではない。</p>
+
+  <h2>本当の問題：この構造が親族間取引に使われたら</h2>
+
+  <div class="scenario-box">
+    <div class="sc-title">シナリオ — 親から子へのアパート移転</div>
+    <ol>
+      <li>親が子に時価10億ウォンのアパートを「売買」契約で移転</li>
+      <li>子は手付金1億ウォンだけを支払い所有権移転登記完了</li>
+      <li>親が9億ウォンの根抵当権者として登記（残代金担保）</li>
+      <li>残代金9億ウォンを10〜20年の分割支払 → 事実上の無利子長期割賦</li>
+      <li>途中で親が死亡した場合、根抵当債権は相続財産に含まれるが<strong>実際の回収は不透明</strong></li>
+    </ol>
+    <div class="sc-result">
+      結果：子は1億ウォンで10億ウォンのアパートを取得。贈与税は？<strong>形式は「売買」のため発生しない——書類上は。</strong>
+    </div>
+  </div>
+
+  <h2>税務当局が注目するポイント</h2>
+
+  <p>韓国の国税庁はこのような取引を<strong>「低価譲渡または迂回贈与」</strong>と見なすことができる。判断基準は三つだ。</p>
+
+  <table class="risk-table">
+    <thead>
+      <tr>
+        <th>チェック項目</th>
+        <th>危険シグナル</th>
+        <th>判定</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>利息の収受</td>
+        <td>無利子または市中金利未満</td>
+        <td class="danger">危険</td>
+      </tr>
+      <tr>
+        <td>残代金の実際の支払</td>
+        <td>長期未払いまたは時効到来</td>
+        <td class="danger">危険</td>
+      </tr>
+      <tr>
+        <td>当事者の関係</td>
+        <td>特殊関係者（親族）</td>
+        <td class="danger">危険</td>
+      </tr>
+      <tr>
+        <td>時価との比較</td>
+        <td>時価の70%未満</td>
+        <td class="danger">危険</td>
+      </tr>
+      <tr>
+        <td>買主の資力</td>
+        <td>収入対比で取引金額が過大</td>
+        <td class="danger">危険</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>3項目以上該当する場合、国税庁は<strong>事実上の贈与</strong>として贈与税を追徴できる。李大統領の取引は第三者間取引のため、この問題とは無関係だ。しかし<strong>この構造をそのまま親族間取引に適用すると、リスクはまったく異なる。</strong></p>
+
+  <h2>今後どうなるか</h2>
+
+  <div class="signal-box">
+    <div class="sig-label">今週の富のシグナル</div>
+    <blockquote>「セラー・ファイナンシング」は今後、富裕層の親族間資産移転手段として急速に広まる可能性がある。</blockquote>
+    <p>高金利時代に銀行融資が困難な状況で、親が直接資金を提供する構造は経済的に合理的だ。しかし長期未払い・無利子で設計された場合、贈与の迂回路となる。国税庁がこのパターンへの本格的な審査に乗り出す可能性が高い。2027年の税制改正議論で<strong>「特殊関係者間割賦売買への課税強化」</strong>が議題に上がることが予想される。</p>
+  </div>
+
+  <h3>今すぐ確認すべき3つのポイント</h3>
+
+  <p>親族間の不動産取引を検討しているなら、必ず以下を確認せよ。</p>
+
+  <p><strong>① 適正利息を設定せよ。</strong>無利子割賦は税法上、利息相当額を贈与と見なす。現行の法定利率（年4.6%）を基準に利息を受け取ること。</p>
+
+  <p><strong>② 残代金の支払計画を具体的に書面化せよ。</strong>「後で払う」は贈与の証拠となる。公証覚書または金銭消費貸借契約書で明文化すること。</p>
+
+  <p><strong>③ 取引価格は時価の70%以上でなければならない。</strong>それを下回ると、差額に対して贈与税が自動的に課される。</p>
+
+  <div class="nav-prev-next">
+    <a href="2026-07-16.html">← Vol.003 ウォン1,400ウォン時代</a>
+    <a href="../forms.html">無料書式ライブラリ →</a>
+  </div>
+
+  <div class="disclaimer">
+    本インサイトは公開報道を基に取引構造を分析したものです。特定の取引の違法性を主張するものではなく、金融・税務教育目的で作成されています。実際の取引前に税理士・司法書士等の専門家にご相談ください。
+  </div>
+
+  <div class="source-list">
+    <strong>情報ソース</strong><br>
+    · <a href="https://www.newspim.com/news/view/20260720000964" target="_blank" rel="noopener">李大統領の盆唐アパート、29億ウォンで売却…17.7億ウォンの根抵当の理由は — ニュースピム</a><br>
+    · <a href="https://www.khan.co.kr/article/202607201837001" target="_blank" rel="noopener">李大統領の盆唐アパート、29億ウォンで売却 — 京郷新聞</a><br>
+    · <a href="https://www.sedaily.com/article/20069541" target="_blank" rel="noopener">李大統領、盆唐アパート売却時に根抵当設定…10月の残代金支払後に抹消 — ソウル経済</a>
+  </div>
+
+  </div><!-- /lang-ja -->
+
 </article>
 
 
@@ -396,5 +680,23 @@
 <script src="../assets/js/nav.js?v=3" defer></script>
 <script src="../assets/js/auth.js" defer></script>
 <script src="../assets/js/footer-inject.js" defer></script>
+
+<script>
+function setInsightLang(l){
+  document.querySelectorAll('.il').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.il-tab').forEach(function(t){t.classList.remove('active');});
+  var el=document.querySelector('.il.lang-'+l);
+  if(el) el.classList.add('active');
+  var tab=document.querySelector('.il-tab[data-l="'+l+'"]');
+  if(tab) tab.classList.add('active');
+  localStorage.setItem('site-lang',l);
+  if(window.syncNavLang) window.syncNavLang(l);
+}
+(function(){
+  var l=localStorage.getItem('site-lang')||'ko';
+  if(l!=='ko') setInsightLang(l);
+})();
+</script>
+
 </body>
 </html>

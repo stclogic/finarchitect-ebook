@@ -186,6 +186,14 @@
       .insight-body { padding: 2rem 1.2rem 4rem; }
       .insight-hero { padding: 3.5rem 1.2rem 3rem; }
     }
+
+    /* ── 언어 탭 ── */
+    .il-tabs { display:flex; gap:8px; margin:0 0 2rem; padding:1rem 0 0; border-bottom:2px solid #E2E8F0; }
+    .il-tab { padding:6px 18px; border-radius:20px; border:1.5px solid transparent; font-size:0.82rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#64748B; transition:all .18s; }
+    .il-tab:hover { background:#E0E7FF; color:#4F46E5; }
+    .il-tab.active { background:#6366F1; color:#fff; border-color:#4F46E5; }
+    .il { display:none; }
+    .il.active { display:block; }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9744071365591766"
      crossorigin="anonymous"></script>
@@ -230,6 +238,15 @@
 
 <!-- BODY -->
 <div class="insight-body">
+
+
+  <div class="il-tabs">
+    <button class="il-tab active" data-l="ko" onclick="setInsightLang('ko')">한국어</button>
+    <button class="il-tab" data-l="en" onclick="setInsightLang('en')">English</button>
+    <button class="il-tab" data-l="ja" onclick="setInsightLang('ja')">日本語</button>
+  </div>
+
+  <div class="il lang-ko active">
 
   <!-- 목차 -->
   <div class="toc">
@@ -531,7 +548,264 @@
     <span style="font-size:0.8rem;color:var(--text3);align-self:center;">다음 호는 2026년 7월 1일 발행 예정</span>
   </div>
 
-</div>
+
+  </div><!-- /lang-ko -->
+
+  <div class="il lang-en">
+
+  <div class="toc">
+    <div class="toc-title">📋 Table of Contents</div>
+    <ol>
+      <li><a href="#ch2">Why SK Hynix Really Fell — The Two Clocks</a></li>
+      <li><a href="#ch3">Samsung's Buyback — What the CEO Is Saying Without Words</a></li>
+      <li><a href="#ch4">NVIDIA · Micron · AMD — AI Chip War: Current State</a></li>
+      <li><a href="#ch5">MSCI Developed Market Inclusion — How It Reshapes KOSPI</a></li>
+      <li><a href="#ch6">Unrealized Gains Tax — What Korean Investors Must Know</a></li>
+      <li><a href="#ch7">USD · JPY · ADR — How HNWIs Are Repositioning Globally</a></li>
+      <li><a href="#ch10">Conclusion — Finance Is Not Emotion. It Is Structure.</a></li>
+    </ol>
+  </div>
+
+  <p>Every week, millions of searches map the anxieties and ambitions of a generation. They are a real-time record of <strong>fear, greed, information asymmetry, and the movement of wealth.</strong> This article connects the most-searched Korean financial keywords of the 4th week of June 2026 into a single narrative. Only those who read the structure beneath the numbers get to move first.</p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch1">① Market Temperature — Week 4, June in Numbers</h2>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val red">-4.2%</div><div class="stat-label">SK Hynix (000660) weekly return</div></div>
+    <div class="stat-card"><div class="stat-val red">-2.8%</div><div class="stat-label">Samsung Electronics (005930) weekly return</div></div>
+    <div class="stat-card"><div class="stat-val green">+1.3%</div><div class="stat-label">NVIDIA (NVDA) weekly return</div></div>
+    <div class="stat-card"><div class="stat-val red">-3.1%</div><div class="stat-label">Micron (MU) weekly return</div></div>
+    <div class="stat-card"><div class="stat-val">₩1,390</div><div class="stat-label">USD/KRW exchange rate</div></div>
+    <div class="stat-card"><div class="stat-val green">$68,200</div><div class="stat-label">Bitcoin weekly close</div></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch2">② Why SK Hynix Really Fell — The Two Clocks</h2>
+
+  <p>"Why did SK Hynix fall?" was the most-asked question this week. Surface reason: <strong>Micron's guidance downgrade</strong> + NAND oversupply concerns + Kioxia's upcoming IPO adding supply signals. The entire memory semiconductor sector wobbled.</p>
+
+  <p>Peel back a layer and the story changes. <strong>SK Hynix's HBM (High Bandwidth Memory) remains in supply shortage.</strong> As long as Jensen Huang's NVIDIA continues driving explosive AI accelerator demand, SK Hynix's structural value as the dominant HBM supplier remains intact. This drop was <strong>fear about all memory bleeding into HBM — an emotional overreaction.</strong></p>
+
+  <div class="insight-highlight">
+    <strong>The Structural Read:</strong> SK Hynix (000660) runs on two clocks simultaneously. One is the conventional memory (DRAM/NAND) inventory cycle — currently in a downswing. The other is the HBM/AI infrastructure demand cycle — still in early innings. Investors who cannot distinguish these two clocks always sell on emotion and buy on emotion.
+  </div>
+
+  <p>As Robert Kiyosaki wrote in <em>Rich Dad Poor Dad</em>: <strong>the wealthy understand what an asset is; the poor only see the price.</strong> Among the hundreds of thousands who searched SK Hynix this week, the gap between those who looked at 'price' and those who looked at 'structure' is now widening into a return gap.</p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch3">③ Samsung's Buyback — What the CEO Is Saying Without Words</h2>
+
+  <p>Samsung Electronics' (005930) buyback announcement was the second-most-searched financial topic. A buyback during semiconductor weakness sends two simultaneous signals: management considers the stock <strong>undervalued</strong>, and it's a strategic move to halt foreign institutional outflows. The message: we will defend the floor.</p>
+
+  <blockquote>
+    "A company buyback is the most expensive signal management can send to the market. They're not talking — they're paying." — Wall Street maxim
+  </blockquote>
+
+  <div class="divider"></div>
+
+  <h2 id="ch4">④ NVIDIA · Micron · AMD — AI Chip War: Current State</h2>
+
+  <p>NVIDIA remained at the center of markets. The real shock: <strong>AMD beginning to seriously challenge NVIDIA in the AI accelerator market.</strong> As SpaceX, Apple, and Google all invest in their own AI chips, the era of NVIDIA monopoly is showing cracks.</p>
+
+  <div class="insight-gold-box">
+    <div class="gold-title">💡 What HNWIs Observed This Week</div>
+    HNWIs weren't watching individual tickers — they were tracking the <strong>full AI infrastructure value chain's restructuring.</strong> Not NVIDIA vs AMD vs Micron, but the structural beneficiary chain: Data Centers → Power → Cooling → Real Estate. ETFs like QQQM, TQQQ, SPCX saw surging retail searches for the same reason — they track the theme, not the ticker.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch5">⑤ MSCI Developed Market Inclusion — How It Reshapes KOSPI</h2>
+
+  <p>If Korea moves from MSCI Emerging Markets to MSCI Developed Markets, an estimated <strong>₩80+ trillion in passive funds</strong> would flow into Korean equities. Foreign investment banks including Nomura are running this scenario analysis now.</p>
+
+  <p>Understanding this requires knowing what MSCI is: an <strong>index calculation firm.</strong> When Korea is included, the trillions in passive funds globally tracking that index must automatically buy Korean equities.</p>
+
+  <div class="insight-highlight">
+    <strong>Inclusion Requirements:</strong> For MSCI Developed Market inclusion, Korea must address: short-selling regulation reform, forex market accessibility, and mandatory English disclosure. Any delay pushes the decision to the following year. How the Korea Exchange navigates this will define KOSPI's 2026–2027 direction.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch6">⑥ Unrealized Gains Tax — What Korean Investors Must Know</h2>
+
+  <p>Taxing unrealized gains (on stocks not yet sold) was the hottest policy topic this week. The US tried it under Biden and abandoned it. Korea's similar debate has reignited.</p>
+
+  <p>Why it matters: <strong>if implemented, investor behavior itself changes.</strong> Year-end selling pressure rises, long-term holding incentives shrink, and HNWIs begin designing structures for avoidance.</p>
+
+  <div class="insight-gold-box">
+    <div class="gold-title">💡 HNWIs Are Already Positioning</div>
+    When unrealized gains taxation becomes real, HNWIs respond with three structures:<br><br>
+    <strong>① Corporate transfer</strong> — hold equity through a corporate entity, different tax treatment<br>
+    <strong>② Residency change</strong> — move tax residency to Singapore, UAE (no capital gains tax)<br>
+    <strong>③ Family office structuring</strong> — distribute asset transfer timing via trust/estate structures
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch7">⑦ USD · JPY · ADR — How HNWIs Are Repositioning Globally</h2>
+
+  <p>USD/KRW at 1,390 while JPY weakens = broader Asia currency weakness. In this environment, the gap between investors who diversified into dollar-based assets earlier and those who didn't continues to widen.</p>
+
+  <p><strong>ADR (American Depositary Receipt)</strong> search spikes are significant. Investors tracking SK Hynix's ADR in New York are using the 'after-hours price' to pre-read direction before the Korean market opens. This is the behavior shift of investors who have begun understanding global markets structurally.</p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch10">⑩ Conclusion — Finance Is Not Emotion. It Is Structure.</h2>
+
+  <p><strong>First, anxiety drives searches.</strong> When SK Hynix falls, people search for reasons. But knowing the reason and correctly incorporating it into investment decisions are entirely different capabilities.</p>
+
+  <p><strong>Second, trends are the map; structure is the compass.</strong> Hot keywords this week — solid-state batteries, AI agents, MSCI, unrealized gains tax — show direction. But you need the compass of structure to read the map.</p>
+
+  <p><strong>Third, the wealth shift has already begun.</strong> Dollar assets growing, Korean investors tracking ADRs, HNWIs positioning in Singapore and UAE — all of this is happening right now.</p>
+
+  <blockquote>
+    "Money flows toward those who understand it. It flows away from those who fear it." — 《Structuring Wealth》
+  </blockquote>
+
+  <div class="cta-box">
+    <h3>This Week's Reading Picks</h3>
+    <div class="cta-btns">
+      <a href="../global-wealth-shift.html" class="cta-btn-primary">📖 Global Wealth Shift (FREE)</a>
+      <a href="../ebook2.html" class="cta-btn-sec">🔐 HNWI Code</a>
+      <a href="../library.html" class="cta-btn-sec">📚 Full Library</a>
+    </div>
+  </div>
+
+  <div class="insight-nav">
+    <a href="../library.html">← Back to Library</a>
+    <span style="font-size:0.8rem;color:var(--text3);align-self:center;">Vol.002 published July 6, 2026</span>
+  </div>
+
+  </div><!-- /lang-en -->
+
+  <div class="il lang-ja">
+
+  <div class="toc">
+    <div class="toc-title">📋 目次</div>
+    <ol>
+      <li><a href="#ch2">SKハイニックス株価下落の本当の理由——2つの時計</a></li>
+      <li><a href="#ch3">サムスン電子の自社株買い——CEOが無言で語ること</a></li>
+      <li><a href="#ch4">NVIDIA・マイクロン・AMD——AIチップ覇権戦争の現状</a></li>
+      <li><a href="#ch5">MSCI先進国指数への編入——KOSPIをどう変えるか</a></li>
+      <li><a href="#ch6">未実現利益課税——韓国投資家が知るべきこと</a></li>
+      <li><a href="#ch7">ドル・円・ADR——富裕層のグローバル資産再配置</a></li>
+      <li><a href="#ch10">結論——金融は感情ではなく構造だ</a></li>
+    </ol>
+  </div>
+
+  <p>毎週数百万件の検索クエリが時代の不安と欲望をリアルタイムで記録する。これは2026年6月第4週、最も多く検索された韓国の金融・経済キーワードを一つのストーリーにつないだ記事だ。<strong>数字の背後にある構造を読む者だけが次の一手を先に打てる。</strong></p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch1">① 今週の市場温度——6月第4週の数字</h2>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val red">-4.2%</div><div class="stat-label">SKハイニックス（000660）週間騰落率</div></div>
+    <div class="stat-card"><div class="stat-val red">-2.8%</div><div class="stat-label">サムスン電子（005930）週間騰落率</div></div>
+    <div class="stat-card"><div class="stat-val green">+1.3%</div><div class="stat-label">NVIDIA（NVDA）週間騰落率</div></div>
+    <div class="stat-card"><div class="stat-val red">-3.1%</div><div class="stat-label">マイクロン（MU）週間騰落率</div></div>
+    <div class="stat-card"><div class="stat-val">1,390ウォン</div><div class="stat-label">ドル/ウォン為替レート</div></div>
+    <div class="stat-card"><div class="stat-val green">$68,200</div><div class="stat-label">ビットコイン週間終値</div></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch2">② SKハイニックス株価下落の本当の理由——2つの時計</h2>
+
+  <p>「SKハイニックスはなぜ下がったのか？」今週最も多く検索された質問だ。表面的な理由は明快。<strong>マイクロン（Micron）の業績見通し下方修正</strong>とNANDフラッシュ市場の供給過剰懸念だ。</p>
+
+  <p>しかし一皮むくと話は変わる。<strong>SKハイニックスのHBM（High Bandwidth Memory）は依然として供給不足状態だ。</strong>ジェンスン・フアン率いるNVIDIAがAIアクセラレータ需要を爆発的に引き上げる限り、HBMを独占供給するSKハイニックスの構造的価値は毀損されない。今回の下落は<strong>メモリ全体への恐怖がHBMにまで波及した「感情の過剰反応」</strong>だ。</p>
+
+  <div class="insight-highlight">
+    <strong>構造で読む法：</strong>SKハイニックス（000660）の株価は2つの時計を同時に抱えている。一つは汎用メモリ（DRAM・NAND）の在庫サイクル——現在は下降中。もう一つはHBM・AIインフラの需要サイクル——まだ初期段階だ。この2つの時計を区別できない投資家は常に感情で売り、感情で買う。
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch3">③ サムスン電子の自社株買い——CEOが無言で語ること</h2>
+
+  <p>サムスン電子（005930）の自社株買い発表は今週2番目に多く検索された金融テーマだ。半導体不振の中での自社株買いは2つのシグナルを同時に発する。経営陣が現在の株価を<strong>割安</strong>と見ているという確信の表明、そして外国人機関投資家の離脱を防ぐ戦略的判断だ。</p>
+
+  <blockquote>
+    「企業の自社株買いは経営陣が市場に送る最もコストの高いシグナルだ。言葉ではなく現金で語るからだ。」 — ウォール街の格言
+  </blockquote>
+
+  <div class="divider"></div>
+
+  <h2 id="ch4">④ NVIDIA・マイクロン・AMD——AIチップ覇権戦争の現状</h2>
+
+  <p>NVIDIAは今週も市場の中心にあった。真の衝撃は別にある。<strong>AMDがAIアクセラレータ市場でNVIDIAに本格的に追随し始めたこと</strong>で、AI半導体の供給元が多様化する可能性が高まった。</p>
+
+  <div class="insight-gold-box">
+    <div class="gold-title">💡 今週HNWI（富裕層）が注目したポイント</div>
+    富裕層（HNWI）が今週注目したのは個別銘柄ではなく、<strong>AIインフラ全体のバリューチェーン再編</strong>だ。NVIDIA・AMD・マイクロンという銘柄ゲームではなく、データセンター→電力→冷却→不動産へと続く<strong>構造的恩恵の連鎖</strong>を追跡すること。
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch5">⑤ MSCI先進国指数への編入——KOSPIをどう変えるか</h2>
+
+  <p>韓国がMSCI新興国指数から先進国指数へ編入された場合、約<strong>80兆ウォン以上のパッシブ資金</strong>が韓国株式市場に流入するという試算がある。ノムラ証券をはじめとする外資系IBがこのシナリオを本格分析し始めた。</p>
+
+  <p>MSCIは<strong>インデックス算出機関</strong>だ。ここに編入されるということは、世界中の数十兆ドル規模のパッシブファンドが自動的に韓国株式を買わなければならないことを意味する。</p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch6">⑥ 未実現利益課税——韓国投資家が知るべきこと</h2>
+
+  <p><strong>未実現利益課税</strong>は今週最もホットな政策テーマだった。まだ売却していない株式の利益に課税するという概念で、米国ではバイデン政権が試みたものの頓挫した。韓国でも同様の議論が再燃している。</p>
+
+  <div class="insight-gold-box">
+    <div class="gold-title">💡 富裕層（HNWI）はすでに準備している</div>
+    未実現利益課税が現実化した際、富裕層（HNWI）は3つの構造で対応する。<br><br>
+    <strong>① 資産を法人名義に移転</strong> — 個人ではなく法人として株式を保有し、課税体系を変える<br>
+    <strong>② 居住地・事業地の移転</strong> — シンガポール・UAEなどキャピタルゲイン税がない国へ税法上の居住地を変更<br>
+    <strong>③ ファミリーオフィスの構造化</strong> — 信託・遺言構造を通じて資産移転のタイミングを分散
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch7">⑦ ドル・円・ADR——富裕層のグローバル資産再配置</h2>
+
+  <p>今週、<strong>ドル為替レートと日本円</strong>が同時に検索上位に入った。ドル/ウォンが1,390ウォン台を維持する状況で円安が続くことは、アジア通貨全般の弱さを意味する。この環境でドルベースの資産に分散した投資家とそうでない投資家の実質収益率の格差は拡大する。</p>
+
+  <p><strong>ADR（米国預託証券）</strong>の検索急増は示唆に富む。SKハイニックスのADRを追う投資家はニューヨーク市場で形成される「時間外価格」を通じて、韓国市場の開場前に方向性を先読みしようとしている。</p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch10">⑩ 結論——金融は感情ではなく構造だ</h2>
+
+  <p><strong>第1に、不安が検索を生む。</strong>SKハイニックスが下がれば理由を検索する。しかし理由を知ることと、それを投資判断に正しく反映させることは、まったく別の能力だ。</p>
+
+  <p><strong>第2に、トレンドは地図であり、構造は羅針盤だ。</strong>今週のキーワード——全固体電池、AIエージェント、MSCI、未実現利益課税——は方向を示す地図だ。しかしその地図を読むには構造という羅針盤が必要だ。</p>
+
+  <p><strong>第3に、富の移動はすでに始まっている。</strong>ドル資産が増え、韓国の投資家がADRを追跡し、富裕層がシンガポール・UAEに資産を配置している——これらすべてが今この瞬間に起きている富の移動だ。</p>
+
+  <blockquote>
+    「お金は理解する人に流れ、恐れる人から離れる。」 — 《構造で富を設計する人々》より
+  </blockquote>
+
+  <div class="cta-box">
+    <h3>今週の推奨リーディング</h3>
+    <div class="cta-btns">
+      <a href="../global-wealth-shift.html" class="cta-btn-primary">📖 グローバル富の大移動（無料）</a>
+      <a href="../ebook2.html" class="cta-btn-sec">🔐 HNWIコードを読む</a>
+      <a href="../library.html" class="cta-btn-sec">📚 全ライブラリ</a>
+    </div>
+  </div>
+
+  <div class="insight-nav">
+    <a href="../library.html">← ライブラリに戻る</a>
+    <span style="font-size:0.8rem;color:var(--text3);align-self:center;">Vol.002は2026年7月6日発行</span>
+  </div>
+
+  </div><!-- /lang-ja -->
+
+</div><!-- /insight-body -->
 
 <footer class="site-footer">
   <div class="footer-row1">
@@ -553,5 +827,23 @@
 <script src="../assets/js/i18n.js"></script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
+
+<script>
+function setInsightLang(l){
+  document.querySelectorAll('.il').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.il-tab').forEach(function(t){t.classList.remove('active');});
+  var el=document.querySelector('.il.lang-'+l);
+  if(el) el.classList.add('active');
+  var tab=document.querySelector('.il-tab[data-l="'+l+'"]');
+  if(tab) tab.classList.add('active');
+  localStorage.setItem('site-lang',l);
+  if(window.syncNavLang) window.syncNavLang(l);
+}
+(function(){
+  var l=localStorage.getItem('site-lang')||'ko';
+  if(l!=='ko') setInsightLang(l);
+})();
+</script>
+
 </body>
 </html>

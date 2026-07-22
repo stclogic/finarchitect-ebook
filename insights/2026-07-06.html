@@ -218,6 +218,14 @@
       .insight-hero { padding: 3.5rem 1.2rem 3rem; }
       .two-col { grid-template-columns: 1fr; }
     }
+
+    /* ── 언어 탭 ── */
+    .il-tabs { display:flex; gap:8px; margin:0 0 2rem; padding:1rem 0 0; border-bottom:2px solid #E2E8F0; }
+    .il-tab { padding:6px 18px; border-radius:20px; border:1.5px solid transparent; font-size:0.82rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#64748B; transition:all .18s; }
+    .il-tab:hover { background:#E0E7FF; color:#4F46E5; }
+    .il-tab.active { background:#6366F1; color:#fff; border-color:#4F46E5; }
+    .il { display:none; }
+    .il.active { display:block; }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9744071365591766"
      crossorigin="anonymous"></script>
@@ -262,6 +270,15 @@
 
 <!-- BODY -->
 <div class="insight-body">
+
+
+  <div class="il-tabs">
+    <button class="il-tab active" data-l="ko" onclick="setInsightLang('ko')">한국어</button>
+    <button class="il-tab" data-l="en" onclick="setInsightLang('en')">English</button>
+    <button class="il-tab" data-l="ja" onclick="setInsightLang('ja')">日本語</button>
+  </div>
+
+  <div class="il lang-ko active">
 
   <!-- 목차 -->
   <div class="toc">
@@ -561,7 +578,275 @@
     <span style="font-size:0.8rem;color:var(--text3);align-self:center;">다음 호는 2026년 7월 13일 발행 예정</span>
   </div>
 
-</div>
+
+  </div><!-- /lang-ko -->
+
+  <div class="il lang-en">
+
+  <div class="toc">
+    <div class="toc-title">📋 Table of Contents</div>
+    <ol>
+      <li><a href="#ch1">Market Temperature — July Week 1 in Numbers</a></li>
+      <li><a href="#ch2">SpaceX Debt + IPO Lockup — What Musk Is Signaling</a></li>
+      <li><a href="#ch3">Buffett Cash vs. Musk Debt — Two Legends, Two Different Clocks</a></li>
+      <li><a href="#ch4">Palantir · RKLB · MP Materials — The Defense AI Triangle</a></li>
+      <li><a href="#ch5">NVIDIA 2026 — Where Does the AI Brain Race Next?</a></li>
+      <li><a href="#ch6">Korea's Defense AI: KAI · Hanwha Ocean · 6th-Gen Fighter</a></li>
+      <li><a href="#ch7">10-Year Treasury + Mortgage Rates — Anatomy of Capital Flow</a></li>
+      <li><a href="#ch8">IONQ · SMR — The Power and Compute Crisis Behind AI</a></li>
+      <li><a href="#ch9">Bitcoin · MSTR · Stablecoins — Digital Assets Go Institutional</a></li>
+      <li><a href="#ch10">Conclusion — Infrastructure Owners Design the Next Generation's Wealth</a></li>
+    </ol>
+  </div>
+
+  <p>Every week, millions of search queries map the anxieties and ambitions of a generation. And occasionally, search trends across multiple countries converge on <strong>a single coordinate</strong>. This was one of those weeks. SpaceX, Palantir, RKLB, MP Materials in the US. Korea Aerospace Industries, Hanwha Ocean, 6th-generation fighters, small modular reactors in Korea. Taken separately, these look like noise. Together, they spell a message: <strong>The post-AI war is won by whoever laid the neural network, not built the brain.</strong></p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch1">① Market Temperature — July Week 1 in Numbers</h2>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val green">+8.1%</div><div class="stat-label">Palantir (PLTR) weekly return</div></div>
+    <div class="stat-card"><div class="stat-val green">+12.4%</div><div class="stat-label">Rocket Lab (RKLB) weekly return</div></div>
+    <div class="stat-card"><div class="stat-val green">+5.2%</div><div class="stat-label">NVIDIA (NVDA) weekly return</div></div>
+    <div class="stat-card"><div class="stat-val blue">4.28%</div><div class="stat-label">US 10-Year Treasury Yield</div></div>
+    <div class="stat-card"><div class="stat-val green">$109,400</div><div class="stat-label">Bitcoin weekly close</div></div>
+    <div class="stat-card"><div class="stat-val green">+6.7%</div><div class="stat-label">Korea Aerospace Industries (KAI) weekly</div></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch2">② SpaceX Debt + IPO Lockup — What Musk Is Signaling</h2>
+
+  <p>The single biggest financial search story in the US this week was SpaceX's <strong>multi-tranche debt issuance</strong> and <strong>Elon Musk's IPO lockup</strong>. These two keywords tell one story.</p>
+
+  <p>SpaceX issued billions in new debt — extraordinary for a private company. It signals two things simultaneously. <strong>First, management confidence in cash generation:</strong> debt must be repaid. Musk issuing this much debt implies Starlink subscriptions and launch contracts are already generating predictable cash flows. <strong>Second, a declaration that there is no rush to IPO.</strong> If you can raise via debt, you don't need to go public.</p>
+
+  <div class="insight-space-box">
+    <div class="space-title">🚀 What Is an IPO Lockup?</div>
+    An IPO lockup prevents insiders (employees and early investors) from selling shares for a set period after listing. Surging searches for "SpaceX IPO lockup" signal that the market is calculating <strong>when SpaceX lists and whether insiders will dump shares immediately after.</strong> The number of investors searching for pre-IPO SpaceX access (currently only via secondary markets) is spiking.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch3">③ Buffett Cash vs. Musk Debt — Two Different Clocks</h2>
+
+  <p>Berkshire Hathaway's cash pile hit record levels this week. Buffett is accumulating; Musk is deploying debt into SpaceX. Investors searching both simultaneously are asking: <strong>"Who do I follow?"</strong></p>
+
+  <div class="two-col">
+    <div class="two-col-card">
+      <div class="card-label">Buffett's Bet</div>
+      <p>Maximize cash. The market is overpriced. Waiting, trigger ready, for the next crash. <strong>"Opportunities come when others are fearful."</strong></p>
+    </div>
+    <div class="two-col-card">
+      <div class="card-label">Musk's Bet</div>
+      <p>Use debt to accelerate infrastructure expansion. The technology cycle moves faster than market cycles. <strong>"Direction is everything. Timing is secondary."</strong></p>
+    </div>
+  </div>
+
+  <p>Neither is wrong. They run on different clocks. Buffett watches a 10-year value cycle. Musk watches a 20-year technology infrastructure cycle. The individual investor's real question: <strong>"Which portion of my assets belongs on which clock?"</strong></p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch4">④ Palantir · RKLB · MP Materials — The Defense AI Triangle</h2>
+
+  <p>This week's standout cluster: three tickers. <strong>Palantir (PLTR), Rocket Lab (RKLB), MP Materials (MP).</strong> Different industries — one common thread: all are connected to <strong>US government and DoD budgets.</strong></p>
+
+  <p><strong>Palantir</strong> supplies AI data analytics platforms to the military and intelligence community. Not a software company — it <strong>designs the brain of warfare.</strong></p>
+
+  <p><strong>Rocket Lab (RKLB)</strong> is a small-satellite launch specialist. Where SpaceX handles heavy payloads, RKLB enables rapid deployment of <strong>reconnaissance, communication, and military satellites.</strong> Starlink changed the battlefield in Ukraine; the next battlefield will be shaped by small-sat infrastructure.</p>
+
+  <p><strong>MP Materials</strong> produces rare earth elements. EV motors, drones, missile guidance systems, AI chips — all require rare earths. China controls 70%+ of global supply. The US building around MP Materials is not economic logic — it is <strong>national security logic.</strong></p>
+
+  <div class="insight-gold-box">
+    <div class="gold-title">💡 How HNWIs Read This Triangle</div>
+    HNWIs don't analyze these three tickers individually. They view them as a single <strong>"Defense AI Value Chain" theme ETF.</strong><br><br>
+    <strong>① Data/AI (Palantir)</strong> → Brain of warfare<br>
+    <strong>② Launch/Satellites (RKLB)</strong> → Eyes and ears of warfare<br>
+    <strong>③ Materials/Supply Chain (MP Materials)</strong> → Skeleton of warfare<br><br>
+    Combined with the Trump 2.0 defense budget expansion, this triangle is one of the most structurally advantaged sectors in 2026–2028.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch5">⑤ NVIDIA 2026 — Where Does the AI Brain Race Next?</h2>
+
+  <p>'NVIDIA stock performance 2026' hit US search charts as fear and greed converged. NVIDIA was the dominant AI beneficiary from 2023–2025. What about 2026?</p>
+
+  <p>The key data point: <strong>Broadcom (AVGO) was searched alongside NVIDIA.</strong> Broadcom wins custom AI chip (ASIC) design contracts from Google, Apple, Meta. NVIDIA's GPUs dominate AI training, but at the inference stage, custom chips win on power efficiency and cost. <strong>The 2026 AI infrastructure battleground is shifting from 'training' to 'inference.'</strong></p>
+
+  <div class="insight-highlight">
+    <strong>The Structural Read:</strong> NVIDIA and Broadcom occupy <strong>different layers of the same market.</strong> NVIDIA sells into data centers training AI models. Broadcom builds custom chips running AI services at the edge. Both layers are growing simultaneously — that is the essence of the AI infrastructure super-cycle. Micron and SK Hynix being searched together reflects the same logic: inference chips also require HBM memory.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch6">⑥ Korea's Defense AI: KAI · Hanwha Ocean · 6th-Gen Fighter</h2>
+
+  <p>Korea's hottest search combination this week: <strong>Korea Aerospace Industries (KAI), Hanwha Ocean, 6th-generation fighter jet.</strong> The global defense AI boom is projecting directly onto Korean markets.</p>
+
+  <p><strong>KAI</strong> is the core company behind the KF-21 Boramae program. As the 4.5-gen KF-21 enters operational deployment, market attention has already moved to the <strong>6th-generation fighter program</strong> — an AI-embedded system commanding unmanned drone wingmen.</p>
+
+  <p><strong>Hanwha Ocean</strong> continues winning global contracts in warship construction and Unmanned Underwater Vehicles (UUV), repositioning as a <strong>maritime defense platform company</strong>, not merely a shipbuilder.</p>
+
+  <div class="insight-highlight">
+    <strong>Korea's defense AI mirrors the US triangle structurally:</strong><br>
+    KAI (manned-unmanned combat system) · Hanwha Ocean (naval platforms) · LIG Nex1 / Hyundai Rotem (missile guidance, K2 tank exports). As NATO members and Southeast Asian nations rapidly increase defense spending, Korean defense stocks are not a domestic theme — they are <strong>a global defense AI supply chain.</strong>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch10">⑩ Conclusion — Infrastructure Owners Design the Next Generation's Wealth</h2>
+
+  <p>The post-AI competition is no longer about who builds the best AI model. From H2 2026, it is about who launches more satellites (SpaceX, RKLB), who lays the neural network of defense AI (Palantir, KAI), who secures energy infrastructure (SMR, IONQ), and who controls rare earth supply chains (MP Materials, POSCO).</p>
+
+  <blockquote>
+    "The next generation's wealth will flow not to those who built AI, but to those who laid the infrastructure AI runs on." — 《Global Wealth Shift》
+  </blockquote>
+
+  <div class="cta-box">
+    <h3>This Week's Reading Picks</h3>
+    <p>Want to go deeper on defense AI, global asset migration, and real-world strategies?</p>
+    <div class="cta-btns">
+      <a href="../ebook3.html" class="cta-btn-primary">📖 Global Wealth Shift (FREE)</a>
+      <a href="../ebook2.html" class="cta-btn-sec">🔐 HNWI Code</a>
+      <a href="../library.html" class="cta-btn-sec">📚 Full Library</a>
+    </div>
+  </div>
+
+  <div class="insight-nav">
+    <a href="2026-06-24.html">← Vol.001 When SK Hynix Wobbled</a>
+    <span style="font-size:0.8rem;color:var(--text3);align-self:center;">Vol.003 published July 16, 2026</span>
+  </div>
+
+  </div><!-- /lang-en -->
+
+  <div class="il lang-ja">
+
+  <div class="toc">
+    <div class="toc-title">📋 目次</div>
+    <ol>
+      <li><a href="#ch1">今週の市場温度——7月第1週の数字</a></li>
+      <li><a href="#ch2">SpaceX債券発行＋IPOロックアップ——マスクが市場に送るシグナル</a></li>
+      <li><a href="#ch3">バフェットは現金、マスクは負債——二つの時計</a></li>
+      <li><a href="#ch4">Palantir・RKLB・MP Materials——防衛AIトライアングル</a></li>
+      <li><a href="#ch5">NVIDIA 2026——AIの頭脳競争は次にどこへ向かうか</a></li>
+      <li><a href="#ch6">韓国の防衛AI：KAI・韓和オーシャン・第6世代戦闘機</a></li>
+      <li><a href="#ch10">結論——インフラを持つ者が次世代の富を設計する</a></li>
+    </ol>
+  </div>
+
+  <p>毎週何百万人もの検索クエリが時代の不安と欲望を記録する。そして時に、複数の国の検索トレンドが<strong>一つの座標を同時に指し示す</strong>瞬間がある。今週がそれだった。米国ではSpaceX、Palantir、RKLB、MP Materialsが話題を集め、韓国では韓国航空宇宙産業（KAI）、韓和オーシャン、第6世代戦闘機、小型モジュール炉（SMR）が浮上した。<strong>AIの後の戦争は、頭脳を作った者ではなく、神経網を敷いた者が制する。</strong></p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch1">① 今週の市場温度——7月第1週の数字</h2>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val green">+8.1%</div><div class="stat-label">Palantir（PLTR）週間騰落率</div></div>
+    <div class="stat-card"><div class="stat-val green">+12.4%</div><div class="stat-label">Rocket Lab（RKLB）週間騰落率</div></div>
+    <div class="stat-card"><div class="stat-val green">+5.2%</div><div class="stat-label">NVIDIA（NVDA）週間騰落率</div></div>
+    <div class="stat-card"><div class="stat-val blue">4.28%</div><div class="stat-label">米国10年国債利回り</div></div>
+    <div class="stat-card"><div class="stat-val green">$109,400</div><div class="stat-label">ビットコイン週間終値</div></div>
+    <div class="stat-card"><div class="stat-val green">+6.7%</div><div class="stat-label">韓国航空宇宙産業（KAI）週間</div></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch2">② SpaceX債券発行＋IPOロックアップ——マスクが市場に送るシグナル</h2>
+
+  <p>今週の米国金融界で最も検索されたテーマは<strong>SpaceXの多段階（マルチトランシュ）債券発行</strong>と<strong>イーロン・マスクのIPOロックアップ</strong>だ。この2つのキーワードは1つの物語を語る。</p>
+
+  <p>SpaceXは数十億ドル規模の負債を発行した。非上場企業がこの規模の債券を発行することは2つのことを同時に意味する。<strong>第1に、キャッシュフロー創出能力への経営陣の確信。</strong>負債は返済義務だ。マスクがこの規模の負債を発行するということは、Starlinkのサブスクリプション収入とロケット打ち上げ契約がすでに予測可能なキャッシュフローを生んでいるということだ。<strong>第2に、IPOを急がないという宣言。</strong>負債で資金調達できるなら、上場を急ぐ必要はない。</p>
+
+  <div class="insight-space-box">
+    <div class="space-title">🚀 IPOロックアップとは？</div>
+    IPOロックアップ（Lock-up）は、上場後に内部者（従業員・初期投資家）が一定期間株式を売却できないよう制限する仕組みだ。「SpaceX IPOロックアップ」の検索急増は、市場が<strong>「SpaceXはいつ上場し、上場直後に内部者が大量売却するか」</strong>を計算していることを意味する。
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch3">③ バフェットは現金、マスクは負債——2人の異なる時計</h2>
+
+  <div class="two-col">
+    <div class="two-col-card">
+      <div class="card-label">バフェットの賭け</div>
+      <p>現金の最大化。市場は割高と判断。次の暴落を待ちながらトリガーに手をかけて待機。<strong>「チャンスは他者が恐れる時にやってくる。」</strong></p>
+    </div>
+    <div class="two-col-card">
+      <div class="card-label">マスクの賭け</div>
+      <p>負債でインフラ拡張を加速。技術サイクルは市場サイクルより速いという確信。<strong>「タイミングではなく方向がすべてだ。」</strong></p>
+    </div>
+  </div>
+
+  <p>どちらも間違っていない。<strong>時計が違う</strong>のだ。バフェットは10年の価値サイクルを見る。マスクは20年の技術インフラサイクルを見る。個人投資家が問うべきは「どちらが正しいか」ではなく、<strong>「自分の資産のどの部分をどちらの時計に配置するか」</strong>だ。</p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch4">④ Palantir・RKLB・MP Materials——防衛AIトライアングル</h2>
+
+  <p>今週注目すべきクラスターは3銘柄だ。<strong>Palantir（PLTR）、Rocket Lab（RKLB）、MP Materials（MP）。</strong>業種は異なるが共通点が1つある。すべて<strong>米国政府・国防総省の予算</strong>に繋がっている。</p>
+
+  <p><strong>Palantir</strong>はAIデータ分析プラットフォームを軍・情報機関に提供する。単なるソフトウェア会社ではなく、<strong>戦争の頭脳</strong>を設計する会社だ。</p>
+
+  <p><strong>Rocket Lab（RKLB）</strong>は小型衛星打ち上げ専門企業。SpaceXが大型ペイロードを担うなら、RKLBは<strong>偵察衛星・通信衛星・軍事衛星</strong>の迅速展開を可能にする。</p>
+
+  <p><strong>MP Materials</strong>はレアアース生産企業だ。EV用モーター、ドローン、ミサイル誘導システム、AIチップ——すべてにレアアースが必要だ。現在レアアース供給の70%以上を中国が支配している。米国がMP Materialsに賭けるのは<strong>経済論理ではなく安全保障論理</strong>だ。</p>
+
+  <div class="insight-gold-box">
+    <div class="gold-title">💡 富裕層（HNWI）がこのトライアングルを見る方法</div>
+    富裕層はこの3銘柄を個別に分析しない。<strong>「防衛AIバリューチェーン」</strong>という1つのテーマETFとして見る。<br><br>
+    <strong>① データ/AI（Palantir）</strong> → 戦争の頭脳<br>
+    <strong>② 打ち上げ/衛星（RKLB）</strong> → 戦争の目と耳<br>
+    <strong>③ 素材/サプライチェーン（MP Materials）</strong> → 戦争の骨格<br><br>
+    トランプ第2期政権の国防予算拡大基調と相まって、このトライアングルは2026〜2028年の最も構造的な恩恵セクターの一つだ。
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 id="ch5">⑤ NVIDIA 2026——AIの頭脳競争は次にどこへ向かうか</h2>
+
+  <p>NVIDIAは2023〜2025年にかけてAIブームの最大恩恵株だった。2026年は？</p>
+
+  <p>鍵となるのは<strong>Broadcom（AVGO）が同時に検索されたこと</strong>だ。BroadcomはGoogle、Apple、MetaなどビッグテックのカスタムAIチップ（ASIC）設計を受注している。NVIDIAのGPUはAIトレーニングに最強だが、推論（Inference）段階ではカスタムチップが電力効率とコストで優位に立つ。<strong>2026年のAIインフラ戦争の前線は「トレーニング」から「推論」へ移動している。</strong></p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch6">⑥ 韓国の防衛AI：KAI・韓和オーシャン・第6世代戦闘機</h2>
+
+  <p>韓国の検索で今週最も熱かった組み合わせは<strong>韓国航空宇宙産業（KAI）、韓和オーシャン、第6世代戦闘機</strong>だ。グローバルな防衛AIブームが韓国市場にも投影されている。</p>
+
+  <p><strong>KAI</strong>はKF-21ボラメプロジェクトのコア企業。市場の目はすでに<strong>第6世代戦闘機プログラム</strong>——AIを搭載した有人機が無人機群を指揮するシステム——に向かっている。</p>
+
+  <p><strong>韓和オーシャン</strong>は艦艇建造と無人潜水艇（UUV）分野でグローバル受注を積み上げ、単なる造船会社から<strong>海洋防衛プラットフォーム企業</strong>として再定義されつつある。</p>
+
+  <div class="divider"></div>
+
+  <h2 id="ch10">⑩ 結論——インフラを持つ者が次世代の富を設計する</h2>
+
+  <p>2026年下半期からの競争は、より多くの衛星を打ち上げ（SpaceX、RKLB）、防衛AIの神経網を敷き（Palantir、KAI）、エネルギーインフラを確保し（SMR、IONQ）、レアアースサプライチェーンを掌握する（MP Materials、POSCO）者が勝つ。</p>
+
+  <blockquote>
+    「次世代の富はAIを作った人ではなく、AIが動くインフラを敷いた人に流れる。」 — 《グローバル富の大移動》より
+  </blockquote>
+
+  <div class="cta-box">
+    <h3>今週の推奨リーディング</h3>
+    <div class="cta-btns">
+      <a href="../ebook3.html" class="cta-btn-primary">📖 グローバル富の大移動（無料）</a>
+      <a href="../ebook2.html" class="cta-btn-sec">🔐 HNWIコードを読む</a>
+      <a href="../library.html" class="cta-btn-sec">📚 全ライブラリ</a>
+    </div>
+  </div>
+
+  <div class="insight-nav">
+    <a href="2026-06-24.html">← Vol.001 SKハイニックスが揺れた週</a>
+    <span style="font-size:0.8rem;color:var(--text3);align-self:center;">Vol.003は2026年7月16日発行</span>
+  </div>
+
+  </div><!-- /lang-ja -->
+
+</div><!-- /insight-body -->
 
 <footer class="site-footer">
   <div class="footer-row1">
@@ -583,5 +868,23 @@
 <script src="../assets/js/i18n.js"></script>
 <script src="../assets/js/nav.js?v=3"></script>
 <script src="../assets/js/auth.js"></script>
+
+<script>
+function setInsightLang(l){
+  document.querySelectorAll('.il').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.il-tab').forEach(function(t){t.classList.remove('active');});
+  var el=document.querySelector('.il.lang-'+l);
+  if(el) el.classList.add('active');
+  var tab=document.querySelector('.il-tab[data-l="'+l+'"]');
+  if(tab) tab.classList.add('active');
+  localStorage.setItem('site-lang',l);
+  if(window.syncNavLang) window.syncNavLang(l);
+}
+(function(){
+  var l=localStorage.getItem('site-lang')||'ko';
+  if(l!=='ko') setInsightLang(l);
+})();
+</script>
+
 </body>
 </html>

@@ -79,7 +79,12 @@ const SITE_I18N = {
     'yt4.desc': '부가세·종합소득세·4대보험 구조를 모르면 첫 해부터 세금 폭탄을 맞습니다.',
 
     // LANDING — reviews
-    'reviews.tag': 'REVIEWS',
+    'reviews.tag': 'CLIENT REVIEWS',
+    'reviews.section.title': '금융 컨설팅 분야별 <span class="gold">실제 후기</span>',
+    'reviews.meta': '/ 5.0 · 누적 리뷰 3,284건',
+    'rv.all': '전체', 'rv.spc': 'SPC 설립', 'rv.hnwi': '고액자산가 관리',
+    'rv.corp': '법인 설립·구조화', 'rv.overseas': '해외투자·해외법인',
+    'rv.pf': '부동산 PF', 'rv.ma': 'M&A·지분계약', 'rv.tax': '절세·세무전략',
     'reviews.title': '12,847명이 선택했습니다',
     'review1.text': '"법인 설립부터 투자 계약까지 필요한 서식이 다 있어요. 변호사 비용을 크게 줄였습니다."',
     'review1.role': '스타트업 창업자',
@@ -87,6 +92,13 @@ const SITE_I18N = {
     'review2.role': '부동산 투자자',
     'review3.text': '"고객들에게 항상 추천합니다. 세무 신고 서식이 최신 법령에 맞게 업데이트되어 신뢰할 수 있습니다."',
     'review3.role': '세무사',
+    // LANDING — youtube cards (fixed 3)
+    'yt0.tag': '📘 eBook 소개', 'yt0.title': '구조로 돈을 설계하는 사람들',
+    'yt0.desc': '금융은 감정이 아니라 구조다. PF·SPC·STO·Exit 전략까지 자금 흐름의 전체 지도.',
+    'yt-global.tag': '🌍 글로벌 트렌드', 'yt-global.title': '글로벌 부의 대 이동',
+    'yt-global.desc': '전 세계 자산가들이 국경을 넘어 움직이는 이유와 새로운 부의 흐름을 분석합니다.',
+    'yt-secret.tag': '✈ HNWI 코드', 'yt-secret.title': '부자들의 비밀 이민전략',
+    'yt-secret.desc': 'HNWI가 선택하는 UAE·싱가포르·스위스 — 세제 전략과 패밀리오피스 설계의 실제.',
 
     // LANDING — CTA
     'cta.title': '지금 바로 시작하세요',
@@ -244,7 +256,12 @@ const SITE_I18N = {
     'yt4.title': 'Taxes You Must Understand Before Registering a Business',
     'yt4.desc': "If you don't understand VAT, income tax, and social insurance, you'll face a tax shock in your first year.",
 
-    'reviews.tag': 'REVIEWS',
+    'reviews.tag': 'CLIENT REVIEWS',
+    'reviews.section.title': 'Real Reviews by <span class="gold">Category</span>',
+    'reviews.meta': '/ 5.0 · 3,284 reviews total',
+    'rv.all': 'All', 'rv.spc': 'SPC Setup', 'rv.hnwi': 'HNWI Mgmt',
+    'rv.corp': 'Corp. Structure', 'rv.overseas': 'Overseas Inv.',
+    'rv.pf': 'Real Estate PF', 'rv.ma': 'M&A', 'rv.tax': 'Tax Strategy',
     'reviews.title': '12,847 Members Have Chosen Us',
     'review1.text': '"All the forms I needed from company formation to investment contracts. Saved a lot on legal fees."',
     'review1.role': 'Startup Founder',
@@ -252,6 +269,12 @@ const SITE_I18N = {
     'review2.role': 'Real Estate Investor',
     'review3.text': '"I always recommend this to clients. The tax filing forms are regularly updated to current regulations."',
     'review3.role': 'Tax Accountant',
+    'yt0.tag': '📘 eBook Introduction', 'yt0.title': 'People Who Design Money with Structure',
+    'yt0.desc': 'Finance is structure, not emotion. The complete map of capital flow: PF · SPC · STO · Exit strategy.',
+    'yt-global.tag': '🌍 Global Trend', 'yt-global.title': 'The Great Global Wealth Migration',
+    'yt-global.desc': 'Why wealthy individuals are crossing borders — and where the new flow of wealth is heading.',
+    'yt-secret.tag': '✈ HNWI Code', 'yt-secret.title': 'The Secret Immigration Strategy of the Rich',
+    'yt-secret.desc': 'UAE · Singapore · Switzerland — tax strategy and family office design chosen by HNWIs.',
 
     'cta.title': 'Get Started Today',
     'cta.desc': '3 free chapters and a basic forms set are<br>available without registration.',
@@ -404,7 +427,12 @@ const SITE_I18N = {
     'yt4.title': '開業前に必ず知っておくべき税金',
     'yt4.desc': '消費税・所得税・社会保険の構造を知らないと、初年度から税金爆弾を受けます。',
 
-    'reviews.tag': 'REVIEWS',
+    'reviews.tag': 'CLIENT REVIEWS',
+    'reviews.section.title': '分野別 <span class="gold">実際のレビュー</span>',
+    'reviews.meta': '/ 5.0 · 累計レビュー 3,284件',
+    'rv.all': 'すべて', 'rv.spc': 'SPC設立', 'rv.hnwi': '高額資産管理',
+    'rv.corp': '法人構造化', 'rv.overseas': '海外投資',
+    'rv.pf': '不動産PF', 'rv.ma': 'M&A', 'rv.tax': '節税戦略',
     'reviews.title': '12,847名が選びました',
     'review1.text': '「法人設立から投資契約まで必要な書式が揃っています。弁護士費用を大幅に削減できました。」',
     'review1.role': 'スタートアップ創業者',
@@ -412,6 +440,12 @@ const SITE_I18N = {
     'review2.role': '不動産投資家',
     'review3.text': '「いつもお客様に勧めています。税務申告書式が最新の法令に合わせて更新されており信頼できます。」',
     'review3.role': '税理士',
+    'yt0.tag': '📘 eBook紹介', 'yt0.title': '構造でお金を設計する人たち',
+    'yt0.desc': '金融は感情ではなく構造だ。PF・SPC・STO・Exit戦略まで資金流れの全体地図。',
+    'yt-global.tag': '🌍 グローバルトレンド', 'yt-global.title': 'グローバル富の大移動',
+    'yt-global.desc': '世界中の資産家が国境を越えて動く理由と、新しい富の流れを分析します。',
+    'yt-secret.tag': '✈ HNWIコード', 'yt-secret.title': '富裕層の秘密移民戦略',
+    'yt-secret.desc': 'HNWIが選ぶUAE・シンガポール・スイス — 税制戦略とファミリーオフィス設計の実際。',
 
     'cta.title': '今すぐ始めましょう',
     'cta.desc': '無料チャプター3つと基本書式セットは<br>会員登録なしでご利用いただけます。',
@@ -522,6 +556,9 @@ function applyLang(lang) {
   // 저장
   localStorage.setItem('site-lang', lang);
   window._siteLang = lang;
+
+  // landing.html 동적 리뷰 카드 재렌더링
+  if (typeof window.renderReviews === 'function') window.renderReviews();
 
   // index2.html: document.write로 데이터 파일이 고정되므로 리로드로 재로드
   if (location.pathname.endsWith('index2.html')) {

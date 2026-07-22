@@ -410,6 +410,10 @@ function setLang(lang) {
     var sigLbls = document.querySelectorAll('.sig-lbl');
     d.sigFieldLabels.forEach(function(txt, i) { if (sigLbls[i]) sigLbls[i].textContent = txt; });
   }
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 let itemCount = 3;

@@ -629,6 +629,10 @@ function setLang(lang) {
   ['ctrlP0','ctrlP1','ctrlP2','ctrlP3','ctrlP4'].forEach(function(k,i){
     if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k];
   });
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 function resetDoc() {

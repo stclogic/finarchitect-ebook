@@ -776,6 +776,8 @@ function setLang(lang) {
   });
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
   _updateFormDate();
+
+  localStorage.setItem('site-lang', lang);
 }
 
 // 페이지 로드 시 저장 언어 자동 적용

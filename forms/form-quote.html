@@ -797,6 +797,10 @@ function setLang(lang) {
   var qml0 = document.getElementById('quoteMetaLabel0'); if(qml0 && d.quoteMetaLabels) qml0.textContent = d.quoteMetaLabels[0];
   var qml1 = document.getElementById('quoteMetaLabel1'); if(qml1 && d.quoteMetaLabels) qml1.textContent = d.quoteMetaLabels[1];
   var qal = document.getElementById('quoteAmtLabel'); if(qal && d.amtLabel) qal.textContent = d.amtLabel;
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 // 로고 업로드

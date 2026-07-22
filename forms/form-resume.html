@@ -796,6 +796,10 @@ function setLang(lang) {
   var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
   var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 // 페이지 로드 시 저장 언어 자동 적용

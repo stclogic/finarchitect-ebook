@@ -662,6 +662,10 @@ function setLang(lang) {
   if(t.infoThLabels) { var infoThs = document.querySelectorAll('.info-table th:not(#infoLabel0)'); t.infoThLabels.forEach(function(h,i){ if(infoThs[i]) infoThs[i].textContent = h; }); }
   var wb = document.getElementById('warnBox'); if(wb && t.warnText) wb.textContent = t.warnText;
   var cb = document.getElementById('confBadge'); if(cb && t.confBadge) cb.textContent = t.confBadge;
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 // 초기 데이터 삽입

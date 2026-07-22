@@ -769,6 +769,10 @@ function setLang(lang) {
     var lh = document.getElementById('logoHolder');
     if (lh) lh.innerHTML = d.logoPlaceholder;
   }
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 function resetDoc() {

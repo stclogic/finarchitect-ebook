@@ -540,6 +540,10 @@ function setLang(lang) {
   var fundUnits = document.querySelectorAll('.fund-card > div:not(.fund-label)'); d.fundUnits.forEach(function(u,i){ if(fundUnits[i]) fundUnits[i].textContent=u; });
   var sigDiv = document.querySelector('.sig-footer > div:first-child'); if(sigDiv) sigDiv.textContent = d.sigText;
   var sigLblEl = document.querySelector('.sig-lbl'); if(sigLblEl) sigLblEl.textContent = d.sigRole;
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

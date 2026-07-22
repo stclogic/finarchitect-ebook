@@ -511,6 +511,10 @@ function setLang(lang) {
     var attachEls = document.querySelectorAll('.attach-item');
     d.attachItems.forEach(function(html, i) { if (attachEls[i]) attachEls[i].innerHTML = html; });
   }
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 document.getElementById('docNum').addEventListener('input', function(){

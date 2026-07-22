@@ -455,6 +455,10 @@ function setLang(lang) {
   document.querySelectorAll('.appr-title').forEach(function(el,i){ if(t.apprTitles && t.apprTitles[i]) el.textContent = t.apprTitles[i]; });
   var wl = document.querySelector('.writer-label'); if(wl && t.writerLabel) wl.textContent = t.writerLabel;
   document.querySelectorAll('.mtype-btn').forEach(function(el,i){ if(t.mtypeBtns && t.mtypeBtns[i]) el.textContent = t.mtypeBtns[i]; });
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 (function(){

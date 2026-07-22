@@ -546,6 +546,10 @@ function setLang(lang) {
   var ibbh1 = document.getElementById('invBbh1'); if(ibbh1 && d.bottomBoxHeads) ibbh1.textContent = d.bottomBoxHeads[1];
   var is0 = document.getElementById('invSig0'); if(is0 && d.sigLabels) is0.textContent = d.sigLabels[0];
   var is1 = document.getElementById('invSig1'); if(is1 && d.sigLabels) is1.textContent = d.sigLabels[1];
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

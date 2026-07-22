@@ -534,6 +534,10 @@ function setLang(lang) {
       el.textContent = d.infoLabels[i % d.infoLabels.length];
     });
   }
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 document.getElementById('deadlineInput').addEventListener('input', function(){

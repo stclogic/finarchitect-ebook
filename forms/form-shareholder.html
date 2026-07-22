@@ -609,6 +609,10 @@ function setLang(lang) {
   ['ctrlL0','ctrlL1'].forEach(function(k,i){ if(cls[i] && d[k]) cls[i].textContent = d[k]; });
   var inps = document.querySelectorAll('.ctrl-section input[type="text"]');
   ['ctrlP0','ctrlP1'].forEach(function(k,i){ if(inps[i] && d[k] !== undefined) inps[i].placeholder = d[k]; });
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

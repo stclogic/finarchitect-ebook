@@ -771,6 +771,10 @@ function setLang(lang) {
     var inp = document.getElementById('q_'+k);
     if (inp && inp.value) syncField(k, inp.value);
   });
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 // 페이지 로드 시 저장 언어 자동 적용

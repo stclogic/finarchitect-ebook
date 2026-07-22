@@ -450,6 +450,10 @@ function setLang(lang) {
       sel.selectedIndex = curIdx >= 0 ? curIdx : 0;
     });
   }
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 const DAYS = ['일','월','화','수','목','금','토'];

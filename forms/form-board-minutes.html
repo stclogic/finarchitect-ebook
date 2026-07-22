@@ -589,6 +589,10 @@ function setLang(lang) {
     var state = rCycle.find(function(c){ return el.classList.contains(c); });
     if(state && d.resultText[state]) el.textContent=d.resultText[state];
   });
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 function toggleAttend(el) {

@@ -472,6 +472,10 @@ function setLang(lang) {
   var btl = document.getElementById('budgetTotalLabel'); if(btl && t.budgetTotal) btl.textContent = t.budgetTotal;
   var ds = document.getElementById('drafterStatement'); if(ds && t.drafterStatement) ds.textContent = t.drafterStatement;
   var drl = document.getElementById('drafterRoleLabel'); if(drl && t.drafterRoleLabel) drl.textContent = t.drafterRoleLabel;
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 (function(){

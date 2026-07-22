@@ -632,6 +632,10 @@ function setLang(lang) {
   if (d.clauseBodies) {
     d.clauseBodies.forEach(function(html, i) { if (_clauseBodies[i]) _clauseBodies[i].innerHTML = html; });
   }
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 // 로고 업로드

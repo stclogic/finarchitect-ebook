@@ -684,6 +684,8 @@ function setLang(lang) {
   if (_nameEl && (!_nameEl.textContent.trim() || ['이름','Full Name','氏名'].includes(_nameEl.textContent.trim()))) _nameEl.textContent = _cld.name;
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
   _updateFormDate();
+
+  localStorage.setItem('site-lang', lang);
 }
 
 // 페이지 로드 시 저장 언어 자동 적용

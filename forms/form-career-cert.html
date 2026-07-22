@@ -631,6 +631,8 @@ function setLang(lang) {
   });
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
   _updateFormDate();
+
+  localStorage.setItem('site-lang', lang);
 }
 
 // 오늘 날짜 자동 입력

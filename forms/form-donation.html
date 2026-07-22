@@ -601,6 +601,10 @@ function setLang(lang) {
   var amtInp = document.getElementById('donationAmt');
   if (amtInp && d.ctrlP3 !== undefined) amtInp.placeholder = d.ctrlP3;
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 function resetDoc() {

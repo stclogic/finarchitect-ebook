@@ -683,6 +683,8 @@ function setLang(lang) {
   // 서명일 텍스트
   var _sigDate = document.querySelector('.iou-sig-date');
   if (_sigDate && d.sigDateHTML) _sigDate.innerHTML = d.sigDateHTML;
+
+  localStorage.setItem('site-lang', lang);
 }
 
 // 페이지 로드 시 저장 언어 자동 적용

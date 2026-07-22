@@ -674,6 +674,9 @@ function setLang(lang) {
   document.documentElement.lang = lang;
 
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+
+  localStorage.setItem('site-lang', lang);
+  _updateFormDate();
 }
 
 // 페이지 로드 시 저장 언어 적용

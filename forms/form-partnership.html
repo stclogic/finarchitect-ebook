@@ -674,6 +674,10 @@ function setLang(lang) {
   if (d.sInfo) { _sInfos.forEach(function(el) { el.innerHTML = d.sInfo; }); }
   var _seals = document.querySelectorAll('.stamp-box');
   if (d.stampSeal) { _seals.forEach(function(el) { el.textContent = d.stampSeal; }); }
+
+  localStorage.setItem('site-lang', lang);
+  if (window.syncNavLang) window.syncNavLang(lang);
+  _updateFormDate();
 }
 
 function resetDoc() {

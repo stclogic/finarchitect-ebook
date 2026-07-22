@@ -387,14 +387,14 @@
     <div class="ctrl-section">
       <label id="lbl-photo">증명사진 업로드</label>
       <label class="ctrl-file-btn">
-        📷 사진 선택
+        <span id="photo-btn-text">📷 사진 선택</span>
         <input type="file" accept="image/*" onchange="uploadPhoto(this)">
       </label>
     </div>
     <div class="ctrl-section">
       <label id="lbl-logo">회사/학교 로고 (좌측 하단)</label>
       <label class="ctrl-file-btn">
-        🏢 로고 선택
+        <span id="logo-btn-text">🏢 로고 선택</span>
         <input type="file" accept="image/*" onchange="uploadLogo(this)">
       </label>
     </div>
@@ -444,7 +444,7 @@
 
         <!-- 로고 -->
         <div class="cv-logo-wrap">
-          <div class="cv-logo-placeholder" id="logoPlaceholder" onclick="document.getElementById('logoInput').click()">+ 로고 추가</div>
+          <div class="cv-logo-placeholder" id="logoPlaceholder" onclick="document.getElementById('logoInput').click()"><span id="logo-ph-text">+ 로고 추가</span></div>
           <img id="logoImg" class="cv-logo" src="" alt="" style="display:none;">
           <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="uploadLogo(this)">
         </div>
@@ -691,39 +691,62 @@ function uploadLogo(input) {
 
 // ── 동적 행 추가 ────────────────────────────────────────────────
 function addSkill() {
+  var _l = _activeLang;
+  var label = _l==='en'?'Skill Name':_l==='ja'?'スキル名':'스킬명';
   var div = document.createElement('div');
   div.className = 'cv-skill-bar-wrap skill-row';
-  div.innerHTML = '<div style="flex:1"><div class="cv-skill-name" contenteditable="true">스킬명</div><div class="cv-skill-bar"><div class="cv-skill-fill" style="width:70%"></div></div></div><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
+  div.innerHTML = '<div style="flex:1"><div class="cv-skill-name" contenteditable="true">'+label+'</div><div class="cv-skill-bar"><div class="cv-skill-fill" style="width:70%"></div></div></div><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
   document.getElementById('skillList').appendChild(div);
 }
 function addLang() {
+  var _l = _activeLang;
+  var name = _l==='en'?'Language':_l==='ja'?'言語名':'언어명';
+  var level = _l==='en'?'Level':_l==='ja'?'レベル':'수준';
   var div = document.createElement('div');
   div.className = 'cv-sb-row';
-  div.innerHTML = '<span class="cv-sb-text" contenteditable="true">언어명</span><span class="cv-tag" contenteditable="true">수준</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
+  div.innerHTML = '<span class="cv-sb-text" contenteditable="true">'+name+'</span><span class="cv-tag" contenteditable="true">'+level+'</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
   document.getElementById('langList').appendChild(div);
 }
 function addCert() {
+  var _l = _activeLang;
+  var label = _l==='en'?'Certification (Year)':_l==='ja'?'資格名（取得年）':'자격증명 (취득연도)';
   var div = document.createElement('div');
   div.className = 'cv-sb-row';
-  div.innerHTML = '<span class="cv-sb-icon">🏅</span><span class="cv-sb-text" contenteditable="true">자격증명 (취득연도)</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
+  div.innerHTML = '<span class="cv-sb-icon">🏅</span><span class="cv-sb-text" contenteditable="true">'+label+'</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button>';
   document.getElementById('certList').appendChild(div);
 }
 function addExp() {
+  var _l = _activeLang;
+  var _d = LANG_DATA[_l]||{};
+  var del = _d.delEntry||'✕ 삭제';
+  var title = _l==='en'?'Company · Position':_l==='ja'?'会社名 · 役職':'회사명 · 직책';
+  var sub = _l==='en'?'City · Employment Type':_l==='ja'?'都市 · 雇用形態':'지역 · 고용형태';
+  var desc = _l==='en'?'• Key responsibilities':_l==='ja'?'• 主な業務内容を入力してください':'• 주요 업무 내용을 입력하세요';
   var div = document.createElement('div');
   div.className = 'cv-entry';
-  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">회사명 · 직책</span><span class="cv-entry-period" contenteditable="true">YYYY.MM — YYYY.MM</span></div><div class="cv-entry-sub" contenteditable="true">지역 · 고용형태</div><div class="cv-entry-desc block-edit" contenteditable="true">• 주요 업무 내용을 입력하세요</div>';
+  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">'+del+'</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">'+title+'</span><span class="cv-entry-period" contenteditable="true">YYYY.MM — YYYY.MM</span></div><div class="cv-entry-sub" contenteditable="true">'+sub+'</div><div class="cv-entry-desc block-edit" contenteditable="true">'+desc+'</div>';
   document.getElementById('expList').appendChild(div);
 }
 function addEdu() {
+  var _l = _activeLang;
+  var _d = LANG_DATA[_l]||{};
+  var del = _d.delEntry||'✕ 삭제';
+  var title = _l==='en'?'University · Major':_l==='ja'?'大学名 · 学科':'학교명 · 학과';
+  var sub = _l==='en'?"Bachelor's / Master's / Ph.D · GPA 0.00/4.5":_l==='ja'?'学士／修士／博士 卒業 · GPA 0.00/4.5':'학사/석사/박사 졸업 · 학점 0.00/4.5';
   var div = document.createElement('div');
   div.className = 'cv-entry';
-  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">학교명 · 학과</span><span class="cv-entry-period" contenteditable="true">YYYY.MM — YYYY.MM</span></div><div class="cv-entry-sub" contenteditable="true">학사/석사/박사 졸업 · 학점 0.00/4.5</div>';
+  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">'+del+'</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">'+title+'</span><span class="cv-entry-period" contenteditable="true">YYYY.MM — YYYY.MM</span></div><div class="cv-entry-sub" contenteditable="true">'+sub+'</div>';
   document.getElementById('eduList').appendChild(div);
 }
 function addAward() {
+  var _l = _activeLang;
+  var _d = LANG_DATA[_l]||{};
+  var del = _d.delEntry||'✕ 삭제';
+  var title = _l==='en'?'Award / Activity Name':_l==='ja'?'受賞名 / 活動名':'수상명 / 활동명';
+  var desc = _l==='en'?'Enter description':_l==='ja'?'内容を入力してください':'내용을 입력하세요';
   var div = document.createElement('div');
   div.className = 'cv-entry';
-  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">✕ 삭제</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">수상명 / 활동명</span><span class="cv-entry-period" contenteditable="true">YYYY.MM</span></div><div class="cv-entry-desc" contenteditable="true">내용을 입력하세요</div>';
+  div.innerHTML = '<button class="del-btn-main" onclick="this.parentNode.remove()">'+del+'</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">'+title+'</span><span class="cv-entry-period" contenteditable="true">YYYY.MM</span></div><div class="cv-entry-desc" contenteditable="true">'+desc+'</div>';
   document.getElementById('awardList').appendChild(div);
 }
 
@@ -741,6 +764,9 @@ var LANG_DATA = {
     sbCert: '자격증', sbInfo: '기본 정보',
     mainSummary: '✦ 자기소개', mainExp: '💼 경력사항',
     mainEdu: '🎓 학력사항', mainAward: '🏆 수상 및 활동',
+    photoBtn:'📷 사진 선택', logoBtn:'🏢 로고 선택',
+    addSkill:'+ 역량 추가', addLang:'+ 언어 추가', addCert:'+ 자격증 추가',
+    addExp:'+ 경력 추가', addEdu:'+ 학력 추가', addAward:'+ 항목 추가', delEntry:'✕ 삭제',
     dateFormatter: function(y,m,d){ return y+'년 '+m+'월 '+d+'일'; }
   },
   en: {
@@ -755,6 +781,9 @@ var LANG_DATA = {
     sbCert: 'Certifications', sbInfo: 'Personal Info',
     mainSummary: '✦ Profile / Summary', mainExp: '💼 Work Experience',
     mainEdu: '🎓 Education', mainAward: '🏆 Awards & Activities',
+    photoBtn:'📷 Upload Photo', logoBtn:'🏢 Upload Logo',
+    addSkill:'+ Add Skill', addLang:'+ Add Language', addCert:'+ Add Certification',
+    addExp:'+ Add Experience', addEdu:'+ Add Education', addAward:'+ Add Item', delEntry:'✕ Remove',
     dateFormatter: function(y,m,d){ var mn=['January','February','March','April','May','June','July','August','September','October','November','December']; return mn[m-1]+' '+d+', '+y; }
   },
   ja: {
@@ -769,6 +798,9 @@ var LANG_DATA = {
     sbCert: '資格・免許', sbInfo: '基本情報',
     mainSummary: '✦ 自己PR', mainExp: '💼 職務経歴',
     mainEdu: '🎓 学歴', mainAward: '🏆 受賞・活動',
+    photoBtn:'📷 写真を追加', logoBtn:'🏢 ロゴを追加',
+    addSkill:'+ スキル追加', addLang:'+ 言語追加', addCert:'+ 資格追加',
+    addExp:'+ 職歴追加', addEdu:'+ 学歴追加', addAward:'+ 項目追加', delEntry:'✕ 削除',
     dateFormatter: function(y,m,d){ return y+'年'+m+'月'+d+'日'; }
   }
 };
@@ -799,53 +831,199 @@ function setLang(lang) {
   var ln = document.querySelector('.lang-notice'); if (ln) ln.textContent = d.langNotice;
   var rb = document.querySelector('.reset-btn'); if (rb) rb.textContent = d.resetBtn;
   var tb = document.querySelector('.tip-box'); if (tb) tb.innerHTML = d.tipBox;
+  // Panel file buttons
+  var pbt = document.getElementById('photo-btn-text'); if(pbt) pbt.textContent = d.photoBtn;
+  var lbt = document.getElementById('logo-btn-text'); if(lbt) lbt.textContent = d.logoBtn;
+  // Add-row buttons
+  var _askb = document.querySelector('#skillList + .add-row-btn'); if(_askb) _askb.textContent = d.addSkill;
+  var _alkb = document.querySelector('#langList + .add-row-btn'); if(_alkb) _alkb.textContent = d.addLang;
+  var _ackb = document.querySelector('#certList + .add-row-btn'); if(_ackb) _ackb.textContent = d.addCert;
+  var _aexb = document.querySelector('#expList + .add-row-btn-main'); if(_aexb) _aexb.textContent = d.addExp;
+  var _aedb = document.querySelector('#eduList + .add-row-btn-main'); if(_aedb) _aedb.textContent = d.addEdu;
+  var _aawb = document.querySelector('#awardList + .add-row-btn-main'); if(_aawb) _aawb.textContent = d.addAward;
 
   // __rs_samples_done__
-  // ── Resume: 샘플 텍스트 초기화 ──
+  // ── Resume: 샘플 텍스트 전체 초기화 ──
   (function(){
     var _rs = {
       ko: {
-        name:'홍 길 동',
+        name:'홍 길 동', jobtitle:'Senior Product Manager',
         addr:'서울시 강남구',
         skills:['프로젝트 관리','데이터 분석','팀 리더십','커뮤니케이션'],
-        langs:[['한국어',''],['영어','비즈니스']],
-        cert:'정보처리기사 (2022)',
+        skillWidths:['90%','80%','85%','75%'],
+        langs:[['한국어','원어민'],['영어','비즈니스']],
+        cert:'정보처리기사 (2022)', cert2:'TOEIC 900 (2023)',
         mil:'병역필 (육군 만기전역)',
-        summary:'10년간 B2B SaaS 제품 기획 및 개발을 이끌어 온 PM입니다. 데이터 기반 의사결정과 크로스펑셔널 팀 협업에 강점이 있으며, 고객 중심 사고를 바탕으로 실질적인 비즈니스 성과를 만들어 왔습니다.'
+        summary:'10년간 B2B SaaS 제품 기획 및 개발을 이끌어 온 PM입니다. 데이터 기반 의사결정과 크로스펑셔널 팀 협업에 강점이 있으며, 고객 중심 사고를 바탕으로 실질적인 비즈니스 성과를 만들어 왔습니다. 팀원들의 성장을 지원하는 서번트 리더십을 지향합니다.',
+        exp:[
+          {title:'ABC Tech · 수석 PM', period:'2020.03 — 현재', sub:'서울 · 정규직', desc:'• B2B CRM 제품 로드맵 수립 및 3개 신기능 출시 (MAU +42%)\n• 개발·디자인·마케팅 12인 팀 리드, 분기 OKR 달성율 94%\n• 국내외 주요 고객사 100곳 대상 QBR 주도, NPS 72점 달성'},
+          {title:'XYZ 스타트업 · PM', period:'2017.06 — 2020.02', sub:'서울 · 정규직', desc:'• 커머스 플랫폼 MVP 기획·출시, 시리즈 A 투자 유치($3M) 기여\n• 고객 인터뷰 200건 수행, Pain Point 기반 제품 개선 사이클 운영'}
+        ],
+        edu:[{title:'한국대학교 · 경영학과', period:'2009.03 — 2013.02', sub:'학사 졸업 · 학점 3.85 / 4.5'}],
+        award:[{title:'2023 대한민국 PM 어워드 — 최우수상', period:'2023.11', desc:'전국 PM 500인 대상 제품 혁신 사례 발표, 대상 수상'}]
       },
       en: {
-        name:'John Smith',
+        name:'John Smith', jobtitle:'Senior Product Manager',
         addr:'City, Country',
         skills:['Project Management','Data Analysis','Team Leadership','Communication'],
+        skillWidths:['90%','80%','85%','75%'],
         langs:[['Korean','Native'],['English','Business']],
-        cert:'Engineer Information Processing (2022)',
+        cert:'Engineer Information Processing (2022)', cert2:'TOEIC 900 (2023)',
         mil:'Military service completed',
-        summary:'PM with 10 years of experience leading B2B SaaS product planning and development. Strong in data-driven decision making, cross-functional team collaboration, and customer-centric thinking.'
+        summary:'PM with 10 years of experience leading B2B SaaS product planning and development. Strong in data-driven decision making, cross-functional team collaboration, and customer-centric thinking. Committed to servant leadership that supports team growth.',
+        exp:[
+          {title:'ABC Tech · Senior PM', period:'2020.03 — Present', sub:'Seoul · Full-time', desc:'• Led B2B CRM product roadmap and launched 3 new features (MAU +42%)\n• Led cross-functional team of 12 (Dev/Design/Marketing), achieved 94% quarterly OKR\n• Drove QBR for 100+ key enterprise clients, achieved NPS 72'},
+          {title:'XYZ Startup · PM', period:'2017.06 — 2020.02', sub:'Seoul · Full-time', desc:'• Planned and launched e-commerce platform MVP, contributed to Series A funding ($3M)\n• Conducted 200 customer interviews, operated pain-point-driven product improvement cycles'}
+        ],
+        edu:[{title:'Korea University · Business Administration', period:'2009.03 — 2013.02', sub:"Bachelor's Degree · GPA 3.85 / 4.5"}],
+        award:[{title:'2023 Korea PM Award — Grand Prize', period:'2023.11', desc:'Presented product innovation case study to 500 PMs nationwide, won Grand Prize'}]
       },
       ja: {
-        name:'山田 太郎',
+        name:'山田 太郎', jobtitle:'シニアプロダクトマネージャー',
         addr:'○○都○○区',
         skills:['プロジェクト管理','データ分析','チームリーダーシップ','コミュニケーション'],
+        skillWidths:['90%','80%','85%','75%'],
         langs:[['日本語','母語'],['英語','ビジネス']],
-        cert:'情報処理技術者試験（2022年）',
+        cert:'情報処理技術者試験（2022年）', cert2:'TOEIC 900 (2023)',
         mil:'兵役完了',
-        summary:'10年間B2B SaaS製品の企画・開発をリードしてきたPMです。データ駆動の意思決定とクロスファンクショナルチームの協力に強みがあります。'
+        summary:'10年間B2B SaaS製品の企画・開発をリードしてきたPMです。データ駆動の意思決定とクロスファンクショナルチームの協力に強みがあり、顧客中心の思考で実質的なビジネス成果を生み出してきました。',
+        exp:[
+          {title:'ABC Tech · シニアPM', period:'2020.03 — 現在', sub:'ソウル · 正社員', desc:'• B2B CRM製品ロードマップを策定し3つの新機能をリリース（MAU +42%）\n• 開発・デザイン・マーケティング12名チームをリード、四半期OKR達成率94%\n• 国内外の主要顧客100社へのQBRを主導、NPS 72点達成'},
+          {title:'XYZ スタートアップ · PM', period:'2017.06 — 2020.02', sub:'ソウル · 正社員', desc:'• Eコマースプラットフォームの企画・リリース、シリーズA資金調達（$3M）に貢献\n• 顧客インタビュー200件を実施、ペインポイントに基づく製品改善サイクルを運営'}
+        ],
+        edu:[{title:'韓国大学 · 経営学科', period:'2009.03 — 2013.02', sub:'学士卒業 · GPA 3.85 / 4.5'}],
+        award:[{title:'2023 韓国PMアワード — 最優秀賞', period:'2023.11', desc:'全国PM 500人対象の製品革新事例を発表、大賞受賞'}]
       }
     }[lang] || {};
-    // Update name
-    var nameEl = document.querySelector('.cv-name[contenteditable], .rs-name[contenteditable]');
-    if(nameEl) nameEl.textContent = _rs.name||'';
-    // address
-    var addrEl = document.querySelector('.cv-addr[contenteditable], .rs-addr[contenteditable]');
-    if(addrEl) addrEl.textContent = _rs.addr||'';
-    // summary
-    var sumEl = document.querySelector('.cv-summary[contenteditable], .rs-summary[contenteditable]');
-    if(sumEl) sumEl.textContent = _rs.summary||'';
-    // skills
-    var skillEls = document.querySelectorAll('.skill-item[contenteditable], .cv-skill[contenteditable]');
-    (_rs.skills||[]).forEach(function(s,i){ if(skillEls[i]) skillEls[i].textContent = s; });
+    var _del = d.delEntry || '✕ 삭제';
+    // Name & job title
+    var nameEl = document.querySelector('.cv-name'); if(nameEl) nameEl.textContent = _rs.name||'';
+    var jtEl = document.querySelector('.cv-jobtitle'); if(jtEl) jtEl.textContent = _rs.jobtitle||'';
+    // Address (3rd .cv-sb-row in #contactList)
+    var cRows = document.querySelectorAll('#contactList .cv-sb-row');
+    if(cRows[2]){ var at = cRows[2].querySelector('.cv-sb-text'); if(at) at.textContent = _rs.addr||''; }
+    // Summary
+    var sumEl = document.querySelector('.cv-summary'); if(sumEl) sumEl.textContent = _rs.summary||'';
+    // Skills — rebuild list
+    var skillList = document.getElementById('skillList');
+    if(skillList && _rs.skills){
+      skillList.innerHTML = _rs.skills.map(function(s,i){
+        return '<div class="cv-skill-bar-wrap skill-row"><div style="flex:1"><div class="cv-skill-name" contenteditable="true">'+s+'</div><div class="cv-skill-bar"><div class="cv-skill-fill" style="width:'+(_rs.skillWidths[i]||'70%')+'"></div></div></div><button class="del-btn" onclick="this.parentNode.remove()">✕</button></div>';
+      }).join('');
+    }
+    // Languages — rebuild list
+    var langListEl = document.getElementById('langList');
+    if(langListEl && _rs.langs){
+      langListEl.innerHTML = _rs.langs.map(function(lp,i){
+        var editable = i===1?' contenteditable="true"':'';
+        return '<div class="cv-sb-row"><span class="cv-sb-text" contenteditable="true">'+lp[0]+'</span><span class="cv-tag"'+editable+'>'+lp[1]+'</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button></div>';
+      }).join('');
+    }
+    // Certifications — rebuild list
+    var certListEl = document.getElementById('certList');
+    if(certListEl && _rs.cert){
+      certListEl.innerHTML = '<div class="cv-sb-row"><span class="cv-sb-icon">🏅</span><span class="cv-sb-text" contenteditable="true">'+_rs.cert+'</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button></div>'
+        +'<div class="cv-sb-row"><span class="cv-sb-icon">🏅</span><span class="cv-sb-text" contenteditable="true">'+_rs.cert2+'</span><button class="del-btn" onclick="this.parentNode.remove()">✕</button></div>';
+    }
+    // Military / personal info (2nd .cv-sb-row inside the sb-info section)
+    var infoTitle = document.getElementById('sb-info');
+    if(infoTitle && _rs.mil){
+      var iRows = infoTitle.parentNode.querySelectorAll('.cv-sb-row');
+      if(iRows[1]){ var mt = iRows[1].querySelector('.cv-sb-text'); if(mt) mt.textContent = _rs.mil; }
+    }
+    // Work experience — rebuild list
+    var expListEl = document.getElementById('expList');
+    if(expListEl && _rs.exp){
+      expListEl.innerHTML = _rs.exp.map(function(e){
+        return '<div class="cv-entry" data-entry="exp"><button class="del-btn-main" onclick="this.parentNode.remove()">'+_del+'</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">'+e.title+'</span><span class="cv-entry-period" contenteditable="true">'+e.period+'</span></div><div class="cv-entry-sub" contenteditable="true">'+e.sub+'</div><div class="cv-entry-desc block-edit" contenteditable="true">'+e.desc+'</div></div>';
+      }).join('');
+    }
+    // Education — rebuild list
+    var eduListEl = document.getElementById('eduList');
+    if(eduListEl && _rs.edu){
+      eduListEl.innerHTML = _rs.edu.map(function(e){
+        return '<div class="cv-entry" data-entry="edu"><button class="del-btn-main" onclick="this.parentNode.remove()">'+_del+'</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">'+e.title+'</span><span class="cv-entry-period" contenteditable="true">'+e.period+'</span></div><div class="cv-entry-sub" contenteditable="true">'+e.sub+'</div></div>';
+      }).join('');
+    }
+    // Awards — rebuild list
+    var awardListEl = document.getElementById('awardList');
+    if(awardListEl && _rs.award){
+      awardListEl.innerHTML = _rs.award.map(function(e){
+        return '<div class="cv-entry"><button class="del-btn-main" onclick="this.parentNode.remove()">'+_del+'</button><div class="cv-entry-header"><span class="cv-entry-title" contenteditable="true">'+e.title+'</span><span class="cv-entry-period" contenteditable="true">'+e.period+'</span></div><div class="cv-entry-desc" contenteditable="true">'+e.desc+'</div></div>';
+      }).join('');
+    }
   })();
 
+    // __th_translated__
+  if(lang!=='ko')(function(){
+    var _tm={
+      en:{'발언자':'Speaker','발언 내용':'Remarks','성명':'Name','성 명':'Name',
+          '생년월일':'Date of Birth','생 년 월 일':'Date of Birth','연락처':'Phone',
+          '직위':'Position','직위·직책':'Position/Title','소속':'Department',
+          '소속부서':'Department','소속 부서':'Department','입사일':'Hire Date',
+          '사직예정일':'Resignation Date','사직 예정일':'Resignation Date',
+          '주민번호 앞자리':'ID No. (Front)','주민등록번호':'Resident ID',
+          '주민번호':'ID No.','고용형태':'Employment Type','고 용 형 태':'Employment Type',
+          '경쟁사':'Competitor','강점':'Strengths','약점':'Weaknesses',
+          '당사 차별점':'Our Edge','구분':'Category','내용':'Details',
+          '금액':'Amount','금액(원)':'Amount (KRW)','지급일':'Payment Date',
+          '지급 방법':'Method','지급방법':'Method','공정 명칭':'Work Item',
+          '시작일':'Start Date','완료일':'End Date','담당':'In Charge','비율(%)':'%',
+          '항목명':'Item Name','항목':'Item','수량':'Qty','상태':'Condition','비고':'Notes',
+          '파트너':'Partner','출자 형태':'Type','출자금액':'Capital',
+          '지분 비율':'Equity %','지분율':'Equity %','출자형태':'Type',
+          '품목':'Description','번호':'No.','발행자':'Issuer',
+          '1년차':'Year 1','2년차':'Year 2','3년차':'Year 3',
+          '성명 / 법인명':'Name / Corp.','주민번호 / 사업자번호':'ID / Reg. No.',
+          '보유 주식 수':'Shares','직 위':'Position',
+          '인수자':'Recipient','인계자':'Handover'},
+      ja:{'발언자':'発言者','발언 내용':'発言内容','성명':'氏名','성 명':'氏名',
+          '생년월일':'生年月日','생 년 월 일':'生年月日','연락처':'連絡先',
+          '직위':'職位','직위·직책':'職位・職責','소속':'所属',
+          '소속부서':'所属部署','소속 부서':'所属部署','입사일':'入社日',
+          '사직예정일':'退職予定日','사직 예정일':'退職予定日',
+          '주민번호 앞자리':'住民番号（前部）','주민등록번호':'住民登録番号',
+          '주민번호':'住民番号','고용형태':'雇用形態','고 용 형 태':'雇用形態',
+          '경쟁사':'競合他社','강점':'強み','약점':'弱み',
+          '당사 차별점':'差別化','구분':'区分','내용':'内容',
+          '금액':'金額','금액(원)':'金額（ウォン）','지급일':'支払日',
+          '지급 방법':'支払方法','지급방법':'支払方法','공정 명칭':'工程名',
+          '시작일':'開始日','완료일':'完了日','담당':'担当','비율(%)':'割合(%)',
+          '항목명':'項目名','항목':'項目','수량':'数量','상태':'状態','비고':'備考',
+          '파트너':'パートナー','출자 형태':'出資形態','출자금액':'出資額',
+          '지분 비율':'持分比率','지분율':'持分率','출자형태':'出資形態',
+          '품목':'品目','번호':'番号','발행자':'発行者',
+          '1년차':'1年目','2년차':'2年目','3년차':'3年目',
+          '성명 / 법인명':'氏名・法人名','주민번호 / 사업자번호':'住民番号・事業者番号',
+          '보유 주식 수':'保有株式数','직 위':'職位',
+          '인수자':'引継ぎ先','인계자':'引継者'}
+    };
+    document.querySelectorAll('th').forEach(function(el){
+      var t=el.textContent.trim().replace(/\s+/g,' ');
+      if(_tm[lang]&&_tm[lang][t])el.textContent=_tm[lang][t];
+    });
+  })();
+    // __siglbl_translated__
+  if(lang!=='ko')(function(){
+    var _sm={
+      en:{'성명':'Name','성 명':'Name','주소':'Address','연락처':'Phone','서명':'Signature',
+          '상호/법인명':'Trade Name','상호':'Trade Name','대표이사':'CEO',
+          '대표자':'Representative','사업자번호':'Reg. No.',
+          '사업자등록번호':'Reg. No.','생년월일':'Date of Birth',
+          '주민번호':'ID No.','인감':'Seal','도장':'Seal','인적사항':'Personal Info'},
+      ja:{'성명':'氏名','성 명':'氏名','주소':'住所','연락처':'連絡先','서명':'署名',
+          '상호/법인명':'商号/法人名','상호':'商号','대표이사':'代表取締役',
+          '대표자':'代表者','사업자번호':'登録番号',
+          '사업자등록번호':'事業者登録番号','생년월일':'生年月日',
+          '주민번호':'住民番号','인감':'印鑑','도장':'印鑑','인적사항':'個人情報'}
+    };
+    document.querySelectorAll('.sig-field-label,.sig-lbl,.sign-lbl,.iou-sig-lbl').forEach(function(el){
+      var t=el.textContent.trim().replace(/\s+/g,' ');
+      if(_sm[lang]&&_sm[lang][t])el.textContent=_sm[lang][t];
+    });
+  })();
+    __logoph_done__
+  var _lph=document.getElementById('logo-ph-text');if(_lph)_lph.textContent=lang==='en'?'+ Add Logo':lang==='ja'?'+ ロゴ追加':'+ 로고 추가';
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

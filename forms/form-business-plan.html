@@ -632,6 +632,74 @@ function setLang(lang) {
     }
   })();
 
+    // __th_translated__
+  if(lang!=='ko')(function(){
+    var _tm={
+      en:{'발언자':'Speaker','발언 내용':'Remarks','성명':'Name','성 명':'Name',
+          '생년월일':'Date of Birth','생 년 월 일':'Date of Birth','연락처':'Phone',
+          '직위':'Position','직위·직책':'Position/Title','소속':'Department',
+          '소속부서':'Department','소속 부서':'Department','입사일':'Hire Date',
+          '사직예정일':'Resignation Date','사직 예정일':'Resignation Date',
+          '주민번호 앞자리':'ID No. (Front)','주민등록번호':'Resident ID',
+          '주민번호':'ID No.','고용형태':'Employment Type','고 용 형 태':'Employment Type',
+          '경쟁사':'Competitor','강점':'Strengths','약점':'Weaknesses',
+          '당사 차별점':'Our Edge','구분':'Category','내용':'Details',
+          '금액':'Amount','금액(원)':'Amount (KRW)','지급일':'Payment Date',
+          '지급 방법':'Method','지급방법':'Method','공정 명칭':'Work Item',
+          '시작일':'Start Date','완료일':'End Date','담당':'In Charge','비율(%)':'%',
+          '항목명':'Item Name','항목':'Item','수량':'Qty','상태':'Condition','비고':'Notes',
+          '파트너':'Partner','출자 형태':'Type','출자금액':'Capital',
+          '지분 비율':'Equity %','지분율':'Equity %','출자형태':'Type',
+          '품목':'Description','번호':'No.','발행자':'Issuer',
+          '1년차':'Year 1','2년차':'Year 2','3년차':'Year 3',
+          '성명 / 법인명':'Name / Corp.','주민번호 / 사업자번호':'ID / Reg. No.',
+          '보유 주식 수':'Shares','직 위':'Position',
+          '인수자':'Recipient','인계자':'Handover'},
+      ja:{'발언자':'発言者','발언 내용':'発言内容','성명':'氏名','성 명':'氏名',
+          '생년월일':'生年月日','생 년 월 일':'生年月日','연락처':'連絡先',
+          '직위':'職位','직위·직책':'職位・職責','소속':'所属',
+          '소속부서':'所属部署','소속 부서':'所属部署','입사일':'入社日',
+          '사직예정일':'退職予定日','사직 예정일':'退職予定日',
+          '주민번호 앞자리':'住民番号（前部）','주민등록번호':'住民登録番号',
+          '주민번호':'住民番号','고용형태':'雇用形態','고 용 형 태':'雇用形態',
+          '경쟁사':'競合他社','강점':'強み','약점':'弱み',
+          '당사 차별점':'差別化','구분':'区分','내용':'内容',
+          '금액':'金額','금액(원)':'金額（ウォン）','지급일':'支払日',
+          '지급 방법':'支払方法','지급방법':'支払方法','공정 명칭':'工程名',
+          '시작일':'開始日','완료일':'完了日','담당':'担当','비율(%)':'割合(%)',
+          '항목명':'項目名','항목':'項目','수량':'数量','상태':'状態','비고':'備考',
+          '파트너':'パートナー','출자 형태':'出資形態','출자금액':'出資額',
+          '지분 비율':'持分比率','지분율':'持分率','출자형태':'出資形態',
+          '품목':'品目','번호':'番号','발행자':'発行者',
+          '1년차':'1年目','2년차':'2年目','3년차':'3年目',
+          '성명 / 법인명':'氏名・法人名','주민번호 / 사업자번호':'住民番号・事業者番号',
+          '보유 주식 수':'保有株式数','직 위':'職位',
+          '인수자':'引継ぎ先','인계자':'引継者'}
+    };
+    document.querySelectorAll('th').forEach(function(el){
+      var t=el.textContent.trim().replace(/\s+/g,' ');
+      if(_tm[lang]&&_tm[lang][t])el.textContent=_tm[lang][t];
+    });
+  })();
+    // __siglbl_translated__
+  if(lang!=='ko')(function(){
+    var _sm={
+      en:{'성명':'Name','성 명':'Name','주소':'Address','연락처':'Phone','서명':'Signature',
+          '상호/법인명':'Trade Name','상호':'Trade Name','대표이사':'CEO',
+          '대표자':'Representative','사업자번호':'Reg. No.',
+          '사업자등록번호':'Reg. No.','생년월일':'Date of Birth',
+          '주민번호':'ID No.','인감':'Seal','도장':'Seal','인적사항':'Personal Info'},
+      ja:{'성명':'氏名','성 명':'氏名','주소':'住所','연락처':'連絡先','서명':'署名',
+          '상호/법인명':'商号/法人名','상호':'商号','대표이사':'代表取締役',
+          '대표자':'代表者','사업자번호':'登録番号',
+          '사업자등록번호':'事業者登録番号','생년월일':'生年月日',
+          '주민번호':'住民番号','인감':'印鑑','도장':'印鑑','인적사항':'個人情報'}
+    };
+    document.querySelectorAll('.sig-field-label,.sig-lbl,.sign-lbl,.iou-sig-lbl').forEach(function(el){
+      var t=el.textContent.trim().replace(/\s+/g,' ');
+      if(_sm[lang]&&_sm[lang][t])el.textContent=_sm[lang][t];
+    });
+  })();
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();

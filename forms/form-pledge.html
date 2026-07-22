@@ -422,7 +422,7 @@ function setLang(lang) {
       en: 'I, [Name], hereby solemnly pledge that I will not raise any future objections regarding [Matter], and that I will accept civil and criminal liability in the event of a violation.',
       ja: '私、[氏名]は、[事案]に関して今後一切の異議申し立てを行わず、違反した場合は民事・刑事上の責任を負うことを厳粛に誓約します。'
     }[lang] || '';
-    var bodyEl = document.querySelector('.pledge-body[contenteditable], .content-para[contenteditable]');
+    var bodyEl = document.querySelector('.pledge-area[contenteditable], .pledge-body[contenteditable], .content-para[contenteditable]');
     if(bodyEl) bodyEl.textContent = _d;
   })();
 

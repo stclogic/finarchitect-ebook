@@ -172,6 +172,85 @@
 .upcoming-card .name { font-size: 0.82rem; font-weight: 700; color: var(--text2); margin-bottom: 0.2rem; }
 .upcoming-card .eta { font-size: 0.7rem; color: var(--text2); }
 
+/* ── Premium divider ── */
+.premium-divider {
+  display: flex; align-items: center; gap: 1.2rem;
+  margin: 3.5rem 0 2.2rem;
+}
+.premium-divider-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,158,11,0.35), transparent);
+}
+.premium-divider-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: linear-gradient(135deg, #0A0F1E, #1A1040);
+  border: 1px solid rgba(245,158,11,0.35);
+  color: #FCD34D; font-size: 0.75rem; font-weight: 800;
+  letter-spacing: .07em; padding: 7px 18px; border-radius: 999px;
+  text-transform: uppercase; white-space: nowrap;
+}
+
+/* ── Premium section ── */
+.premium-section { margin-bottom: 3rem; }
+
+.premium-tier {
+  background: linear-gradient(135deg, #0A0F1E 0%, #111827 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px; padding: 1.6rem 1.8rem 1.8rem;
+  margin-bottom: 1.2rem; position: relative; overflow: hidden;
+}
+.premium-tier::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+}
+.premium-tier.tier-basic::before {
+  background: radial-gradient(ellipse at 0% 0%, rgba(99,91,255,0.08) 0%, transparent 55%);
+}
+.premium-tier.tier-standard::before {
+  background: radial-gradient(ellipse at 0% 0%, rgba(16,185,129,0.09) 0%, transparent 55%);
+}
+.premium-tier.tier-enterprise::before {
+  background: radial-gradient(ellipse at 0% 0%, rgba(245,158,11,0.1) 0%, transparent 55%);
+}
+
+.premium-tier-header {
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
+}
+.premium-tier-icon { font-size: 1.5rem; }
+.premium-tier-name {
+  font-size: 1rem; font-weight: 900; color: #fff; letter-spacing: -.01em;
+}
+.premium-tier-sub {
+  font-size: 0.73rem; color: rgba(255,255,255,0.4); margin-left: auto;
+}
+.tier-badge {
+  display: inline-block; font-size: 0.62rem; font-weight: 800; letter-spacing: .06em;
+  padding: 3px 9px; border-radius: 999px; text-transform: uppercase; margin-left: 0.5rem;
+}
+.tier-badge.basic   { background: rgba(99,91,255,0.2);  color: #a5b4fc; border: 1px solid rgba(99,91,255,0.3); }
+.tier-badge.std     { background: rgba(16,185,129,0.18); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+.tier-badge.ent     { background: rgba(245,158,11,0.2);  color: #FCD34D;  border: 1px solid rgba(245,158,11,0.3); }
+
+.premium-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.6rem;
+}
+.premium-item {
+  display: flex; align-items: center; gap: 0.55rem;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px; padding: 0.7rem 0.9rem;
+  font-size: 0.82rem; color: rgba(255,255,255,0.65);
+  transition: background .15s;
+}
+.premium-item:hover { background: rgba(255,255,255,0.07); }
+.premium-item-icon { font-size: 0.95rem; flex-shrink: 0; }
+.premium-coming {
+  display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: .04em;
+  padding: 1px 6px; border-radius: 999px; margin-left: auto; flex-shrink: 0;
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
 /* ── No print ── */
 @media print { body { display: none; } }
 </style>
@@ -254,6 +333,66 @@
     <div class="upcoming-grid" id="upcomingGrid"></div>
   </div>
 
+  <!-- ── 유료 서식 구분선 ── -->
+  <div class="premium-divider">
+    <div class="premium-divider-line"></div>
+    <div class="premium-divider-badge" id="premiumDividerBadge">✦ 프리미엄 서비스 패키지</div>
+    <div class="premium-divider-line"></div>
+  </div>
+
+  <!-- ── 유료 서식 섹션 ── -->
+  <div class="premium-section" id="premiumSection">
+
+    <!-- Tier 1: Basic -->
+    <div class="premium-tier tier-basic">
+      <div class="premium-tier-header">
+        <span class="premium-tier-icon">🔹</span>
+        <span class="premium-tier-name" id="tierName0">Basic <span class="tier-badge basic">BASIC</span></span>
+        <span class="premium-tier-sub" id="tierSub0">소규모 프로젝트</span>
+      </div>
+      <div class="premium-items">
+        <div class="premium-item"><span class="premium-item-icon">📐</span><span id="pi0_0">기초 구조 설계 보고서</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">📊</span><span id="pi0_1">IR 자료 기본 세트</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">⚖️</span><span id="pi0_2">법률 검토 1회</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">📧</span><span id="pi0_3">이메일 지원 표본</span><span class="premium-coming">준비중</span></div>
+      </div>
+    </div>
+
+    <!-- Tier 2: Standard -->
+    <div class="premium-tier tier-standard">
+      <div class="premium-tier-header">
+        <span class="premium-tier-icon">🔷</span>
+        <span class="premium-tier-name" id="tierName1">Standard <span class="tier-badge std">STANDARD</span></span>
+        <span class="premium-tier-sub" id="tierSub1">중간 규모 프로젝트</span>
+      </div>
+      <div class="premium-items">
+        <div class="premium-item"><span class="premium-item-icon">🏗️</span><span id="pi1_0">통합 금융 구조 설계</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">🏢</span><span id="pi1_1">SPV / SPC 설립 지원</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">🎯</span><span id="pi1_2">전문 IR 피칭 패키지</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">📋</span><span id="pi1_3">법률·세무 검토 전과정 보고서</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">🤝</span><span id="pi1_4">온라인 미팅 월 2회 양식</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">🔄</span><span id="pi1_5">사후 관리 양식</span><span class="premium-coming">준비중</span></div>
+      </div>
+    </div>
+
+    <!-- Tier 3: Enterprise -->
+    <div class="premium-tier tier-enterprise">
+      <div class="premium-tier-header">
+        <span class="premium-tier-icon">💎</span>
+        <span class="premium-tier-name" id="tierName2">Enterprise <span class="tier-badge ent">ENTERPRISE</span></span>
+        <span class="premium-tier-sub" id="tierSub2">대형 복합 프로젝트</span>
+      </div>
+      <div class="premium-items">
+        <div class="premium-item"><span class="premium-item-icon">🔁</span><span id="pi2_0">전략 수립부터 Exit까지 풀사이클</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">🌐</span><span id="pi2_1">글로벌 플랫폼 STO 연계</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">🌏</span><span id="pi2_2">다중 법역 법률·세무 통합 자문</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">👥</span><span id="pi2_3">전담 컨설턴트 팀 배정 보고서</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">📈</span><span id="pi2_4">월 정기 보고 및 모니터링 보고서</span><span class="premium-coming">준비중</span></div>
+      </div>
+    </div>
+
+  </div><!-- /premiumSection -->
+
 </div><!-- /flib-body -->
 
 <script src="assets/js/nav-inject.js" defer></script>
@@ -281,6 +420,18 @@ var FORMS_LANG = {
     sectionUpcoming: '🔜 준비 중 — 곧 온라인 작성 지원 예정',
     countSuffix: '종',
     cardBtn: '✏ 작성하기',
+    premiumBadge: '✦ 프리미엄 서비스 패키지',
+    premiumComingSoon: '준비중',
+    tiers: [
+      { name: 'Basic', badge: 'BASIC', sub: '소규모 프로젝트' },
+      { name: 'Standard', badge: 'STANDARD', sub: '중간 규모 프로젝트' },
+      { name: 'Enterprise', badge: 'ENTERPRISE', sub: '대형 복합 프로젝트' },
+    ],
+    premiumItems: [
+      ['기초 구조 설계 보고서','IR 자료 기본 세트','법률 검토 1회','이메일 지원 표본'],
+      ['통합 금융 구조 설계','SPV / SPC 설립 지원','전문 IR 피칭 패키지','법률·세무 검토 전과정 보고서','온라인 미팅 월 2회 양식','사후 관리 양식'],
+      ['전략 수립부터 Exit까지 풀사이클','글로벌 플랫폼 STO 연계','다중 법역 법률·세무 통합 자문','전담 컨설턴트 팀 배정 보고서','월 정기 보고 및 모니터링 보고서'],
+    ],
   },
   en: {
     heroBadge: '✦ Form Library — Online Fill · PDF Export',
@@ -299,6 +450,18 @@ var FORMS_LANG = {
     sectionUpcoming: '🔜 Coming Soon — Online fill support planned',
     countSuffix: ' forms',
     cardBtn: '✏ Fill Out',
+    premiumBadge: '✦ Premium Service Packages',
+    premiumComingSoon: 'Coming Soon',
+    tiers: [
+      { name: 'Basic', badge: 'BASIC', sub: 'Small-scale projects' },
+      { name: 'Standard', badge: 'STANDARD', sub: 'Mid-scale projects' },
+      { name: 'Enterprise', badge: 'ENTERPRISE', sub: 'Large complex projects' },
+    ],
+    premiumItems: [
+      ['Structural Design Report (Basic)','IR Material Basic Set','Legal Review (1 session)','Email Support Template'],
+      ['Integrated Financial Structure Design','SPV / SPC Establishment Support','Professional IR Pitching Package','Full Legal & Tax Review Report','Online Meeting Template (2×/month)','Post-closing Management Template'],
+      ['Full-cycle: Strategy to Exit','Global STO Platform Integration','Multi-jurisdiction Legal & Tax Advisory','Dedicated Consultant Team Report','Monthly Reporting & Monitoring Report'],
+    ],
   },
   ja: {
     heroBadge: '✦ 書式ライブラリ — オンライン記入 · PDF出力',
@@ -317,6 +480,18 @@ var FORMS_LANG = {
     sectionUpcoming: '🔜 準備中 — オンライン記入対応予定',
     countSuffix: '種',
     cardBtn: '✏ 記入する',
+    premiumBadge: '✦ プレミアムサービスパッケージ',
+    premiumComingSoon: '準備中',
+    tiers: [
+      { name: 'Basic', badge: 'BASIC', sub: '小規模プロジェクト' },
+      { name: 'Standard', badge: 'STANDARD', sub: '中規模プロジェクト' },
+      { name: 'Enterprise', badge: 'ENTERPRISE', sub: '大型複合プロジェクト' },
+    ],
+    premiumItems: [
+      ['基本構造設計報告書','IR資料ベーシックセット','法律審査1回','メールサポートテンプレート'],
+      ['統合金融構造設計','SPV / SPC設立支援','専門IR ピッチングパッケージ','法律・税務審査全工程報告書','オンライン会議テンプレート（月2回）','事後管理テンプレート'],
+      ['戦略立案からExitまでフルサイクル','グローバルプラットフォームSTO連携','多重法域法律・税務統合アドバイザリー','専任コンサルタントチーム配置報告書','月次定期報告・モニタリング報告書'],
+    ],
   }
 };
 
@@ -493,6 +668,34 @@ function setLang(lang) {
   var sectionTitles = document.querySelectorAll('.section-header-title');
   if (sectionTitles[0]) sectionTitles[0].textContent = d.sectionLive;
   if (sectionTitles[1]) sectionTitles[1].textContent = d.sectionUpcoming;
+
+  // Premium section
+  var pdb = document.getElementById('premiumDividerBadge');
+  if (pdb) pdb.textContent = d.premiumBadge;
+
+  // Premium tier names / subs / items
+  var tierBadgeClasses = ['basic','std','ent'];
+  if (d.tiers) {
+    d.tiers.forEach(function(t, ti) {
+      var nameEl = document.getElementById('tierName' + ti);
+      if (nameEl) {
+        nameEl.innerHTML = t.name + ' <span class="tier-badge ' + tierBadgeClasses[ti] + '">' + t.badge + '</span>';
+      }
+      var subEl = document.getElementById('tierSub' + ti);
+      if (subEl) subEl.textContent = t.sub;
+    });
+  }
+  if (d.premiumItems) {
+    d.premiumItems.forEach(function(tier, ti) {
+      tier.forEach(function(txt, ii) {
+        var el = document.getElementById('pi' + ti + '_' + ii);
+        if (el) el.textContent = txt;
+      });
+    });
+  }
+  document.querySelectorAll('.premium-coming').forEach(function(el) {
+    el.textContent = d.premiumComingSoon || '준비중';
+  });
 
   // 서식 데이터 & 카드 재렌더 (언어 반영)
   currentLang = lang;

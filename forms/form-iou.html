@@ -462,13 +462,27 @@ function toKorean(num) {
   return '금' + result + '원정';
 }
 function updateAmount(val) {
-  var clean = val.replace(/[^0-9]/g, '');
+  var clean = (val || '').replace(/[^0-9]/g, '');
   var num = parseInt(clean) || 0;
   var formatted = num.toLocaleString('ko-KR');
-  var korean = toKorean(num);
-  document.getElementById('amountFigure').textContent = '금 ' + formatted + '원';
-  document.getElementById('amountKorean').textContent = '(' + korean + ')';
-  document.getElementById('clauseAmount').textContent = '금 ' + formatted + '원 (' + korean + ')';
+  var lang = _activeLang || 'ko';
+  var fig = document.getElementById('amountFigure');
+  var kor = document.getElementById('amountKorean');
+  var cls = document.getElementById('clauseAmount');
+  if (lang === 'en') {
+    if (fig) fig.textContent = 'KRW ' + formatted;
+    if (kor) kor.textContent = '';
+    if (cls) cls.textContent = 'KRW ' + formatted;
+  } else if (lang === 'ja') {
+    if (fig) fig.textContent = '金額：' + formatted + '원';
+    if (kor) kor.textContent = '';
+    if (cls) cls.textContent = '金額：' + formatted + '원';
+  } else {
+    var korean = toKorean(num);
+    if (fig) fig.textContent = '금 ' + formatted + '원';
+    if (kor) kor.textContent = '(' + korean + ')';
+    if (cls) cls.textContent = '금 ' + formatted + '원 (' + korean + ')';
+  }
 }
 function syncField(sel, val) {
   document.querySelectorAll(sel).forEach(function(el) { el.textContent = val; });
@@ -828,6 +842,9 @@ function setLang(lang) {
       if(_maps[lang][t])el.textContent=_maps[lang][t];
     });
   })();
+  // 금액 박스 언어 갱신
+  var _amtInput = document.querySelector('input[placeholder="10,000,000"]');
+  if (_amtInput) updateAmount(_amtInput.value);
   localStorage.setItem('site-lang', lang);
 }
 

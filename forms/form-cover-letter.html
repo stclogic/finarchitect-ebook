@@ -623,7 +623,7 @@ function setLang(lang) {
   document.querySelector('.cl-sign-label').textContent = d.footerCert;
   var snl = document.getElementById('signNameLabel'); if (snl && d.signNameLabel) snl.textContent = d.signNameLabel;
   document.querySelector('.cl-footer-left').innerHTML = d.footerDateLabel + ': <span id="footer-date" contenteditable="true">' + document.getElementById('footer-date').textContent + '</span>';
-  document.querySelector('.cl-footer-right span[style]').textContent = d.footerSign;
+  var _frs = document.querySelector('.cl-sign-area span[style]'); if (_frs) _frs.textContent = d.footerSign;
   // 글자수
   document.querySelectorAll('.cl-char-count').forEach(function(el) {
     var cur = el.textContent.split('/')[0].trim();

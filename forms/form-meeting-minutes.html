@@ -563,6 +563,19 @@ function setLang(lang) {
   var _ln=document.getElementById('lbl-docno');if(_ln)_ln.textContent=lang==='en'?'Document No.':lang==='ja'?'文書番号':'문서번호';
     __logoph2_done__
   var _lph=document.getElementById('logo-ph-text');if(_lph)_lph.textContent=lang==='en'?'Insert Logo':lang==='ja'?'ロゴ挿入':'로고 삽입';
+  // 기존 안건 레이블 갱신
+  var _al = _AGENDA_LABELS[lang] || _AGENDA_LABELS.ko;
+  document.querySelectorAll('.agenda-lbl-discuss').forEach(function(el){ el.textContent = _al.discuss; });
+  document.querySelectorAll('.agenda-lbl-decision').forEach(function(el){ el.textContent = _al.decision; });
+  document.querySelectorAll('.agenda-lbl-person').forEach(function(el){ el.textContent = _al.person; });
+  document.querySelectorAll('.agenda-lbl-deadline').forEach(function(el){ el.textContent = _al.deadline; });
+  // 액션 아이템 status select 옵션 갱신
+  var _so = _STATUS_OPTIONS[lang] || _STATUS_OPTIONS.ko;
+  document.querySelectorAll('.status-select').forEach(function(sel){
+    var cur = sel.selectedIndex;
+    sel.options[0].text = _so[0]; sel.options[1].text = _so[1]; sel.options[2].text = _so[2];
+    sel.selectedIndex = cur;
+  });
   localStorage.setItem('site-lang', lang);
   if (window.syncNavLang) window.syncNavLang(lang);
   _updateFormDate();
@@ -595,31 +608,43 @@ function selectType(btn) {
 }
 
 let agendaCount = 0;
+var _AGENDA_LABELS = {
+  ko: { title:'안건 제목을 입력하세요', discuss:'논의 내용', decision:'결정 사항', person:'담당자', deadline:'완료 기한' },
+  en: { title:'Enter agenda title', discuss:'Discussion', decision:'Decision', person:'Owner', deadline:'Due Date' },
+  ja: { title:'議題タイトルを入力', discuss:'議論内容', decision:'決定事項', person:'担当者', deadline:'完了期限' }
+};
+var _STATUS_OPTIONS = {
+  ko: ['진행전','진행중','완료'],
+  en: ['Pending','In Progress','Done'],
+  ja: ['未着手','進行中','完了']
+};
+
 function addAgenda(title='', discuss='', decision='', person='', deadline='') {
   agendaCount++;
   const section = document.getElementById('agendaSection');
   const div = document.createElement('div');
   div.className = 'agenda-item';
+  const lbl = _AGENDA_LABELS[_activeLang] || _AGENDA_LABELS.ko;
   div.innerHTML = `
     <div class="agenda-header">
       <span class="agenda-badge">${agendaCount}</span>
-      <span class="agenda-title" contenteditable="true">${title || '안건 제목을 입력하세요'}</span>
+      <span class="agenda-title" contenteditable="true">${title || lbl.title}</span>
     </div>
     <div class="agenda-body">
       <div class="agenda-field-full">
-        <label>논의 내용</label>
+        <label class="agenda-lbl-discuss">${lbl.discuss}</label>
         <div contenteditable="true" style="min-height:14mm">${discuss}</div>
       </div>
       <div class="agenda-field">
-        <label>결정 사항</label>
+        <label class="agenda-lbl-decision">${lbl.decision}</label>
         <div contenteditable="true" style="min-height:10mm">${decision}</div>
       </div>
       <div class="agenda-field">
-        <label>담당자</label>
+        <label class="agenda-lbl-person">${lbl.person}</label>
         <div contenteditable="true">${person}</div>
       </div>
       <div class="agenda-field">
-        <label>완료 기한</label>
+        <label class="agenda-lbl-deadline">${lbl.deadline}</label>
         <div contenteditable="true">${deadline}</div>
       </div>
     </div>`;
@@ -630,6 +655,7 @@ function addAction(content='', person='', deadline='') {
   const tbody = document.getElementById('actionBody');
   const n = tbody.rows.length + 1;
   const tr = document.createElement('tr');
+  const opts = _STATUS_OPTIONS[_activeLang] || _STATUS_OPTIONS.ko;
   tr.innerHTML = `
     <td>${n}</td>
     <td contenteditable="true">${content}</td>
@@ -637,7 +663,7 @@ function addAction(content='', person='', deadline='') {
     <td contenteditable="true">${deadline}</td>
     <td>
       <select class="status-select">
-        <option>진행전</option><option>진행중</option><option>완료</option>
+        <option>${opts[0]}</option><option>${opts[1]}</option><option>${opts[2]}</option>
       </select>
     </td>`;
   tbody.appendChild(tr);

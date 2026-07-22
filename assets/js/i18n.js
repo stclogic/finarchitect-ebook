@@ -648,6 +648,13 @@ function applyLang(lang) {
   // landing.html 동적 리뷰 카드 재렌더링
   if (typeof window.renderReviews === 'function') window.renderReviews();
 
+  // 폼 페이지 자체 setLang 연동 (nav 버튼 클릭 시 폼 번역 동기화)
+  if (typeof window.setLang === 'function' && !applyLang._syncing) {
+    applyLang._syncing = true;
+    window.setLang(lang);
+    applyLang._syncing = false;
+  }
+
   // index2.html: document.write로 데이터 파일이 고정되므로 리로드로 재로드
   if (location.pathname.endsWith('index2.html')) {
     location.reload();

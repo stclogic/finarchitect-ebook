@@ -791,8 +791,8 @@ function setLang(lang) {
     var ci = document.getElementById('corpName'); if(ci) ci.placeholder = _ph.corp||'';
     var ts = document.getElementById('totalShares'); if(ts) ts.placeholder = _ph.shares||'';
     var pv = document.getElementById('parValue'); if(pv) pv.placeholder = _ph.par||'';
-    var compEl = document.querySelector('[contenteditable="true"]');
-    if(compEl && (compEl.textContent === '주식회사 ○○○' || compEl.textContent === _ph.company))
+    var compEl = document.getElementById('dispCorpName');
+    if(compEl && (compEl.textContent === '주식회사 ○○○' || /[가-힣]/.test(compEl.textContent) || compEl.textContent === _ph.company))
       compEl.textContent = _ph.company||'';
     // Article clause bodies
     var _arts = {

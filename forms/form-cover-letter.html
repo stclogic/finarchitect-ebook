@@ -680,11 +680,11 @@ function setLang(lang) {
     ja: {company:'会社名', job:'応募職種', name:'氏名'}
   };
   var _cld = _clDefaults[lang] || _clDefaults.ko;
-  var _compEl = document.getElementById('disp-company');
+  var _compEl = document.getElementById('doc-company');
   if (_compEl && (!_compEl.textContent.trim() || ['회사명','Company Name','会社名'].includes(_compEl.textContent.trim()))) _compEl.textContent = _cld.company;
-  var _jobEl = document.getElementById('disp-job');
+  var _jobEl = document.getElementById('doc-job');
   if (_jobEl && (!_jobEl.textContent.trim() || ['지원직무','Position Applied','応募職種'].includes(_jobEl.textContent.trim()))) _jobEl.textContent = _cld.job;
-  var _nameEl = document.getElementById('disp-name');
+  var _nameEl = document.getElementById('doc-name');
   if (_nameEl && (!_nameEl.textContent.trim() || ['이름','Full Name','氏名'].includes(_nameEl.textContent.trim()))) _nameEl.textContent = _cld.name;
   if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
   _updateFormDate();

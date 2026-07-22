@@ -669,10 +669,25 @@ function setLang(lang) {
       var cbodies = document.querySelectorAll('.clause-body[contenteditable], .article-body[contenteditable], .content-para[contenteditable]');
       _clauses[lang].forEach(function(text,i){ if(cbodies[i]) cbodies[i].textContent = text; });
     }
-    // Stamp sig labels
-    var _sigLabels = {ko:['성명:','단체명:'], en:['Name:','Organization:'], ja:['氏名：','団体名：']}[lang]||[];
-    var sigEls = document.querySelectorAll('.stamp-block .s-info[contenteditable]');
-    // These are already handled by sInfos in the previous fix
+    // Donation amount display fields
+    if(lang !== 'ko'){
+      var _amtDefaults = {
+        en: { amt:'Amount _______________ (₩ )', amtKor:'Amount in Words ___________________________', recurDay:'Monthly — Day ___ of each month', purpose:'For non-designated donations, funds will be used for the organization\'s stated purposes.' },
+        ja: { amt:'金額 _______________ （¥ ）', amtKor:'金額（漢字） ___________________________', recurDay:'毎月　___日', purpose:'指定なし寄付の場合、団体の設立目的事業に使用します。' }
+      }[lang] || {};
+      var _amtPat=/[가-힣]|금.*원|Amount.*₩|金額.*¥/;
+      var amtEl = document.getElementById('dispDonationAmt');
+      if(amtEl && _amtPat.test(amtEl.textContent)) amtEl.textContent = _amtDefaults.amt||'';
+      var amtKorEl = document.getElementById('dispDonationAmtKor');
+      if(amtKorEl && _amtPat.test(amtKorEl.textContent)) amtKorEl.textContent = _amtDefaults.amtKor||'';
+      // Recurring payment day span (매월   일 / Monthly — Day / 毎月　___日)
+      document.querySelectorAll('[contenteditable="true"]').forEach(function(el){
+        var t=el.textContent.trim();
+        if(/^매월|^Monthly — Day|^毎月/.test(t)) el.textContent = _amtDefaults.recurDay||'';
+        if(/비지정 기부의 경우|non-designated donations|指定なし寄付/.test(t)) el.textContent = _amtDefaults.purpose||'';
+      });
+    }
+    // Stamp sig labels already handled by sInfos
   })();
 
     // __th_translated__

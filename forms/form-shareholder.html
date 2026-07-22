@@ -622,9 +622,9 @@ function setLang(lang) {
       ja: { company:'○○株式会社', name:'氏名を入力してください', addr:'住所を入力してください' }
     }[lang] || {};
     var cc = document.getElementById('ctrlCompany'); if(cc) cc.placeholder = _ph.company||'';
-    // Update contenteditable company name
-    var compEl = document.querySelector('.company-name[contenteditable]');
-    if(compEl) compEl.textContent = _ph.company||'';
+    // Update contenteditable company name in doc intro (dispCompany may be restored to Korean by docIntroHTML save/restore)
+    var compEl = document.getElementById('dispCompany');
+    if(compEl && /[가-힣]/.test(compEl.textContent)) compEl.textContent = _ph.company||'';
     // Shareholder names/addresses
     document.querySelectorAll('[contenteditable="true"]').forEach(function(el){
       if(el.textContent === '성명을 입력하세요') el.textContent = _ph.name||'';

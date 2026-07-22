@@ -893,6 +893,23 @@ function setLang(lang) {
     var pi=document.querySelectorAll('.pi-val[contenteditable]');
     if(pi[1])pi[1].textContent=_s.lessorAddr||'';
     if(pi[4])pi[4].textContent=_s.lesseeAddr||'';
+    // Property description box fields (address, area, registration line)
+    var _prop={
+      ko:{addr:'서울특별시 마포구 상암동 123-45, 아파트 101동 1001호', area:'84.92㎡ (약 25.7평)', reg:'마포구 상암동 123 아파트 제10층 제1001호 (전용 84.92㎡)'},
+      en:{addr:'123-45 Sangam-dong, Mapo-gu, Seoul, Apt. 101-1001', area:'84.92㎡ (approx. 25.7 py)', reg:'Mapo-gu Sangam-dong 123, Apt. Floor 10, Unit 1001 (exclusive 84.92㎡)'},
+      ja:{addr:'ソウル市麻浦区上岩洞123-45 アパート101棟1001号', area:'84.92㎡（約25.7坪）', reg:'麻浦区上岩洞123 アパート10階1001号室（専有84.92㎡）'}
+    }[lang]||{};
+    var _knownAddrs=['서울특별시 마포구 상암동 123-45, 아파트 101동 1001호','123-45 Sangam-dong, Mapo-gu, Seoul, Apt. 101-1001','ソウル市麻浦区上岩洞123-45 アパート101棟1001号'];
+    var _knownAreas=['84.92㎡ (약 25.7평)','84.92㎡ (approx. 25.7 py)','84.92㎡（約25.7坪）'];
+    var _knownRegs=['마포구 상암동 123 아파트 제10층 제1001호 (전용 84.92㎡)','Mapo-gu Sangam-dong 123, Apt. Floor 10, Unit 1001 (exclusive 84.92㎡)','麻浦区上岩洞123 アパート10階1001号室（専有84.92㎡）'];
+    document.querySelectorAll('.f-address[contenteditable]').forEach(function(el){
+      if(_knownAddrs.includes(el.textContent.trim())) el.textContent=_prop.addr||'';
+    });
+    document.querySelectorAll('[contenteditable]').forEach(function(el){
+      var t=el.textContent.trim();
+      if(_knownAreas.includes(t)) el.textContent=_prop.area||'';
+      if(_knownRegs.includes(t)) el.textContent=_prop.reg||'';
+    });
   })();
     __ls_sigf_labels__
   // __ls_sigf_labels__ 서명란 라벨 번역

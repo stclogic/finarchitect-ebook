@@ -675,6 +675,31 @@ function setLang(lang) {
     var cdo = document.getElementById('ctrl-docno'); if(cdo) cdo.placeholder = _ph.docno||'';
   })();
 
+  // __empcert_docbody_fixed__
+  (function(){
+    var _s = {
+      ko: { docno:'재직-0000-000', empPeriod:'____년 __월 __일 ~ 현재', purpose:'금융기관 제출용', addr:'주소: 서울특별시 강남구 테헤란로 123 | 대표전화: 02-0000-0000' },
+      en: { docno:'EMP-0000-000', empPeriod:'Jan 1, ____ ~ Present', purpose:'For financial institution', addr:'Address: 123 Teheran-ro, Gangnam-gu, Seoul | Tel: 02-0000-0000' },
+      ja: { docno:'在職-0000-000', empPeriod:'____年__月__日 〜 現在', purpose:'金融機関提出用', addr:'住所：ソウル市江南区テヘラン路123 | 代表電話：02-0000-0000' }
+    }[lang] || {};
+    // docno display span
+    var docnoEl = document.getElementById('doc-docno');
+    if(docnoEl && ['재직-0000-000','EMP-0000-000','在職-0000-000'].indexOf(docnoEl.textContent.trim()) !== -1) docnoEl.textContent = _s.docno||'';
+    else if(docnoEl && docnoEl.textContent.trim() === '') docnoEl.textContent = _s.docno||'';
+    // employment period td (재직기간 row)
+    var allTds = document.querySelectorAll('.ec-cert-table td[contenteditable]');
+    allTds.forEach(function(td){
+      var t = td.textContent.trim();
+      if(['____년 __월 __일 ~ 현재','Jan 1, ____ ~ Present','____年__月__日 〜 現在'].indexOf(t) !== -1) td.textContent = _s.empPeriod||'';
+    });
+    // purpose field
+    var pfEl = document.querySelector('.ec-purpose-field[contenteditable]');
+    if(pfEl) { var p = pfEl.textContent.trim(); if(['금융기관 제출용','For financial institution','金融機関提出用'].indexOf(p) !== -1) pfEl.textContent = _s.purpose||''; }
+    // address footer
+    var afEl = document.querySelector('.ec-address-footer[contenteditable]');
+    if(afEl) afEl.textContent = _s.addr||'';
+  })();
+
     // __th_translated__
   if(lang!=='ko')(function(){
     var _tm={

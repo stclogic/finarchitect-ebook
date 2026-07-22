@@ -678,6 +678,17 @@ function setLang(lang) {
     var on_ = document.getElementById('orgName'); if(on_) on_.placeholder = _ph.org||'';
   })();
 
+  // __ho_docbody_fixed__
+  (function(){
+    var _s = {
+      ko: '인계 시 주의해야 할 사항, 미완료 업무, 중요 일정 등을 기재하세요.',
+      en: 'Describe any precautions during handover, incomplete tasks, important schedules, etc.',
+      ja: '引継ぎ時の注意事項、未完了業務、重要スケジュール等を記載してください。'
+    }[lang] || '';
+    var ceEl = document.querySelector('.ce-block[contenteditable]');
+    if(ceEl) ceEl.textContent = _s;
+  })();
+
     // __th_translated__
   if(lang!=='ko')(function(){
     var _tm={

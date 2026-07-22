@@ -590,7 +590,9 @@ function setLang(lang) {
     }[lang] || {};
     var cn = document.querySelector('.cover-company-name'); if(cn) cn.textContent = _bp.cn||'';
     var mvals = document.querySelectorAll('.cover-meta-val');
-    if(mvals[1] && !mvals[1].id) mvals[1].textContent = _bp.mt||'';
+    // mvals[1] has id="dispTarget" so !id check fails — fix explicitly
+    var dispTarget = document.getElementById('dispTarget');
+    if(dispTarget && (dispTarget.textContent === '기관명 / 투자자' || /[가-힣]/.test(dispTarget.textContent))) dispTarget.textContent = _bp.mt||'';
     if(mvals[2] && !mvals[2].id) mvals[2].textContent = _bp.ma||'';
     if(mvals[3] && !mvals[3].id) mvals[3].textContent = _bp.mc||'';
     var fvs = document.querySelectorAll('.fv');

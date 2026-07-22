@@ -789,6 +789,31 @@ function setLang(lang) {
     }[lang]||{};
     document.querySelectorAll('.f-borrower[contenteditable]').forEach(function(el){el.textContent=_s.borrower||'';});
     document.querySelectorAll('.f-lender[contenteditable]').forEach(function(el){el.textContent=_s.lender||'';});
+    // __iou_addr_fixed__ update address party-values and sig-field-values
+    var addrKo = ['서울시 강남구 역삼동 123','서울시 서초구 서초동 456'];
+    var addrVals = {ko:addrKo, en:['123 Yeoksam-dong, Gangnam-gu, Seoul','456 Seocho-dong, Seocho-gu, Seoul'], ja:['ソウル市江南区驛三洞123','ソウル市瑞草区瑞草洞456']}[lang]||addrKo;
+    // party-row 주 소 spans
+    var partyAddrSpans = [];
+    document.querySelectorAll('.party-row').forEach(function(row){
+      var lbl = row.querySelector('.party-label');
+      if(lbl && lbl.textContent.trim() === '주 소'){
+        var val = row.querySelector('.party-value[contenteditable]');
+        if(val) partyAddrSpans.push(val);
+      }
+    });
+    if(partyAddrSpans[0]) partyAddrSpans[0].textContent = addrVals[0]||'';
+    if(partyAddrSpans[1]) partyAddrSpans[1].textContent = addrVals[1]||'';
+    // sig-field 주 소 spans
+    var sigAddrSpans = [];
+    document.querySelectorAll('.sig-field').forEach(function(row){
+      var lbl = row.querySelector('.sig-field-label');
+      if(lbl && lbl.textContent.trim() === '주 소'){
+        var val = row.querySelector('.sig-field-value[contenteditable]');
+        if(val) sigAddrSpans.push(val);
+      }
+    });
+    if(sigAddrSpans[0]) sigAddrSpans[0].textContent = addrVals[0]||'';
+    if(sigAddrSpans[1]) sigAddrSpans[1].textContent = addrVals[1]||'';
   })();
     __iou_sigf_labels__
   // __iou_sigf_labels__ 서명란 라벨 번역

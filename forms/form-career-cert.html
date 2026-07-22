@@ -649,6 +649,31 @@ function setLang(lang) {
     var cdo = document.getElementById('ctrl-docno'); if(cdo) cdo.placeholder = _ph.docno||'';
   })();
 
+  // __carcert_docbody_fixed__
+  (function(){
+    var _s = {
+      ko: { docno:'경력-0000-000', dept:'개발팀', totalField:'_ 년 _ 개월', purpose:'취업처 제출용', addr:'주소: 서울특별시 강남구 테헤란로 123 | 대표전화: 02-0000-0000' },
+      en: { docno:'CAREER-0000-000', dept:'Development Team', totalField:'_ year(s) _ month(s)', purpose:'For employment application', addr:'Address: 123 Teheran-ro, Gangnam-gu, Seoul | Tel: 02-0000-0000' },
+      ja: { docno:'経歴-0000-000', dept:'開発チーム', totalField:'_ 年 _ ヶ月', purpose:'就職先提出用', addr:'住所：ソウル市江南区テヘラン路123 | 代表電話：02-0000-0000' }
+    }[lang] || {};
+    // docno display span
+    var docnoEl = document.getElementById('doc-docno');
+    if(docnoEl && ['경력-0000-000','CAREER-0000-000','経歴-0000-000'].indexOf(docnoEl.textContent.trim()) !== -1) docnoEl.textContent = _s.docno||'';
+    else if(docnoEl && docnoEl.textContent.trim() === '') docnoEl.textContent = _s.docno||'';
+    // First career row dept
+    var careerTds = document.querySelectorAll('#career-tbody tr:first-child td[contenteditable]');
+    if(careerTds[1]) { var d = careerTds[1].textContent.trim(); if(['개발팀','Development Team','開発チーム'].indexOf(d) !== -1 || d === '') careerTds[1].textContent = _s.dept||''; }
+    // total field
+    var tfEl = document.querySelector('.cc-total-field[contenteditable]');
+    if(tfEl) { var t = tfEl.textContent.trim(); if(['_ 년 _ 개월','_ year(s) _ month(s)','_ 年 _ ヶ月'].indexOf(t) !== -1) tfEl.textContent = _s.totalField||''; }
+    // purpose field
+    var pfEl = document.querySelector('.cc-purpose-field[contenteditable]');
+    if(pfEl) { var p = pfEl.textContent.trim(); if(['취업처 제출용','For employment application','就職先提出用'].indexOf(p) !== -1) pfEl.textContent = _s.purpose||''; }
+    // address footer
+    var afEl = document.querySelector('.cc-address-footer[contenteditable]');
+    if(afEl) afEl.textContent = _s.addr||'';
+  })();
+
     // __th_translated__
   if(lang!=='ko')(function(){
     var _tm={

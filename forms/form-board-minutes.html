@@ -625,16 +625,56 @@ function setLang(lang) {
         agendas:['2024年度事業計画および予算承認の件','役員報酬限度額決定の件']
       }
     }[lang] || {};
-    var cpEl = document.querySelector('.company-name[contenteditable], [contenteditable]');
-    var allEditable = document.querySelectorAll('[contenteditable="true"]');
-    // Map by order - first find company/place inputs
-    var compEl = document.getElementById('companyNameOut') || document.querySelector('.company-name-big');
+    // __bm_docbody_fixed__
+    // company + place
+    var compEl = document.getElementById('dispCompany');
     if(compEl) compEl.textContent = _bm.company||'';
-    var placeEl = document.getElementById('meetingPlaceOut');
+    var placeEl = document.getElementById('dispPlace');
     if(placeEl) placeEl.textContent = _bm.place||'';
     // ctrl inputs
     var ctrlComp = document.getElementById('ctrlCompany'); if(ctrlComp) ctrlComp.placeholder = _bm.company||'';
     var ctrlPlace = document.getElementById('ctrlPlace'); if(ctrlPlace) ctrlPlace.placeholder = _bm.place||'';
+    // quorum cells (siblings of infoTh2, infoTh3)
+    var q1th = document.getElementById('infoTh2');
+    if(q1th && q1th.nextElementSibling) q1th.nextElementSibling.textContent = _bm.quorum1||'';
+    var q2th = document.getElementById('infoTh3');
+    if(q2th && q2th.nextElementSibling) q2th.nextElementSibling.textContent = _bm.quorum2||'';
+    // attend table rows
+    var aRows = document.querySelectorAll('#attendBody tr');
+    if(aRows[0]){
+      var tds0 = aRows[0].querySelectorAll('td[contenteditable]');
+      if(tds0[0]) tds0[0].textContent = _bm.chairRole||'';
+      if(tds0[1]) tds0[1].textContent = _bm.chairName||'';
+      if(tds0[2]) tds0[2].textContent = _bm.presRole||'';
+    }
+    (_bm.dirs||[]).forEach(function(d,i){
+      if(!aRows[i+1]) return;
+      var tds = aRows[i+1].querySelectorAll('td[contenteditable]');
+      if(tds[0]) tds[0].textContent = d[0]||'';
+      if(tds[1]) tds[1].textContent = d[1]||'';
+      if(tds[2]) tds[2].textContent = d[2]||'';
+    });
+    if(aRows[5]){
+      var tds5 = aRows[5].querySelectorAll('td[contenteditable]');
+      if(tds5[0]) tds5[0].textContent = _bm.auditor||'';
+      if(tds5[1]) tds5[1].textContent = _bm.audName||'';
+    }
+    // agenda table (2nd column td)
+    var agTrs = document.querySelectorAll('.agenda-table tbody tr');
+    (_bm.agendas||[]).forEach(function(a,i){
+      if(!agTrs[i]) return;
+      var td = agTrs[i].querySelector('td[contenteditable]');
+      if(td) td.textContent = a;
+    });
+    // agenda-detail-head elements
+    var detailHeads = document.querySelectorAll('.agenda-detail-head');
+    (_bm.agendas||[]).forEach(function(a,i){
+      if(!detailHeads[i]) return;
+      var num = (i+1) + (lang==='en'?' Agenda ':lang==='ja'?' 議案：':'호 안건: ');
+      if(lang==='ko') detailHeads[i].textContent = '제'+(i+1)+num+a;
+      else if(lang==='en') detailHeads[i].textContent = 'Agenda '+(i+1)+': '+a;
+      else detailHeads[i].textContent = '第'+(i+1)+'号議案：'+a;
+    });
   })();
 
     // __th_translated__

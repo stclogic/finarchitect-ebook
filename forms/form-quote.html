@@ -823,7 +823,8 @@ function setLang(lang) {
     }[lang] || {};
     var cnEl = document.querySelector('.company-name-doc'); if(cnEl) cnEl.textContent = _qt.cn||'';
     var infoVals = document.querySelectorAll('.info-val[contenteditable]');
-    var infoKeys = ['addr','','','client','mgr','valid','delivery','payment','place'];
+    // indices: 0=bizno(skip),1=addr,2=phone(skip),3=email(skip),4=client,5=mgr,6=phone2(skip),7=email2(skip),8=valid,9=delivery,10=payment,11=place
+    var infoKeys = ['','addr','','','client','mgr','','','valid','delivery','payment','place'];
     infoVals.forEach(function(el,i){ if(infoKeys[i] && _qt[infoKeys[i]]) el.textContent = _qt[infoKeys[i]]; });
     var notes = document.querySelector('.notes-area[contenteditable]'); if(notes) notes.textContent = _qt.notes||'';
     var bankVals = document.querySelectorAll('.bank-val[contenteditable]');

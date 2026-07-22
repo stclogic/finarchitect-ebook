@@ -470,6 +470,25 @@ function setLang(lang) {
     var dn = document.getElementById('docNo'); if(dn) dn.placeholder = _ph.docno||'';
   })();
 
+  // __mm_docbody_fixed__
+  (function(){
+    var _s = {
+      ko: { attendees:'성명, 성명, 성명 (쉼표로 구분)', writerDept:'소속부서', writerPos:'직위', writerName:'성명', apprDate:'결재일' },
+      en: { attendees:'Name, Name, Name (comma-separated)', writerDept:'Department', writerPos:'Position', writerName:'Name', apprDate:'Approval Date' },
+      ja: { attendees:'氏名、氏名、氏名（カンマ区切り）', writerDept:'所属部署', writerPos:'職位', writerName:'氏名', apprDate:'決裁日' }
+    }[lang] || {};
+    // attendees td (row with ih6 th)
+    var ih6 = document.getElementById('ih6');
+    if(ih6) { var atTd = ih6.parentElement.querySelector('td[contenteditable]'); if(atTd) atTd.textContent = _s.attendees||''; }
+    // writer-info spans
+    var wiSpans = document.querySelectorAll('.writer-info span[contenteditable]');
+    if(wiSpans[0]) wiSpans[0].textContent = _s.writerDept||'';
+    if(wiSpans[1]) wiSpans[1].textContent = _s.writerPos||'';
+    if(wiSpans[2]) wiSpans[2].textContent = _s.writerName||'';
+    // appr-date divs
+    document.querySelectorAll('.appr-date[contenteditable]').forEach(function(el){ el.textContent = _s.apprDate||''; });
+  })();
+
     // __th_translated__
   if(lang!=='ko')(function(){
     var _tm={

@@ -488,6 +488,17 @@ function setLang(lang) {
     var dp = document.getElementById('dept'); if(dp) dp.placeholder = _ph.dept||'';
   })();
 
+  // __appr_docbody_fixed__
+  (function(){
+    var _cb = {
+      ko: ['품의 제목을 입력하세요','본 품의의 목적 및 추진 배경을 간략히 기재하세요.','현황 분석 및 추진 배경을 상세히 기재하세요.','추진 방법, 일정, 담당자, 세부 계획 등을 기재하세요.','본 품의 승인 시 예상되는 효과 및 기대 성과를 기재하세요.'],
+      en: ['Enter the subject of this approval request.','Briefly describe the purpose and background of this proposal.','Describe the situation analysis and background in detail.','Describe the approach, schedule, personnel, and detailed plan.','Describe the expected outcomes and effects upon approval.'],
+      ja: ['稟議件名を入力してください。','本稟議の目的および推進背景を簡潔に記載してください。','現状分析および推進背景を詳細に記載してください。','推進方法、スケジュール、担当者、詳細計画等を記載してください。','承認時に期待される効果および成果を記載してください。']
+    }[lang] || [];
+    var cbs = document.querySelectorAll('.content-block[contenteditable]');
+    _cb.forEach(function(txt,i){ if(cbs[i]) cbs[i].textContent = txt; });
+  })();
+
     // __th_translated__
   if(lang!=='ko')(function(){
     var _tm={

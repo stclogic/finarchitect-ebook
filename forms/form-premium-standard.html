@@ -1,0 +1,391 @@
+<!-- 통합 금융 구조 설계 — Standard 등급 유료 서식 샘플 (열람 전용) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합 금융 구조 설계 — Standard | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+.form-page-wrap {
+  max-width:1200px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:260px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+.ctrl-panel h2 { font-size:.92rem; font-weight:800; color:#1E293B; margin-bottom:1.2rem; }
+.ctrl-section { margin-bottom:1.2rem; }
+.ctrl-divider { height:1px; background:#F1F5F9; margin:1rem 0; }
+.ctrl-back-link { display:block; text-align:center; margin-top:.8rem; font-size:.8rem; color:#64748B; text-decoration:none; }
+.ctrl-back-link:hover { color:#1E293B; }
+.lang-btn-group { display:flex; gap:.4rem; }
+.lang-btn { flex:1; padding:6px 0; font-size:.78rem; font-weight:700; border:1px solid #E2E8F0; border-radius:8px; background:#F8FAFC; color:#64748B; cursor:pointer; transition:.15s; }
+.lang-btn.active { background:#1E293B; color:#fff; border-color:#1E293B; }
+.premium-lock-box {
+  background:linear-gradient(135deg,#F0F9FF,#E0F2FE); border:1px solid #7DD3FC;
+  border-radius:14px; padding:1.2rem; margin-bottom:1rem; text-align:center;
+}
+.premium-lock-icon { font-size:2rem; margin-bottom:.4rem; }
+.premium-lock-title { font-size:.88rem; font-weight:800; color:#0C4A6E; margin-bottom:.3rem; }
+.premium-lock-desc { font-size:.75rem; color:#075985; line-height:1.5; margin-bottom:.8rem; }
+.premium-cta-btn {
+  display:block; width:100%; padding:11px; background:linear-gradient(135deg,#0284C7,#38BDF8);
+  color:#fff; border:none; border-radius:12px; font-size:.88rem; font-weight:800;
+  cursor:pointer; text-decoration:none; text-align:center; box-shadow:0 3px 10px rgba(2,132,199,.35);
+  transition:opacity .15s;
+}
+.premium-cta-btn:hover { opacity:.88; }
+.premium-badge-inline {
+  display:inline-block; font-size:.65rem; font-weight:800; padding:2px 7px;
+  border-radius:20px; background:#0284C7; color:#fff; margin-left:.4rem; vertical-align:middle;
+}
+.tip-box { background:#F0F9FF; border:1px solid #BAE6FD; border-radius:10px; padding:.75rem 1rem; font-size:.75rem; color:#0C4A6E; line-height:1.6; margin-top:.8rem; }
+.doc-wrap { background:#E2E8F0; border-radius:14px; padding:2rem 1rem; position:relative; }
+.doc-sheet {
+  background:#fff; width:100%; max-width:794px; margin:0 auto;
+  box-shadow:0 4px 24px rgba(0,0,0,.12); border-radius:4px;
+  padding:22mm 20mm; box-sizing:border-box; font-family:'Noto Serif KR','Georgia',serif;
+  font-size:9.5pt; line-height:1.7; color:#1E293B; position:relative;
+  user-select:none; pointer-events:none;
+}
+.doc-sheet::before {
+  content:'SAMPLE'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:80pt; font-weight:900; color:rgba(2,132,199,.07); pointer-events:none;
+  white-space:nowrap; letter-spacing:.2em; z-index:0;
+}
+.doc-sheet > * { position:relative; z-index:1; }
+.preview-banner {
+  background:linear-gradient(90deg,#0C4A6E,#0369A1); color:#fff;
+  border-radius:10px 10px 0 0; padding:.6rem 1.2rem; font-size:.78rem; font-weight:700;
+  display:flex; align-items:center; justify-content:space-between; max-width:794px; margin:0 auto;
+}
+.preview-tag { background:#38BDF8; color:#0C4A6E; font-size:.65rem; font-weight:800; padding:2px 8px; border-radius:20px; }
+.doc-header { text-align:center; margin-bottom:10mm; border-bottom:2px solid #0284C7; padding-bottom:5mm; }
+.doc-title { font-size:16pt; font-weight:900; letter-spacing:.12em; margin-bottom:2mm; }
+.doc-sub { font-size:8.5pt; color:#64748B; letter-spacing:.04em; }
+.doc-meta-row { display:flex; justify-content:space-between; font-size:8pt; color:#64748B; margin-top:3mm; }
+.section-head { font-size:10.5pt; font-weight:800; color:#0C4A6E; border-left:4px solid #0284C7; padding-left:6px; margin:7mm 0 3mm; }
+.section-num { color:#0284C7; margin-right:.3em; }
+/* 지표 카드 그리드 */
+.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:3mm; margin-bottom:4mm; }
+.kpi-card { background:#F0F9FF; border:1px solid #BAE6FD; border-radius:8px; padding:4mm; text-align:center; }
+.kpi-label { font-size:7.5pt; color:#0369A1; margin-bottom:1mm; }
+.kpi-value { font-size:13pt; font-weight:900; color:#0C4A6E; }
+.kpi-sub { font-size:7pt; color:#64748B; }
+/* 데이터 테이블 */
+.data-table { width:100%; border-collapse:collapse; font-size:8.5pt; margin-bottom:4mm; }
+.data-table th { background:#0C4A6E; color:#fff; padding:4px 7px; font-weight:700; text-align:center; font-size:8pt; }
+.data-table td { padding:4px 7px; border-bottom:1px solid #E2E8F0; text-align:center; vertical-align:middle; }
+.data-table td:first-child { text-align:left; }
+.data-table tr:nth-child(even) td { background:#F8FAFC; }
+.highlight-row td { background:#EFF6FF !important; font-weight:700; }
+/* 시나리오 박스 */
+.scenario-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3mm; margin-bottom:4mm; }
+.scenario-card { border-radius:8px; padding:4mm; }
+.sc-best { background:#ECFDF5; border:1px solid #6EE7B7; }
+.sc-base { background:#EFF6FF; border:1px solid #BAE6FD; }
+.sc-worst { background:#FFF1F2; border:1px solid #FCA5A5; }
+.scenario-title { font-size:8pt; font-weight:800; margin-bottom:2mm; }
+.sc-best .scenario-title { color:#065F46; }
+.sc-base .scenario-title { color:#1D4ED8; }
+.sc-worst .scenario-title { color:#9F1239; }
+.scenario-row { font-size:7.5pt; display:flex; justify-content:space-between; border-bottom:1px solid rgba(0,0,0,.06); padding:1px 0; }
+/* 최적화 슬라이더 시각 */
+.ratio-bar-wrap { margin-bottom:4mm; }
+.ratio-label { display:flex; justify-content:space-between; font-size:8pt; margin-bottom:1mm; }
+.ratio-bar { height:10px; background:#E2E8F0; border-radius:10px; overflow:hidden; }
+.ratio-fill { height:100%; border-radius:10px; }
+.fill-debt { background:linear-gradient(90deg,#F87171,#EF4444); }
+.fill-equity { background:linear-gradient(90deg,#34D399,#10B981); }
+/* 보수 구조 표 */
+.comp-table { width:100%; border-collapse:collapse; font-size:8.5pt; margin-bottom:4mm; }
+.comp-table th { background:#334155; color:#fff; padding:4px 7px; font-weight:700; font-size:8pt; }
+.comp-table td { padding:4px 7px; border:1px solid #E2E8F0; text-align:center; vertical-align:middle; }
+.comp-table td:nth-child(1) { text-align:left; }
+.tag { display:inline-block; font-size:7pt; font-weight:700; padding:1px 6px; border-radius:10px; }
+.tag-good { background:#DCFCE7; color:#166534; }
+.tag-warn { background:#FEF9C3; color:#854D0E; }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<div class="form-page-wrap">
+
+  <aside class="ctrl-panel">
+    <h2 id="ctrlTitle">🏗️ 통합 금융 구조 설계 <span class="premium-badge-inline">STANDARD</span></h2>
+    <div class="ctrl-section">
+      <div class="lang-btn-group">
+        <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+      </div>
+    </div>
+    <div class="ctrl-divider"></div>
+    <div class="premium-lock-box">
+      <div class="premium-lock-icon">🔒</div>
+      <div class="premium-lock-title" id="lockTitle">프리미엄 전용 서식</div>
+      <div class="premium-lock-desc" id="lockDesc">현재 샘플 미리보기 중입니다.<br>구매 후 직접 입력·시뮬레이션·출력이 가능합니다.</div>
+      <a href="../pricing.html" class="premium-cta-btn" id="ctaBtn">🔓 구매하고 바로 사용하기</a>
+    </div>
+    <div class="tip-box" id="tipBox">
+      💡 Standard 등급 서비스입니다.<br>
+      손익·자본·세무 연계 대시보드 + 3개년 시나리오 시뮬레이터로 구성됩니다.
+    </div>
+    <a href="../forms.html" class="ctrl-back-link" id="backLink">← 서식 목록</a>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="preview-banner">
+      <span id="previewLabel">🔍 샘플 미리보기 — 편집 불가</span>
+      <span class="preview-tag" id="previewTag">SAMPLE</span>
+    </div>
+    <div class="doc-sheet">
+
+      <div class="doc-header">
+        <div class="doc-title" id="docTitle">통합 금융 구조 설계</div>
+        <div class="doc-sub" id="docSub">INTEGRATED FINANCIAL STRUCTURE DESIGN · Standard</div>
+        <div class="doc-meta-row">
+          <span id="metaCompany">회사명: ○○○ 주식회사</span>
+          <span id="metaDate">작성일: 2026년 7월 23일</span>
+          <span id="metaConsultant">작성자: 핀아키텍트</span>
+        </div>
+      </div>
+
+      <!-- KPI 요약 -->
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-label" id="kl1">연 매출</div><div class="kpi-value">42억</div><div class="kpi-sub">+18% YoY</div></div>
+        <div class="kpi-card"><div class="kpi-label" id="kl2">영업이익률</div><div class="kpi-value">14.2%</div><div class="kpi-sub" id="ks2">목표 18%</div></div>
+        <div class="kpi-card"><div class="kpi-label" id="kl3">부채비율</div><div class="kpi-value">185%</div><div class="kpi-sub" id="ks3">업계 평균 210%</div></div>
+        <div class="kpi-card"><div class="kpi-label" id="kl4">현금전환주기</div><div class="kpi-value">52일</div><div class="kpi-sub" id="ks4">목표 35일</div></div>
+      </div>
+
+      <!-- 섹션 1 -->
+      <div class="section-head"><span class="section-num" id="sn1">【섹션 1】</span><span id="s1title">손익 및 현금흐름 통합 모델</span></div>
+
+      <table class="data-table">
+        <tr>
+          <th id="th1a">매출 채널</th><th id="th1b">월 매출</th><th id="th1c">매출원가율</th>
+          <th id="th1d">마진율</th><th id="th1e">기여이익</th>
+        </tr>
+        <tr><td id="ch1">직접 판매</td><td>180,000</td><td>52%</td><td>48%</td><td>86,400</td></tr>
+        <tr><td id="ch2">온라인몰</td><td>95,000</td><td>48%</td><td>52%</td><td>49,400</td></tr>
+        <tr><td id="ch3">총판/도매</td><td>75,000</td><td>62%</td><td>38%</td><td>28,500</td></tr>
+        <tr class="highlight-row"><td id="ch4">합 계</td><td>350,000</td><td>53.7%</td><td>46.3%</td><td>162,100</td></tr>
+      </table>
+
+      <table class="data-table">
+        <tr>
+          <th id="th2a">운전자본 항목</th><th id="th2b">현재(일)</th><th id="th2c">목표(일)</th><th id="th2d">개선 효과(천원)</th>
+        </tr>
+        <tr><td id="wc1">매출채권 회수일(DSO)</td><td>45</td><td>30</td><td>+17,500</td></tr>
+        <tr><td id="wc2">재고 보유일(DIO)</td><td>38</td><td>28</td><td>+11,700</td></tr>
+        <tr><td id="wc3">매입채무 지급일(DPO)</td><td>22</td><td>35</td><td>+15,200</td></tr>
+        <tr class="highlight-row"><td id="wc4">현금전환주기(CCC)</td><td>61일</td><td>23일</td><td>+44,400</td></tr>
+      </table>
+
+      <!-- 섹션 2 -->
+      <div class="section-head"><span class="section-num" id="sn2">【섹션 2】</span><span id="s2title">자본 및 자금 조달 구조 최적화</span></div>
+
+      <div class="ratio-bar-wrap">
+        <div class="ratio-label"><span id="rbl1">타인자본 (부채)</span><span>65%</span></div>
+        <div class="ratio-bar"><div class="ratio-fill fill-debt" style="width:65%"></div></div>
+      </div>
+      <div class="ratio-bar-wrap">
+        <div class="ratio-label"><span id="rbl2">자기자본 (지분)</span><span>35%</span></div>
+        <div class="ratio-bar"><div class="ratio-fill fill-equity" style="width:35%"></div></div>
+      </div>
+
+      <table class="data-table" style="margin-top:3mm">
+        <tr>
+          <th id="th3a">차입 항목</th><th id="th3b">잔액(천원)</th><th id="th3c">금리</th>
+          <th id="th3d">만기</th><th id="th3e">월 상환액</th><th id="th3f">절감 방안</th>
+        </tr>
+        <tr><td id="ln1">정책자금 A</td><td>200,000</td><td>2.8%</td><td>2027.03</td><td>5,556</td><td id="la1">리파이낸싱 검토</td></tr>
+        <tr><td id="ln2">시중은행 대출</td><td>350,000</td><td>5.3%</td><td>2028.06</td><td>6,563</td><td id="la2">금리협상 (4.1% 목표)</td></tr>
+        <tr><td id="ln3">크레딧라인</td><td>80,000</td><td>6.5%</td><td>수시</td><td>433</td><td id="la3">정책자금 대체</td></tr>
+      </table>
+
+      <!-- 섹션 3 -->
+      <div class="section-head"><span class="section-num" id="sn3">【섹션 3】</span><span id="s3title">주주 및 임원 보수·이익 분배 구조</span></div>
+
+      <table class="comp-table">
+        <tr>
+          <th id="cth1">구 분</th><th id="cth2">현재 구조</th><th id="cth3">최적화 안</th><th id="cth4">절세 효과</th>
+        </tr>
+        <tr>
+          <td id="cr1">대표이사 급여</td><td>월 600만원</td><td id="co1">월 450만원</td>
+          <td><span class="tag tag-good" id="ct1">연 540만원 절감</span></td>
+        </tr>
+        <tr>
+          <td id="cr2">배당</td><td>미실시</td><td id="co2">연 1회 / 2,000만원</td>
+          <td><span class="tag tag-good" id="ct2">배당소득 분리과세 활용</span></td>
+        </tr>
+        <tr>
+          <td id="cr3">임원 퇴직금 적립</td><td>미적립</td><td id="co3">연 1,200만원 적립</td>
+          <td><span class="tag tag-warn" id="ct3">정관 정비 선행 필요</span></td>
+        </tr>
+        <tr>
+          <td id="cr4">잉여금 처리</td><td>유보</td><td id="co4">자사주 매입 or 자본화</td>
+          <td><span class="tag tag-good" id="ct4">주가 부양 + 절세 이중 효과</span></td>
+        </tr>
+      </table>
+
+      <!-- 섹션 4 -->
+      <div class="section-head"><span class="section-num" id="sn4">【섹션 4】</span><span id="s4title">중장기 금융 시나리오 (3개년)</span></div>
+
+      <div class="scenario-grid">
+        <div class="scenario-card sc-best">
+          <div class="scenario-title" id="sc1title">📈 Best Case</div>
+          <div class="scenario-row"><span id="sc1y1">Year 1</span><span>48억</span></div>
+          <div class="scenario-row"><span id="sc1y2">Year 2</span><span>61억</span></div>
+          <div class="scenario-row"><span id="sc1y3">Year 3</span><span>79억</span></div>
+          <div class="scenario-row" style="margin-top:2mm; font-weight:700"><span id="sc1cash">누적 잉여현금</span><span>+23억</span></div>
+        </div>
+        <div class="scenario-card sc-base">
+          <div class="scenario-title" id="sc2title">📊 Base Case</div>
+          <div class="scenario-row"><span id="sc2y1">Year 1</span><span>42억</span></div>
+          <div class="scenario-row"><span id="sc2y2">Year 2</span><span>50억</span></div>
+          <div class="scenario-row"><span id="sc2y3">Year 3</span><span>61억</span></div>
+          <div class="scenario-row" style="margin-top:2mm; font-weight:700"><span id="sc2cash">누적 잉여현금</span><span>+14억</span></div>
+        </div>
+        <div class="scenario-card sc-worst">
+          <div class="scenario-title" id="sc3title">📉 Worst Case</div>
+          <div class="scenario-row"><span id="sc3y1">Year 1</span><span>36억</span></div>
+          <div class="scenario-row"><span id="sc3y2">Year 2</span><span>38억</span></div>
+          <div class="scenario-row"><span id="sc3y3">Year 3</span><span>42억</span></div>
+          <div class="scenario-row" style="margin-top:2mm; font-weight:700"><span id="sc3cash">누적 잉여현금</span><span>+3억</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="../assets/js/nav.js?v=3" defer></script>
+<script src="../assets/js/auth.js" defer></script>
+<script src="../assets/js/i18n.js" defer></script>
+<script src="../assets/js/footer-inject.js" defer></script>
+
+<script>
+var LANGS = {
+  ko: {
+    ctrlTitle:'🏗️ 통합 금융 구조 설계', lockTitle:'프리미엄 전용 서식',
+    lockDesc:'현재 샘플 미리보기 중입니다.<br>구매 후 직접 입력·시뮬레이션·출력이 가능합니다.',
+    ctaBtn:'🔓 구매하고 바로 사용하기',
+    tipBox:'💡 Standard 등급 서비스입니다.<br>손익·자본·세무 연계 대시보드 + 3개년 시나리오 시뮬레이터로 구성됩니다.',
+    backLink:'← 서식 목록', previewLabel:'🔍 샘플 미리보기 — 편집 불가', previewTag:'SAMPLE',
+    docTitle:'통합 금융 구조 설계', docSub:'INTEGRATED FINANCIAL STRUCTURE DESIGN · Standard',
+    metaCompany:'회사명: ○○○ 주식회사', metaDate:'작성일: 2026년 7월 23일', metaConsultant:'작성자: 핀아키텍트',
+    kl1:'연 매출', kl2:'영업이익률', kl3:'부채비율', kl4:'현금전환주기',
+    ks2:'목표 18%', ks3:'업계 평균 210%', ks4:'목표 35일',
+    sn1:'【섹션 1】', s1title:'손익 및 현금흐름 통합 모델',
+    sn2:'【섹션 2】', s2title:'자본 및 자금 조달 구조 최적화',
+    sn3:'【섹션 3】', s3title:'주주 및 임원 보수·이익 분배 구조',
+    sn4:'【섹션 4】', s4title:'중장기 금융 시나리오 (3개년)',
+    th1a:'매출 채널', th1b:'월 매출', th1c:'매출원가율', th1d:'마진율', th1e:'기여이익',
+    ch1:'직접 판매', ch2:'온라인몰', ch3:'총판/도매', ch4:'합 계',
+    th2a:'운전자본 항목', th2b:'현재(일)', th2c:'목표(일)', th2d:'개선 효과(천원)',
+    wc1:'매출채권 회수일(DSO)', wc2:'재고 보유일(DIO)', wc3:'매입채무 지급일(DPO)', wc4:'현금전환주기(CCC)',
+    rbl1:'타인자본 (부채)', rbl2:'자기자본 (지분)',
+    th3a:'차입 항목', th3b:'잔액(천원)', th3c:'금리', th3d:'만기', th3e:'월 상환액', th3f:'절감 방안',
+    ln1:'정책자금 A', la1:'리파이낸싱 검토', ln2:'시중은행 대출', la2:'금리협상 (4.1% 목표)', ln3:'크레딧라인', la3:'정책자금 대체',
+    cth1:'구 분', cth2:'현재 구조', cth3:'최적화 안', cth4:'절세 효과',
+    cr1:'대표이사 급여', co1:'월 450만원', ct1:'연 540만원 절감',
+    cr2:'배당', co2:'연 1회 / 2,000만원', ct2:'배당소득 분리과세 활용',
+    cr3:'임원 퇴직금 적립', co3:'연 1,200만원 적립', ct3:'정관 정비 선행 필요',
+    cr4:'잉여금 처리', co4:'자사주 매입 or 자본화', ct4:'주가 부양 + 절세 이중 효과',
+    sc1title:'📈 Best Case', sc2title:'📊 Base Case', sc3title:'📉 Worst Case',
+    sc1y1:'Year 1', sc1y2:'Year 2', sc1y3:'Year 3', sc1cash:'누적 잉여현금',
+    sc2y1:'Year 1', sc2y2:'Year 2', sc2y3:'Year 3', sc2cash:'누적 잉여현금',
+    sc3y1:'Year 1', sc3y2:'Year 2', sc3y3:'Year 3', sc3cash:'누적 잉여현금'
+  },
+  en: {
+    ctrlTitle:'🏗️ Integrated Financial Structure', lockTitle:'Premium Only',
+    lockDesc:'You are viewing a sample preview.<br>Purchase to unlock editing and simulation.',
+    ctaBtn:'🔓 Purchase & Use Now',
+    tipBox:'💡 Included in the Standard tier.<br>P&L / Capital / Tax dashboard + 3-year scenario simulator.',
+    backLink:'← Back to Forms', previewLabel:'🔍 Sample Preview — Read Only', previewTag:'SAMPLE',
+    docTitle:'Integrated Financial Structure Design', docSub:'INTEGRATED FINANCIAL STRUCTURE DESIGN · Standard',
+    metaCompany:'Company: ○○○ Inc.', metaDate:'Date: July 23, 2026', metaConsultant:'Author: FinArchitect',
+    kl1:'Annual Revenue', kl2:'Operating Margin', kl3:'Debt Ratio', kl4:'Cash Conversion Cycle',
+    ks2:'Target 18%', ks3:'Industry avg. 210%', ks4:'Target 35 days',
+    sn1:'[Section 1]', s1title:'Integrated P&L and Cash Flow Model',
+    sn2:'[Section 2]', s2title:'Capital & Funding Structure Optimization',
+    sn3:'[Section 3]', s3title:'Shareholder & Executive Compensation Structure',
+    sn4:'[Section 4]', s4title:'Mid-to-Long Term Financial Scenarios (3-Year)',
+    th1a:'Sales Channel', th1b:'Monthly Revenue', th1c:'COGS Ratio', th1d:'Margin', th1e:'Contribution Margin',
+    ch1:'Direct Sales', ch2:'Online Store', ch3:'Wholesale', ch4:'Total',
+    th2a:'Working Capital Item', th2b:'Current (days)', th2c:'Target (days)', th2d:'Improvement (KRW 000)',
+    wc1:'Days Sales Outstanding (DSO)', wc2:'Days Inventory Outstanding (DIO)', wc3:'Days Payable Outstanding (DPO)', wc4:'Cash Conversion Cycle (CCC)',
+    rbl1:'Debt Capital', rbl2:'Equity Capital',
+    th3a:'Loan Item', th3b:'Balance (KRW 000)', th3c:'Rate', th3d:'Maturity', th3e:'Monthly Payment', th3f:'Optimization Plan',
+    ln1:'Policy Fund A', la1:'Refinancing Review', ln2:'Bank Loan', la2:'Rate Negotiation (Target 4.1%)', ln3:'Credit Line', la3:'Replace w/ Policy Fund',
+    cth1:'Category', cth2:'Current Structure', cth3:'Optimized Plan', cth4:'Tax Saving Effect',
+    cr1:'CEO Salary', co1:'KRW 4.5M/month', ct1:'Save KRW 5.4M/year',
+    cr2:'Dividend', co2:'Annual / KRW 20M', ct2:'Separate taxation on dividends',
+    cr3:'Executive Retirement Reserve', co3:'KRW 12M/year reserve', ct3:'Articles amendment required first',
+    cr4:'Retained Earnings', co4:'Treasury buyback or capitalization', ct4:'Stock price support + tax benefit',
+    sc1title:'📈 Best Case', sc2title:'📊 Base Case', sc3title:'📉 Worst Case',
+    sc1y1:'Year 1', sc1y2:'Year 2', sc1y3:'Year 3', sc1cash:'Cumulative Free Cash',
+    sc2y1:'Year 1', sc2y2:'Year 2', sc2y3:'Year 3', sc2cash:'Cumulative Free Cash',
+    sc3y1:'Year 1', sc3y2:'Year 2', sc3y3:'Year 3', sc3cash:'Cumulative Free Cash'
+  },
+  ja: {
+    ctrlTitle:'🏗️ 統合財務構造設計', lockTitle:'プレミアム専用',
+    lockDesc:'現在サンプルをプレビュー中です。<br>購入後に編集・シミュレーション・出力が可能になります。',
+    ctaBtn:'🔓 購入してすぐ使う',
+    tipBox:'💡 Standardプランのサービスです。<br>損益・資本・税務連携ダッシュボード＋3ヵ年シナリオシミュレーター。',
+    backLink:'← 書式一覧', previewLabel:'🔍 サンプルプレビュー — 閲覧のみ', previewTag:'SAMPLE',
+    docTitle:'統合財務構造設計', docSub:'INTEGRATED FINANCIAL STRUCTURE DESIGN · Standard',
+    metaCompany:'会社名：○○○株式会社', metaDate:'作成日：2026年7月23日', metaConsultant:'作成者：FinArchitect',
+    kl1:'年間売上', kl2:'営業利益率', kl3:'負債比率', kl4:'現金転換サイクル',
+    ks2:'目標18%', ks3:'業界平均210%', ks4:'目標35日',
+    sn1:'【セクション1】', s1title:'損益・キャッシュフロー統合モデル',
+    sn2:'【セクション2】', s2title:'資本・資金調達構造の最適化',
+    sn3:'【セクション3】', s3title:'株主・役員報酬・利益分配構造',
+    sn4:'【セクション4】', s4title:'中長期財務シナリオ（3ヵ年）',
+    th1a:'販売チャネル', th1b:'月次売上', th1c:'原価率', th1d:'マージン率', th1e:'貢献利益',
+    ch1:'直販', ch2:'オンラインモール', ch3:'卸売', ch4:'合 計',
+    th2a:'運転資本項目', th2b:'現状（日）', th2c:'目標（日）', th2d:'改善効果（千円）',
+    wc1:'売掛金回収日数（DSO）', wc2:'在庫保有日数（DIO）', wc3:'買掛金支払日数（DPO）', wc4:'現金転換サイクル（CCC）',
+    rbl1:'他人資本（負債）', rbl2:'自己資本（株式）',
+    th3a:'借入項目', th3b:'残高（千円）', th3c:'金利', th3d:'満期', th3e:'月次返済額', th3f:'削減方針',
+    ln1:'政策資金A', la1:'リファイナンス検討', ln2:'銀行融資', la2:'金利交渉（目標4.1%）', ln3:'クレジットライン', la3:'政策資金への切替',
+    cth1:'区 分', cth2:'現状の構造', cth3:'最適化案', cth4:'節税効果',
+    cr1:'代表取締役報酬', co1:'月450万円', ct1:'年540万円削減',
+    cr2:'配当', co2:'年1回／2,000万円', ct2:'配当所得分離課税の活用',
+    cr3:'役員退職金積立', co3:'年1,200万円積立', ct3:'定款整備が先決',
+    cr4:'利益剰余金処理', co4:'自己株取得or資本化', ct4:'株価向上＋節税の二重効果',
+    sc1title:'📈 ベストケース', sc2title:'📊 ベースケース', sc3title:'📉 ワーストケース',
+    sc1y1:'1年目', sc1y2:'2年目', sc1y3:'3年目', sc1cash:'累積余剰現金',
+    sc2y1:'1年目', sc2y2:'2年目', sc2y3:'3年目', sc2cash:'累積余剰現金',
+    sc3y1:'1年目', sc3y2:'2年目', sc3y3:'3年目', sc3cash:'累積余剰現金'
+  }
+};
+
+var _activeLang = 'ko';
+function setLang(lang) {
+  _activeLang = lang;
+  var t = LANGS[lang] || LANGS.ko;
+  ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
+  var keys = Object.keys(LANGS.ko);
+  keys.forEach(function(k){
+    var el = document.getElementById(k);
+    if (el && t[k] !== undefined) el.innerHTML = t[k];
+  });
+  document.documentElement.lang = lang;
+  localStorage.setItem('site-lang', lang);
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+}
+
+(function(){
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!-- 기초구조설계 보고서 — Basic 등급 유료 서식 샘플 (열람 전용) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기초구조설계 보고서 — Basic | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+/* ── 레이아웃 ── */
+.form-page-wrap {
+  max-width:1200px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:260px 1fr; gap:2rem; align-items:start;
+}
+/* ── 컨트롤 패널 ── */
+.ctrl-panel {
+  background:#fff; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+.ctrl-panel h2 { font-size:.95rem; font-weight:800; color:#1E293B; margin-bottom:1.2rem; }
+.ctrl-section { margin-bottom:1.2rem; }
+.ctrl-divider { height:1px; background:#F1F5F9; margin:1rem 0; }
+.ctrl-back-link { display:block; text-align:center; margin-top:.8rem; font-size:.8rem; color:#64748B; text-decoration:none; }
+.ctrl-back-link:hover { color:#1E293B; }
+.lang-btn-group { display:flex; gap:.4rem; }
+.lang-btn { flex:1; padding:6px 0; font-size:.78rem; font-weight:700; border:1px solid #E2E8F0; border-radius:8px; background:#F8FAFC; color:#64748B; cursor:pointer; transition:.15s; }
+.lang-btn.active { background:#1E293B; color:#fff; border-color:#1E293B; }
+/* ── 프리미엄 CTA ── */
+.premium-lock-box {
+  background:linear-gradient(135deg,#FFF7ED,#FEF3C7); border:1px solid #FCD34D;
+  border-radius:14px; padding:1.2rem; margin-bottom:1rem; text-align:center;
+}
+.premium-lock-icon { font-size:2rem; margin-bottom:.4rem; }
+.premium-lock-title { font-size:.88rem; font-weight:800; color:#92400E; margin-bottom:.3rem; }
+.premium-lock-desc { font-size:.75rem; color:#A16207; line-height:1.5; margin-bottom:.8rem; }
+.premium-cta-btn {
+  display:block; width:100%; padding:11px; background:linear-gradient(135deg,#D97706,#F59E0B);
+  color:#fff; border:none; border-radius:12px; font-size:.88rem; font-weight:800;
+  cursor:pointer; text-decoration:none; text-align:center; box-shadow:0 3px 10px rgba(217,119,6,.35);
+  transition:opacity .15s;
+}
+.premium-cta-btn:hover { opacity:.88; }
+.premium-badge-inline {
+  display:inline-block; font-size:.65rem; font-weight:800; padding:2px 7px;
+  border-radius:20px; background:#F59E0B; color:#fff; margin-left:.4rem; vertical-align:middle;
+}
+.tip-box { background:#FFFBEB; border:1px solid #FCD34D; border-radius:10px; padding:.75rem 1rem; font-size:.75rem; color:#78350F; line-height:1.6; margin-top:.8rem; }
+/* ── 문서 래퍼 ── */
+.doc-wrap { background:#E2E8F0; border-radius:14px; padding:2rem 1rem; position:relative; }
+.doc-sheet {
+  background:#fff; width:100%; max-width:794px; margin:0 auto;
+  box-shadow:0 4px 24px rgba(0,0,0,.12); border-radius:4px;
+  padding:28mm 22mm; box-sizing:border-box; font-family:'Noto Serif KR','Georgia',serif;
+  font-size:10pt; line-height:1.7; color:#1E293B; position:relative;
+  user-select:none; pointer-events:none;
+}
+/* SAMPLE 워터마크 */
+.doc-sheet::before {
+  content:'SAMPLE'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:80pt; font-weight:900; color:rgba(245,158,11,.08); pointer-events:none;
+  white-space:nowrap; letter-spacing:.2em; z-index:0;
+}
+.doc-sheet > * { position:relative; z-index:1; }
+/* ── 미리보기 배너 ── */
+.preview-banner {
+  background:linear-gradient(90deg,#1E293B,#334155); color:#fff;
+  border-radius:10px 10px 0 0; padding:.6rem 1.2rem; font-size:.78rem; font-weight:700;
+  display:flex; align-items:center; justify-content:space-between; max-width:794px; margin:0 auto;
+}
+.preview-tag { background:#F59E0B; color:#fff; font-size:.65rem; font-weight:800; padding:2px 8px; border-radius:20px; }
+/* ── 문서 요소 ── */
+.doc-header { text-align:center; margin-bottom:16mm; border-bottom:2px solid #1E293B; padding-bottom:6mm; }
+.doc-title { font-size:18pt; font-weight:900; letter-spacing:.15em; margin-bottom:2mm; }
+.doc-sub { font-size:9pt; color:#64748B; letter-spacing:.05em; }
+.doc-meta-row { display:flex; justify-content:space-between; font-size:8.5pt; color:#64748B; margin-top:3mm; }
+.section-head { font-size:11pt; font-weight:800; color:#1E293B; border-left:4px solid #F59E0B; padding-left:6px; margin:8mm 0 4mm; }
+.section-num { color:#F59E0B; margin-right:.3em; }
+.check-table { width:100%; border-collapse:collapse; font-size:9pt; margin-bottom:4mm; }
+.check-table th { background:#1E293B; color:#fff; padding:4px 8px; font-weight:700; text-align:left; font-size:8.5pt; }
+.check-table td { padding:5px 8px; border-bottom:1px solid #E2E8F0; vertical-align:top; }
+.check-table tr:nth-child(even) td { background:#F8FAFC; }
+.chk { display:inline-block; width:12px; height:12px; border:1.5px solid #CBD5E1; border-radius:3px; margin-right:5px; vertical-align:middle; }
+.chk.checked { background:#1E293B; border-color:#1E293B; }
+.chk.checked::after { content:'✓'; color:#fff; font-size:8px; display:block; text-align:center; line-height:12px; }
+.risk-tag { display:inline-block; font-size:7.5pt; font-weight:700; padding:1px 6px; border-radius:10px; }
+.risk-h { background:#FEE2E2; color:#B91C1C; }
+.risk-m { background:#FEF3C7; color:#D97706; }
+.risk-l { background:#D1FAE5; color:#065F46; }
+.action-table { width:100%; border-collapse:collapse; font-size:9pt; }
+.action-table th { background:#334155; color:#fff; padding:5px 8px; font-weight:700; font-size:8.5pt; }
+.action-table td { padding:5px 8px; border:1px solid #E2E8F0; vertical-align:top; }
+.priority-badge { display:inline-block; font-size:7pt; font-weight:800; padding:1px 7px; border-radius:20px; }
+.p1 { background:#FEE2E2; color:#B91C1C; }
+.p2 { background:#FEF3C7; color:#D97706; }
+.p3 { background:#D1FAE5; color:#065F46; }
+.summary-box { background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:6mm; margin-top:8mm; }
+.summary-title { font-size:9pt; font-weight:800; color:#1E293B; margin-bottom:3mm; }
+.summary-row { display:flex; justify-content:space-between; font-size:8.5pt; padding:2px 0; border-bottom:1px solid #F1F5F9; }
+.summary-label { color:#64748B; }
+.summary-value { font-weight:700; color:#1E293B; }
+.safety-line { background:#ECFDF5; border:1px solid #6EE7B7; border-radius:6px; padding:4mm 6mm; margin-top:4mm; font-size:8.5pt; }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<div class="form-page-wrap">
+
+  <!-- 컨트롤 패널 -->
+  <aside class="ctrl-panel">
+    <h2 id="ctrlTitle">📐 기초구조설계 보고서 <span class="premium-badge-inline">BASIC</span></h2>
+
+    <div class="ctrl-section">
+      <div class="lang-btn-group">
+        <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+      </div>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="premium-lock-box">
+      <div class="premium-lock-icon">🔒</div>
+      <div class="premium-lock-title" id="lockTitle">프리미엄 전용 서식</div>
+      <div class="premium-lock-desc" id="lockDesc">현재 샘플 미리보기 중입니다.<br>구매 후 직접 입력·편집·출력이 가능합니다.</div>
+      <a href="../pricing.html" class="premium-cta-btn" id="ctaBtn">🔓 구매하고 바로 사용하기</a>
+    </div>
+
+    <div class="tip-box" id="tipBox">
+      💡 이 서식은 Basic 등급 서비스에 포함됩니다.<br>
+      진단 체크리스트 + 1페이지 요약 보고서로 구성됩니다.
+    </div>
+
+    <a href="../forms.html" class="ctrl-back-link" id="backLink">← 서식 목록</a>
+  </aside>
+
+  <!-- 문서 영역 -->
+  <div class="doc-wrap">
+    <div class="preview-banner">
+      <span id="previewLabel">🔍 샘플 미리보기 — 편집 불가</span>
+      <span class="preview-tag" id="previewTag">SAMPLE</span>
+    </div>
+
+    <div class="doc-sheet">
+
+      <!-- 헤더 -->
+      <div class="doc-header">
+        <div class="doc-title" id="docTitle">기초 구조 설계 보고서</div>
+        <div class="doc-sub" id="docSub">BUSINESS STRUCTURE DESIGN REPORT · Basic</div>
+        <div class="doc-meta-row">
+          <span id="metaCompany">회사명: ○○○ 주식회사</span>
+          <span id="metaDate">작성일: 2026년 7월 23일</span>
+          <span id="metaConsultant">작성자: 핀아키텍트</span>
+        </div>
+      </div>
+
+      <!-- 섹션 1 -->
+      <div class="section-head"><span class="section-num" id="sn1">【섹션 1】</span><span id="s1title">현재 구조 진단 (Baseline)</span></div>
+
+      <table class="check-table">
+        <tr><th colspan="4" id="th1a">자산 및 부채 현황 매핑</th></tr>
+        <tr>
+          <th id="th1b">구 분</th><th id="th1c">항 목</th><th id="th1d">금액(천원)</th><th id="th1e">비고</th>
+        </tr>
+        <tr><td id="td1a">유동자산</td><td>현금 및 예금<br>매출채권<br>재고자산</td><td>120,000<br>85,000<br>32,000</td><td>—<br>회수기일 45일<br>3개월치</td></tr>
+        <tr><td id="td1b">비유동자산</td><td>설비·기계<br>임차보증금</td><td>210,000<br>50,000</td><td>감가상각 5년<br>—</td></tr>
+        <tr><td id="td1c">유동부채</td><td>매입채무<br>단기차입금</td><td>60,000<br>150,000</td><td>지급기일 30일<br>연 4.5%</td></tr>
+        <tr><td id="td1d">비유동부채</td><td>장기차입금</td><td>300,000</td><td>연 3.8%, 3년</td></tr>
+      </table>
+
+      <table class="check-table" style="margin-top:3mm">
+        <tr><th colspan="3" id="th2a">매출원 및 비용 구조 도식화</th></tr>
+        <tr><th id="th2b">구 분</th><th id="th2c">세부 항목</th><th id="th2d">월 기준(천원)</th></tr>
+        <tr><td id="td2a">주력 매출</td><td>제품 A 판매</td><td>35,000</td></tr>
+        <tr><td id="td2b">고정비</td><td>임차료·인건비·감가상각</td><td>18,500</td></tr>
+        <tr><td id="td2c">변동비</td><td>원재료·물류·판촉</td><td>11,200</td></tr>
+        <tr><td><strong id="td2d">영업이익</strong></td><td>—</td><td><strong>5,300</strong></td></tr>
+      </table>
+
+      <!-- 섹션 2 -->
+      <div class="section-head"><span class="section-num" id="sn2">【섹션 2】</span><span id="s2title">구조적 병목 &amp; 리스크 파악</span></div>
+
+      <table class="check-table">
+        <tr><th colspan="3" id="th3a">현금흐름 병목(Bottleneck) 체크</th></tr>
+        <tr><th id="th3b">점검 항목</th><th id="th3c">현황</th><th id="th3d">위험도</th></tr>
+        <tr>
+          <td><span class="chk checked"></span><span id="bt1">매출채권 회수 지연</span></td>
+          <td id="btv1">평균 45일 → 목표 30일</td>
+          <td><span class="risk-tag risk-h" id="btr1">High</span></td>
+        </tr>
+        <tr>
+          <td><span class="chk checked"></span><span id="bt2">단기차입 의존도 과다</span></td>
+          <td id="btv2">유동비율 130%</td>
+          <td><span class="risk-tag risk-m" id="btr2">Mid</span></td>
+        </tr>
+        <tr>
+          <td><span class="chk"></span><span id="bt3">계절성 매출 편중</span></td>
+          <td id="btv3">Q3 매출 집중 65%</td>
+          <td><span class="risk-tag risk-m" id="btr3">Mid</span></td>
+        </tr>
+        <tr>
+          <td><span class="chk"></span><span id="bt4">재고 회전율 저하</span></td>
+          <td id="btv4">회전율 4.2회/년</td>
+          <td><span class="risk-tag risk-l" id="btr4">Low</span></td>
+        </tr>
+      </table>
+
+      <table class="check-table" style="margin-top:3mm">
+        <tr><th colspan="3" id="th4a">세무·법무 노출 리스크 진단</th></tr>
+        <tr><th id="th4b">리스크 유형</th><th id="th4c">세부 사항</th><th id="th4d">우선순위</th></tr>
+        <tr>
+          <td id="rt1">단일 매출처 의존도</td>
+          <td id="rv1">상위 1개 거래처 매출 비중 58%</td>
+          <td><span class="risk-tag risk-h" id="rp1">High</span></td>
+        </tr>
+        <tr>
+          <td id="rt2">가지급금 미정리</td>
+          <td id="rv2">대표이사 가지급금 28,000천원 잔액</td>
+          <td><span class="risk-tag risk-h" id="rp2">High</span></td>
+        </tr>
+        <tr>
+          <td id="rt3">근로계약서 미비</td>
+          <td id="rv3">단기 계약직 3명 서면 미작성</td>
+          <td><span class="risk-tag risk-m" id="rp3">Mid</span></td>
+        </tr>
+      </table>
+
+      <!-- 섹션 3 -->
+      <div class="section-head"><span class="section-num" id="sn3">【섹션 3】</span><span id="s3title">단기 구조 개선 액션 플랜 (30–90일)</span></div>
+
+      <table class="action-table">
+        <tr>
+          <th id="ath1">우선순위</th><th id="ath2">개선 과제</th><th id="ath3">목표 기한</th><th id="ath4">담당</th><th id="ath5">기대 효과</th>
+        </tr>
+        <tr>
+          <td><span class="priority-badge p1" id="pr1">1순위</span></td>
+          <td id="at1a">매출채권 회수 사이클 단축<br>(팩토링 또는 조기 수금 인센티브 도입)</td>
+          <td id="at1b">30일 이내</td>
+          <td id="at1c">재무팀</td>
+          <td id="at1d">월 운전자금 약 15,000천원 절감</td>
+        </tr>
+        <tr>
+          <td><span class="priority-badge p1" id="pr2">1순위</span></td>
+          <td id="at2a">가지급금 정리 계획 수립<br>(급여 상계 or 가수금 전환)</td>
+          <td id="at2b">45일 이내</td>
+          <td id="at2c">세무사</td>
+          <td id="at2d">세무 리스크 해소</td>
+        </tr>
+        <tr>
+          <td><span class="priority-badge p2" id="pr3">2순위</span></td>
+          <td id="at3a">매출 다각화 — 신규 거래처 2개처 개척</td>
+          <td id="at3b">90일 이내</td>
+          <td id="at3c">영업팀</td>
+          <td id="at3d">상위 매출처 의존도 58% → 40% 이하</td>
+        </tr>
+      </table>
+
+      <!-- 요약 박스 -->
+      <div class="summary-box">
+        <div class="summary-title" id="sumTitle">📊 1페이지 요약</div>
+        <div class="summary-row"><span class="summary-label" id="sumL1">총 자산</span><span class="summary-value">497,000천원</span></div>
+        <div class="summary-row"><span class="summary-label" id="sumL2">순부채</span><span class="summary-value">360,000천원</span></div>
+        <div class="summary-row"><span class="summary-label" id="sumL3">월 영업이익</span><span class="summary-value">5,300천원</span></div>
+        <div class="summary-row"><span class="summary-label" id="sumL4">구조 진단 점수</span><span class="summary-value">62 / 100점</span></div>
+        <div class="safety-line">
+          <strong id="safeTitle">⛽ 최소 현금 안전선 설정:</strong>
+          <span id="safeDesc">월 고정비(18,500천원) × 2개월 = 37,000천원 이상 상시 유지 필요</span>
+        </div>
+      </div>
+
+    </div><!-- /doc-sheet -->
+  </div><!-- /doc-wrap -->
+</div><!-- /form-page-wrap -->
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="../assets/js/nav.js?v=3" defer></script>
+<script src="../assets/js/auth.js" defer></script>
+<script src="../assets/js/i18n.js" defer></script>
+<script src="../assets/js/footer-inject.js" defer></script>
+
+<script>
+var LANGS = {
+  ko: {
+    ctrlTitle:'📐 기초구조설계 보고서',
+    lockTitle:'프리미엄 전용 서식',
+    lockDesc:'현재 샘플 미리보기 중입니다.<br>구매 후 직접 입력·편집·출력이 가능합니다.',
+    ctaBtn:'🔓 구매하고 바로 사용하기',
+    tipBox:'💡 이 서식은 Basic 등급 서비스에 포함됩니다.<br>진단 체크리스트 + 1페이지 요약 보고서로 구성됩니다.',
+    backLink:'← 서식 목록',
+    previewLabel:'🔍 샘플 미리보기 — 편집 불가',
+    previewTag:'SAMPLE',
+    docTitle:'기초 구조 설계 보고서',
+    docSub:'BUSINESS STRUCTURE DESIGN REPORT · Basic',
+    metaCompany:'회사명: ○○○ 주식회사', metaDate:'작성일: 2026년 7월 23일', metaConsultant:'작성자: 핀아키텍트',
+    sn1:'【섹션 1】', s1title:'현재 구조 진단 (Baseline)',
+    sn2:'【섹션 2】', s2title:'구조적 병목 &amp; 리스크 파악',
+    sn3:'【섹션 3】', s3title:'단기 구조 개선 액션 플랜 (30–90일)',
+    th1a:'자산 및 부채 현황 매핑', th1b:'구 분', th1c:'항 목', th1d:'금액(천원)', th1e:'비고',
+    td1a:'유동자산', td1b:'비유동자산', td1c:'유동부채', td1d:'비유동부채',
+    th2a:'매출원 및 비용 구조 도식화', th2b:'구 분', th2c:'세부 항목', th2d:'월 기준(천원)',
+    td2a:'주력 매출', td2b:'고정비', td2c:'변동비', td2d:'영업이익',
+    th3a:'현금흐름 병목(Bottleneck) 체크', th3b:'점검 항목', th3c:'현황', th3d:'위험도',
+    bt1:'매출채권 회수 지연', btv1:'평균 45일 → 목표 30일', btr1:'High',
+    bt2:'단기차입 의존도 과다', btv2:'유동비율 130%', btr2:'Mid',
+    bt3:'계절성 매출 편중', btv3:'Q3 매출 집중 65%', btr3:'Mid',
+    bt4:'재고 회전율 저하', btv4:'회전율 4.2회/년', btr4:'Low',
+    th4a:'세무·법무 노출 리스크 진단', th4b:'리스크 유형', th4c:'세부 사항', th4d:'우선순위',
+    rt1:'단일 매출처 의존도', rv1:'상위 1개 거래처 매출 비중 58%', rp1:'High',
+    rt2:'가지급금 미정리', rv2:'대표이사 가지급금 28,000천원 잔액', rp2:'High',
+    rt3:'근로계약서 미비', rv3:'단기 계약직 3명 서면 미작성', rp3:'Mid',
+    ath1:'우선순위', ath2:'개선 과제', ath3:'목표 기한', ath4:'담당', ath5:'기대 효과',
+    pr1:'1순위', at1a:'매출채권 회수 사이클 단축<br>(팩토링 또는 조기 수금 인센티브 도입)', at1b:'30일 이내', at1c:'재무팀', at1d:'월 운전자금 약 15,000천원 절감',
+    pr2:'1순위', at2a:'가지급금 정리 계획 수립<br>(급여 상계 or 가수금 전환)', at2b:'45일 이내', at2c:'세무사', at2d:'세무 리스크 해소',
+    pr3:'2순위', at3a:'매출 다각화 — 신규 거래처 2개처 개척', at3b:'90일 이내', at3c:'영업팀', at3d:'상위 매출처 의존도 58% → 40% 이하',
+    sumTitle:'📊 1페이지 요약',
+    sumL1:'총 자산', sumL2:'순부채', sumL3:'월 영업이익', sumL4:'구조 진단 점수',
+    safeTitle:'⛽ 최소 현금 안전선 설정:',
+    safeDesc:'월 고정비(18,500천원) × 2개월 = 37,000천원 이상 상시 유지 필요'
+  },
+  en: {
+    ctrlTitle:'📐 Structure Design Report',
+    lockTitle:'Premium Only',
+    lockDesc:'You are viewing a sample preview.<br>Purchase to unlock editing and PDF export.',
+    ctaBtn:'🔓 Purchase & Use Now',
+    tipBox:'💡 Included in the Basic tier.<br>Diagnostic checklist + 1-page summary report.',
+    backLink:'← Back to Forms',
+    previewLabel:'🔍 Sample Preview — Read Only',
+    previewTag:'SAMPLE',
+    docTitle:'Business Structure Design Report',
+    docSub:'BUSINESS STRUCTURE DESIGN REPORT · Basic',
+    metaCompany:'Company: ○○○ Inc.', metaDate:'Date: July 23, 2026', metaConsultant:'Author: FinArchitect',
+    sn1:'[Section 1]', s1title:'Baseline Structure Diagnosis',
+    sn2:'[Section 2]', s2title:'Bottleneck &amp; Risk Identification',
+    sn3:'[Section 3]', s3title:'30–90 Day Action Plan',
+    th1a:'Asset & Liability Mapping', th1b:'Category', th1c:'Item', th1d:'Amount (KRW 000)', th1e:'Notes',
+    td1a:'Current Assets', td1b:'Non-Current Assets', td1c:'Current Liabilities', td1d:'Non-Current Liabilities',
+    th2a:'Revenue & Cost Structure', th2b:'Category', th2c:'Item', th2d:'Monthly (KRW 000)',
+    td2a:'Primary Revenue', td2b:'Fixed Costs', td2c:'Variable Costs', td2d:'Operating Income',
+    th3a:'Cash Flow Bottleneck Check', th3b:'Check Item', th3c:'Current Status', th3d:'Risk Level',
+    bt1:'Slow A/R Collection', btv1:'Avg. 45 days → Target 30 days', btr1:'High',
+    bt2:'Over-reliance on Short-term Debt', btv2:'Current Ratio 130%', btr2:'Mid',
+    bt3:'Seasonal Revenue Concentration', btv3:'Q3 Revenue = 65%', btr3:'Mid',
+    bt4:'Low Inventory Turnover', btv4:'Turnover 4.2x/year', btr4:'Low',
+    th4a:'Tax & Legal Exposure Diagnosis', th4b:'Risk Type', th4c:'Details', th4d:'Priority',
+    rt1:'Single Customer Dependency', rv1:'Top 1 customer = 58% of revenue', rp1:'High',
+    rt2:'Unresolved Prepaid Expenses (CEO)', rv2:'CEO prepayment KRW 28,000K outstanding', rp2:'High',
+    rt3:'Incomplete Employment Contracts', rv3:'3 part-time workers without signed contracts', rp3:'Mid',
+    ath1:'Priority', ath2:'Action Item', ath3:'Target Date', ath4:'Owner', ath5:'Expected Effect',
+    pr1:'#1', at1a:'Shorten A/R collection cycle<br>(factoring or early payment discount)', at1b:'Within 30 days', at1c:'Finance Team', at1d:'Save ~KRW 15,000K in working capital/month',
+    pr2:'#1', at2a:'Resolve CEO prepayment<br>(offset against salary or convert to loan)', at2b:'Within 45 days', at2c:'Tax Advisor', at2d:'Eliminate tax risk',
+    pr3:'#2', at3a:'Revenue diversification — acquire 2 new clients', at3b:'Within 90 days', at3c:'Sales Team', at3d:'Reduce top customer dependency: 58% → <40%',
+    sumTitle:'📊 One-Page Summary',
+    sumL1:'Total Assets', sumL2:'Net Debt', sumL3:'Monthly Operating Income', sumL4:'Structure Score',
+    safeTitle:'⛽ Minimum Cash Safety Line:',
+    safeDesc:'Fixed costs (KRW 18,500K) × 2 months = KRW 37,000K must be maintained at all times'
+  },
+  ja: {
+    ctrlTitle:'📐 基礎構造設計レポート',
+    lockTitle:'プレミアム専用',
+    lockDesc:'現在サンプルをプレビュー中です。<br>購入後に編集・PDF出力が可能になります。',
+    ctaBtn:'🔓 購入してすぐ使う',
+    tipBox:'💡 Basicプランに含まれるサービスです。<br>診断チェックリスト＋1枚要約レポートで構成。',
+    backLink:'← 書式一覧',
+    previewLabel:'🔍 サンプルプレビュー — 閲覧のみ',
+    previewTag:'SAMPLE',
+    docTitle:'基礎構造設計レポート',
+    docSub:'BUSINESS STRUCTURE DESIGN REPORT · Basic',
+    metaCompany:'会社名：○○○株式会社', metaDate:'作成日：2026年7月23日', metaConsultant:'作成者：FinArchitect',
+    sn1:'【セクション1】', s1title:'現状構造診断 (Baseline)',
+    sn2:'【セクション2】', s2title:'ボトルネック＆リスク把握',
+    sn3:'【セクション3】', s3title:'短期改善アクションプラン（30～90日）',
+    th1a:'資産・負債マッピング', th1b:'区 分', th1c:'項 目', th1d:'金額（千円）', th1e:'備考',
+    td1a:'流動資産', td1b:'非流動資産', td1c:'流動負債', td1d:'非流動負債',
+    th2a:'売上・費用構造の図式化', th2b:'区 分', th2c:'内 訳', th2d:'月次（千円）',
+    td2a:'主力売上', td2b:'固定費', td2c:'変動費', td2d:'営業利益',
+    th3a:'キャッシュフローボトルネックチェック', th3b:'確認項目', th3c:'現状', th3d:'リスク度',
+    bt1:'売掛金回収遅延', btv1:'平均45日→目標30日', btr1:'High',
+    bt2:'短期借入依存過多', btv2:'流動比率130%', btr2:'Mid',
+    bt3:'季節性偏重', btv3:'Q3売上集中65%', btr3:'Mid',
+    bt4:'在庫回転率低下', btv4:'回転率4.2回/年', btr4:'Low',
+    th4a:'税務・法務リスク診断', th4b:'リスク種別', th4c:'詳 細', th4d:'優先度',
+    rt1:'特定取引先依存', rv1:'上位1社の売上比率58%', rp1:'High',
+    rt2:'仮払金未精算', rv2:'代表者仮払金2,800万円残高', rp2:'High',
+    rt3:'雇用契約書未整備', rv3:'短期雇用3名が書面未作成', rp3:'Mid',
+    ath1:'優先度', ath2:'改善課題', ath3:'目標期限', ath4:'担当', ath5:'期待効果',
+    pr1:'①', at1a:'売掛金回収サイクル短縮<br>（ファクタリング又は早期回収インセンティブ）', at1b:'30日以内', at1c:'財務部', at1d:'月次運転資金約1,500万円削減',
+    pr2:'①', at2a:'仮払金精算計画策定<br>（給与相殺または仮受金転換）', at2b:'45日以内', at2c:'税理士', at2d:'税務リスク解消',
+    pr3:'②', at3a:'売上多角化 — 新規取引先2社開拓', at3b:'90日以内', at3c:'営業部', at3d:'上位依存度58%→40%以下',
+    sumTitle:'📊 1ページ要約',
+    sumL1:'総資産', sumL2:'純負債', sumL3:'月次営業利益', sumL4:'構造診断スコア',
+    safeTitle:'⛽ 最低現金安全ライン：',
+    safeDesc:'固定費（1,850万円）× 2ヶ月 = 3,700万円以上を常時確保'
+  }
+};
+
+var _activeLang = 'ko';
+function setLang(lang) {
+  _activeLang = lang;
+  var t = LANGS[lang] || LANGS.ko;
+  ['ko','en','ja'].forEach(function(l){
+    document.getElementById('btn-'+l).classList.toggle('active', l===lang);
+  });
+  var keys = ['ctrlTitle','lockTitle','lockDesc','ctaBtn','tipBox','backLink','previewLabel','previewTag',
+    'docTitle','docSub','metaCompany','metaDate','metaConsultant',
+    'sn1','s1title','sn2','s2title','sn3','s3title',
+    'th1a','th1b','th1c','th1d','th1e','td1a','td1b','td1c','td1d',
+    'th2a','th2b','th2c','th2d','td2a','td2b','td2c','td2d',
+    'th3a','th3b','th3c','th3d',
+    'bt1','btv1','btr1','bt2','btv2','btr2','bt3','btv3','btr3','bt4','btv4','btr4',
+    'th4a','th4b','th4c','th4d',
+    'rt1','rv1','rp1','rt2','rv2','rp2','rt3','rv3','rp3',
+    'ath1','ath2','ath3','ath4','ath5',
+    'pr1','at1a','at1b','at1c','at1d','pr2','at2a','at2b','at2c','at2d','pr3','at3a','at3b','at3c','at3d',
+    'sumTitle','sumL1','sumL2','sumL3','sumL4','safeTitle','safeDesc'];
+  keys.forEach(function(k){
+    var el = document.getElementById(k);
+    if (el && t[k] !== undefined) el.innerHTML = t[k];
+  });
+  document.documentElement.lang = lang;
+  localStorage.setItem('site-lang', lang);
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+}
+
+(function(){
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!-- 풀사이클 전략 수립부터 Exit까지 — Enterprise 등급 유료 서식 샘플 (열람 전용) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>풀사이클 Exit 전략 — Enterprise | Book Coupling</title>
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEiAG9mjc7D01ZuSOVpPIy7bQoHB7IjWDadH_zBaWymx3cKXVsqdFJlNP0URua9EgCDQSUS-4OeaLPJgHpcsmm90srnmDCZ0nUuoN9Xw-_0iL_NxZQOsRp83DEPuJiVOlKP5QTci3BBtUEc_37Sq-m0CAWhd9du_pSW91HmUP90sygR8y46CuhAhOQmj3mfR">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+.form-page-wrap {
+  max-width:1200px; margin:0 auto; padding:2rem 1.5rem 5rem;
+  display:grid; grid-template-columns:260px 1fr; gap:2rem; align-items:start;
+}
+.ctrl-panel {
+  background:#fff; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem;
+  position:sticky; top:80px; box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+.ctrl-panel h2 { font-size:.9rem; font-weight:800; color:#1E293B; margin-bottom:1.2rem; }
+.ctrl-section { margin-bottom:1.2rem; }
+.ctrl-divider { height:1px; background:#F1F5F9; margin:1rem 0; }
+.ctrl-back-link { display:block; text-align:center; margin-top:.8rem; font-size:.8rem; color:#64748B; text-decoration:none; }
+.ctrl-back-link:hover { color:#1E293B; }
+.lang-btn-group { display:flex; gap:.4rem; }
+.lang-btn { flex:1; padding:6px 0; font-size:.78rem; font-weight:700; border:1px solid #E2E8F0; border-radius:8px; background:#F8FAFC; color:#64748B; cursor:pointer; transition:.15s; }
+.lang-btn.active { background:#1E293B; color:#fff; border-color:#1E293B; }
+.premium-lock-box {
+  background:linear-gradient(135deg,#F5F3FF,#EDE9FE); border:1px solid #C4B5FD;
+  border-radius:14px; padding:1.2rem; margin-bottom:1rem; text-align:center;
+}
+.premium-lock-icon { font-size:2rem; margin-bottom:.4rem; }
+.premium-lock-title { font-size:.88rem; font-weight:800; color:#3B0764; margin-bottom:.3rem; }
+.premium-lock-desc { font-size:.75rem; color:#5B21B6; line-height:1.5; margin-bottom:.8rem; }
+.premium-cta-btn {
+  display:block; width:100%; padding:11px; background:linear-gradient(135deg,#7C3AED,#A78BFA);
+  color:#fff; border:none; border-radius:12px; font-size:.88rem; font-weight:800;
+  cursor:pointer; text-decoration:none; text-align:center; box-shadow:0 3px 10px rgba(124,58,237,.4);
+  transition:opacity .15s;
+}
+.premium-cta-btn:hover { opacity:.88; }
+.premium-badge-inline {
+  display:inline-block; font-size:.65rem; font-weight:800; padding:2px 7px;
+  border-radius:20px; background:linear-gradient(90deg,#7C3AED,#A78BFA); color:#fff; margin-left:.4rem; vertical-align:middle;
+}
+.tip-box { background:#F5F3FF; border:1px solid #DDD6FE; border-radius:10px; padding:.75rem 1rem; font-size:.75rem; color:#3B0764; line-height:1.6; margin-top:.8rem; }
+/* 문서 */
+.doc-wrap { background:#E2E8F0; border-radius:14px; padding:2rem 1rem; position:relative; }
+.doc-sheet {
+  background:#fff; width:100%; max-width:794px; margin:0 auto;
+  box-shadow:0 4px 24px rgba(0,0,0,.12); border-radius:4px;
+  padding:20mm 20mm; box-sizing:border-box; font-family:'Noto Serif KR','Georgia',serif;
+  font-size:9pt; line-height:1.65; color:#1E293B; position:relative;
+  user-select:none; pointer-events:none;
+}
+.doc-sheet::before {
+  content:'SAMPLE'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:80pt; font-weight:900; color:rgba(124,58,237,.07); pointer-events:none;
+  white-space:nowrap; letter-spacing:.2em; z-index:0;
+}
+.doc-sheet > * { position:relative; z-index:1; }
+.preview-banner {
+  background:linear-gradient(90deg,#3B0764,#6D28D9); color:#fff;
+  border-radius:10px 10px 0 0; padding:.6rem 1.2rem; font-size:.78rem; font-weight:700;
+  display:flex; align-items:center; justify-content:space-between; max-width:794px; margin:0 auto;
+}
+.preview-tag { background:#A78BFA; color:#3B0764; font-size:.65rem; font-weight:800; padding:2px 8px; border-radius:20px; }
+.doc-header { text-align:center; margin-bottom:8mm; border-bottom:2px solid #7C3AED; padding-bottom:5mm; }
+.doc-title { font-size:15pt; font-weight:900; letter-spacing:.1em; margin-bottom:2mm; }
+.doc-sub { font-size:8pt; color:#64748B; letter-spacing:.04em; }
+.doc-meta-row { display:flex; justify-content:space-between; font-size:7.5pt; color:#64748B; margin-top:3mm; }
+.section-head { font-size:10pt; font-weight:800; color:#3B0764; border-left:4px solid #7C3AED; padding-left:6px; margin:6mm 0 3mm; }
+.section-num { color:#7C3AED; margin-right:.3em; }
+/* KPI 타깃 */
+.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2.5mm; margin-bottom:4mm; }
+.kpi-card { background:#F5F3FF; border:1px solid #DDD6FE; border-radius:7px; padding:3.5mm; text-align:center; }
+.kpi-label { font-size:7pt; color:#5B21B6; margin-bottom:1mm; }
+.kpi-value { font-size:12pt; font-weight:900; color:#3B0764; }
+.kpi-sub { font-size:6.5pt; color:#7C3AED; }
+/* 공통 테이블 */
+.e-table { width:100%; border-collapse:collapse; font-size:8.5pt; margin-bottom:4mm; }
+.e-table th { background:#3B0764; color:#fff; padding:4px 7px; font-weight:700; font-size:8pt; text-align:center; }
+.e-table td { padding:4px 7px; border-bottom:1px solid #E2E8F0; vertical-align:top; }
+.e-table td:first-child { font-weight:600; }
+.e-table tr:nth-child(even) td { background:#F8FAFC; }
+.e-table .hl td { background:#F5F3FF !important; font-weight:700; }
+/* Cap Table */
+.captable { width:100%; border-collapse:collapse; font-size:8pt; margin-bottom:4mm; }
+.captable th { background:#1E1B4B; color:#E0E7FF; padding:4px 7px; font-weight:700; text-align:center; font-size:7.5pt; }
+.captable td { padding:4px 7px; border:1px solid #E2E8F0; text-align:center; }
+.captable td:first-child { text-align:left; font-weight:600; }
+.captable .total-row td { background:#EDE9FE; font-weight:800; }
+.dilution-bar { display:flex; height:8px; border-radius:8px; overflow:hidden; margin:2mm 0; }
+.db-founder { background:#7C3AED; }
+.db-seriesa { background:#38BDF8; }
+.db-seriesb { background:#34D399; }
+.db-esop { background:#FBBF24; }
+/* Exit 시나리오 */
+.exit-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:3mm; margin-bottom:4mm; }
+.exit-card { border:1px solid #DDD6FE; border-radius:8px; padding:4mm; }
+.exit-title { font-size:8.5pt; font-weight:800; color:#3B0764; margin-bottom:2mm; display:flex; align-items:center; gap:.4rem; }
+.exit-row { font-size:7.5pt; display:flex; justify-content:space-between; border-bottom:1px solid #F1F5F9; padding:1px 0; }
+.exit-row:last-child { border:none; font-weight:700; color:#7C3AED; }
+/* DD 체크리스트 */
+.dd-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:3mm; }
+.dd-card { background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:4mm; }
+.dd-title { font-size:8pt; font-weight:800; color:#1E293B; margin-bottom:2mm; border-bottom:1px solid #E2E8F0; padding-bottom:1mm; }
+.dd-item { font-size:7.5pt; padding:1.5px 0; display:flex; align-items:center; gap:4px; }
+.chk { display:inline-block; width:10px; height:10px; border:1.5px solid #CBD5E1; border-radius:2px; flex-shrink:0; }
+.chk.ok { background:#7C3AED; border-color:#7C3AED; }
+.chk.warn { background:#F59E0B; border-color:#F59E0B; }
+.chk.gap { background:#fff; border-color:#EF4444; }
+/* 세금 시뮬레이터 */
+.tax-sim { background:#1E1B4B; border-radius:8px; padding:5mm; color:#E0E7FF; margin-bottom:4mm; }
+.tax-sim-title { font-size:8.5pt; font-weight:800; margin-bottom:3mm; }
+.tax-row { display:flex; justify-content:space-between; font-size:8pt; padding:1.5px 0; border-bottom:1px solid rgba(255,255,255,.1); }
+.tax-row.total { border:none; font-size:9.5pt; font-weight:900; color:#A78BFA; margin-top:2mm; }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<div class="form-page-wrap">
+
+  <aside class="ctrl-panel">
+    <h2 id="ctrlTitle">💎 풀사이클 Exit 전략 <span class="premium-badge-inline">ENTERPRISE</span></h2>
+    <div class="ctrl-section">
+      <div class="lang-btn-group">
+        <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+      </div>
+    </div>
+    <div class="ctrl-divider"></div>
+    <div class="premium-lock-box">
+      <div class="premium-lock-icon">💎</div>
+      <div class="premium-lock-title" id="lockTitle">Enterprise 전용 서식</div>
+      <div class="premium-lock-desc" id="lockDesc">현재 샘플 미리보기 중입니다.<br>구매 후 전체 편집·시뮬레이션·출력 가능합니다.</div>
+      <a href="../pricing.html" class="premium-cta-btn" id="ctaBtn">💎 Enterprise 구매하기</a>
+    </div>
+    <div class="tip-box" id="tipBox">
+      💡 기업가치 제고부터 M&A·IPO Exit까지<br>
+      Cap Table, DCF 시뮬레이터, DD 체크리스트, 세금 계산기를 포함합니다.
+    </div>
+    <a href="../forms.html" class="ctrl-back-link" id="backLink">← 서식 목록</a>
+  </aside>
+
+  <div class="doc-wrap">
+    <div class="preview-banner">
+      <span id="previewLabel">🔍 샘플 미리보기 — 편집 불가</span>
+      <span class="preview-tag" id="previewTag">SAMPLE</span>
+    </div>
+    <div class="doc-sheet">
+
+      <div class="doc-header">
+        <div class="doc-title" id="docTitle">풀사이클 전략 수립부터 Exit까지</div>
+        <div class="doc-sub" id="docSub">FULL-CYCLE STRATEGY TO EXIT · Enterprise Master Kit</div>
+        <div class="doc-meta-row">
+          <span id="metaCompany">회사명: ○○○ 주식회사</span>
+          <span id="metaDate">작성일: 2026년 7월 23일</span>
+          <span id="metaConsultant">작성자: 핀아키텍트</span>
+        </div>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-label" id="kl1">현재 기업가치</div><div class="kpi-value">120억</div><div class="kpi-sub" id="ks1">EV/EBITDA 8.5x</div></div>
+        <div class="kpi-card"><div class="kpi-label" id="kl2">목표 기업가치</div><div class="kpi-value">350억</div><div class="kpi-sub" id="ks2">3년 후 목표</div></div>
+        <div class="kpi-card"><div class="kpi-label" id="kl3">Exit 예상 시점</div><div class="kpi-value">2029</div><div class="kpi-sub" id="ks3">M&A 또는 IPO</div></div>
+        <div class="kpi-card"><div class="kpi-label" id="kl4">창업자 지분</div><div class="kpi-value">61.2%</div><div class="kpi-sub" id="ks4">희석 전 기준</div></div>
+      </div>
+
+      <!-- 섹션 1 -->
+      <div class="section-head"><span class="section-num" id="sn1">【섹션 1】</span><span id="s1title">기업가치 제고(Value-Up) 로드맵</span></div>
+
+      <table class="e-table">
+        <tr>
+          <th id="th1a">KPI 지표</th><th id="th1b">현재치</th><th id="th1c">Year 1 목표</th>
+          <th id="th1d">Year 3 목표</th><th id="th1e">가치 기여도</th>
+        </tr>
+        <tr><td id="kp1">연 매출(억원)</td><td>42</td><td>60</td><td>110</td><td id="kv1">★★★★★</td></tr>
+        <tr><td id="kp2">EBITDA 마진</td><td>14.2%</td><td>18%</td><td>24%</td><td id="kv2">★★★★☆</td></tr>
+        <tr><td id="kp3">반복매출(ARR) 비율</td><td>18%</td><td>32%</td><td>55%</td><td id="kv3">★★★★★</td></tr>
+        <tr><td id="kp4">고객 유지율(CRR)</td><td>72%</td><td>82%</td><td>90%</td><td id="kv4">★★★★☆</td></tr>
+        <tr class="hl"><td id="kp5">EV (DCF 추정)</td><td>120억</td><td>195억</td><td>350억</td><td id="kv5">—</td></tr>
+      </table>
+
+      <!-- 섹션 2 -->
+      <div class="section-head"><span class="section-num" id="sn2">【섹션 2】</span><span id="s2title">Cap Table 및 지분 구조 설계</span></div>
+
+      <table class="captable">
+        <tr>
+          <th id="cth1">주주</th><th id="cth2">구분</th><th id="cth3">보유 주식수</th>
+          <th id="cth4">현재 지분율</th><th id="cth5">Series B 후 지분율</th><th id="cth6">비고</th>
+        </tr>
+        <tr><td id="sh1">창업자 A</td><td id="st1">보통주</td><td>612,000</td><td>61.2%</td><td>44.7%</td><td id="sn1a">경영권 유지 필요</td></tr>
+        <tr><td id="sh2">Series A 투자자</td><td id="st2">우선주</td><td>180,000</td><td>18.0%</td><td>13.1%</td><td id="sn2a">3배 청산우선권</td></tr>
+        <tr><td id="sh3">Series B (예정)</td><td id="st3">우선주</td><td>220,000</td><td>—</td><td>16.1%</td><td id="sn3a">신규 조달 목표</td></tr>
+        <tr><td id="sh4">ESOP 풀</td><td id="st4">스톡옵션</td><td>88,000</td><td>8.8%</td><td>6.4%</td><td id="sn4a">핵심 인재 리텐션</td></tr>
+        <tr class="total-row"><td id="sh5">합 계</td><td>—</td><td>1,100,000</td><td>100%</td><td>80.3%</td><td>—</td></tr>
+      </table>
+
+      <div>
+        <div style="font-size:7.5pt;color:#64748B;margin-bottom:1mm" id="dilLabel">지분율 시각화 (Series B 후 기준)</div>
+        <div class="dilution-bar">
+          <div class="db-founder" style="width:44.7%" title="창업자"></div>
+          <div class="db-seriesa" style="width:13.1%" title="Series A"></div>
+          <div class="db-seriesb" style="width:16.1%" title="Series B"></div>
+          <div class="db-esop" style="width:6.4%" title="ESOP"></div>
+        </div>
+        <div style="display:flex;gap:8mm;font-size:7pt;margin-top:1.5mm">
+          <span>🟣 <span id="dl1">창업자 44.7%</span></span>
+          <span>🔵 <span id="dl2">Series A 13.1%</span></span>
+          <span>🟢 <span id="dl3">Series B 16.1%</span></span>
+          <span>🟡 <span id="dl4">ESOP 6.4%</span></span>
+        </div>
+      </div>
+
+      <!-- 섹션 3 -->
+      <div class="section-head"><span class="section-num" id="sn3h">【섹션 3】</span><span id="s3title">투자 유치(IR) 및 데이터룸(VDR) 구조화</span></div>
+
+      <table class="e-table">
+        <tr><th id="vth1">VDR 폴더</th><th id="vth2">포함 서류</th><th id="vth3">준비 상태</th></tr>
+        <tr><td id="vf1">01. 기업 개요</td><td id="vd1">회사 소개서, 조직도, 등기부등본</td><td>✅</td></tr>
+        <tr><td id="vf2">02. 재무 정보</td><td id="vd2">3년 감사보고서, 관리회계, 예산</td><td>✅</td></tr>
+        <tr><td id="vf3">03. 법무·계약</td><td id="vd3">주주간계약(SHA), 주요 고객 계약</td><td>⚠️</td></tr>
+        <tr><td id="vf4">04. 지식재산</td><td id="vd4">특허, 상표, 저작권 목록</td><td>✅</td></tr>
+        <tr><td id="vf5">05. 인사·노무</td><td id="vd5">임원 계약, 스톡옵션 규정</td><td>⚠️</td></tr>
+        <tr><td id="vf6">06. 세무</td><td id="vd6">3년 세무신고서, 세무조사 이력</td><td>✅</td></tr>
+      </table>
+
+      <!-- 섹션 4 -->
+      <div class="section-head"><span class="section-num" id="sn4h">【섹션 4】</span><span id="s4title">Exit 전략 시나리오 설계</span></div>
+
+      <div class="exit-grid">
+        <div class="exit-card">
+          <div class="exit-title" id="ex1title">🤝 M&A 매각</div>
+          <div class="exit-row"><span id="ex1l1">예상 Valuation</span><span>320~380억</span></div>
+          <div class="exit-row"><span id="ex1l2">목표 시점</span><span>2028 Q4</span></div>
+          <div class="exit-row"><span id="ex1l3">전략적 매수자</span><span id="ex1v3">대형 SI, 플랫폼사</span></div>
+          <div class="exit-row"><span id="ex1l4">창업자 수령 추정</span><span id="ex1net">세후 약 92억</span></div>
+        </div>
+        <div class="exit-card">
+          <div class="exit-title" id="ex2title">📈 IPO 상장</div>
+          <div class="exit-row"><span id="ex2l1">예상 Valuation</span><span>450~600억</span></div>
+          <div class="exit-row"><span id="ex2l2">목표 시점</span><span>2029 Q2</span></div>
+          <div class="exit-row"><span id="ex2l3">상장 시장</span><span id="ex2v3">코스닥 또는 나스닥</span></div>
+          <div class="exit-row"><span id="ex2l4">창업자 수령 추정</span><span id="ex2net">세후 약 137억</span></div>
+        </div>
+        <div class="exit-card">
+          <div class="exit-title" id="ex3title">🏛 지분 부분 매각</div>
+          <div class="exit-row"><span id="ex3l1">매각 지분</span><span>25% (창업자 보유분)</span></div>
+          <div class="exit-row"><span id="ex3l2">목표 시점</span><span>2027 Q3</span></div>
+          <div class="exit-row"><span id="ex3l3">수령 예상</span><span>약 75억</span></div>
+          <div class="exit-row"><span id="ex3net">경영권 유지 가능</span><span>✅</span></div>
+        </div>
+        <div class="exit-card">
+          <div class="exit-title" id="ex4title">🏢 가업 승계</div>
+          <div class="exit-row"><span id="ex4l1">승계 방식</span><span id="ex4v1">증여 + 가업승계 공제</span></div>
+          <div class="exit-row"><span id="ex4l2">절세 효과</span><span>최대 500억 공제</span></div>
+          <div class="exit-row"><span id="ex4l3">준비 기간</span><span>3~5년</span></div>
+          <div class="exit-row"><span id="ex4net">중장기 권고</span><span>⚠️</span></div>
+        </div>
+      </div>
+
+      <!-- Exit 세금 시뮬레이터 -->
+      <div class="tax-sim">
+        <div class="tax-sim-title" id="taxTitle">💰 Exit 세금 시뮬레이터 (M&A 시나리오 기준)</div>
+        <div class="tax-row"><span id="tx1">매각 대금</span><span>350억원</span></div>
+        <div class="tax-row"><span id="tx2">취득원가 (주식 액면)</span><span>— 5,000만원</span></div>
+        <div class="tax-row"><span id="tx3">양도차익</span><span>349.5억원</span></div>
+        <div class="tax-row"><span id="tx4">대주주 양도소득세 (27.5%)</span><span>— 96.1억원</span></div>
+        <div class="tax-row"><span id="tx5">지방소득세 (2.75%)</span><span>— 9.6억원</span></div>
+        <div class="tax-row total"><span id="tx6">최종 수령 예상액</span><span>≈ 243.8억원</span></div>
+      </div>
+
+      <!-- 섹션 5 -->
+      <div class="section-head"><span class="section-num" id="sn5h">【섹션 5】</span><span id="s5title">실사(Due Diligence) 대비 종합 체크리스트</span></div>
+
+      <div class="dd-grid">
+        <div class="dd-card">
+          <div class="dd-title" id="dd1title">⚖️ 법무 실사</div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd1i1">정관 최신화 완료</span></div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd1i2">주주간 계약서(SHA) 정비</span></div>
+          <div class="dd-item"><span class="chk warn"></span><span id="dd1i3">임원 계약 서면화 진행중</span></div>
+          <div class="dd-item"><span class="chk gap"></span><span id="dd1i4">지식재산 독점 라이선스 미확인</span></div>
+        </div>
+        <div class="dd-card">
+          <div class="dd-title" id="dd2title">🧾 세무 실사</div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd2i1">3년 세무신고 이상 없음</span></div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd2i2">부가세 신고 누락 없음</span></div>
+          <div class="dd-item"><span class="chk warn"></span><span id="dd2i3">가지급금 정리 계획 수립</span></div>
+          <div class="dd-item"><span class="chk gap"></span><span id="dd2i4">이전가격 문서화 미완</span></div>
+        </div>
+        <div class="dd-card">
+          <div class="dd-title" id="dd3title">👥 노무 실사</div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd3i1">전 직원 근로계약서 완비</span></div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd3i2">4대 보험 가입 정상</span></div>
+          <div class="dd-item"><span class="chk gap"></span><span id="dd3i3">핵심 인재 경쟁금지 약정 미체결</span></div>
+          <div class="dd-item"><span class="chk warn"></span><span id="dd3i4">스톡옵션 규정 정비 중</span></div>
+        </div>
+        <div class="dd-card">
+          <div class="dd-title" id="dd4title">📊 재무 실사</div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd4i1">3년 감사보고서 완비</span></div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd4i2">관리회계 월별 정리</span></div>
+          <div class="dd-item"><span class="chk warn"></span><span id="dd4i3">재고 실사 연 2회로 조정 필요</span></div>
+          <div class="dd-item"><span class="chk ok"></span><span id="dd4i4">관계사 거래 명세 정리 완료</span></div>
+        </div>
+      </div>
+
+    </div><!-- /doc-sheet -->
+  </div><!-- /doc-wrap -->
+</div>
+
+<script src="../assets/js/nav-inject.js" defer></script>
+<script src="../assets/js/nav.js?v=3" defer></script>
+<script src="../assets/js/auth.js" defer></script>
+<script src="../assets/js/i18n.js" defer></script>
+<script src="../assets/js/footer-inject.js" defer></script>
+
+<script>
+var LANGS = {
+  ko: {
+    ctrlTitle:'💎 풀사이클 Exit 전략', lockTitle:'Enterprise 전용 서식',
+    lockDesc:'현재 샘플 미리보기 중입니다.<br>구매 후 전체 편집·시뮬레이션·출력 가능합니다.',
+    ctaBtn:'💎 Enterprise 구매하기',
+    tipBox:'💡 기업가치 제고부터 M&A·IPO Exit까지<br>Cap Table, DCF 시뮬레이터, DD 체크리스트, 세금 계산기를 포함합니다.',
+    backLink:'← 서식 목록', previewLabel:'🔍 샘플 미리보기 — 편집 불가', previewTag:'SAMPLE',
+    docTitle:'풀사이클 전략 수립부터 Exit까지', docSub:'FULL-CYCLE STRATEGY TO EXIT · Enterprise Master Kit',
+    metaCompany:'회사명: ○○○ 주식회사', metaDate:'작성일: 2026년 7월 23일', metaConsultant:'작성자: 핀아키텍트',
+    kl1:'현재 기업가치', kl2:'목표 기업가치', kl3:'Exit 예상 시점', kl4:'창업자 지분',
+    ks1:'EV/EBITDA 8.5x', ks2:'3년 후 목표', ks3:'M&A 또는 IPO', ks4:'희석 전 기준',
+    sn1:'【섹션 1】', s1title:'기업가치 제고(Value-Up) 로드맵',
+    sn2:'【섹션 2】', s2title:'Cap Table 및 지분 구조 설계',
+    sn3h:'【섹션 3】', s3title:'투자 유치(IR) 및 데이터룸(VDR) 구조화',
+    sn4h:'【섹션 4】', s4title:'Exit 전략 시나리오 설계',
+    sn5h:'【섹션 5】', s5title:'실사(Due Diligence) 대비 종합 체크리스트',
+    th1a:'KPI 지표', th1b:'현재치', th1c:'Year 1 목표', th1d:'Year 3 목표', th1e:'가치 기여도',
+    kp1:'연 매출(억원)', kp2:'EBITDA 마진', kp3:'반복매출(ARR) 비율', kp4:'고객 유지율(CRR)', kp5:'EV (DCF 추정)',
+    kv1:'★★★★★', kv2:'★★★★☆', kv3:'★★★★★', kv4:'★★★★☆', kv5:'—',
+    cth1:'주주', cth2:'구분', cth3:'보유 주식수', cth4:'현재 지분율', cth5:'Series B 후 지분율', cth6:'비고',
+    sh1:'창업자 A', st1:'보통주', sn1a:'경영권 유지 필요',
+    sh2:'Series A 투자자', st2:'우선주', sn2a:'3배 청산우선권',
+    sh3:'Series B (예정)', st3:'우선주', sn3a:'신규 조달 목표',
+    sh4:'ESOP 풀', st4:'스톡옵션', sn4a:'핵심 인재 리텐션',
+    sh5:'합 계',
+    dilLabel:'지분율 시각화 (Series B 후 기준)',
+    dl1:'창업자 44.7%', dl2:'Series A 13.1%', dl3:'Series B 16.1%', dl4:'ESOP 6.4%',
+    vth1:'VDR 폴더', vth2:'포함 서류', vth3:'준비 상태',
+    vf1:'01. 기업 개요', vd1:'회사 소개서, 조직도, 등기부등본',
+    vf2:'02. 재무 정보', vd2:'3년 감사보고서, 관리회계, 예산',
+    vf3:'03. 법무·계약', vd3:'주주간계약(SHA), 주요 고객 계약',
+    vf4:'04. 지식재산', vd4:'특허, 상표, 저작권 목록',
+    vf5:'05. 인사·노무', vd5:'임원 계약, 스톡옵션 규정',
+    vf6:'06. 세무', vd6:'3년 세무신고서, 세무조사 이력',
+    ex1title:'🤝 M&A 매각', ex1l1:'예상 Valuation', ex1l2:'목표 시점', ex1l3:'전략적 매수자', ex1v3:'대형 SI, 플랫폼사', ex1l4:'창업자 수령 추정', ex1net:'세후 약 92억',
+    ex2title:'📈 IPO 상장', ex2l1:'예상 Valuation', ex2l2:'목표 시점', ex2l3:'상장 시장', ex2v3:'코스닥 또는 나스닥', ex2l4:'창업자 수령 추정', ex2net:'세후 약 137억',
+    ex3title:'🏛 지분 부분 매각', ex3l1:'매각 지분', ex3l2:'목표 시점', ex3l3:'수령 예상', ex3net:'경영권 유지 가능',
+    ex4title:'🏢 가업 승계', ex4l1:'승계 방식', ex4v1:'증여 + 가업승계 공제', ex4l2:'절세 효과', ex4l3:'준비 기간', ex4net:'중장기 권고',
+    taxTitle:'💰 Exit 세금 시뮬레이터 (M&A 시나리오 기준)',
+    tx1:'매각 대금', tx2:'취득원가 (주식 액면)', tx3:'양도차익', tx4:'대주주 양도소득세 (27.5%)', tx5:'지방소득세 (2.75%)', tx6:'최종 수령 예상액',
+    dd1title:'⚖️ 법무 실사', dd1i1:'정관 최신화 완료', dd1i2:'주주간 계약서(SHA) 정비', dd1i3:'임원 계약 서면화 진행중', dd1i4:'지식재산 독점 라이선스 미확인',
+    dd2title:'🧾 세무 실사', dd2i1:'3년 세무신고 이상 없음', dd2i2:'부가세 신고 누락 없음', dd2i3:'가지급금 정리 계획 수립', dd2i4:'이전가격 문서화 미완',
+    dd3title:'👥 노무 실사', dd3i1:'전 직원 근로계약서 완비', dd3i2:'4대 보험 가입 정상', dd3i3:'핵심 인재 경쟁금지 약정 미체결', dd3i4:'스톡옵션 규정 정비 중',
+    dd4title:'📊 재무 실사', dd4i1:'3년 감사보고서 완비', dd4i2:'관리회계 월별 정리', dd4i3:'재고 실사 연 2회로 조정 필요', dd4i4:'관계사 거래 명세 정리 완료'
+  },
+  en: {
+    ctrlTitle:'💎 Full-Cycle Exit Strategy', lockTitle:'Enterprise Only',
+    lockDesc:'You are viewing a sample preview.<br>Purchase to unlock full editing and simulation.',
+    ctaBtn:'💎 Purchase Enterprise',
+    tipBox:'💡 From value creation to M&A / IPO exit.<br>Includes Cap Table, DCF simulator, DD checklist, and tax calculator.',
+    backLink:'← Back to Forms', previewLabel:'🔍 Sample Preview — Read Only', previewTag:'SAMPLE',
+    docTitle:'Full-Cycle Strategy: From Launch to Exit', docSub:'FULL-CYCLE STRATEGY TO EXIT · Enterprise Master Kit',
+    metaCompany:'Company: ○○○ Inc.', metaDate:'Date: July 23, 2026', metaConsultant:'Author: FinArchitect',
+    kl1:'Current Valuation', kl2:'Target Valuation', kl3:'Exit Timeline', kl4:"Founder's Equity",
+    ks1:'EV/EBITDA 8.5x', ks2:'3-Year Target', ks3:'M&A or IPO', ks4:'Pre-dilution basis',
+    sn1:'[Section 1]', s1title:'Value-Up Roadmap',
+    sn2:'[Section 2]', s2title:'Cap Table & Equity Structure Design',
+    sn3h:'[Section 3]', s3title:'IR & Virtual Data Room (VDR) Structure',
+    sn4h:'[Section 4]', s4title:'Exit Strategy Scenario Design',
+    sn5h:'[Section 5]', s5title:'Due Diligence (DD) Comprehensive Checklist',
+    th1a:'KPI Metric', th1b:'Current', th1c:'Year 1 Target', th1d:'Year 3 Target', th1e:'Value Impact',
+    kp1:'Annual Revenue (KRW B)', kp2:'EBITDA Margin', kp3:'ARR Ratio', kp4:'Customer Retention Rate (CRR)', kp5:'EV (DCF Estimate)',
+    kv1:'★★★★★', kv2:'★★★★☆', kv3:'★★★★★', kv4:'★★★★☆', kv5:'—',
+    cth1:'Shareholder', cth2:'Share Class', cth3:'Shares Held', cth4:'Current %', cth5:'Post Series B %', cth6:'Notes',
+    sh1:'Founder A', st1:'Common', sn1a:'Must retain control',
+    sh2:'Series A Investor', st2:'Preferred', sn2a:'3x liquidation preference',
+    sh3:'Series B (planned)', st3:'Preferred', sn3a:'New fundraising target',
+    sh4:'ESOP Pool', st4:'Stock Options', sn4a:'Key talent retention',
+    sh5:'Total',
+    dilLabel:'Equity Visualization (Post Series B)',
+    dl1:'Founder 44.7%', dl2:'Series A 13.1%', dl3:'Series B 16.1%', dl4:'ESOP 6.4%',
+    vth1:'VDR Folder', vth2:'Documents Included', vth3:'Status',
+    vf1:'01. Company Overview', vd1:'Intro deck, org chart, corporate registry',
+    vf2:'02. Financial Info', vd2:'3yr audited financials, mgmt. accounting, budget',
+    vf3:'03. Legal & Contracts', vd3:"SHA, major customer contracts",
+    vf4:'04. IP Assets', vd4:'Patents, trademarks, copyrights list',
+    vf5:'05. HR & Labor', vd5:'Executive contracts, stock option plan',
+    vf6:'06. Tax', vd6:'3yr tax filings, audit history',
+    ex1title:'🤝 M&A Sale', ex1l1:'Expected Valuation', ex1l2:'Target Date', ex1l3:'Strategic Buyers', ex1v3:'Large SI / Platform cos.', ex1l4:"Founder's Net Est.", ex1net:'After-tax approx. KRW 9.2B',
+    ex2title:'📈 IPO', ex2l1:'Expected Valuation', ex2l2:'Target Date', ex2l3:'Market', ex2v3:'KOSDAQ or NASDAQ', ex2l4:"Founder's Net Est.", ex2net:'After-tax approx. KRW 13.7B',
+    ex3title:'🏛 Partial Share Sale', ex3l1:'Stake to Sell', ex3l2:'Target Date', ex3l3:'Est. Proceeds', ex3net:'Retains management control',
+    ex4title:'🏢 Business Succession', ex4l1:'Method', ex4v1:'Gift + succession tax deduction', ex4l2:'Tax Savings', ex4l3:'Preparation Period', ex4net:'Long-term recommendation',
+    taxTitle:'💰 Exit Tax Simulator (M&A Scenario)',
+    tx1:'Sale Price', tx2:'Cost Basis (par value)', tx3:'Capital Gain', tx4:'Majority Shareholder CGT (27.5%)', tx5:'Local Income Tax (2.75%)', tx6:'Est. Net Proceeds',
+    dd1title:'⚖️ Legal DD', dd1i1:'Articles up to date', dd1i2:'SHA properly executed', dd1i3:'Executive contracts (in progress)', dd1i4:'IP exclusive license unverified',
+    dd2title:'🧾 Tax DD', dd2i1:'3yr tax filings clean', dd2i2:'VAT filings complete', dd2i3:'CEO prepayment resolution plan set', dd2i4:'Transfer pricing docs incomplete',
+    dd3title:'👥 Labor DD', dd3i1:'All employees have signed contracts', dd3i2:'Social insurance enrollments current', dd3i3:'Key person non-compete not signed', dd3i4:'Stock option plan under revision',
+    dd4title:'📊 Financial DD', dd4i1:'3yr audited statements complete', dd4i2:'Monthly mgmt. accounts maintained', dd4i3:'Inventory counts: adjust to 2x/year', dd4i4:'Related-party transaction details complete'
+  },
+  ja: {
+    ctrlTitle:'💎 フルサイクルExit戦略', lockTitle:'Enterprise専用',
+    lockDesc:'現在サンプルをプレビュー中です。<br>購入後に全編集・シミュレーション・出力が可能になります。',
+    ctaBtn:'💎 Enterpriseを購入する',
+    tipBox:'💡 企業価値向上からM&A・IPO Exitまで。<br>Cap Table、DCFシミュレーター、DDチェックリスト、税金計算機を含みます。',
+    backLink:'← 書式一覧', previewLabel:'🔍 サンプルプレビュー — 閲覧のみ', previewTag:'SAMPLE',
+    docTitle:'フルサイクル戦略立案からExitまで', docSub:'FULL-CYCLE STRATEGY TO EXIT · Enterprise Master Kit',
+    metaCompany:'会社名：○○○株式会社', metaDate:'作成日：2026年7月23日', metaConsultant:'作成者：FinArchitect',
+    kl1:'現在の企業価値', kl2:'目標企業価値', kl3:'Exit予定時期', kl4:'創業者持分',
+    ks1:'EV/EBITDA 8.5x', ks2:'3年後目標', ks3:'M&Aまたは上場', ks4:'希薄化前基準',
+    sn1:'【セクション1】', s1title:'企業価値向上（Value-Up）ロードマップ',
+    sn2:'【セクション2】', s2title:'Cap Table・株式構成設計',
+    sn3h:'【セクション3】', s3title:'IR・バーチャルデータルーム（VDR）構造化',
+    sn4h:'【セクション4】', s4title:'Exit戦略シナリオ設計',
+    sn5h:'【セクション5】', s5title:'デューデリジェンス（DD）総合チェックリスト',
+    th1a:'KPI指標', th1b:'現状値', th1c:'Year 1目標', th1d:'Year 3目標', th1e:'価値貢献度',
+    kp1:'年間売上（億円）', kp2:'EBITDAマージン', kp3:'ARR比率', kp4:'顧客継続率（CRR）', kp5:'EV（DCF推定）',
+    kv1:'★★★★★', kv2:'★★★★☆', kv3:'★★★★★', kv4:'★★★★☆', kv5:'—',
+    cth1:'株主', cth2:'株式区分', cth3:'保有株式数', cth4:'現在持分率', cth5:'Series B後持分率', cth6:'備考',
+    sh1:'創業者A', st1:'普通株', sn1a:'経営権維持が必要',
+    sh2:'Series A投資家', st2:'優先株', sn2a:'3倍清算優先権',
+    sh3:'Series B（予定）', st3:'優先株', sn3a:'新規調達目標',
+    sh4:'ESOPプール', st4:'ストックオプション', sn4a:'主要人材リテンション',
+    sh5:'合 計',
+    dilLabel:'持分率可視化（Series B後基準）',
+    dl1:'創業者 44.7%', dl2:'Series A 13.1%', dl3:'Series B 16.1%', dl4:'ESOP 6.4%',
+    vth1:'VDRフォルダ', vth2:'収録書類', vth3:'準備状況',
+    vf1:'01. 会社概要', vd1:'会社紹介資料、組織図、登記簿謄本',
+    vf2:'02. 財務情報', vd2:'3期分監査報告書、管理会計、予算',
+    vf3:'03. 法務・契約', vd3:'株主間契約（SHA）、主要顧客契約',
+    vf4:'04. 知的財産', vd4:'特許・商標・著作権一覧',
+    vf5:'05. 人事・労務', vd5:'役員契約書、ストックオプション規程',
+    vf6:'06. 税務', vd6:'3期分税務申告書、税務調査履歴',
+    ex1title:'🤝 M&A売却', ex1l1:'想定バリュエーション', ex1l2:'目標時期', ex1l3:'戦略的買収候補', ex1v3:'大手SI・プラットフォーム', ex1l4:'創業者受取推定', ex1net:'税引後約9.2億円',
+    ex2title:'📈 IPO上場', ex2l1:'想定バリュエーション', ex2l2:'目標時期', ex2l3:'上場市場', ex2v3:'コスダックまたはNASDAQ', ex2l4:'創業者受取推定', ex2net:'税引後約13.7億円',
+    ex3title:'🏛 株式一部売却', ex3l1:'売却持分', ex3l2:'目標時期', ex3l3:'受取見込み', ex3net:'経営権維持可能',
+    ex4title:'🏢 事業承継', ex4l1:'承継方式', ex4v1:'贈与＋事業承継税制', ex4l2:'節税効果', ex4l3:'準備期間', ex4net:'中長期推奨',
+    taxTitle:'💰 Exit税金シミュレーター（M&Aシナリオ基準）',
+    tx1:'売却価額', tx2:'取得原価（株式額面）', tx3:'譲渡益', tx4:'大株主譲渡所得税（27.5%）', tx5:'地方所得税（2.75%）', tx6:'最終手取推定額',
+    dd1title:'⚖️ 法務DD', dd1i1:'定款最新化完了', dd1i2:'株主間契約（SHA）整備済', dd1i3:'役員契約書面化・進行中', dd1i4:'IP独占ライセンス未確認',
+    dd2title:'🧾 税務DD', dd2i1:'3期税務申告に問題なし', dd2i2:'消費税申告漏れなし', dd2i3:'仮払金精算計画策定中', dd2i4:'移転価格文書化未完',
+    dd3title:'👥 労務DD', dd3i1:'全従業員の雇用契約書完備', dd3i2:'社会保険加入適正', dd3i3:'主要人材の競業禁止条項未締結', dd3i4:'ストックオプション規程整備中',
+    dd4title:'📊 財務DD', dd4i1:'3期監査報告書完備', dd4i2:'管理会計月次整理済', dd4i3:'棚卸実地調査を年2回に調整必要', dd4i4:'関連会社取引明細整理完了'
+  }
+};
+
+var _activeLang = 'ko';
+function setLang(lang) {
+  _activeLang = lang;
+  var t = LANGS[lang] || LANGS.ko;
+  ['ko','en','ja'].forEach(function(l){ document.getElementById('btn-'+l).classList.toggle('active', l===lang); });
+  var keys = Object.keys(LANGS.ko);
+  keys.forEach(function(k){
+    var el = document.getElementById(k);
+    if (el && t[k] !== undefined) el.innerHTML = t[k];
+  });
+  document.documentElement.lang = lang;
+  localStorage.setItem('site-lang', lang);
+  if (typeof window.syncNavLang === 'function') window.syncNavLang(lang);
+}
+
+(function(){
+  var saved = localStorage.getItem('site-lang') || 'ko';
+  if (saved !== 'ko') setLang(saved);
+})();
+</script>
+</body>
+</html>

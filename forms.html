@@ -251,6 +251,15 @@
   border: 1px solid rgba(255,255,255,0.1);
 }
 
+.premium-sample-link {
+  display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: .04em;
+  padding: 2px 8px; border-radius: 999px; margin-left: auto; flex-shrink: 0;
+  background: rgba(245,158,11,0.18); color: #FCD34D;
+  border: 1px solid rgba(245,158,11,0.4); text-decoration: none;
+  transition: background .15s;
+}
+.premium-sample-link:hover { background: rgba(245,158,11,0.32); color: #FEF08A; }
+
 /* ── No print ── */
 @media print { body { display: none; } }
 </style>
@@ -351,7 +360,7 @@
         <span class="premium-tier-sub" id="tierSub0">소규모 프로젝트</span>
       </div>
       <div class="premium-items">
-        <div class="premium-item"><span class="premium-item-icon">📐</span><span id="pi0_0">기초 구조 설계 보고서</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">📐</span><span id="pi0_0">기초 구조 설계 보고서</span><a href="forms/form-premium-basic.html" class="premium-sample-link" id="ps0">샘플 보기</a></div>
         <div class="premium-item"><span class="premium-item-icon">📊</span><span id="pi0_1">IR 자료 기본 세트</span><span class="premium-coming">준비중</span></div>
         <div class="premium-item"><span class="premium-item-icon">⚖️</span><span id="pi0_2">법률 검토 1회</span><span class="premium-coming">준비중</span></div>
         <div class="premium-item"><span class="premium-item-icon">📧</span><span id="pi0_3">이메일 지원 표본</span><span class="premium-coming">준비중</span></div>
@@ -366,7 +375,7 @@
         <span class="premium-tier-sub" id="tierSub1">중간 규모 프로젝트</span>
       </div>
       <div class="premium-items">
-        <div class="premium-item"><span class="premium-item-icon">🏗️</span><span id="pi1_0">통합 금융 구조 설계</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">🏗️</span><span id="pi1_0">통합 금융 구조 설계</span><a href="forms/form-premium-standard.html" class="premium-sample-link" id="ps1">샘플 보기</a></div>
         <div class="premium-item"><span class="premium-item-icon">🏢</span><span id="pi1_1">SPV / SPC 설립 지원</span><span class="premium-coming">준비중</span></div>
         <div class="premium-item"><span class="premium-item-icon">🎯</span><span id="pi1_2">전문 IR 피칭 패키지</span><span class="premium-coming">준비중</span></div>
         <div class="premium-item"><span class="premium-item-icon">📋</span><span id="pi1_3">법률·세무 검토 전과정 보고서</span><span class="premium-coming">준비중</span></div>
@@ -383,7 +392,7 @@
         <span class="premium-tier-sub" id="tierSub2">대형 복합 프로젝트</span>
       </div>
       <div class="premium-items">
-        <div class="premium-item"><span class="premium-item-icon">🔁</span><span id="pi2_0">전략 수립부터 Exit까지 풀사이클</span><span class="premium-coming">준비중</span></div>
+        <div class="premium-item"><span class="premium-item-icon">🔁</span><span id="pi2_0">전략 수립부터 Exit까지 풀사이클</span><a href="forms/form-premium-enterprise.html" class="premium-sample-link" id="ps2">샘플 보기</a></div>
         <div class="premium-item"><span class="premium-item-icon">🌐</span><span id="pi2_1">글로벌 플랫폼 STO 연계</span><span class="premium-coming">준비중</span></div>
         <div class="premium-item"><span class="premium-item-icon">🌏</span><span id="pi2_2">다중 법역 법률·세무 통합 자문</span><span class="premium-coming">준비중</span></div>
         <div class="premium-item"><span class="premium-item-icon">👥</span><span id="pi2_3">전담 컨설턴트 팀 배정 보고서</span><span class="premium-coming">준비중</span></div>
@@ -422,6 +431,7 @@ var FORMS_LANG = {
     cardBtn: '✏ 작성하기',
     premiumBadge: '✦ 프리미엄 서비스 패키지',
     premiumComingSoon: '준비중',
+    premiumSampleBtn: '샘플 보기',
     tiers: [
       { name: 'Basic', badge: 'BASIC', sub: '소규모 프로젝트' },
       { name: 'Standard', badge: 'STANDARD', sub: '중간 규모 프로젝트' },
@@ -452,6 +462,7 @@ var FORMS_LANG = {
     cardBtn: '✏ Fill Out',
     premiumBadge: '✦ Premium Service Packages',
     premiumComingSoon: 'Coming Soon',
+    premiumSampleBtn: 'View Sample',
     tiers: [
       { name: 'Basic', badge: 'BASIC', sub: 'Small-scale projects' },
       { name: 'Standard', badge: 'STANDARD', sub: 'Mid-scale projects' },
@@ -482,6 +493,7 @@ var FORMS_LANG = {
     cardBtn: '✏ 記入する',
     premiumBadge: '✦ プレミアムサービスパッケージ',
     premiumComingSoon: '準備中',
+    premiumSampleBtn: 'サンプルを見る',
     tiers: [
       { name: 'Basic', badge: 'BASIC', sub: '小規模プロジェクト' },
       { name: 'Standard', badge: 'STANDARD', sub: '中規模プロジェクト' },
@@ -695,6 +707,10 @@ function setLang(lang) {
   }
   document.querySelectorAll('.premium-coming').forEach(function(el) {
     el.textContent = d.premiumComingSoon || '준비중';
+  });
+  ['ps0','ps1','ps2'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = d.premiumSampleBtn || '샘플 보기';
   });
 
   // 서식 데이터 & 카드 재렌더 (언어 반영)

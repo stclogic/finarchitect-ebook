@@ -8,6 +8,7 @@ const SITE_I18N = {
     'nav.forms': '서식',
     'nav.consulting': '컨설팅',
     'nav.pricing': '요금제',
+    'nav.blog': '블로그',
     'nav.login': '로그인',
     'nav.start': '시작하기',
 
@@ -220,6 +221,7 @@ const SITE_I18N = {
     'nav.forms': 'Forms',
     'nav.consulting': 'Consulting',
     'nav.pricing': 'Pricing',
+    'nav.blog': 'Blog',
     'nav.login': 'Log in',
     'nav.start': 'Get Started',
 
@@ -420,6 +422,7 @@ const SITE_I18N = {
     'nav.forms': '書式',
     'nav.consulting': 'コンサルティング',
     'nav.pricing': '料金',
+    'nav.blog': 'ブログ',
     'nav.login': 'ログイン',
     'nav.start': '始める',
 

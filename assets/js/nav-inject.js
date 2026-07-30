@@ -17,6 +17,7 @@
     { href: 'forms.html',      i18n: 'nav.forms',      ko: '서식',      en: 'Forms',     ja: '書式' },
     { href: 'consulting.html', i18n: 'nav.consulting', ko: '컨설팅',    en: 'Consulting', ja: 'コンサル' },
     { href: 'pricing.html',    i18n: 'nav.pricing',    ko: '요금제',    en: 'Pricing',   ja: '料金' },
+    { href: 'https://bookcoupling.blogspot.com/', i18n: 'nav.blog', ko: '블로그', en: 'Blog', ja: 'ブログ', ext: true },
   ];
 
   var page = window.location.pathname.split('/').pop() || 'landing.html';
@@ -31,8 +32,10 @@
 
   function buildLinks(l) {
     return LINKS.map(function (link) {
-      var active = (link.href === activeHref) ? ' active' : '';
-      return '<a href="' + ROOT + link.href + '" class="nav-link' + active + '" data-i18n="' + link.i18n + '">' + linkLabel(link, l) + '</a>';
+      var fullHref = link.ext ? link.href : ROOT + link.href;
+      var tgt = link.ext ? ' target="_blank" rel="noopener"' : '';
+      var active = (!link.ext && link.href === activeHref) ? ' active' : '';
+      return '<a href="' + fullHref + '" class="nav-link' + active + '"' + tgt + ' data-i18n="' + link.i18n + '">' + linkLabel(link, l) + '</a>';
     }).join('');
   }
 
@@ -73,7 +76,8 @@
     var linksEl = navEl.querySelector('.nav-links');
     if (!linksEl) return;
     LINKS.forEach(function (link) {
-      var a = linksEl.querySelector('a[href="' + ROOT + link.href + '"]');
+      var fullHref = link.ext ? link.href : ROOT + link.href;
+      var a = linksEl.querySelector('a[href="' + fullHref + '"]');
       if (a) a.textContent = linkLabel(link, l);
     });
   }

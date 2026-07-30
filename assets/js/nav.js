@@ -98,11 +98,12 @@
     const overlay = document.createElement('div');
     overlay.className = 'mobile-nav-overlay';
 
-    const linksHTML = srcLinks.map(a =>
-      `<a href="${a.getAttribute('href')}"
+    const linksHTML = srcLinks.map(a => {
+      const tgt = a.getAttribute('target') ? ` target="${a.getAttribute('target')}" rel="noopener"` : '';
+      return `<a href="${a.getAttribute('href')}"${tgt}
           class="mobile-nav-link${a.classList.contains('active') ? ' active' : ''}"
-          data-i18n="${a.dataset.i18n || ''}">${a.textContent.trim()}</a>`
-    ).join('');
+          data-i18n="${a.dataset.i18n || ''}">${a.textContent.trim()}</a>`;
+    }).join('');
 
     const langs = [
       { code: 'ko', label: '한국어' },

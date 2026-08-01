@@ -4,3 +4,6 @@ stclogic template/
 *.jpg
 .DS_Store
 node_modules/
+
+# 블로그 초안(블로거에 붙여넣는 용도, 리포에 쌓지 않음)
+blog-drafts/

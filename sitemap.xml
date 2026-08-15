@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://bookcoupling.netlify.app/</loc><priority>1.0</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/landing.html</loc><priority>1.0</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/library.html</loc><priority>0.9</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/forms.html</loc><priority>0.8</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/consulting.html</loc><priority>0.8</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/pricing.html</loc><priority>0.8</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/about.html</loc><priority>0.6</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/index_en.html</loc><priority>0.6</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/index_ja.html</loc><priority>0.6</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/terms.html</loc><priority>0.3</priority></url>
+  <url><loc>https://bookcoupling.netlify.app/privacy.html</loc><priority>0.3</priority></url>
+</urlset>

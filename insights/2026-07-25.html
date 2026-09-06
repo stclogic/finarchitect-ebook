@@ -286,6 +286,10 @@
     .il-tab.active { background:#DC2626; color:#fff; border-color:#B91C1C; }
     .il { display:none; }
     .il.active { display:block; }
+    /* 히어로 언어 전환 */
+    .hl-en, .hl-ja { display:none !important; }
+    body[data-lang="en"] .hl-ko { display:none !important; } body[data-lang="en"] .hl-en { display:inline !important; }
+    body[data-lang="ja"] .hl-ko { display:none !important; } body[data-lang="ja"] .hl-ja { display:inline !important; }
   </style>
 </head>
 <body>
@@ -293,20 +297,25 @@
 <!-- Hero -->
 <section class="insight-hero">
   <div class="insight-hero-inner">
-    <div class="insight-badge">트렌드 × 구조 — Vol.005 · 2026년 7월 5주차</div>
+    <div class="insight-badge">
+      <span class="hl-ko">트렌드 × 구조 — Vol.005 · 2026년 7월 5주차</span>
+      <span class="hl-en">Trend × Structure — Vol.005 · Jul 2026</span>
+      <span class="hl-ja">トレンド × 構造 — Vol.005 · 2026年7月</span>
+    </div>
     <h1>
-      <span class="red">전쟁은 사업이다</span> —<br>
-      미-이란 분쟁에서 읽는<br>
-      <em>트럼프의 머니게임</em>
+      <span class="hl-ko"><span class="red">전쟁은 사업이다</span> —<br>미-이란 분쟁에서 읽는<br><em>트럼프의 머니게임</em></span>
+      <span class="hl-en"><span class="red">War Is a Business</span> —<br>Trump's Money Game<br><em>in the US–Iran Conflict</em></span>
+      <span class="hl-ja"><span class="red">戦争はビジネスだ</span> —<br>米・イラン紛争に読む<br><em>トランプのマネーゲーム</em></span>
     </h1>
     <p class="insight-hero-sub">
-      군사 뉴스 너머의 자금 흐름을 읽어라.<br>
-      방산 재고 보충 2~3배, 재건 시장 독점, K-방산 수혜 — 투자자가 봐야 할 구조를 해부한다.
+      <span class="hl-ko">군사 뉴스 너머의 자금 흐름을 읽어라.<br>방산 재고 보충 2~3배, 재건 시장 독점, K-방산 수혜 — 투자자가 봐야 할 구조를 해부한다.</span>
+      <span class="hl-en">Read the money flow beyond the military news.<br>2–3× defense restocking, reconstruction-market monopoly, K-defense upside — we dissect the structure investors must see.</span>
+      <span class="hl-ja">軍事ニュースの向こうの資金の流れを読め。<br>防衛在庫の2〜3倍補充、復興市場の独占、K-防衛の恩恵 — 投資家が見るべき構造を解剖する。</span>
     </p>
     <div class="insight-meta">
-      <span>📅 2026년 7월 25일</span>
-      <span>✍️ Book Coupling 리서치</span>
-      <span>⏱ 읽는 시간 약 8분</span>
+      <span><span class="hl-ko">📅 2026년 7월 25일</span><span class="hl-en">📅 Jul 25, 2026</span><span class="hl-ja">📅 2026年7月25日</span></span>
+      <span><span class="hl-ko">✍️ Book Coupling 리서치</span><span class="hl-en">✍️ Book Coupling Research</span><span class="hl-ja">✍️ Book Coupling リサーチ</span></span>
+      <span><span class="hl-ko">⏱ 읽는 시간 약 8분</span><span class="hl-en">⏱ ~8 min read</span><span class="hl-ja">⏱ 読了 約8分</span></span>
     </div>
   </div>
 </section>
@@ -965,6 +974,7 @@
 
 <script>
 function setInsightLang(l){
+  document.body.setAttribute('data-lang', l);
   document.querySelectorAll('.il').forEach(function(el){el.classList.remove('active');});
   document.querySelectorAll('.il-tab').forEach(function(t){t.classList.remove('active');});
   var el=document.querySelector('.il.lang-'+l);

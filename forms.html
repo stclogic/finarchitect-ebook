@@ -678,6 +678,16 @@ var FORM_I18N = {
     en:{title:'Store Margin Calculator',desc:'Enter price, cost, fees and ads — get real profit, margin rate and break-even price in real time',tags:['Live calc','Margin %','Break-even','Platform fee','Seller'],badge:'🧮 Tool'},
     ja:{title:'ストア マージン計算機',desc:'販売価·原価·手数料·広告費を入力すると、実利益・マージン率・損益分岐価格をリアルタイム計算',tags:['リアルタイム','マージン率','損益分岐','手数料','セラー'],badge:'🧮 ツール'},
   },
+  'freelance-rate': {
+    ko:{title:'프리랜서 단가 계산기',desc:'목표 월소득·근무일·경비율로 목표를 채우는 최소 시급·일급을 역산',tags:['시급역산','일급','경비율','견적하한','프리랜서'],badge:'🧮 실무도구'},
+    en:{title:'Freelance Rate Calculator',desc:'Back-calculate the minimum hourly & daily rate to hit your income goal from workdays and overhead',tags:['Hourly','Daily','Overhead','Rate floor','Freelance'],badge:'🧮 Tool'},
+    ja:{title:'フリーランス単価計算機',desc:'目標月収·稼働日·経費率から、目標を満たす最低時給·日給を逆算',tags:['時給逆算','日給','経費率','単価下限','フリーランス'],badge:'🧮 ツール'},
+  },
+  'bep': {
+    ko:{title:'손익분기 계산기',desc:'고정비·판매가·변동비로 손익분기 수량과 매출, 공헌이익을 계산',tags:['손익분기','BEP','공헌이익','고정비','창업'],badge:'🧮 실무도구'},
+    en:{title:'Break-even Calculator',desc:'From fixed cost, price and variable cost, get break-even units, revenue and contribution margin',tags:['Break-even','BEP','Contribution','Fixed cost','Startup'],badge:'🧮 Tool'},
+    ja:{title:'損益分岐 計算機',desc:'固定費·販売価·変動費から、損益分岐の数量・売上・限界利益を計算',tags:['損益分岐','BEP','限界利益','固定費','起業'],badge:'🧮 ツール'},
+  },
 };
 
 // ── 언어 전환 함수 ────────────────────────────────────────────
@@ -870,7 +880,15 @@ var LIVE_FORMS = [
   { id:'margin-calc', cat:'tool', icon:'🧮', accent:'#4F46E5', badge:'badge-pop', badgeText:'🧮 실무도구',
     title:'스마트스토어 마진 계산기', desc:'판매가·원가·수수료·광고비 입력 시 실수익과 마진율, 손익분기 판매가를 실시간 계산',
     tags:['실시간계산','마진율','손익분기','플랫폼수수료','셀러필수'], href:'forms/tool-margin.html',
-    keywords:'마진 계산기 마진율 스마트스토어 수수료 손익분기 셀러 수익계산' }
+    keywords:'마진 계산기 마진율 스마트스토어 수수료 손익분기 셀러 수익계산' },
+  { id:'freelance-rate', cat:'tool', icon:'🧮', accent:'#4F46E5', badge:'badge-pop', badgeText:'🧮 실무도구',
+    title:'프리랜서 단가 계산기', desc:'목표 월소득·근무일·경비율로 목표를 채우는 최소 시급·일급을 역산',
+    tags:['시급역산','일급','경비율','견적하한','프리랜서'], href:'forms/tool-freelance-rate.html',
+    keywords:'프리랜서 단가 시급 계산기 견적 외주 단가 적정단가' },
+  { id:'bep', cat:'tool', icon:'🧮', accent:'#4F46E5', badge:'badge-pop', badgeText:'🧮 실무도구',
+    title:'손익분기 계산기', desc:'고정비·판매가·변동비로 손익분기 수량과 매출, 공헌이익을 계산',
+    tags:['손익분기','BEP','공헌이익','고정비','창업'], href:'forms/tool-bep.html',
+    keywords:'손익분기 계산기 BEP 손익분기점 공헌이익 고정비 창업' }
 ];
 
 var UPCOMING_FORMS = [];

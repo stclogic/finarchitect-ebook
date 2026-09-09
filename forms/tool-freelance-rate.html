@@ -1,0 +1,163 @@
+<!-- 프리랜서 단가 계산기 — 목표 월소득·근무일·경비율로 적정 시급/일급 역산 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프리랜서 단가 계산기 — 적정 시급·일급 역산 | Book Coupling</title>
+<meta name="description" content="목표 월소득·근무일·청구시간·경비율을 넣으면 목표를 채우는 최소 시급과 일급을 역산합니다. 견적 전 필수 도구.">
+<meta name="keywords" content="프리랜서 단가 계산기, 프리랜서 시급, 적정 단가, 견적 계산, 프리랜서 시급 계산, 외주 단가">
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEhYG4n3Wk5PYNIreBZZWzlXcPeeUYyKgY6RcmZkVtlilNBEbZl8TdYJ_KmOrugZHBO4EQYwqQn2GqUJtAn_Eyr4_iz8srykQLOWxV7Jj5m5h86aDZ38lNKbvNSBE0N5DCb-6NPMUyNOTwGdUpeoZvMJh3b_SYUHilTn0qWaKZ0fdd6eU-Ajed_ukDtIdkA">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{ --ink:#0F172A; --muted:#64748B; --line:#E7EAF0; --primary:#4F46E5; --primary2:#7C3AED;
+  --up:#059669; --up-bg:#ECFDF5; --down:#E11D48; --down-bg:#FFF1F3; --soft:#F8FAFC; }
+.tm-wrap{ max-width:1040px; margin:0 auto; padding:2.4rem 1.4rem 5rem; color:var(--ink);
+  font-family:'Pretendard','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif; }
+.tm-back{ display:inline-flex; align-items:center; gap:.35rem; font-size:.85rem; font-weight:700; color:var(--muted); text-decoration:none; margin-bottom:1.4rem; }
+.tm-back:hover{ color:var(--primary); }
+.tm-head{ margin-bottom:1.8rem; }
+.tm-eyebrow{ display:inline-block; font-size:.72rem; font-weight:800; letter-spacing:.08em; color:var(--primary); background:#EEF2FF; border:1px solid #E0E7FF; padding:5px 12px; border-radius:999px; }
+.tm-head h1{ font-size:1.9rem; font-weight:900; letter-spacing:-.02em; margin:.7rem 0 .4rem; line-height:1.25; }
+.tm-head p{ font-size:1rem; color:var(--muted); margin:0; line-height:1.6; }
+.tm-grid{ display:grid; grid-template-columns:1fr 380px; gap:1.4rem; align-items:start; }
+@media(max-width:840px){ .tm-grid{ grid-template-columns:1fr; } }
+.tm-card{ background:#fff; border:1px solid var(--line); border-radius:22px; padding:1.6rem 1.7rem; box-shadow:0 10px 40px rgba(15,23,42,.05); }
+.tm-card h2{ font-size:.95rem; font-weight:800; margin:0 0 1.2rem; display:flex; align-items:center; gap:.5rem; }
+.tm-field{ margin-bottom:1.15rem; }
+.tm-field:last-child{ margin-bottom:0; }
+.tm-field label{ display:flex; justify-content:space-between; align-items:baseline; font-size:.83rem; font-weight:700; color:#334155; margin-bottom:.4rem; }
+.tm-field label .hint{ font-size:.72rem; font-weight:600; color:var(--muted); }
+.tm-input{ position:relative; }
+.tm-input input{ width:100%; box-sizing:border-box; border:1.5px solid var(--line); border-radius:13px; padding:.8rem 3rem .8rem 1rem; font-size:1.05rem; font-weight:700; color:var(--ink); background:var(--soft); transition:.15s; text-align:right; -moz-appearance:textfield; }
+.tm-input input:focus{ outline:none; border-color:var(--primary); background:#fff; box-shadow:0 0 0 4px rgba(79,70,229,.1); }
+.tm-input input::-webkit-outer-spin-button,.tm-input input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+.tm-input .unit{ position:absolute; right:1rem; top:50%; transform:translateY(-50%); font-size:.85rem; font-weight:700; color:var(--muted); pointer-events:none; }
+.tm-row{ display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+.tm-result{ position:sticky; top:84px; border-radius:22px; overflow:hidden; background:linear-gradient(160deg,#4F46E5 0%,#7C3AED 100%); color:#fff; box-shadow:0 18px 50px rgba(79,70,229,.28); }
+.tm-result-top{ padding:1.7rem 1.7rem 1.5rem; }
+.tm-result-label{ font-size:.78rem; font-weight:700; opacity:.85; letter-spacing:.02em; }
+.tm-profit{ font-size:2.7rem; font-weight:900; letter-spacing:-.02em; margin:.15rem 0 .1rem; line-height:1.05; }
+.tm-profit .won{ font-size:1.3rem; font-weight:800; opacity:.9; margin-left:.15rem; }
+.tm-rate-badge{ display:inline-flex; align-items:center; gap:.35rem; font-size:.85rem; font-weight:800; background:rgba(255,255,255,.18); border-radius:999px; padding:5px 13px; margin-top:.3rem; }
+.tm-result-body{ background:#fff; color:var(--ink); border-radius:22px 22px 0 0; margin-top:.4rem; padding:1.4rem 1.7rem 1.6rem; }
+.tm-line{ display:flex; justify-content:space-between; align-items:center; font-size:.86rem; padding:.55rem 0; border-bottom:1px dashed var(--line); }
+.tm-line:last-of-type{ border-bottom:none; }
+.tm-line .k{ color:var(--muted); font-weight:600; }
+.tm-line .v{ font-weight:800; color:#334155; font-variant-numeric:tabular-nums; }
+.tm-line.total .k{ color:var(--ink); font-weight:800; }
+.tm-line.total .v{ color:var(--primary); font-size:1.02rem; }
+.tm-callout{ margin-top:1rem; border-radius:14px; padding:.85rem 1rem; font-size:.82rem; font-weight:700; display:flex; gap:.5rem; align-items:flex-start; line-height:1.5; background:var(--up-bg); color:var(--up); }
+.tm-note{ margin-top:1.6rem; font-size:.78rem; color:var(--muted); line-height:1.7; background:var(--soft); border:1px solid var(--line); border-radius:14px; padding:1rem 1.2rem; }
+.tm-note b{ color:#334155; }
+.tm-cta{ margin-top:1.4rem; display:flex; flex-wrap:wrap; gap:.6rem; }
+.tm-cta a{ font-size:.82rem; font-weight:800; text-decoration:none; padding:.7rem 1.3rem; border-radius:12px; }
+.tm-cta .primary{ background:var(--primary); color:#fff; }
+.tm-cta .ghost{ background:#fff; color:var(--primary); border:1.5px solid #E0E7FF; }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9744071365591766" crossorigin="anonymous"></script>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="tm-wrap">
+  <a href="../forms.html" class="tm-back">← 서식 · 도구 목록</a>
+
+  <div class="tm-head">
+    <span class="tm-eyebrow">🧮 실무 도구 · 프리랜서</span>
+    <h1>프리랜서 단가 계산기</h1>
+    <p>"얼마 받아야 하지?" 목표 소득에서 <b>거꾸로</b> 계산해, 최소 시급·일급을 알려드립니다.</p>
+  </div>
+
+  <div class="tm-grid">
+    <div class="tm-card">
+      <h2>🎯 목표 · 근무 조건</h2>
+
+      <div class="tm-field">
+        <label>목표 월 소득 <span class="hint">세전, 내 손에 남길 목표</span></label>
+        <div class="tm-input"><input type="number" id="income" inputmode="numeric" value="4000000"><span class="unit">원</span></div>
+      </div>
+
+      <div class="tm-row">
+        <div class="tm-field">
+          <label>월 근무일</label>
+          <div class="tm-input"><input type="number" id="days" inputmode="numeric" value="20"><span class="unit">일</span></div>
+        </div>
+        <div class="tm-field">
+          <label>하루 청구 시간</label>
+          <div class="tm-input"><input type="number" id="hours" inputmode="decimal" step="0.5" value="5"><span class="unit">h</span></div>
+        </div>
+      </div>
+
+      <div class="tm-field">
+        <label>경비율 <span class="hint">세금·보험·장비·수수료 등</span></label>
+        <div class="tm-input"><input type="number" id="expense" inputmode="decimal" step="1" value="30"><span class="unit">%</span></div>
+      </div>
+
+      <div class="tm-field">
+        <label>비가동·영업 버퍼 <span class="hint">쉬는 날·영업·수정 여유</span></label>
+        <div class="tm-input"><input type="number" id="buffer" inputmode="decimal" step="1" value="20"><span class="unit">%</span></div>
+      </div>
+    </div>
+
+    <div class="tm-result">
+      <div class="tm-result-top">
+        <div class="tm-result-label">받아야 할 최소 시급</div>
+        <div class="tm-profit"><span id="hourly">71,429</span><span class="won">원</span></div>
+        <div class="tm-rate-badge">🗓 일급 약 <span id="daily">357,000</span>원</div>
+      </div>
+      <div class="tm-result-body">
+        <div class="tm-line"><span class="k">목표 월 소득(세전)</span><span class="v" id="oIncome">4,000,000원</span></div>
+        <div class="tm-line"><span class="k">경비 반영 필요 매출</span><span class="v" id="oNeed">5,714,286원</span></div>
+        <div class="tm-line"><span class="k">월 청구 가능 시간</span><span class="v" id="oBillable">80시간</span></div>
+        <div class="tm-line total"><span class="k">최소 시급</span><span class="v" id="oHourly">71,429원</span></div>
+        <div class="tm-line"><span class="k">4시간 작업 견적</span><span class="v" id="o4h">285,714원</span></div>
+        <div class="tm-callout">💡 이 시급 아래로 받으면 목표 소득에 못 미쳐요. 견적의 <b>하한선</b>으로 쓰세요.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tm-note">
+    💡 <b>계산 방식.</b> 필요 매출 = 목표소득 ÷ (1 − 경비율). 월 청구가능시간 = 근무일 × 청구시간 × (1 − 버퍼). 시급 = 필요매출 ÷ 청구가능시간.<br>
+    '청구 가능 시간'은 실제로 돈을 청구하는 시간만 넣으세요(영업·행정 제외). 참고용이며 시장 시세와 다를 수 있습니다.
+  </div>
+
+  <div class="tm-cta">
+    <a class="primary" href="form-quote.html">견적서 만들기 →</a>
+    <a class="ghost" href="../forms.html">다른 도구 보기</a>
+  </div>
+</div>
+
+<script>
+function setLang(l){ try{ localStorage.setItem('site-lang', l); }catch(e){} if (window.syncNavLang) window.syncNavLang(l); }
+(function(){
+  var won = function(n){ return Math.round(n).toLocaleString('ko-KR') + '원'; };
+  var ids = ['income','days','hours','expense','buffer'];
+  function calc(){
+    var income  = +document.getElementById('income').value || 0;
+    var days    = +document.getElementById('days').value || 0;
+    var hours   = +document.getElementById('hours').value || 0;
+    var expense = +document.getElementById('expense').value || 0;
+    var buffer  = +document.getElementById('buffer').value || 0;
+    var need = (1 - expense/100) > 0 ? income / (1 - expense/100) : 0;
+    var billable = days * hours * (1 - buffer/100);
+    var hourly = billable > 0 ? need / billable : 0;
+    var daily = hourly * hours;
+    var q4 = hourly * 4;
+    document.getElementById('hourly').textContent = Math.round(hourly).toLocaleString('ko-KR');
+    document.getElementById('daily').textContent = Math.round(daily).toLocaleString('ko-KR');
+    document.getElementById('oIncome').textContent = won(income);
+    document.getElementById('oNeed').textContent = won(need);
+    document.getElementById('oBillable').textContent = Math.round(billable).toLocaleString('ko-KR') + '시간';
+    document.getElementById('oHourly').textContent = won(hourly);
+    document.getElementById('o4h').textContent = won(q4);
+  }
+  ids.forEach(function(id){ document.getElementById(id).addEventListener('input', calc); });
+  calc();
+})();
+</script>
+<script src="../assets/js/nav.js?v=4"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

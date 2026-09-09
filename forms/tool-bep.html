@@ -1,0 +1,162 @@
+<!-- 손익분기(BEP) 계산기 — 고정비·판매가·변동비로 손익분기 수량/매출 계산 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>손익분기 계산기 — BEP 수량·매출 즉시 계산 | Book Coupling</title>
+<meta name="description" content="월 고정비·판매가·개당 변동비를 넣으면 손익분기 수량과 매출, 공헌이익을 계산합니다. 사업·창업 필수 도구.">
+<meta name="keywords" content="손익분기 계산기, BEP 계산, 손익분기점, 공헌이익, 고정비 변동비, 창업 계산기">
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEhYG4n3Wk5PYNIreBZZWzlXcPeeUYyKgY6RcmZkVtlilNBEbZl8TdYJ_KmOrugZHBO4EQYwqQn2GqUJtAn_Eyr4_iz8srykQLOWxV7Jj5m5h86aDZ38lNKbvNSBE0N5DCb-6NPMUyNOTwGdUpeoZvMJh3b_SYUHilTn0qWaKZ0fdd6eU-Ajed_ukDtIdkA">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{ --ink:#0F172A; --muted:#64748B; --line:#E7EAF0; --primary:#4F46E5; --primary2:#7C3AED;
+  --up:#059669; --up-bg:#ECFDF5; --down:#E11D48; --down-bg:#FFF1F3; --soft:#F8FAFC; }
+.tm-wrap{ max-width:1040px; margin:0 auto; padding:2.4rem 1.4rem 5rem; color:var(--ink);
+  font-family:'Pretendard','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif; }
+.tm-back{ display:inline-flex; align-items:center; gap:.35rem; font-size:.85rem; font-weight:700; color:var(--muted); text-decoration:none; margin-bottom:1.4rem; }
+.tm-back:hover{ color:var(--primary); }
+.tm-head{ margin-bottom:1.8rem; }
+.tm-eyebrow{ display:inline-block; font-size:.72rem; font-weight:800; letter-spacing:.08em; color:var(--primary); background:#EEF2FF; border:1px solid #E0E7FF; padding:5px 12px; border-radius:999px; }
+.tm-head h1{ font-size:1.9rem; font-weight:900; letter-spacing:-.02em; margin:.7rem 0 .4rem; line-height:1.25; }
+.tm-head p{ font-size:1rem; color:var(--muted); margin:0; line-height:1.6; }
+.tm-grid{ display:grid; grid-template-columns:1fr 380px; gap:1.4rem; align-items:start; }
+@media(max-width:840px){ .tm-grid{ grid-template-columns:1fr; } }
+.tm-card{ background:#fff; border:1px solid var(--line); border-radius:22px; padding:1.6rem 1.7rem; box-shadow:0 10px 40px rgba(15,23,42,.05); }
+.tm-card h2{ font-size:.95rem; font-weight:800; margin:0 0 1.2rem; display:flex; align-items:center; gap:.5rem; }
+.tm-field{ margin-bottom:1.15rem; }
+.tm-field:last-child{ margin-bottom:0; }
+.tm-field label{ display:flex; justify-content:space-between; align-items:baseline; font-size:.83rem; font-weight:700; color:#334155; margin-bottom:.4rem; }
+.tm-field label .hint{ font-size:.72rem; font-weight:600; color:var(--muted); }
+.tm-input{ position:relative; }
+.tm-input input{ width:100%; box-sizing:border-box; border:1.5px solid var(--line); border-radius:13px; padding:.8rem 3rem .8rem 1rem; font-size:1.05rem; font-weight:700; color:var(--ink); background:var(--soft); transition:.15s; text-align:right; -moz-appearance:textfield; }
+.tm-input input:focus{ outline:none; border-color:var(--primary); background:#fff; box-shadow:0 0 0 4px rgba(79,70,229,.1); }
+.tm-input input::-webkit-outer-spin-button,.tm-input input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+.tm-input .unit{ position:absolute; right:1rem; top:50%; transform:translateY(-50%); font-size:.85rem; font-weight:700; color:var(--muted); pointer-events:none; }
+.tm-result{ position:sticky; top:84px; border-radius:22px; overflow:hidden; background:linear-gradient(160deg,#4F46E5 0%,#7C3AED 100%); color:#fff; box-shadow:0 18px 50px rgba(79,70,229,.28); }
+.tm-result-top{ padding:1.7rem 1.7rem 1.5rem; }
+.tm-result-label{ font-size:.78rem; font-weight:700; opacity:.85; letter-spacing:.02em; }
+.tm-profit{ font-size:2.7rem; font-weight:900; letter-spacing:-.02em; margin:.15rem 0 .1rem; line-height:1.05; }
+.tm-profit .won{ font-size:1.3rem; font-weight:800; opacity:.9; margin-left:.15rem; }
+.tm-rate-badge{ display:inline-flex; align-items:center; gap:.35rem; font-size:.85rem; font-weight:800; background:rgba(255,255,255,.18); border-radius:999px; padding:5px 13px; margin-top:.3rem; }
+.tm-result-body{ background:#fff; color:var(--ink); border-radius:22px 22px 0 0; margin-top:.4rem; padding:1.4rem 1.7rem 1.6rem; }
+.tm-line{ display:flex; justify-content:space-between; align-items:center; font-size:.86rem; padding:.55rem 0; border-bottom:1px dashed var(--line); }
+.tm-line:last-of-type{ border-bottom:none; }
+.tm-line .k{ color:var(--muted); font-weight:600; }
+.tm-line .v{ font-weight:800; color:#334155; font-variant-numeric:tabular-nums; }
+.tm-line.total .k{ color:var(--ink); font-weight:800; }
+.tm-line.total .v{ color:var(--primary); font-size:1.02rem; }
+.tm-callout{ margin-top:1rem; border-radius:14px; padding:.85rem 1rem; font-size:.82rem; font-weight:700; display:flex; gap:.5rem; align-items:flex-start; line-height:1.5; }
+.tm-callout.ok{ background:var(--up-bg); color:var(--up); }
+.tm-callout.bad{ background:var(--down-bg); color:var(--down); }
+.tm-note{ margin-top:1.6rem; font-size:.78rem; color:var(--muted); line-height:1.7; background:var(--soft); border:1px solid var(--line); border-radius:14px; padding:1rem 1.2rem; }
+.tm-note b{ color:#334155; }
+.tm-cta{ margin-top:1.4rem; display:flex; flex-wrap:wrap; gap:.6rem; }
+.tm-cta a{ font-size:.82rem; font-weight:800; text-decoration:none; padding:.7rem 1.3rem; border-radius:12px; }
+.tm-cta .primary{ background:var(--primary); color:#fff; }
+.tm-cta .ghost{ background:#fff; color:var(--primary); border:1.5px solid #E0E7FF; }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9744071365591766" crossorigin="anonymous"></script>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="tm-wrap">
+  <a href="../forms.html" class="tm-back">← 서식 · 도구 목록</a>
+
+  <div class="tm-head">
+    <span class="tm-eyebrow">🧮 실무 도구 · 사업·창업</span>
+    <h1>손익분기 계산기</h1>
+    <p>"몇 개 팔아야 본전일까?" 고정비를 넘기는 <b>손익분기점</b>을 한눈에 보여드립니다.</p>
+  </div>
+
+  <div class="tm-grid">
+    <div class="tm-card">
+      <h2>📊 비용 · 가격 입력</h2>
+
+      <div class="tm-field">
+        <label>월 고정비 <span class="hint">임대료·인건비·구독료 등</span></label>
+        <div class="tm-input"><input type="number" id="fixed" inputmode="numeric" value="3000000"><span class="unit">원</span></div>
+      </div>
+
+      <div class="tm-row" style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem;">
+        <div class="tm-field">
+          <label>판매가 <span class="hint">개당</span></label>
+          <div class="tm-input"><input type="number" id="price" inputmode="numeric" value="20000"><span class="unit">원</span></div>
+        </div>
+        <div class="tm-field">
+          <label>개당 변동비 <span class="hint">원가·배송 등</span></label>
+          <div class="tm-input"><input type="number" id="variable" inputmode="numeric" value="8000"><span class="unit">원</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tm-result">
+      <div class="tm-result-top">
+        <div class="tm-result-label">손익분기 판매 수량</div>
+        <div class="tm-profit"><span id="bepQty">250</span><span class="won">개</span></div>
+        <div class="tm-rate-badge">💰 손익분기 매출 <span id="bepRev">5,000,000</span>원</div>
+      </div>
+      <div class="tm-result-body">
+        <div class="tm-line"><span class="k">개당 공헌이익</span><span class="v" id="oCm">12,000원</span></div>
+        <div class="tm-line"><span class="k">공헌이익률</span><span class="v" id="oCmr">60.0%</span></div>
+        <div class="tm-line total"><span class="k">손익분기 수량</span><span class="v" id="oBepQty">250개</span></div>
+        <div class="tm-line"><span class="k">손익분기 매출</span><span class="v" id="oBepRev">5,000,000원</span></div>
+        <div class="tm-callout ok" id="callout">👍 월 250개(=하루 약 9개)를 넘기면 그때부터 이익입니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tm-note">
+    💡 <b>계산 방식.</b> 개당 공헌이익 = 판매가 − 변동비. 손익분기 수량 = 고정비 ÷ 공헌이익. 손익분기 매출 = 손익분기 수량 × 판매가.<br>
+    공헌이익이 0 이하이면 아무리 팔아도 고정비를 못 넘깁니다. 참고용이며 세금·재고는 별도입니다.
+  </div>
+
+  <div class="tm-cta">
+    <a class="primary" href="form-business-plan.html">사업계획서 만들기 →</a>
+    <a class="ghost" href="../forms.html">다른 도구 보기</a>
+  </div>
+</div>
+
+<script>
+function setLang(l){ try{ localStorage.setItem('site-lang', l); }catch(e){} if (window.syncNavLang) window.syncNavLang(l); }
+(function(){
+  var won = function(n){ return Math.round(n).toLocaleString('ko-KR') + '원'; };
+  var ids = ['fixed','price','variable'];
+  function calc(){
+    var fixed = +document.getElementById('fixed').value || 0;
+    var price = +document.getElementById('price').value || 0;
+    var variable = +document.getElementById('variable').value || 0;
+    var cm = price - variable;
+    var cmr = price > 0 ? (cm / price * 100) : 0;
+    var qty = cm > 0 ? Math.ceil(fixed / cm) : 0;
+    var rev = qty * price;
+    document.getElementById('oCm').textContent = won(cm);
+    document.getElementById('oCmr').textContent = cmr.toFixed(1) + '%';
+    var co = document.getElementById('callout');
+    if (cm <= 0){
+      document.getElementById('bepQty').textContent = '–';
+      document.getElementById('bepRev').textContent = '–';
+      document.getElementById('oBepQty').textContent = '계산 불가';
+      document.getElementById('oBepRev').textContent = '–';
+      co.className = 'tm-callout bad';
+      co.innerHTML = '⚠️ 판매가가 변동비보다 낮거나 같아요. 이 구조는 팔수록 손해라 손익분기가 없습니다.';
+    } else {
+      document.getElementById('bepQty').textContent = qty.toLocaleString('ko-KR');
+      document.getElementById('bepRev').textContent = rev.toLocaleString('ko-KR');
+      document.getElementById('oBepQty').textContent = qty.toLocaleString('ko-KR') + '개';
+      document.getElementById('oBepRev').textContent = won(rev);
+      var perDay = Math.ceil(qty / 26);
+      co.className = 'tm-callout ok';
+      co.innerHTML = '👍 월 ' + qty.toLocaleString('ko-KR') + '개(=하루 약 ' + perDay + '개)를 넘기면 그때부터 이익입니다.';
+    }
+  }
+  ids.forEach(function(id){ document.getElementById(id).addEventListener('input', calc); });
+  calc();
+})();
+</script>
+<script src="../assets/js/nav.js?v=4"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

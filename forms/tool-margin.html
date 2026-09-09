@@ -1,0 +1,222 @@
+<!-- 스마트스토어 마진 계산기 — 판매가·원가·수수료 입력 시 실마진 즉시 계산 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스마트스토어 마진 계산기 — 실수익·마진율 즉시 계산 | Book Coupling</title>
+<meta name="description" content="판매가·매입원가·플랫폼 수수료·광고비·배송비를 입력하면 실수익과 마진율, 손익분기 판매가를 실시간으로 계산합니다. 온라인 셀러 필수 도구.">
+<meta name="keywords" content="스마트스토어 마진 계산기, 마진율 계산, 온라인 셀러 마진, 네이버 수수료 계산, 손익분기 계산, 판매 수익 계산기">
+<link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/a/AVvXsEhYG4n3Wk5PYNIreBZZWzlXcPeeUYyKgY6RcmZkVtlilNBEbZl8TdYJ_KmOrugZHBO4EQYwqQn2GqUJtAn_Eyr4_iz8srykQLOWxV7Jj5m5h86aDZ38lNKbvNSBE0N5DCb-6NPMUyNOTwGdUpeoZvMJh3b_SYUHilTn0qWaKZ0fdd6eU-Ajed_ukDtIdkA">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{ --ink:#0F172A; --muted:#64748B; --line:#E7EAF0; --primary:#4F46E5; --primary2:#7C3AED;
+  --up:#059669; --up-bg:#ECFDF5; --down:#E11D48; --down-bg:#FFF1F3; --soft:#F8FAFC; }
+.tm-wrap{ max-width:1040px; margin:0 auto; padding:2.4rem 1.4rem 5rem; color:var(--ink);
+  font-family:'Pretendard','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif; }
+.tm-back{ display:inline-flex; align-items:center; gap:.35rem; font-size:.85rem; font-weight:700;
+  color:var(--muted); text-decoration:none; margin-bottom:1.4rem; }
+.tm-back:hover{ color:var(--primary); }
+.tm-head{ margin-bottom:1.8rem; }
+.tm-eyebrow{ display:inline-block; font-size:.72rem; font-weight:800; letter-spacing:.08em;
+  color:var(--primary); background:#EEF2FF; border:1px solid #E0E7FF; padding:5px 12px; border-radius:999px; }
+.tm-head h1{ font-size:1.9rem; font-weight:900; letter-spacing:-.02em; margin:.7rem 0 .4rem; line-height:1.25; }
+.tm-head p{ font-size:1rem; color:var(--muted); margin:0; line-height:1.6; }
+
+.tm-grid{ display:grid; grid-template-columns:1fr 380px; gap:1.4rem; align-items:start; }
+@media(max-width:840px){ .tm-grid{ grid-template-columns:1fr; } }
+
+/* 입력 카드 */
+.tm-card{ background:#fff; border:1px solid var(--line); border-radius:22px; padding:1.6rem 1.7rem;
+  box-shadow:0 10px 40px rgba(15,23,42,.05); }
+.tm-card h2{ font-size:.95rem; font-weight:800; margin:0 0 1.2rem; display:flex; align-items:center; gap:.5rem; }
+.tm-field{ margin-bottom:1.15rem; }
+.tm-field:last-child{ margin-bottom:0; }
+.tm-field label{ display:flex; justify-content:space-between; align-items:baseline;
+  font-size:.83rem; font-weight:700; color:#334155; margin-bottom:.4rem; }
+.tm-field label .hint{ font-size:.72rem; font-weight:600; color:var(--muted); }
+.tm-input{ position:relative; }
+.tm-input input{ width:100%; box-sizing:border-box; border:1.5px solid var(--line); border-radius:13px;
+  padding:.8rem 3rem .8rem 1rem; font-size:1.05rem; font-weight:700; color:var(--ink);
+  background:var(--soft); transition:.15s; text-align:right; -moz-appearance:textfield; }
+.tm-input input:focus{ outline:none; border-color:var(--primary); background:#fff; box-shadow:0 0 0 4px rgba(79,70,229,.1); }
+.tm-input input::-webkit-outer-spin-button,.tm-input input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+.tm-input .unit{ position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+  font-size:.85rem; font-weight:700; color:var(--muted); pointer-events:none; }
+.tm-row{ display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+.tm-presets{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.5rem; }
+.tm-preset{ font-size:.73rem; font-weight:700; color:var(--muted); background:#fff;
+  border:1px solid var(--line); border-radius:999px; padding:4px 11px; cursor:pointer; transition:.15s; }
+.tm-preset:hover{ border-color:var(--primary); color:var(--primary); background:#EEF2FF; }
+
+/* 결과 패널 */
+.tm-result{ position:sticky; top:84px; border-radius:22px; overflow:hidden;
+  background:linear-gradient(160deg,#4F46E5 0%,#7C3AED 100%); color:#fff;
+  box-shadow:0 18px 50px rgba(79,70,229,.28); }
+.tm-result-top{ padding:1.7rem 1.7rem 1.5rem; }
+.tm-result-label{ font-size:.78rem; font-weight:700; opacity:.85; letter-spacing:.02em; }
+.tm-profit{ font-size:2.7rem; font-weight:900; letter-spacing:-.02em; margin:.15rem 0 .1rem; line-height:1.05; }
+.tm-profit .won{ font-size:1.3rem; font-weight:800; opacity:.9; margin-left:.15rem; }
+.tm-rate-badge{ display:inline-flex; align-items:center; gap:.35rem; font-size:.85rem; font-weight:800;
+  background:rgba(255,255,255,.18); border-radius:999px; padding:5px 13px; margin-top:.3rem; }
+.tm-result-body{ background:#fff; color:var(--ink); border-radius:22px 22px 0 0; margin-top:.4rem;
+  padding:1.4rem 1.7rem 1.6rem; }
+.tm-line{ display:flex; justify-content:space-between; align-items:center; font-size:.86rem;
+  padding:.55rem 0; border-bottom:1px dashed var(--line); }
+.tm-line:last-of-type{ border-bottom:none; }
+.tm-line .k{ color:var(--muted); font-weight:600; }
+.tm-line .v{ font-weight:800; color:#334155; font-variant-numeric:tabular-nums; }
+.tm-line.total .k{ color:var(--ink); font-weight:800; }
+.tm-line.total .v{ color:var(--primary); font-size:1.02rem; }
+.tm-callout{ margin-top:1rem; border-radius:14px; padding:.85rem 1rem; font-size:.82rem; font-weight:700;
+  display:flex; gap:.5rem; align-items:flex-start; line-height:1.5; }
+.tm-callout.ok{ background:var(--up-bg); color:var(--up); }
+.tm-callout.bad{ background:var(--down-bg); color:var(--down); }
+
+.tm-note{ margin-top:1.6rem; font-size:.78rem; color:var(--muted); line-height:1.7;
+  background:var(--soft); border:1px solid var(--line); border-radius:14px; padding:1rem 1.2rem; }
+.tm-note b{ color:#334155; }
+.tm-cta{ margin-top:1.4rem; display:flex; flex-wrap:wrap; gap:.6rem; }
+.tm-cta a{ font-size:.82rem; font-weight:800; text-decoration:none; padding:.7rem 1.3rem; border-radius:12px; }
+.tm-cta .primary{ background:var(--primary); color:#fff; }
+.tm-cta .ghost{ background:#fff; color:var(--primary); border:1.5px solid #E0E7FF; }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9744071365591766" crossorigin="anonymous"></script>
+</head>
+<body>
+<script src="../assets/js/nav-inject.js"></script>
+
+<div class="tm-wrap">
+  <a href="../forms.html" class="tm-back">← 서식 · 도구 목록</a>
+
+  <div class="tm-head">
+    <span class="tm-eyebrow">🧮 실무 도구 · 온라인 셀러</span>
+    <h1>스마트스토어 마진 계산기</h1>
+    <p>수식 14개를 직접 만들 필요 없어요. 숫자만 넣으면 <b>진짜 남는 돈</b>이 바로 보입니다.</p>
+  </div>
+
+  <div class="tm-grid">
+    <!-- 입력 -->
+    <div class="tm-card">
+      <h2>💳 판매 정보 입력</h2>
+
+      <div class="tm-field">
+        <label>판매가 <span class="hint">고객이 내는 가격</span></label>
+        <div class="tm-input"><input type="number" id="price" inputmode="numeric" value="29000"><span class="unit">원</span></div>
+      </div>
+
+      <div class="tm-field">
+        <label>매입 원가 <span class="hint">사입·제조 단가</span></label>
+        <div class="tm-input"><input type="number" id="cost" inputmode="numeric" value="9000"><span class="unit">원</span></div>
+      </div>
+
+      <div class="tm-row">
+        <div class="tm-field">
+          <label>포장·배송비</label>
+          <div class="tm-input"><input type="number" id="ship" inputmode="numeric" value="3000"><span class="unit">원</span></div>
+        </div>
+        <div class="tm-field">
+          <label>건당 광고비</label>
+          <div class="tm-input"><input type="number" id="ad" inputmode="numeric" value="2000"><span class="unit">원</span></div>
+        </div>
+      </div>
+
+      <div class="tm-field">
+        <label>플랫폼 수수료 <span class="hint">결제·판매 수수료 합산</span></label>
+        <div class="tm-input"><input type="number" id="fee" inputmode="decimal" step="0.01" value="5.63"><span class="unit">%</span></div>
+        <div class="tm-presets">
+          <span class="tm-preset" data-fee="5.63">스마트스토어 5.63%</span>
+          <span class="tm-preset" data-fee="3.63">쿠팡 3.63%</span>
+          <span class="tm-preset" data-fee="10.8">지마켓 10.8%</span>
+          <span class="tm-preset" data-fee="0">수수료 없음</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 결과 -->
+    <div class="tm-result">
+      <div class="tm-result-top">
+        <div class="tm-result-label">1건당 실수익</div>
+        <div class="tm-profit"><span id="profit">14,368</span><span class="won">원</span></div>
+        <div class="tm-rate-badge" id="rateBadge">📈 마진율 <span id="rate">49.5</span>%</div>
+      </div>
+      <div class="tm-result-body">
+        <div class="tm-line"><span class="k">판매가</span><span class="v" id="oPrice">29,000원</span></div>
+        <div class="tm-line"><span class="k">매입 원가</span><span class="v" id="oCost">-9,000원</span></div>
+        <div class="tm-line"><span class="k">포장·배송비</span><span class="v" id="oShip">-3,000원</span></div>
+        <div class="tm-line"><span class="k">플랫폼 수수료</span><span class="v" id="oFee">-1,632원</span></div>
+        <div class="tm-line"><span class="k">광고비</span><span class="v" id="oAd">-2,000원</span></div>
+        <div class="tm-line total"><span class="k">실수익</span><span class="v" id="oProfit">14,368원</span></div>
+        <div class="tm-line"><span class="k">손익분기 판매가</span><span class="v" id="oBep">15,522원</span></div>
+        <div class="tm-callout ok" id="callout">👍 건강한 마진이에요. 광고비를 더 태워 볼 여력이 있습니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tm-note">
+    💡 <b>계산 방식.</b> 실수익 = 판매가 − (매입원가 + 포장·배송비 + 판매가 × 수수료% + 광고비). 손익분기 판매가는 수수료를 감안해 실수익이 0이 되는 지점입니다.<br>
+    이 계산기는 참고용이며, 실제 정산은 플랫폼 정책·부가세·반품에 따라 달라질 수 있습니다.
+  </div>
+
+  <div class="tm-cta">
+    <a class="primary" href="form-quote.html">견적서 만들기 →</a>
+    <a class="ghost" href="../forms.html">다른 도구 보기</a>
+  </div>
+</div>
+
+<script>
+// nav 언어 토글이 페이지별 setLang을 호출하므로, 계산기 전용 스텁으로 에러 방지 (계산기 다국어는 후속)
+function setLang(l){ try{ localStorage.setItem('site-lang', l); }catch(e){} if (window.syncNavLang) window.syncNavLang(l); }
+
+(function(){
+  var won = function(n){ return Math.round(n).toLocaleString('ko-KR') + '원'; };
+  var ids = ['price','cost','ship','ad','fee'];
+  function calc(){
+    var price = +document.getElementById('price').value || 0;
+    var cost  = +document.getElementById('cost').value || 0;
+    var ship  = +document.getElementById('ship').value || 0;
+    var ad    = +document.getElementById('ad').value || 0;
+    var feePct= +document.getElementById('fee').value || 0;
+    var feeAmt = price * feePct / 100;
+    var totalCost = cost + ship + feeAmt + ad;
+    var profit = price - totalCost;
+    var rate = price > 0 ? (profit / price * 100) : 0;
+    // 손익분기 판매가: p - (cost+ship+ad) - p*fee% = 0  →  p = (cost+ship+ad)/(1-fee%/100)
+    var fixed = cost + ship + ad;
+    var bep = (1 - feePct/100) > 0 ? fixed / (1 - feePct/100) : 0;
+
+    document.getElementById('profit').textContent = Math.round(profit).toLocaleString('ko-KR');
+    document.getElementById('rate').textContent = rate.toFixed(1);
+    document.getElementById('oPrice').textContent = won(price);
+    document.getElementById('oCost').textContent  = '-' + won(cost);
+    document.getElementById('oShip').textContent  = '-' + won(ship);
+    document.getElementById('oFee').textContent   = '-' + won(feeAmt);
+    document.getElementById('oAd').textContent    = '-' + won(ad);
+    document.getElementById('oProfit').textContent= won(profit);
+    document.getElementById('oBep').textContent   = won(bep);
+
+    var badge = document.getElementById('rateBadge');
+    var co = document.getElementById('callout');
+    if (profit <= 0){
+      badge.style.background='rgba(225,29,72,.9)'; badge.innerHTML='📉 마진율 <span id="rate">'+rate.toFixed(1)+'%</span>';
+      co.className='tm-callout bad'; co.innerHTML='⚠️ 지금 구조면 팔수록 손해예요. 원가·광고비를 낮추거나 판매가를 올려야 합니다.';
+    } else if (rate < 15){
+      badge.style.background='rgba(255,255,255,.18)'; badge.innerHTML='📈 마진율 <span id="rate">'+rate.toFixed(1)+'%</span>';
+      co.className='tm-callout bad'; co.innerHTML='😥 마진이 얇습니다. 반품 한 번이면 손익이 흔들릴 수 있어요.';
+    } else {
+      badge.style.background='rgba(255,255,255,.18)'; badge.innerHTML='📈 마진율 <span id="rate">'+rate.toFixed(1)+'%</span>';
+      co.className='tm-callout ok'; co.innerHTML='👍 건강한 마진이에요. 광고비를 더 태워 볼 여력이 있습니다.';
+    }
+  }
+  ids.forEach(function(id){ document.getElementById(id).addEventListener('input', calc); });
+  document.querySelectorAll('.tm-preset').forEach(function(p){
+    p.addEventListener('click', function(){ document.getElementById('fee').value = p.getAttribute('data-fee'); calc(); });
+  });
+  calc();
+})();
+</script>
+<script src="../assets/js/nav.js?v=4"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer-inject.js"></script>
+</body>
+</html>

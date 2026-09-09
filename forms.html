@@ -327,6 +327,7 @@
     <button class="cat-tab" data-cat="realty" onclick="setCat(this)">🏠 부동산</button>
     <button class="cat-tab" data-cat="biz" onclick="setCat(this)">📊 금융·비즈니스</button>
     <button class="cat-tab" data-cat="admin" onclick="setCat(this)">📋 행정·관리</button>
+    <button class="cat-tab" data-cat="tool" onclick="setCat(this)">🧮 실무 도구</button>
   </div>
 
   <!-- 추천 배너 -->
@@ -449,7 +450,7 @@ var FORMS_LANG = {
     chips: ['이력서','근로계약서','임대차계약서','차용증','사직서','위임장'],
     stat1: '현재 서식 수', stat2: '온라인 작성 지원', stat3: '무료 사용', stat4: '즉시 출력 가능',
     statVal2: '전종',
-    cats: ['⊛ 전체','💼 취업·인사','⚖ 법률·계약','🏠 부동산','📊 금융·비즈니스','📋 행정·관리'],
+    cats: ['⊛ 전체','💼 취업·인사','⚖ 법률·계약','🏠 부동산','📊 금융·비즈니스','📋 행정·관리','🧮 실무 도구'],
     featuredTitle: '이력서 — 이번 달 가장 많이 작성된 서식',
     featuredDesc: 'A4 두 컬럼 디자인 · 사진·로고 업로드 · 항목 추가/삭제 · 색상 커스텀 · 원클릭 PDF 출력',
     featuredBtn: '바로 작성하기 →',
@@ -480,7 +481,7 @@ var FORMS_LANG = {
     chips: ['Resume','Employment Contract','Lease','IOU','Resignation','Power of Attorney'],
     stat1: 'Forms Available', stat2: 'Online Fill Support', stat3: 'Free to Use', stat4: 'Instant PDF',
     statVal2: 'All',
-    cats: ['⊛ All','💼 HR & Employment','⚖ Legal & Contracts','🏠 Real Estate','📊 Finance & Business','📋 Admin & Management'],
+    cats: ['⊛ All','💼 HR & Employment','⚖ Legal & Contracts','🏠 Real Estate','📊 Finance & Business','📋 Admin & Management','🧮 Tools'],
     featuredTitle: 'Resume — Most Used Form This Month',
     featuredDesc: 'Two-column A4 · Photo & logo upload · Add/remove items · Color customization · One-click PDF',
     featuredBtn: 'Start Now →',
@@ -511,7 +512,7 @@ var FORMS_LANG = {
     chips: ['履歴書','労働契約書','賃貸契約書','借用証書','辞表','委任状'],
     stat1: '書式数', stat2: 'オンライン記入対応', stat3: '無料利用', stat4: 'PDF即時出力',
     statVal2: '全種',
-    cats: ['⊛ 全て','💼 採用・人事','⚖ 法律・契約','🏠 不動産','📊 金融・ビジネス','📋 行政・管理'],
+    cats: ['⊛ 全て','💼 採用・人事','⚖ 法律・契約','🏠 不動産','📊 金融・ビジネス','📋 行政・管理','🧮 実務ツール'],
     featuredTitle: '履歴書 — 今月最も多く作成された書式',
     featuredDesc: 'A4二段組デザイン · 写真·ロゴアップロード · 項目追加/削除 · カラーカスタム · ワンクリックPDF',
     featuredBtn: '今すぐ作成 →',
@@ -671,6 +672,11 @@ var FORM_I18N = {
     ko:{title:'업무일지',desc:'금일목표·업무수행내역·미완료사유·내일계획 구조, 완료율 프로그레스바, 행 추가',tags:['목표설정','완료율','내일계획','행추가','PDF출력'],badge:'✓ 무료'},
     en:{title:'Work Log',desc:"Today's goals, work done, incomplete reasons, tomorrow's plan. Completion rate progress bar, add rows",tags:['Goals','Completion Rate','Next Day Plan','Add Rows','PDF'],badge:'✓ Free'},
     ja:{title:'業務日誌',desc:'本日目標·業務実績·未完了理由·明日の計画、完了率プログレスバー、行追加',tags:['目標設定','完了率','明日の計画','行追加','PDF'],badge:'✓ 無料'},
+  },
+  'margin-calc': {
+    ko:{title:'스마트스토어 마진 계산기',desc:'판매가·원가·수수료·광고비 입력 시 실수익과 마진율, 손익분기 판매가를 실시간 계산',tags:['실시간계산','마진율','손익분기','플랫폼수수료','셀러필수'],badge:'🧮 실무도구'},
+    en:{title:'Store Margin Calculator',desc:'Enter price, cost, fees and ads — get real profit, margin rate and break-even price in real time',tags:['Live calc','Margin %','Break-even','Platform fee','Seller'],badge:'🧮 Tool'},
+    ja:{title:'ストア マージン計算機',desc:'販売価·原価·手数料·広告費を入力すると、実利益・マージン率・損益分岐価格をリアルタイム計算',tags:['リアルタイム','マージン率','損益分岐','手数料','セラー'],badge:'🧮 ツール'},
   },
 };
 
@@ -860,7 +866,11 @@ var LIVE_FORMS = [
   { id:'worklog', cat:'admin', icon:'🗒️', accent:'#1E293B', badge:'badge-free', badgeText:'✓ 무료',
     title:'업무일지', desc:'금일목표·업무수행내역·미완료사유·내일계획 구조, 완료율 프로그레스바, 행 추가',
     tags:['목표설정','완료율','내일계획','행추가','PDF출력'], href:'forms/form-work-log.html',
-    keywords:'업무일지 업무보고 daily report 일일업무 업무기록 근무일지' }
+    keywords:'업무일지 업무보고 daily report 일일업무 업무기록 근무일지' },
+  { id:'margin-calc', cat:'tool', icon:'🧮', accent:'#4F46E5', badge:'badge-pop', badgeText:'🧮 실무도구',
+    title:'스마트스토어 마진 계산기', desc:'판매가·원가·수수료·광고비 입력 시 실수익과 마진율, 손익분기 판매가를 실시간 계산',
+    tags:['실시간계산','마진율','손익분기','플랫폼수수료','셀러필수'], href:'forms/tool-margin.html',
+    keywords:'마진 계산기 마진율 스마트스토어 수수료 손익분기 셀러 수익계산' }
 ];
 
 var UPCOMING_FORMS = [];

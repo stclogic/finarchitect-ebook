@@ -102,6 +102,24 @@
   margin-bottom: 3rem;
 }
 
+/* ── 목적별 서류 팩(번들) ── */
+.bundle-section { margin-bottom: 2.6rem; }
+.bundle-desc { font-size: .85rem; color: var(--text2); margin: -.2rem 0 1rem; }
+.bundle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 820px) { .bundle-grid { grid-template-columns: 1fr; } }
+.bundle-card { position: relative; background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,.05); transition: transform .2s, box-shadow .2s; }
+.bundle-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(99,102,241,.12); }
+.bundle-accent { height: 4px; }
+.bundle-body { padding: 1.1rem 1.2rem 1.2rem; }
+.bundle-head { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+.bundle-icon { font-size: 1.5rem; }
+.bundle-name { font-weight: 800; color: var(--dark); font-size: 1rem; }
+.bundle-count { margin-left: auto; font-size: .72rem; font-weight: 800; color: var(--text2); background: #F3F4F6; border-radius: 999px; padding: 2px 9px; }
+.bundle-problem { font-size: .82rem; color: var(--text2); line-height: 1.55; margin-bottom: .85rem; }
+.bundle-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.bundle-chip { font-size: .74rem; font-weight: 700; text-decoration: none; color: var(--dark); background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 5px 9px; transition: .15s; }
+.bundle-chip:hover { background: #eef2ff; border-color: var(--primary); color: var(--primary); }
+
 /* ── Form card ── */
 .form-card {
   background: var(--white); border: 1.5px solid var(--border);
@@ -321,6 +339,16 @@
       </div>
     </div>
     <a href="forms/form-resume.html" class="featured-banner-btn">바로 작성하기 →</a>
+  </div>
+
+  <!-- 목적별 서류 팩(번들) -->
+  <div class="bundle-section" id="bundleSection">
+    <div class="section-header">
+      <span class="section-header-title" id="bundleTitle">📦 목적별 서류 팩</span>
+      <span class="section-header-line"></span>
+    </div>
+    <p class="bundle-desc" id="bundleDesc">낱개로 찾지 마세요. 상황에 필요한 서식을 한 번에.</p>
+    <div class="bundle-grid" id="bundleGrid"></div>
   </div>
 
   <!-- 온라인 작성 가능 (LIVE) -->
@@ -867,6 +895,52 @@ function matchesSearch(form) {
   return kw.includes(currentSearch);
 }
 
+// ── 목적별 서류 팩(번들) — 전부 기존 서식 재조합 ──
+var BUNDLE_LANG = {
+  ko: { title: '📦 목적별 서류 팩', desc: '낱개로 찾지 마세요. 상황에 필요한 서식을 한 번에.' },
+  en: { title: '📦 Document Packs by Goal', desc: 'Stop hunting file by file — everything a situation needs, together.' },
+  ja: { title: '📦 目的別 書類パック', desc: '一つずつ探さないで。その場面に必要な書類をまとめて。' }
+};
+var BUNDLES = [
+  { id:'startup', icon:'🚀', accent:'#1E3A5F', forms:['business-plan','articles','shareholder','employment','nda'],
+    ko:{name:'창업 스타트 팩', problem:'혼자 창업하는데 뭐부터 준비할지 막막할 때'},
+    en:{name:'Startup Starter Pack', problem:"When you're starting a company and don't know what to prepare first"},
+    ja:{name:'起業スタートパック', problem:'一人で起業、何から準備すべきか迷うときに'} },
+  { id:'jobhunt', icon:'💼', accent:'#3730A3', forms:['resume','coverletter','career-cert','resignation'],
+    ko:{name:'취업·이직 준비 팩', problem:'여러 곳 지원하는데 서류가 뒤죽박죽일 때'},
+    en:{name:'Job Search & Move Pack', problem:"When you're applying everywhere and your documents are a mess"},
+    ja:{name:'就職・転職 準備パック', problem:'複数社に応募して書類がぐちゃぐちゃなときに'} },
+  { id:'freelance', icon:'🧑‍💻', accent:'#B45309', forms:['partnership','nda','quote','invoice','handover'],
+    ko:{name:'프리랜서 수주 팩', problem:'매 프로젝트마다 견적·계약·정산 서류를 새로 만들 때'},
+    en:{name:'Freelance Deal Pack', problem:'When every project means redoing quotes, contracts, settlements'},
+    ja:{name:'フリーランス受注パック', problem:'案件ごとに見積・契約・精算を作り直すときに'} }
+];
+function findForm(id) { for (var i = 0; i < LIVE_FORMS.length; i++) { if (LIVE_FORMS[i].id === id) return LIVE_FORMS[i]; } return null; }
+function renderBundles() {
+  var L = BUNDLE_LANG[currentLang] || BUNDLE_LANG.ko;
+  document.getElementById('bundleTitle').textContent = L.title;
+  document.getElementById('bundleDesc').textContent = L.desc;
+  document.getElementById('bundleGrid').innerHTML = BUNDLES.map(function(b) {
+    var t = b[currentLang] || b.ko;
+    var chips = b.forms.map(function(fid) {
+      var f = findForm(fid); if (!f) return '';
+      var fi = (FORM_I18N[fid] && FORM_I18N[fid][currentLang]) || {};
+      var label = fi.title || f.title;
+      return '<a class="bundle-chip" href="' + f.href + '">' + f.icon + ' ' + label + '</a>';
+    }).join('');
+    return '<div class="bundle-card">' +
+      '<div class="bundle-accent" style="background:' + b.accent + '"></div>' +
+      '<div class="bundle-body">' +
+        '<div class="bundle-head"><span class="bundle-icon">' + b.icon + '</span>' +
+        '<span class="bundle-name">' + t.name + '</span>' +
+        '<span class="bundle-count">' + b.forms.length + '</span></div>' +
+        '<div class="bundle-problem">' + t.problem + '</div>' +
+        '<div class="bundle-chips">' + chips + '</div>' +
+      '</div></div>';
+  }).join('');
+  document.getElementById('bundleSection').style.display = (currentCat === 'all' && !currentSearch) ? '' : 'none';
+}
+
 function render() {
   var liveFiltered = LIVE_FORMS.filter(function(f) { return matchesCat(f) && matchesSearch(f); });
   var upFiltered = UPCOMING_FORMS.filter(function(f) { return matchesCat(f) && matchesSearch(f); });
@@ -908,6 +982,8 @@ function render() {
   document.getElementById('liveSection').style.display = liveFiltered.length ? '' : 'none';
   document.getElementById('upcomingSection').style.display = upFiltered.length ? '' : 'none';
   document.getElementById('featuredBanner').style.display = (currentSearch || currentCat !== 'all') ? 'none' : '';
+
+  renderBundles();
 }
 
 // 페이지 로드 시 저장된 언어 적용

@@ -688,6 +688,11 @@ var FORM_I18N = {
     en:{title:'Break-even Calculator',desc:'From fixed cost, price and variable cost, get break-even units, revenue and contribution margin',tags:['Break-even','BEP','Contribution','Fixed cost','Startup'],badge:'🧮 Tool'},
     ja:{title:'損益分岐 計算機',desc:'固定費·販売価·変動費から、損益分岐の数量・売上・限界利益を計算',tags:['損益分岐','BEP','限界利益','固定費','起業'],badge:'🧮 ツール'},
   },
+  'startup-checklist': {
+    ko:{title:'1인 창업 준비 체크리스트',desc:'검증·등록·자금·마케팅 4단계 16개 항목을 체크하고 진행률 저장(이 기기에)',tags:['단계별','진행률저장','창업준비','사업자등록','인터랙티브'],badge:'✅ 체크리스트'},
+    en:{title:'Solo Startup Checklist',desc:'Check off 16 items across validate, register, funding and marketing — progress saved on this device',tags:['Step-by-step','Saves progress','Startup','Registration','Interactive'],badge:'✅ Checklist'},
+    ja:{title:'一人起業 準備チェックリスト',desc:'検証·登録·資金·マーケティングの4段階16項目をチェック、進捗をこの端末に保存',tags:['段階別','進捗保存','起業準備','事業者登録','インタラクティブ'],badge:'✅ チェックリスト'},
+  },
 };
 
 // ── 언어 전환 함수 ────────────────────────────────────────────
@@ -888,7 +893,11 @@ var LIVE_FORMS = [
   { id:'bep', cat:'tool', icon:'🧮', accent:'#4F46E5', badge:'badge-pop', badgeText:'🧮 실무도구',
     title:'손익분기 계산기', desc:'고정비·판매가·변동비로 손익분기 수량과 매출, 공헌이익을 계산',
     tags:['손익분기','BEP','공헌이익','고정비','창업'], href:'forms/tool-bep.html',
-    keywords:'손익분기 계산기 BEP 손익분기점 공헌이익 고정비 창업' }
+    keywords:'손익분기 계산기 BEP 손익분기점 공헌이익 고정비 창업' },
+  { id:'startup-checklist', cat:'tool', icon:'✅', accent:'#4F46E5', badge:'badge-pop', badgeText:'✅ 체크리스트',
+    title:'1인 창업 준비 체크리스트', desc:'검증·등록·자금·마케팅 4단계 16개 항목을 체크하고 진행률 저장(이 기기에)',
+    tags:['단계별','진행률저장','창업준비','사업자등록','인터랙티브'], href:'forms/tool-startup-checklist.html',
+    keywords:'창업 체크리스트 1인 창업 준비 사업자등록 스타트업 준비 목록' }
 ];
 
 var UPCOMING_FORMS = [];
